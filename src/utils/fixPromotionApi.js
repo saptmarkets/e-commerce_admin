@@ -5,7 +5,7 @@
 import axios from 'axios';
 
 // Get API base URL from environment
-const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL || 'http://localhost:5055';
+const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL || 'https://e-commerce-backend-l0s0.onrender.com/api';
 
 // Test direct API access
 export const testApiAccess = async () => {

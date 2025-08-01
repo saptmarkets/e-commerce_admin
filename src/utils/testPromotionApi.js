@@ -5,7 +5,7 @@
 import axios from 'axios';
 
 // Get base URL from environment variable
-const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL || 'http://localhost:5055/api';
+const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL || 'https://e-commerce-backend-l0s0.onrender.com/api';
 
 const testPromotionsApi = async () => {
   console.log('=== PROMOTIONS API TEST ===');
