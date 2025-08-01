@@ -178,6 +178,7 @@ const BannerDrawer = ({ id }) => {
             setValue('endDate', banner.endDate ? banner.endDate.split('T')[0] : '');
             setValue('openInNewTab', banner.openInNewTab || false);
             setValue('layoutType', banner.layoutType || 'single');
+            setValue('textAlignment', banner.textAlignment || 'center');
             setValue('leftImageAnimation', banner.leftImageAnimation || 'slideUp');
             setValue('rightImageAnimation', banner.rightImageAnimation || 'slideUp');
             setValue('centerImageAnimation', banner.centerImageAnimation || 'slideRight');
@@ -280,7 +281,7 @@ const BannerDrawer = ({ id }) => {
         ar: data.linkTextAr || '',
       };
       // Remove flat fields so they don't overwrite the object
-      const { title, titleAr, description, descriptionAr, linkText, linkTextAr, ...restData } = data;
+      const { title, titleAr, description, descriptionAr, linkText, linkTextAr, textAlignment, ...restData } = data;
 
       // Prepare banner data
       const bannerData = {
@@ -288,6 +289,7 @@ const BannerDrawer = ({ id }) => {
         title: titleObj,
         description: descriptionObj,
         linkText: linkTextObj,
+        textAlignment: data.textAlignment || 'center',
         imageUrl: imageUrl[0] || '',
         leftImageUrl: data.layoutType === 'triple' ? leftImageUrl : null,
         rightImageUrl: data.layoutType === 'triple' ? rightImageUrl : null,
@@ -602,6 +604,20 @@ const BannerDrawer = ({ id }) => {
                     error={errors.title}
                   />
                   <Error errorName={errors.title} />
+                </div>
+
+                {/* Text Alignment */}
+                <div>
+                  <LabelArea label="Text Alignment" />
+                  <Select
+                    className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                    {...register("textAlignment")}
+                  >
+                    <option value="center">Center</option>
+                    <option value="left">Left</option>
+                    <option value="right">Right</option>
+                  </Select>
+                  <p className="text-xs text-gray-500 mt-1">Choose how the text should be aligned on the banner</p>
                 </div>
 
                 {/* Banner Title Arabic */}
