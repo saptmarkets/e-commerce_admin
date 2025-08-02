@@ -63,13 +63,28 @@ const fetchFromOdoo = async (req, res) => {
     const { dataTypes = ['all'], config = {} } = req.body;
     const user = req.admin; // Assuming admin authentication middleware
     
+    // Support batching parameters from request body
+    if (req.body.offset !== undefined) {
+      config.offset = parseInt(req.body.offset);
+    }
+    if (req.body.limit !== undefined) {
+      config.limit = parseInt(req.body.limit);
+    }
+    
+    console.log('🚀 fetchFromOdoo called with config:', config);
+    
     // Start the sync process
     const results = await odooSyncService.fetchFromOdoo(dataTypes, config, user);
     
     res.status(200).json({
       success: true,
-      message: 'Data fetch from Odoo completed successfully',
+      message: `Data fetch from Odoo completed successfully${config.offset !== undefined || config.limit !== undefined ? ' (batched)' : ''}`,
       data: results,
+      batching: config.offset !== undefined || config.limit !== undefined ? {
+        offset: config.offset || 0,
+        limit: config.limit || 'all',
+        processed: results.products || 0
+      } : null
     });
   } catch (error) {
     console.error('Error fetching from Odoo:', error);

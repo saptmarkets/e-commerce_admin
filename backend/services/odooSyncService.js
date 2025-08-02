@@ -234,7 +234,7 @@ class OdooSyncService {
    */
   async fetchProducts(incremental = false, options = {}) {
     console.log('\n📦 Starting product sync from Odoo...');
-    const { activeOnly = false, types = null } = options;
+    const { activeOnly = false, types = null, offset: startOffset = 0, limit: maxLimit = null } = options;
 
     // Build dynamic domain
     let domain = [];
@@ -266,140 +266,107 @@ class OdooSyncService {
       return 0;
     }
 
+    // Apply batching limits if specified
+    let effectiveStartOffset = startOffset || 0;
+    let effectiveMaxLimit = maxLimit || totalCount;
+    let effectiveEndOffset = Math.min(effectiveStartOffset + effectiveMaxLimit, totalCount);
+
+    console.log(`📊 Batching: Processing products ${effectiveStartOffset} to ${effectiveEndOffset} of ${totalCount}`);
+
     // Verify count with a small test fetch
     console.log('\n🔍 Verifying search_read access...');
-    const testBatch = await odooService.fetchProducts(domain, 1, 0);
+    const testBatch = await odooService.fetchProducts(domain, 1, effectiveStartOffset);
     if (!testBatch || !testBatch.length) {
       throw new Error('Failed to fetch test batch - check Odoo permissions and filters');
     }
     console.log('✅ Search_read test successful');
 
-    let offset = 0;
+    let offset = effectiveStartOffset;
     let processedCount = 0;
-    const batchSize = 50000;
+    const batchSize = 200; // Smaller batch size for reliability
     let failedAttempts = 0;
     const maxRetries = 3;
     
-    while (processedCount < totalCount) {
+    while (offset < effectiveEndOffset && processedCount < effectiveMaxLimit) {
       try {
-        console.log(`\n🔄 Fetching batch ${Math.floor(processedCount/batchSize) + 1}`);
-        console.log(`   Progress: ${processedCount} / ${totalCount} (${((processedCount/totalCount)*100).toFixed(1)}%)`);
-        console.log(`   Offset: ${offset}, Batch size: ${batchSize}`);
+        const remainingInBatch = Math.min(batchSize, effectiveEndOffset - offset, effectiveMaxLimit - processedCount);
         
-        const products = await odooService.fetchProducts(domain, batchSize, offset);
+        console.log(`\n🔄 Fetching batch: offset ${offset}, limit ${remainingInBatch}`);
         
-        if (!products) {
-          throw new Error('Received null response from Odoo');
-        }
+        const products = await odooService.fetchProducts(domain, remainingInBatch, offset);
         
-        if (products.length === 0) {
-          console.warn('⚠️ Received empty batch despite expecting more records');
-          failedAttempts++;
-          
-          if (failedAttempts >= maxRetries) {
-            console.error('❌ Max retries reached - stopping sync');
-            break;
-          }
-          
-          console.log('🔄 Retrying with smaller batch size...');
-          const newBatchSize = Math.floor(batchSize / 2);
-          if (newBatchSize < 1000) {
-            throw new Error('Batch size too small - possible permission or filter issue');
-          }
-          continue;
+        if (!products || products.length === 0) {
+          console.log('✅ No more products to fetch');
+          break;
         }
 
-        // Reset failed attempts on successful fetch
-        failedAttempts = 0;
+        console.log(`📦 Processing ${products.length} products...`);
 
-        console.log(`\n📝 Processing ${products.length} products...`);
-
-        // Process the batch
+        // Process products into odoo_products collection
         const operations = products.map(product => {
-          // --- Field Extraction and Validation ---
-          // Always extract categ_id and uom_id
+          // Extract IDs properly
           const categ_id = Array.isArray(product.categ_id) ? product.categ_id[0] : product.categ_id;
           const uom_id = Array.isArray(product.uom_id) ? product.uom_id[0] : product.uom_id;
+          const uom_po_id = Array.isArray(product.uom_po_id) ? product.uom_po_id[0] : product.uom_po_id;
+          const product_tmpl_id = Array.isArray(product.product_tmpl_id) ? product.product_tmpl_id[0] : product.product_tmpl_id;
 
-          // Clean up default_code (SKU)
+          // Clean up default_code
           let default_code = product.default_code;
           if (default_code === false || default_code === 'false' || default_code === undefined) {
             default_code = null;
           }
 
-          // Log and skip if missing critical info
-          if (!categ_id) {
-            console.warn(`[OdooSync] Product ${product.id} missing categ_id (category). Skipping.`);
-            return null;
-          }
-          if (!uom_id) {
-            console.warn(`[OdooSync] Product ${product.id} missing uom_id. Skipping.`);
-            return null;
-          }
-
-          // --- Build the processed product ---
-          const processedProduct = {
-            ...product,
-            product_tmpl_id: Array.isArray(product.product_tmpl_id) ? product.product_tmpl_id[0] : product.product_tmpl_id,
-            uom_id,
-            uom_po_id: Array.isArray(product.uom_po_id) ? product.uom_po_id[0] : product.uom_po_id,
-            categ_id,
-            default_code,
-            list_price: Number(product.list_price || 0),
-            standard_price: Number(product.standard_price || 0),
-            qty_available: Number(product.qty_available || 0),
-            virtual_available: Number(product.virtual_available || 0),
-            barcode_unit_ids: Array.isArray(product.barcode_unit_ids) ? product.barcode_unit_ids : [],
-            attributes: product.attributes || [],
-            create_date: product.create_date ? new Date(product.create_date) : new Date(),
-            write_date: product.write_date ? new Date(product.write_date) : new Date(),
-            _sync_status: 'pending',
-            is_active: true
-          };
-
           return {
             updateOne: {
               filter: { id: product.id },
-              update: { $set: processedProduct },
+              update: {
+                $set: {
+                  ...product,
+                  product_tmpl_id,
+                  uom_id,
+                  uom_po_id,
+                  categ_id,
+                  default_code,
+                  list_price: Number(product.list_price || 0),
+                  standard_price: Number(product.standard_price || 0),
+                  qty_available: Number(product.qty_available || 0),
+                  virtual_available: Number(product.virtual_available || 0),
+                  barcode_unit_ids: Array.isArray(product.barcode_unit_ids) ? product.barcode_unit_ids : [],
+                  create_date: product.create_date ? new Date(product.create_date) : new Date(),
+                  write_date: product.write_date ? new Date(product.write_date) : new Date(),
+                  _sync_status: 'pending',
+                  is_active: true,
+                }
+              },
               upsert: true
             }
           };
-        }).filter(Boolean); // Remove nulls (skipped products)
+        });
 
-        try {
-          console.log('💾 Writing batch to database...');
-          const result = await OdooProduct.bulkWrite(operations, { ordered: false });
-          console.log(`✅ Batch processed: ${result.upsertedCount} inserted, ${result.modifiedCount} updated`);
-        } catch (bulkError) {
-          if (bulkError.code === 11000) {
-            console.warn('⚠️ Some duplicate key errors occurred, continuing...');
-          } else {
-            throw bulkError;
-          }
+        if (operations.length > 0) {
+          await OdooProduct.bulkWrite(operations, { ordered: false });
         }
 
         processedCount += products.length;
-        offset += products.length; // Use actual batch size for offset
-
-        // Progress update
-        const progress = ((processedCount / totalCount) * 100).toFixed(1);
-        console.log(`\n📈 Overall Progress: ${progress}% (${processedCount}/${totalCount})`);
+        offset += products.length;
+        failedAttempts = 0; // Reset on success
+        
+        console.log(`📊 Progress: ${processedCount}/${effectiveMaxLimit} products processed (${Math.round(processedCount/effectiveMaxLimit*100)}%)`);
 
       } catch (error) {
-        console.error(`\n❌ Error processing batch at offset ${offset}:`, error);
         failedAttempts++;
+        console.error(`❌ Batch failed (attempt ${failedAttempts}/${maxRetries}):`, error.message);
         
         if (failedAttempts >= maxRetries) {
-          console.error('❌ Max retries reached - stopping sync');
-          throw error;
+          throw new Error(`Failed to process batch after ${maxRetries} attempts: ${error.message}`);
         }
         
-        console.log(`🔄 Retry attempt ${failedAttempts}/${maxRetries}...`);
-        await new Promise(resolve => setTimeout(resolve, 5000)); // Wait 5s between retries
+        // Wait before retry
+        await new Promise(resolve => setTimeout(resolve, 2000 * failedAttempts));
       }
     }
 
-    console.log(`\n✨ Product sync complete! Processed ${processedCount} products`);
+    console.log(`✅ Product sync completed: ${processedCount} products processed`);
     return processedCount;
   }
 

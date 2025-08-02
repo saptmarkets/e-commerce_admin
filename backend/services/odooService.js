@@ -9,8 +9,8 @@ class OdooService {
       console.log(`🌐 Using remote Odoo URL: ${this.baseUrl}`);
     } else {
       // Localhost setup
-      this.host = process.env.ODOO_HOST || 'localhost';
-      this.port = process.env.ODOO_PORT || '8069';
+    this.host = process.env.ODOO_HOST || 'localhost';
+    this.port = process.env.ODOO_PORT || '8069';
       this.baseUrl = `http://${this.host}:${this.port}`;
       console.log(`🏠 Using localhost Odoo: ${this.baseUrl}`);
     }
@@ -67,36 +67,36 @@ class OdooService {
    */
   async authenticate() {
     return this.retryOperation(async () => {
-      try {
-        console.log(`🔐 Authenticating with Odoo at ${this.baseUrl}`);
-        
-        const response = await axios.post(`${this.baseUrl}/jsonrpc`, {
-          jsonrpc: '2.0',
-          method: 'call',
-          params: {
-            service: 'common',
-            method: 'authenticate',
-            args: [this.database, this.username, this.password, {}]
-          }
-        }, this.axiosConfig);
-
-        if (response.data.error) {
-          throw new Error(`Authentication failed: ${response.data.error.data?.message || 'Unknown error'}`);
+    try {
+      console.log(`🔐 Authenticating with Odoo at ${this.baseUrl}`);
+      
+      const response = await axios.post(`${this.baseUrl}/jsonrpc`, {
+        jsonrpc: '2.0',
+        method: 'call',
+        params: {
+          service: 'common',
+          method: 'authenticate',
+          args: [this.database, this.username, this.password, {}]
         }
+      }, this.axiosConfig);
 
-        if (response.data.result) {
-          this.uid = response.data.result;
-          this.isAuthenticated = true;
-          console.log(`✅ Successfully authenticated with Odoo. UID: ${this.uid}`);
-          return true;
-        }
-
-        throw new Error('Authentication failed: No UID received');
-      } catch (error) {
-        console.error('❌ Odoo authentication error:', error.message);
-        this.isAuthenticated = false;
-        throw error;
+      if (response.data.error) {
+        throw new Error(`Authentication failed: ${response.data.error.data?.message || 'Unknown error'}`);
       }
+
+      if (response.data.result) {
+        this.uid = response.data.result;
+        this.isAuthenticated = true;
+        console.log(`✅ Successfully authenticated with Odoo. UID: ${this.uid}`);
+        return true;
+      }
+
+      throw new Error('Authentication failed: No UID received');
+    } catch (error) {
+      console.error('❌ Odoo authentication error:', error.message);
+      this.isAuthenticated = false;
+      throw error;
+    }
     });
   }
 
@@ -105,55 +105,55 @@ class OdooService {
    */
   async callOdoo(model, method, args = [], kwargs = {}) {
     return this.retryOperation(async () => {
-      if (!this.isAuthenticated) {
-        await this.authenticate();
-      }
+    if (!this.isAuthenticated) {
+      await this.authenticate();
+    }
 
-      try {
-        console.log(`\n🔄 Odoo RPC Call: ${model}.${method}`);
-        console.log(`   Args:`, JSON.stringify(args, null, 2));
-        console.log(`   Kwargs:`, JSON.stringify(kwargs, null, 2));
+    try {
+      console.log(`\n🔄 Odoo RPC Call: ${model}.${method}`);
+      console.log(`   Args:`, JSON.stringify(args, null, 2));
+      console.log(`   Kwargs:`, JSON.stringify(kwargs, null, 2));
 
-        const payload = {
-          jsonrpc: '2.0',
-          method: 'call',
-          params: {
-            service: 'object',
-            method: 'execute_kw',
-            args: [this.database, this.uid, this.password, model, method, args, kwargs]
-          }
-        };
+      const payload = {
+        jsonrpc: '2.0',
+        method: 'call',
+        params: {
+          service: 'object',
+          method: 'execute_kw',
+          args: [this.database, this.uid, this.password, model, method, args, kwargs]
+        }
+      };
 
-        console.log(`📡 Sending request to ${this.baseUrl}/jsonrpc`);
-        const startTime = Date.now();
-        
-        const response = await axios.post(`${this.baseUrl}/jsonrpc`, payload, {
-          ...this.axiosConfig,
-          validateStatus: status => status < 500 // Accept any status < 500
-        });
+      console.log(`📡 Sending request to ${this.baseUrl}/jsonrpc`);
+      const startTime = Date.now();
+      
+      const response = await axios.post(`${this.baseUrl}/jsonrpc`, payload, {
+        ...this.axiosConfig,
+        validateStatus: status => status < 500 // Accept any status < 500
+      });
 
-        const duration = Date.now() - startTime;
-        console.log(`⏱️ RPC call took ${duration}ms`);
+      const duration = Date.now() - startTime;
+      console.log(`⏱️ RPC call took ${duration}ms`);
 
-        if (response.data.error) {
-          // Handle session expiry
-          if (response.data.error.data?.name === 'SessionExpiredException') {
-            console.log('🔄 Session expired, re-authenticating...');
-            this.isAuthenticated = false;
-            await this.authenticate();
+      if (response.data.error) {
+        // Handle session expiry
+        if (response.data.error.data?.name === 'SessionExpiredException') {
+          console.log('🔄 Session expired, re-authenticating...');
+          this.isAuthenticated = false;
+          await this.authenticate();
             // Retry the call once after re-authentication
-            return this.callOdoo(model, method, args, kwargs);
-          }
-
+          return this.callOdoo(model, method, args, kwargs);
+        }
+        
           throw new Error(`Odoo RPC error: ${response.data.error.data?.message || response.data.error.message || 'Unknown error'}`);
         }
 
         console.log(`✅ RPC call successful`);
-        return response.data.result;
-      } catch (error) {
+      return response.data.result;
+    } catch (error) {
         console.error(`❌ Odoo RPC call failed: ${error.message}`);
-        throw error;
-      }
+      throw error;
+    }
     });
   }
 
@@ -394,7 +394,7 @@ class OdooService {
       }
 
       const categories = await this.searchRead(
-        'product.category',
+      'product.category',
         adjustedDomain,
         ['id', 'name', 'complete_name', 'parent_id'],
         offset,
@@ -421,7 +421,7 @@ class OdooService {
       
       const products = await this.searchRead(
         'product.product',
-        domain,
+      domain,
         [
           'id', 'name', 'default_code', 'barcode', 
           'list_price', 'standard_price', 'lst_price', 'cost',
@@ -430,8 +430,8 @@ class OdooService {
           'product_template_attribute_value_ids', 'attribute_line_ids',
           'write_date', 'create_date', 'write_uid', 'create_uid'
         ],
-        offset,
-        limit,
+      offset,
+      limit,
         'write_date desc'  // Get most recently updated products first
       );
 
@@ -543,6 +543,7 @@ class OdooService {
       const Product = require('../models/Product');
       const Category = require('../models/Category');
       const OdooProduct = require('../models/OdooProduct');
+      const OdooPricelistItem = require('../models/OdooPricelistItem');
       const odooImportService = require('./odooImportService');
 
       // Ensure category exists in store
@@ -557,7 +558,7 @@ class OdooService {
         });
       }
 
-      // Fetch products in batches using same comprehensive approach as fetchFromOdoo
+      // 🔥 FIRST: Fetch products in batches using same comprehensive approach as fetchFromOdoo
       const batchSize = 100;
       let offset = 0;
       let syncedCount = 0;
@@ -594,41 +595,33 @@ class OdooService {
 
           console.log(`📦 Processing ${products.length} products from Odoo...`);
 
-          // Process products using same logic as fetchFromOdoo
+          // 🔥 STEP 1: Store products in odoo_products collection (like fetch data does)
           const odooOperations = products.map(product => {
             // Extract IDs properly
             const categ_id = Array.isArray(product.categ_id) ? product.categ_id[0] : product.categ_id;
             const uom_id = Array.isArray(product.uom_id) ? product.uom_id[0] : product.uom_id;
-            const uom_po_id = Array.isArray(product.uom_po_id) ? product.uom_po_id[0] : product.uom_po_id;
             const product_tmpl_id = Array.isArray(product.product_tmpl_id) ? product.product_tmpl_id[0] : product.product_tmpl_id;
 
-            // Clean up default_code
-            let default_code = product.default_code;
-            if (default_code === false || default_code === 'false' || default_code === undefined) {
-              default_code = null;
-            }
-
-            // Build processed product with comprehensive price data
             const processedProduct = {
-              ...product,
-              product_tmpl_id,
-              uom_id,
-              uom_po_id,
-              categ_id,
-              default_code,
-              list_price: Number(product.list_price || 0),
-              standard_price: Number(product.standard_price || 0),
-              lst_price: Number(product.lst_price || 0),
-              cost: Number(product.cost || 0),
-              price: Number(product.price || 0),
-              pricelist_price: Number(product.pricelist_price || 0),
-              qty_available: Number(product.qty_available || 0),
-              virtual_available: Number(product.virtual_available || 0),
-              barcode_unit_ids: Array.isArray(product.barcode_unit_ids) ? product.barcode_unit_ids : [],
-              create_date: product.create_date ? new Date(product.create_date) : new Date(),
+              id: product.id,
+              name: product.name,
+              default_code: product.default_code,
+              barcode: product.barcode,
+              list_price: product.list_price,
+              standard_price: product.standard_price,
+              lst_price: product.lst_price,
+              cost: product.cost,
+              price: product.price,
+              categ_id: categ_id,
+              uom_id: uom_id,
+              product_tmpl_id: product_tmpl_id,
+              qty_available: product.qty_available,
+              virtual_available: product.virtual_available,
+              barcode_unit_ids: product.barcode_unit_ids || [],
               write_date: product.write_date ? new Date(product.write_date) : new Date(),
+              create_date: product.create_date ? new Date(product.create_date) : new Date(),
               _sync_status: 'pending',
-              is_active: true
+              is_active: true,
             };
 
             return {
@@ -644,47 +637,127 @@ class OdooService {
           console.log('💾 Writing batch to odoo_products collection...');
           await OdooProduct.bulkWrite(odooOperations, { ordered: false });
 
-          // Now sync to store database
-          console.log('🔄 Syncing batch to store database...');
+          // 🔥 STEP 2: Fetch pricelist items for these specific products (like fetch data does)
+          const productIds = products.map(p => p.id);
+          console.log(`💰 Fetching pricelist items for ${productIds.length} products...`);
+          
+          // Fetch pricelist items for current products
+          const pricelistItems = await this.fetchPricelistItems([
+            ['product_id', 'in', productIds]
+          ], 1000, 0);
+
+          if (pricelistItems && pricelistItems.length > 0) {
+            console.log(`📋 Found ${pricelistItems.length} pricelist items for current batch`);
+            
+            // Store pricelist items in database
+            const pricelistOperations = pricelistItems.map(item => ({
+              updateOne: {
+                filter: { id: item.id },
+                update: {
+                  $set: {
+                    id: item.id,
+                    pricelist_id: item.pricelist_id ? (Array.isArray(item.pricelist_id) ? item.pricelist_id[0] : item.pricelist_id) : null,
+                    pricelist_name: item.pricelist_id ? (Array.isArray(item.pricelist_id) ? item.pricelist_id[1] : null) : null,
+                    product_tmpl_id: item.product_tmpl_id ? (Array.isArray(item.product_tmpl_id) ? item.product_tmpl_id[0] : item.product_tmpl_id) : null,
+                    product_id: item.product_id ? (Array.isArray(item.product_id) ? item.product_id[0] : item.product_id) : null,
+                    product_name: item.product_id ? (Array.isArray(item.product_id) ? item.product_id[1] : null) : null,
+                    applied_on: item.applied_on || '1_product',
+                    compute_price: item.compute_price || 'fixed',
+                    fixed_price: item.fixed_price,
+                    price_discount: item.price_discount || 0,
+                    min_quantity: item.min_quantity || 0,
+                    date_start: item.date_start ? new Date(item.date_start) : null,
+                    date_end: item.date_end ? new Date(item.date_end) : null,
+                    create_date: item.create_date ? new Date(item.create_date) : new Date(),
+                    write_date: item.write_date ? new Date(item.write_date) : new Date(),
+                    _sync_status: 'pending',
+                    is_active: true,
+                  }
+                },
+                upsert: true
+              }
+            }));
+
+            await OdooPricelistItem.bulkWrite(pricelistOperations, { ordered: false });
+            console.log(`💾 Stored ${pricelistItems.length} pricelist items`);
+          }
+
+          // 🔥 STEP 3: Now sync to store database with proper price application
+          console.log('🔄 Syncing batch to store database with pricelist pricing...');
           for (const product of products) {
             try {
               // Check if product already exists in store
               let storeProduct = await Product.findOne({ odoo_id: product.id });
               
+              // 🔥 APPLY PRICELIST PRICING (like full fetch does)
+              let finalPrice = product.list_price || product.lst_price || product.price || 0;
+              let originalPrice = product.standard_price || product.cost || product.list_price || 0;
+
+              // Check for active pricelist items for this product
+              const activeItems = await OdooPricelistItem.find({
+                product_id: product.id,
+                compute_price: 'fixed',
+                $and: [
+                  {
+                    $or: [
+                      { date_end: null },
+                      { date_end: { $gte: new Date() } }
+                    ]
+                  },
+                  {
+                    $or: [
+                      { date_start: null },
+                      { date_start: { $lte: new Date() } }
+                    ]
+                  }
+                ]
+              }).sort({ write_date: -1 });
+
+              if (activeItems.length > 0) {
+                const bestPriceItem = activeItems[0];
+                if (bestPriceItem.fixed_price !== null && bestPriceItem.fixed_price !== undefined) {
+                  finalPrice = bestPriceItem.fixed_price;
+                  console.log(`💰 Applied pricelist price for ${product.name}: ${finalPrice} (was: ${product.list_price})`);
+                }
+              }
+
               if (storeProduct) {
-                // Update existing product with latest price data
+                // Update existing product with latest price data including pricelist pricing
                 const updateData = {
                   title: { en: product.name, ar: product.name },
-                  price: product.list_price || product.lst_price || product.price || 0,
-                  originalPrice: product.standard_price || product.cost || product.list_price || 0,
+                  price: finalPrice,
+                  originalPrice: originalPrice,
                   category: storeCategory._id,
                   categories: [storeCategory._id],
                   odoo_id: product.id,
                   write_date: product.write_date
                 };
 
-                // Use the most recent price data available
-                if (product.price && product.price !== product.list_price) {
-                  updateData.price = product.price;
-                  console.log(`💰 Updated price for ${product.name}: ${product.price} (was: ${product.list_price})`);
-                }
-
                 await Product.findByIdAndUpdate(storeProduct._id, updateData);
                 syncedCount++;
                 
               } else {
-                // Create new product
+                // Create new product with proper pricing
                 const newProduct = await odooImportService.importProduct(product, storeCategory);
-                if (newProduct) syncedCount++;
+                if (newProduct) {
+                  // Update with pricelist pricing if available
+                  if (finalPrice !== (product.list_price || product.lst_price || product.price || 0)) {
+                    await Product.findByIdAndUpdate(newProduct._id, { 
+                      price: finalPrice,
+                      originalPrice: originalPrice 
+                    });
+                  }
+                  syncedCount++;
+                }
               }
 
-            } catch (error) {
-              console.error(`❌ Error syncing product ${product.id}:`, error.message);
+            } catch (productError) {
+              console.error(`❌ Error syncing product ${product.id}:`, productError.message);
             }
           }
 
-          offset += products.length;
-          
+          offset += batchSize;
+
           if (progressCallback) {
             progressCallback({
               category: category,

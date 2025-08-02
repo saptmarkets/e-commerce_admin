@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FiRefreshCw, FiCloud, FiDownload, FiUpload, FiArrowUpCircle } from "react-icons/fi";
+import { FiRefreshCw, FiCloud, FiDownload, FiUpload, FiArrowUpCircle, FiList, FiCheckSquare } from "react-icons/fi";
 
 // internal imports
 import PageTitle from "@/components/Typography/PageTitle";
@@ -20,6 +20,19 @@ const OdooSync = () => {
   const [selectedBranch, setSelectedBranch] = useState(null);
   const [selectedSource, setSelectedSource] = useState(null);
   const [selectedDestination, setSelectedDestination] = useState(null);
+
+  // New category-based sync states
+  const [showCategoryModal, setShowCategoryModal] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [syncProgress, setSyncProgress] = useState(null);
+  const [categoryLoading, setCategoryLoading] = useState(false);
+
+  // New batch fetch states
+  const [showBatchModal, setShowBatchModal] = useState(false);
+  const [batchOffset, setBatchOffset] = useState(0);
+  const [batchLimit, setBatchLimit] = useState(5000);
+  const [batchLoading, setBatchLoading] = useState(false);
 
   // Helper to update stats
   const loadStatistics = async () => {
@@ -87,6 +100,28 @@ const OdooSync = () => {
     }
   };
 
+  // Batch fetch handlers
+  const handleOpenBatchModal = () => setShowBatchModal(true);
+  const handleCloseBatchModal = () => setShowBatchModal(false);
+
+  const handleBatchFetch = async () => {
+    if (!window.confirm(`Fetch products ${batchOffset} to ${batchOffset + batchLimit} from Odoo?`)) return;
+
+    try {
+      setBatchLoading(true);
+      setLastAction("batch_fetch");
+      const res = await OdooSyncServices.fetchFromOdooBatched(['products'], batchOffset, batchLimit);
+      notifySuccess(res.message || `Batch fetch completed: ${res.data?.products || 0} products processed`);
+      await loadStatistics();
+      setShowBatchModal(false);
+    } catch (err) {
+      console.error(err);
+      notifyError(err.response?.data?.message || "Failed to batch fetch data");
+    } finally {
+      setBatchLoading(false);
+    }
+  };
+
   const handleOpenSyncModal = () => setShowSyncModal(true);
   const handleCloseSyncModal = () => setShowSyncModal(false);
 
@@ -101,6 +136,78 @@ const OdooSync = () => {
     } finally {
       setLoading(false);
       setShowSyncModal(false);
+    }
+  };
+
+  // New category-based sync functions
+  const handleOpenCategoryModal = async () => {
+    try {
+      setCategoryLoading(true);
+      const res = await OdooSyncServices.getOdooCategories();
+      setCategories(res.data?.categories || res.categories || []);
+      setShowCategoryModal(true);
+    } catch(err) {
+      console.error(err);
+      notifyError(err.response?.data?.message || 'Failed to load categories');
+    } finally {
+      setCategoryLoading(false);
+    }
+  };
+
+  const handleCloseCategoryModal = () => {
+    setShowCategoryModal(false);
+    setSyncProgress(null);
+  };
+
+  const handleCategorySelection = (categoryId) => {
+    setSelectedCategories(prev => 
+      prev.includes(categoryId) 
+        ? prev.filter(id => id !== categoryId)
+        : [...prev, categoryId]
+    );
+  };
+
+  const handleSelectAllCategories = () => {
+    setSelectedCategories(categories.map(cat => cat.id));
+  };
+
+  const handleDeselectAllCategories = () => {
+    setSelectedCategories([]);
+  };
+
+  const handleSyncCategories = async () => {
+    if (!window.confirm(`Sync ${selectedCategories.length} selected categories? This will update prices from Odoo.`)) return;
+    
+    try {
+      setCategoryLoading(true);
+      setSyncProgress({ status: 'syncing', message: `Syncing ${selectedCategories.length} categories...` });
+      
+      // Use the new enhanced selective category sync
+      const res = await OdooSyncServices.syncSelectedCategories(selectedCategories);
+      
+      if (res.success) {
+        setSyncProgress({ 
+          status: 'completed', 
+          message: res.message || `Successfully synced ${selectedCategories.length} categories`
+        });
+        notifySuccess(res.message || `Categories synced successfully`);
+        await loadStatistics();
+      } else {
+        setSyncProgress({ 
+          status: 'error', 
+          message: res.message || 'Sync failed'
+        });
+        notifyError(res.message || 'Category sync failed');
+      }
+    } catch(err) {
+      console.error(err);
+      setSyncProgress({ 
+        status: 'error', 
+        message: err.response?.data?.message || 'Sync failed'
+      });
+      notifyError(err.response?.data?.message || 'Category sync failed');
+    } finally {
+      setCategoryLoading(false);
     }
   };
 
@@ -157,11 +264,27 @@ const OdooSync = () => {
           <FiDownload className="mr-2" /> Fetch Data
         </button>
 
+        {/* New Batch Fetch Button */}
+        <button
+          onClick={handleOpenBatchModal}
+          className="flex items-center px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none"
+        >
+          <FiDownload className="mr-2" /> Batch Fetch
+        </button>
+
         <button
           onClick={handleOpenSyncModal}
           className="flex items-center px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700 focus:outline-none"
         >
           <FiRefreshCw className="mr-2" /> Sync Selected Fields
+        </button>
+
+        {/* New Category-based Sync Button */}
+        <button
+          onClick={handleOpenCategoryModal}
+          className="flex items-center px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 focus:outline-none"
+        >
+          <FiList className="mr-2" /> Sync by Category
         </button>
 
         <button
@@ -211,6 +334,145 @@ const OdooSync = () => {
             <li>Pricelists: <span className="font-medium">{statistics.total_records?.pricelists || 0}</span></li>
             <li>Pricelist Items: <span className="font-medium">{statistics.total_records?.pricelist_items || 0}</span></li>
           </ul>
+        </div>
+      )}
+
+      {/* Category Selection Modal */}
+      {showCategoryModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-[600px] max-h-[80vh] overflow-y-auto">
+            <h2 className="text-lg font-semibold mb-4">Select Categories to Sync</h2>
+            
+            {/* Progress indicator */}
+            {syncProgress && (
+              <div className={`mb-4 p-3 rounded ${
+                syncProgress.status === 'completed' ? 'bg-green-100 text-green-800' :
+                syncProgress.status === 'error' ? 'bg-red-100 text-red-800' :
+                'bg-blue-100 text-blue-800'
+              }`}>
+                {syncProgress.message}
+              </div>
+            )}
+
+            {/* Category selection controls */}
+            <div className="flex gap-2 mb-4">
+              <button
+                onClick={handleSelectAllCategories}
+                className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700"
+              >
+                Select All
+              </button>
+              <button
+                onClick={handleDeselectAllCategories}
+                className="px-3 py-1 bg-gray-600 text-white rounded text-sm hover:bg-gray-700"
+              >
+                Deselect All
+              </button>
+              <span className="text-sm text-gray-600 ml-auto">
+                {selectedCategories.length} of {categories.length} selected
+              </span>
+            </div>
+
+            {/* Categories list */}
+            <div className="space-y-2 max-h-96 overflow-y-auto">
+              {categories.map((category) => (
+                <label key={category.id} className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={selectedCategories.includes(category.id)}
+                    onChange={() => handleCategorySelection(category.id)}
+                    className="rounded"
+                  />
+                  <div className="flex-1">
+                    <div className="font-medium">{category.complete_name}</div>
+                    <div className="text-sm text-gray-600">
+                      {category.product_count} products
+                    </div>
+                  </div>
+                </label>
+              ))}
+            </div>
+
+            {/* Action buttons */}
+            <div className="flex justify-end gap-3 mt-6">
+              <button 
+                onClick={handleCloseCategoryModal} 
+                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={handleSyncCategories}
+                disabled={selectedCategories.length === 0 || categoryLoading}
+                className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {categoryLoading ? 'Syncing...' : `Sync ${selectedCategories.length} Categories`}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Batch Fetch Modal */}
+      {showBatchModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-96">
+            <h2 className="text-lg font-semibold mb-4">Batch Fetch from Odoo</h2>
+            <p className="text-sm text-gray-600 mb-4">
+              Fetch products in batches to avoid timeout. Useful for large catalogs (20k+ products).
+            </p>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">Starting Position (Offset)</label>
+                <input
+                  type="number"
+                  min="0"
+                  step="1"
+                  value={batchOffset}
+                  onChange={(e) => setBatchOffset(parseInt(e.target.value) || 0)}
+                  className="w-full border rounded px-3 py-2"
+                  placeholder="0"
+                />
+                <p className="text-xs text-gray-500 mt-1">Start from product number (0 = beginning)</p>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">Batch Size (Limit)</label>
+                <input
+                  type="number"
+                  min="100"
+                  max="10000"
+                  step="100"
+                  value={batchLimit}
+                  onChange={(e) => setBatchLimit(parseInt(e.target.value) || 5000)}
+                  className="w-full border rounded px-3 py-2"
+                  placeholder="5000"
+                />
+                <p className="text-xs text-gray-500 mt-1">Number of products to fetch (recommended: 1000-5000)</p>
+              </div>
+              
+              <div className="bg-blue-50 p-3 rounded text-sm">
+                <strong>Will fetch:</strong> Products {batchOffset} to {batchOffset + batchLimit}
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3 mt-6">
+              <button 
+                onClick={handleCloseBatchModal}
+                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={handleBatchFetch}
+                disabled={batchLoading}
+                className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
+              >
+                {batchLoading ? 'Fetching...' : 'Start Batch Fetch'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
