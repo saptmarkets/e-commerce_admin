@@ -423,16 +423,33 @@ class OdooService {
         'product.product',
         domain,
         [
-          'id', 'name', 'default_code', 'barcode', 'list_price', 'standard_price',
+          'id', 'name', 'default_code', 'barcode', 
+          'list_price', 'standard_price', 'lst_price', 'cost',
+          'price', 'pricelist_price', 'pricelist_ids',
           'categ_id', 'description', 'description_sale', 'image_1920',
-          'product_template_attribute_value_ids', 'attribute_line_ids'
+          'product_template_attribute_value_ids', 'attribute_line_ids',
+          'write_date', 'create_date', 'write_uid', 'create_uid'
         ],
         offset,
         limit,
-        'name asc'
+        'write_date desc'  // Get most recently updated products first
       );
 
       console.log(`✅ Successfully fetched ${products.length} products for category ${categoryId}`);
+      
+      // Log price information for debugging
+      if (products.length > 0) {
+        console.log(`💰 Sample price data for first product:`);
+        const sample = products[0];
+        console.log(`   Product: ${sample.name}`);
+        console.log(`   List Price: ${sample.list_price}`);
+        console.log(`   Standard Price: ${sample.standard_price}`);
+        console.log(`   LST Price: ${sample.lst_price}`);
+        console.log(`   Cost: ${sample.cost}`);
+        console.log(`   Price: ${sample.price}`);
+        console.log(`   Last Updated: ${sample.write_date}`);
+      }
+      
       return products;
     } catch (error) {
       console.error(`❌ Error fetching products for category ${categoryId}:`, error.message);
@@ -523,21 +540,27 @@ class OdooService {
       // Fetch products in batches
       const batchSize = 100;
       const allProducts = [];
+      let syncedCount = 0;
       
       for (let offset = 0; offset < totalCount; offset += batchSize) {
         const batch = await this.fetchProductsByCategory(categoryId, batchSize, offset);
         allProducts.push(...batch);
+        
+        // 🚀 SYNC BATCH TO STORE DATABASE
+        const batchSyncResult = await this.syncBatchToStore(batch, category);
+        syncedCount += batchSyncResult.synced;
         
         if (progressCallback) {
           progressCallback({
             category: category,
             total: totalCount,
             current: allProducts.length,
+            synced: syncedCount,
             status: 'syncing'
           });
         }
 
-        console.log(`📦 Processed ${allProducts.length}/${totalCount} products`);
+        console.log(`📦 Processed ${allProducts.length}/${totalCount} products, synced ${syncedCount} to store`);
       }
 
       if (progressCallback) {
@@ -545,15 +568,17 @@ class OdooService {
           category: category,
           total: totalCount,
           current: allProducts.length,
+          synced: syncedCount,
           status: 'completed'
         });
       }
 
-      console.log(`✅ Successfully synced ${allProducts.length} products for category: ${category.complete_name}`);
+      console.log(`✅ Successfully synced ${syncedCount} products for category: ${category.complete_name}`);
       return {
         category: category,
         products: allProducts,
-        total: allProducts.length
+        total: allProducts.length,
+        synced: syncedCount
       };
     } catch (error) {
       console.error(`❌ Error syncing category ${categoryId}:`, error.message);
@@ -563,11 +588,95 @@ class OdooService {
           category: { id: categoryId, name: 'Unknown' },
           total: 0,
           current: 0,
+          synced: 0,
           status: 'error',
           error: error.message
         });
       }
       
+      throw error;
+    }
+  }
+
+  /**
+   * Sync a batch of products to store database
+   */
+  async syncBatchToStore(products, category) {
+    try {
+      console.log(`🔄 Syncing ${products.length} products to store database...`);
+      
+      // Import required models
+      const Product = require('../models/Product');
+      const Category = require('../models/Category');
+      const odooImportService = require('./odooImportService');
+      
+      let syncedCount = 0;
+      const errors = [];
+
+      // First, ensure category exists in store
+      let storeCategory = await Category.findOne({ odoo_id: category.id });
+      if (!storeCategory) {
+        console.log(`📂 Creating store category for: ${category.complete_name}`);
+        storeCategory = await Category.create({
+          name: { en: category.name, ar: category.name },
+          slug: category.name.toLowerCase().replace(/\s+/g, '-'),
+          odoo_id: category.id,
+          parent: null // You might want to handle parent categories
+        });
+      }
+
+      // Process products in parallel batches
+      const batchSize = 10;
+      for (let i = 0; i < products.length; i += batchSize) {
+        const batch = products.slice(i, i + batchSize);
+        
+        await Promise.all(batch.map(async (odooProduct) => {
+          try {
+            // Check if product already exists in store
+            let storeProduct = await Product.findOne({ odoo_id: odooProduct.id });
+            
+            if (storeProduct) {
+              // 🚀 UPDATE EXISTING PRODUCT WITH LATEST PRICE DATA
+              const updateData = {
+                title: { en: odooProduct.name, ar: odooProduct.name },
+                price: odooProduct.list_price || odooProduct.lst_price || 0,
+                originalPrice: odooProduct.standard_price || odooProduct.cost || odooProduct.list_price || 0,
+                category: storeCategory._id,
+                categories: [storeCategory._id],
+                odoo_id: odooProduct.id,
+                write_date: odooProduct.write_date
+              };
+
+              // Use the most recent price data available
+              if (odooProduct.price && odooProduct.price !== odooProduct.list_price) {
+                updateData.price = odooProduct.price;
+                console.log(`💰 Updated price for ${odooProduct.name}: ${odooProduct.price} (was: ${odooProduct.list_price})`);
+              }
+
+              await Product.findByIdAndUpdate(storeProduct._id, updateData);
+              syncedCount++;
+              
+            } else {
+              // Create new product
+              const newProduct = await odooImportService.importProduct(odooProduct, storeCategory);
+              if (newProduct) syncedCount++;
+            }
+
+          } catch (error) {
+            console.error(`❌ Error syncing product ${odooProduct.id}:`, error.message);
+            errors.push({
+              product_id: odooProduct.id,
+              error: error.message
+            });
+          }
+        }));
+      }
+
+      console.log(`✅ Batch sync completed: ${syncedCount} products synced, ${errors.length} errors`);
+      return { synced: syncedCount, errors };
+      
+    } catch (error) {
+      console.error('❌ Error in batch sync:', error.message);
       throw error;
     }
   }
