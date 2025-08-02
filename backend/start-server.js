@@ -32,6 +32,7 @@ const deliveryOrderRoutes = require("./routes/deliveryOrderRoutes");
 const adminDeliveryRoutes = require("./routes/adminDeliveryRoutes");
 const mobileDeliveryRoutes = require("./routes/mobileDeliveryRoutes");
 const odooSyncRoutes = require("./routes/odooSyncRoutes");
+const odooRoutes = require("./routes/odooRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
 const reportRoutes = require("./routes/reportRoutes");
 const { isAuth, isAdmin } = require("./config/auth");
@@ -171,6 +172,9 @@ app.use("/api/mobile-delivery", mobileDeliveryRoutes);
 
 // Odoo sync routes (admin only)
 app.use("/api/odoo-sync", isAuth, isAdmin, odooSyncRoutes);
+
+// Odoo direct routes (for category-based sync)
+app.use("/api/odoo", isAuth, isAdmin, odooRoutes);
 
 // Upload routes
 app.use("/api/upload", uploadRoutes);
