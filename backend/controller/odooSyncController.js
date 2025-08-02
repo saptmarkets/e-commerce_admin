@@ -715,12 +715,31 @@ const syncToStore = async (req, res) => {
     const odooProducts = await OdooProduct.find(prodFilter).lean();
     console.log(`📦 Found ${odooProducts.length} Odoo products to sync`);
     
+    if (odooProducts.length === 0) {
+      return res.json({ success: true, updated: 0, promosUpdated: 0, errors: [] });
+    }
+
+    // 🚀 PERFORMANCE OPTIMIZATION: Pre-fetch categories if needed
+    let categoryMap = new Map();
+    if (allowed.categories) {
+      const categoryIds = [...new Set(odooProducts.map(p => p.categ_id).filter(Boolean))];
+      if (categoryIds.length > 0) {
+        const categories = await OdooCategory.find({ id: { $in: categoryIds } }).lean();
+        categoryMap = new Map(categories.map(cat => [cat.id, cat.store_category_id]));
+        console.log(`📂 Pre-fetched ${categories.length} categories`);
+      }
+    }
+
+    // 🚀 PERFORMANCE OPTIMIZATION: Batch updates
+    const bulkOps = [];
+    const unitsToSync = [];
     let updated = 0;
     const errors = [];
 
     for (const op of odooProducts) {
       try {
         if (!op.store_product_id) continue;
+        
         const updateData = {};
 
         if (allowed.name && op.name) {
@@ -728,10 +747,6 @@ const syncToStore = async (req, res) => {
             ? require('./../services/odooImportService').prototype.splitBilingualName(op.name)
             : { en: op.name };
           updateData.title = titleObj;
-        }
-
-        if ((allowed.price || allowed.stock) && Object.keys(updateData).length === 0) {
-          // price & stock handled below
         }
 
         if (allowed.price) {
@@ -742,45 +757,74 @@ const syncToStore = async (req, res) => {
         if (allowed.stock) {
           const stockQty = op.qty_available || 0;
           updateData.stock = stockQty;
-          console.log(`📊 Product ${op.id}: Syncing stock from ${op.qty_available} to ${stockQty}`);
         }
 
-        // categories sync
-        let categoryId = null;
-        if (allowed.categories && op.categ_id) {  // Changed from op.category_id to op.categ_id
-          const cat = await OdooCategory.findOne({ id: op.categ_id });  // Changed from op.category_id to op.categ_id
-          if (cat && cat.store_category_id) {
-            categoryId = cat.store_category_id;
+        // 🚀 PERFORMANCE OPTIMIZATION: Use pre-fetched category map
+        if (allowed.categories && op.categ_id) {
+          const categoryId = categoryMap.get(op.categ_id);
+          if (categoryId) {
+            updateData.category = categoryId;
+            updateData.categories = [categoryId];
           }
         }
-        if (categoryId) {
-          updateData.category = categoryId;
-          updateData.categories = [categoryId];
-        }
 
-        // Apply updates
+        // 🚀 PERFORMANCE OPTIMIZATION: Collect bulk operations
         if (Object.keys(updateData).length > 0) {
-          await Product.findByIdAndUpdate(op.store_product_id, updateData);
-          updated++;
+          bulkOps.push({
+            updateOne: {
+              filter: { _id: op.store_product_id },
+              update: { $set: updateData }
+            }
+          });
         }
 
-        // Units sync (re-import units)
+        // Collect units for batch processing
         if (allowed.units) {
-          try {
-            const importService = require('../services/odooImportService');
-            const storeProd = await Product.findById(op.store_product_id);
-            await importService.importProductUnits(op, storeProd);
-          } catch (unitErr) {
-            console.warn('Unit sync error for product', op.id, unitErr.message);
-          }
+          unitsToSync.push(op);
         }
+
       } catch (pErr) {
         console.error('Sync error for product', op.id, pErr);
         errors.push(pErr.message);
       }
     }
 
-    // Promotions sync
+    // 🚀 PERFORMANCE OPTIMIZATION: Execute bulk update
+    if (bulkOps.length > 0) {
+      console.log(`🚀 Executing bulk update for ${bulkOps.length} products...`);
+      const bulkResult = await Product.bulkWrite(bulkOps);
+      updated = bulkResult.modifiedCount || bulkResult.nModified || 0;
+      console.log(`✅ Bulk update completed: ${updated} products updated`);
+    }
+
+    // 🚀 PERFORMANCE OPTIMIZATION: Batch process units
+    if (allowed.units && unitsToSync.length > 0) {
+      console.log(`🔄 Processing units for ${unitsToSync.length} products...`);
+      const importService = require('../services/odooImportService');
+      
+      // Get all store products in one query
+      const storeProductIds = unitsToSync.map(op => op.store_product_id);
+      const storeProducts = await Product.find({ _id: { $in: storeProductIds } }).lean();
+      const storeProductMap = new Map(storeProducts.map(sp => [sp._id.toString(), sp]));
+
+      // Process units in batches
+      const batchSize = 10;
+      for (let i = 0; i < unitsToSync.length; i += batchSize) {
+        const batch = unitsToSync.slice(i, i + batchSize);
+        await Promise.all(batch.map(async (op) => {
+          try {
+            const storeProd = storeProductMap.get(op.store_product_id.toString());
+            if (storeProd) {
+              await importService.importProductUnits(op, storeProd);
+            }
+          } catch (unitErr) {
+            console.warn('Unit sync error for product', op.id, unitErr.message);
+          }
+        }));
+      }
+    }
+
+    // Promotions sync (unchanged - already optimized)
     let promosUpdated = 0;
     if (allowed.promotions) {
       console.log('🎯 Starting promotions sync...');
