@@ -278,8 +278,18 @@ const OdooSync = () => {
         <button
           onClick={handleOpenBatchModal}
           className="flex items-center px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none"
+          style={{border: '2px solid red'}} // Temporary test styling
         >
           <FiDownload className="mr-2" /> Batch Fetch
+        </button>
+
+        {/* Test Button to verify rendering */}
+        <button
+          onClick={() => alert('Test button works!')}
+          className="flex items-center px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 focus:outline-none"
+          style={{border: '2px solid blue'}} // Temporary test styling
+        >
+          <FiDownload className="mr-2" /> TEST BUTTON
         </button>
 
         <button
