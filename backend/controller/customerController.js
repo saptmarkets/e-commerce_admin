@@ -61,8 +61,8 @@ const verifyEmailAddress = async (req, res) => {
     if (!sent) {
       return res.status(500).send({
         message: "Failed to send verification code. Please try again.",
-      });
-    }
+        });
+      }
 
     const message = "Verification code sent to your email address!";
     return res.send({ 

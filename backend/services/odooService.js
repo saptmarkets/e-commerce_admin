@@ -23,117 +23,138 @@ class OdooService {
     this.uid = null;
     this.isAuthenticated = false;
     
-    // Configure axios with increased timeout for large batches
+    // Enhanced timeout configuration for cloud-to-cloud communication
     this.axiosConfig = {
-      timeout: 600000, // 10 minutes (increased from 5 minutes)
+      timeout: 300000, // 5 minutes (increased from 10 minutes)
       headers: {
         'Content-Type': 'application/json',
       },
       maxBodyLength: Infinity,
       maxContentLength: Infinity
     };
+
+    // Retry configuration
+    this.maxRetries = parseInt(process.env.ODOO_MAX_RETRIES) || 3;
+    this.retryDelay = 2000; // 2 seconds initial delay
+  }
+
+  /**
+   * Retry wrapper for API calls
+   */
+  async retryOperation(operation, maxRetries = this.maxRetries) {
+    let lastError;
+    
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        return await operation();
+      } catch (error) {
+        lastError = error;
+        console.log(`⚠️  Attempt ${attempt}/${maxRetries} failed: ${error.message}`);
+        
+        if (attempt < maxRetries) {
+          const delay = this.retryDelay * Math.pow(2, attempt - 1); // Exponential backoff
+          console.log(`⏳ Retrying in ${delay}ms...`);
+          await new Promise(resolve => setTimeout(resolve, delay));
+        }
+      }
+    }
+    
+    throw lastError;
   }
 
   /**
    * Authenticate with Odoo server
    */
   async authenticate() {
-    try {
-      console.log(`🔐 Authenticating with Odoo at ${this.baseUrl}`);
-      
-      const response = await axios.post(`${this.baseUrl}/jsonrpc`, {
-        jsonrpc: '2.0',
-        method: 'call',
-        params: {
-          service: 'common',
-          method: 'authenticate',
-          args: [this.database, this.username, this.password, {}]
+    return this.retryOperation(async () => {
+      try {
+        console.log(`🔐 Authenticating with Odoo at ${this.baseUrl}`);
+        
+        const response = await axios.post(`${this.baseUrl}/jsonrpc`, {
+          jsonrpc: '2.0',
+          method: 'call',
+          params: {
+            service: 'common',
+            method: 'authenticate',
+            args: [this.database, this.username, this.password, {}]
+          }
+        }, this.axiosConfig);
+
+        if (response.data.error) {
+          throw new Error(`Authentication failed: ${response.data.error.data?.message || 'Unknown error'}`);
         }
-      }, this.axiosConfig);
 
-      if (response.data.error) {
-        throw new Error(`Authentication failed: ${response.data.error.data?.message || 'Unknown error'}`);
+        if (response.data.result) {
+          this.uid = response.data.result;
+          this.isAuthenticated = true;
+          console.log(`✅ Successfully authenticated with Odoo. UID: ${this.uid}`);
+          return true;
+        }
+
+        throw new Error('Authentication failed: No UID received');
+      } catch (error) {
+        console.error('❌ Odoo authentication error:', error.message);
+        this.isAuthenticated = false;
+        throw error;
       }
-
-      if (response.data.result) {
-        this.uid = response.data.result;
-        this.isAuthenticated = true;
-        console.log(`✅ Successfully authenticated with Odoo. UID: ${this.uid}`);
-        return true;
-      }
-
-      throw new Error('Authentication failed: No UID received');
-    } catch (error) {
-      console.error('❌ Odoo authentication error:', error.message);
-      this.isAuthenticated = false;
-      throw error;
-    }
+    });
   }
 
   /**
-   * Make a generic call to Odoo using XML-RPC
+   * Make a generic call to Odoo using XML-RPC with retry logic
    */
   async callOdoo(model, method, args = [], kwargs = {}) {
-    if (!this.isAuthenticated) {
-      await this.authenticate();
-    }
+    return this.retryOperation(async () => {
+      if (!this.isAuthenticated) {
+        await this.authenticate();
+      }
 
-    try {
-      console.log(`\n🔄 Odoo RPC Call: ${model}.${method}`);
-      console.log(`   Args:`, JSON.stringify(args, null, 2));
-      console.log(`   Kwargs:`, JSON.stringify(kwargs, null, 2));
+      try {
+        console.log(`\n🔄 Odoo RPC Call: ${model}.${method}`);
+        console.log(`   Args:`, JSON.stringify(args, null, 2));
+        console.log(`   Kwargs:`, JSON.stringify(kwargs, null, 2));
 
-      const payload = {
-        jsonrpc: '2.0',
-        method: 'call',
-        params: {
-          service: 'object',
-          method: 'execute_kw',
-          args: [this.database, this.uid, this.password, model, method, args, kwargs]
-        }
-      };
+        const payload = {
+          jsonrpc: '2.0',
+          method: 'call',
+          params: {
+            service: 'object',
+            method: 'execute_kw',
+            args: [this.database, this.uid, this.password, model, method, args, kwargs]
+          }
+        };
 
-      console.log(`📡 Sending request to ${this.baseUrl}/jsonrpc`);
-      const startTime = Date.now();
-      
-      const response = await axios.post(`${this.baseUrl}/jsonrpc`, payload, {
-        ...this.axiosConfig,
-        validateStatus: status => status < 500 // Accept any status < 500
-      });
-
-      const duration = Date.now() - startTime;
-      console.log(`⏱️ RPC call took ${duration}ms`);
-
-      if (response.data.error) {
-        // Handle session expiry
-        if (response.data.error.data?.name === 'SessionExpiredException') {
-          console.log('🔄 Session expired, re-authenticating...');
-          this.isAuthenticated = false;
-          await this.authenticate();
-          return this.callOdoo(model, method, args, kwargs);
-        }
+        console.log(`📡 Sending request to ${this.baseUrl}/jsonrpc`);
+        const startTime = Date.now();
         
-        console.error('❌ Odoo RPC Error:', response.data.error);
-        throw new Error(`Odoo call failed: ${response.data.error.data?.message || 'Unknown error'}`);
-      }
+        const response = await axios.post(`${this.baseUrl}/jsonrpc`, payload, {
+          ...this.axiosConfig,
+          validateStatus: status => status < 500 // Accept any status < 500
+        });
 
-      // Log response details
-      if (Array.isArray(response.data.result)) {
-        console.log(`✅ Success: Received ${response.data.result.length} records`);
-      } else {
-        console.log(`✅ Success: Received result of type ${typeof response.data.result}`);
-      }
+        const duration = Date.now() - startTime;
+        console.log(`⏱️ RPC call took ${duration}ms`);
 
-      return response.data.result;
-    } catch (error) {
-      console.error(`❌ Error calling ${model}.${method}:`, error.message);
-      if (error.response) {
-        console.error('Response data:', error.response.data);
-        console.error('Response status:', error.response.status);
-        console.error('Response headers:', error.response.headers);
+        if (response.data.error) {
+          // Handle session expiry
+          if (response.data.error.data?.name === 'SessionExpiredException') {
+            console.log('🔄 Session expired, re-authenticating...');
+            this.isAuthenticated = false;
+            await this.authenticate();
+            // Retry the call once after re-authentication
+            return this.callOdoo(model, method, args, kwargs);
+          }
+
+          throw new Error(`Odoo RPC error: ${response.data.error.data?.message || response.data.error.message || 'Unknown error'}`);
+        }
+
+        console.log(`✅ RPC call successful`);
+        return response.data.result;
+      } catch (error) {
+        console.error(`❌ Odoo RPC call failed: ${error.message}`);
+        throw error;
       }
-      throw error;
-    }
+    });
   }
 
   /**
@@ -384,6 +405,215 @@ class OdooService {
       return categories;
     } catch (error) {
       console.error('❌ Error fetching categories:', error.message);
+      throw error;
+    }
+  }
+
+  /**
+   * Fetch products by category ID
+   */
+  async fetchProductsByCategory(categoryId, limit = 500, offset = 0) {
+    try {
+      console.log(`\n📦 Fetching products for category ID: ${categoryId}`);
+      console.log(`   Limit: ${limit}, Offset: ${offset}`);
+
+      const domain = [['categ_id', '=', categoryId], ['active', '=', true]];
+      
+      const products = await this.searchRead(
+        'product.product',
+        domain,
+        [
+          'id', 'name', 'default_code', 'barcode', 'list_price', 'standard_price',
+          'categ_id', 'description', 'description_sale', 'image_1920',
+          'product_template_attribute_value_ids', 'attribute_line_ids'
+        ],
+        offset,
+        limit,
+        'name asc'
+      );
+
+      console.log(`✅ Successfully fetched ${products.length} products for category ${categoryId}`);
+      return products;
+    } catch (error) {
+      console.error(`❌ Error fetching products for category ${categoryId}:`, error.message);
+      throw error;
+    }
+  }
+
+  /**
+   * Fetch stock levels for products in a category
+   */
+  async fetchStockByCategory(categoryId, limit = 500, offset = 0) {
+    try {
+      console.log(`\n📊 Fetching stock levels for category ID: ${categoryId}`);
+      console.log(`   Limit: ${limit}, Offset: ${offset}`);
+
+      // First get products in the category
+      const products = await this.fetchProductsByCategory(categoryId, limit, offset);
+      
+      if (products.length === 0) {
+        console.log(`⚠️  No products found for category ${categoryId}`);
+        return [];
+      }
+
+      const productIds = products.map(p => p.id);
+      
+      // Get stock levels for these products
+      const stockDomain = [
+        ['product_id', 'in', productIds],
+        ['location_id.usage', '=', 'internal']
+      ];
+
+      const stockLevels = await this.searchRead(
+        'stock.quant',
+        stockDomain,
+        ['product_id', 'location_id', 'quantity', 'reserved_quantity'],
+        0,
+        1000
+      );
+
+      console.log(`✅ Successfully fetched stock levels for ${stockLevels.length} product-location combinations`);
+      return stockLevels;
+    } catch (error) {
+      console.error(`❌ Error fetching stock for category ${categoryId}:`, error.message);
+      throw error;
+    }
+  }
+
+  /**
+   * Sync products by category with progress tracking
+   */
+  async syncProductsByCategory(categoryId, progressCallback = null) {
+    try {
+      console.log(`\n🔄 Starting sync for category ID: ${categoryId}`);
+      
+      // Get category info
+      const categoryInfo = await this.searchRead(
+        'product.category',
+        [['id', '=', categoryId]],
+        ['id', 'name', 'complete_name'],
+        0,
+        1
+      );
+
+      if (categoryInfo.length === 0) {
+        throw new Error(`Category with ID ${categoryId} not found`);
+      }
+
+      const category = categoryInfo[0];
+      console.log(`📂 Syncing category: ${category.complete_name}`);
+
+      // Get total count first
+      const totalCount = await this.searchCount('product.product', [
+        ['categ_id', '=', categoryId],
+        ['active', '=', true]
+      ]);
+
+      console.log(`📊 Total products in category: ${totalCount}`);
+
+      if (progressCallback) {
+        progressCallback({
+          category: category,
+          total: totalCount,
+          current: 0,
+          status: 'starting'
+        });
+      }
+
+      // Fetch products in batches
+      const batchSize = 100;
+      const allProducts = [];
+      
+      for (let offset = 0; offset < totalCount; offset += batchSize) {
+        const batch = await this.fetchProductsByCategory(categoryId, batchSize, offset);
+        allProducts.push(...batch);
+        
+        if (progressCallback) {
+          progressCallback({
+            category: category,
+            total: totalCount,
+            current: allProducts.length,
+            status: 'syncing'
+          });
+        }
+
+        console.log(`📦 Processed ${allProducts.length}/${totalCount} products`);
+      }
+
+      if (progressCallback) {
+        progressCallback({
+          category: category,
+          total: totalCount,
+          current: allProducts.length,
+          status: 'completed'
+        });
+      }
+
+      console.log(`✅ Successfully synced ${allProducts.length} products for category: ${category.complete_name}`);
+      return {
+        category: category,
+        products: allProducts,
+        total: allProducts.length
+      };
+    } catch (error) {
+      console.error(`❌ Error syncing category ${categoryId}:`, error.message);
+      
+      if (progressCallback) {
+        progressCallback({
+          category: { id: categoryId, name: 'Unknown' },
+          total: 0,
+          current: 0,
+          status: 'error',
+          error: error.message
+        });
+      }
+      
+      throw error;
+    }
+  }
+
+  /**
+   * Get all categories for sync selection
+   */
+  async getCategoriesForSync() {
+    try {
+      console.log(`\n📂 Fetching categories for sync selection...`);
+
+      const categories = await this.searchRead(
+        'product.category',
+        [], // No domain - get all categories
+        ['id', 'name', 'complete_name', 'parent_id'],
+        0,
+        1000,
+        'name asc'
+      );
+
+      // Add product count for each category
+      const categoriesWithCount = await Promise.all(
+        categories.map(async (category) => {
+          try {
+            const count = await this.searchCount('product.product', [
+              ['categ_id', '=', category.id],
+              ['active', '=', true]
+            ]);
+            return {
+              ...category,
+              product_count: count
+            };
+          } catch (error) {
+            console.log(`⚠️  Could not get count for category ${category.id}: ${error.message}`);
+            return {
+              ...category,
+              product_count: 0
+            };
+          }
+        })
+      );
+
+      console.log(`✅ Successfully fetched ${categoriesWithCount.length} categories with product counts`);
+      return categoriesWithCount;
+    } catch (error) {
+      console.error('❌ Error fetching categories for sync:', error.message);
       throw error;
     }
   }
