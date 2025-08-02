@@ -85,9 +85,9 @@ const OdooSyncServices = {
   // New Category-based Sync Methods
   /**
    * Get all categories for sync selection
-   * GET /api/odoo/categories
+   * GET /api/odoo-sync/categories
    */
-  getOdooCategories: () => requests.get("/odoo/categories"),
+  getOdooCategories: () => requests.get("/odoo-sync/categories"),
 
   /**
    * Sync products by category with progress

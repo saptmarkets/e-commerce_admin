@@ -101,21 +101,27 @@ const OdooSync = () => {
   };
 
   // Batch fetch handlers
-  const handleOpenBatchModal = () => setShowBatchModal(true);
+  const handleOpenBatchModal = () => {
+    console.log('🔄 Opening batch modal...');
+    setShowBatchModal(true);
+  };
+  
   const handleCloseBatchModal = () => setShowBatchModal(false);
 
   const handleBatchFetch = async () => {
     if (!window.confirm(`Fetch products ${batchOffset} to ${batchOffset + batchLimit} from Odoo?`)) return;
 
     try {
+      console.log('🚀 Starting batch fetch:', { offset: batchOffset, limit: batchLimit });
       setBatchLoading(true);
       setLastAction("batch_fetch");
       const res = await OdooSyncServices.fetchFromOdooBatched(['products'], batchOffset, batchLimit);
+      console.log('✅ Batch fetch response:', res);
       notifySuccess(res.message || `Batch fetch completed: ${res.data?.products || 0} products processed`);
       await loadStatistics();
       setShowBatchModal(false);
     } catch (err) {
-      console.error(err);
+      console.error('❌ Batch fetch error:', err);
       notifyError(err.response?.data?.message || "Failed to batch fetch data");
     } finally {
       setBatchLoading(false);
@@ -142,12 +148,14 @@ const OdooSync = () => {
   // New category-based sync functions
   const handleOpenCategoryModal = async () => {
     try {
+      console.log('🔄 Opening category modal...');
       setCategoryLoading(true);
       const res = await OdooSyncServices.getOdooCategories();
+      console.log('📂 Categories response:', res);
       setCategories(res.data?.categories || res.categories || []);
       setShowCategoryModal(true);
     } catch(err) {
-      console.error(err);
+      console.error('❌ Failed to load categories:', err);
       notifyError(err.response?.data?.message || 'Failed to load categories');
     } finally {
       setCategoryLoading(false);
@@ -179,11 +187,13 @@ const OdooSync = () => {
     if (!window.confirm(`Sync ${selectedCategories.length} selected categories? This will update prices from Odoo.`)) return;
     
     try {
+      console.log('🚀 Starting category sync for:', selectedCategories);
       setCategoryLoading(true);
       setSyncProgress({ status: 'syncing', message: `Syncing ${selectedCategories.length} categories...` });
       
       // Use the new enhanced selective category sync
       const res = await OdooSyncServices.syncSelectedCategories(selectedCategories);
+      console.log('✅ Category sync response:', res);
       
       if (res.success) {
         setSyncProgress({ 
@@ -200,7 +210,7 @@ const OdooSync = () => {
         notifyError(res.message || 'Category sync failed');
       }
     } catch(err) {
-      console.error(err);
+      console.error('❌ Category sync error:', err);
       setSyncProgress({ 
         status: 'error', 
         message: err.response?.data?.message || 'Sync failed'
