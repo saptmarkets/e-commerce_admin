@@ -762,9 +762,9 @@ const syncToStore = async (req, res) => {
         // 🚀 PERFORMANCE OPTIMIZATION: Use pre-fetched category map
         if (allowed.categories && op.categ_id) {
           const categoryId = categoryMap.get(op.categ_id);
-          if (categoryId) {
-            updateData.category = categoryId;
-            updateData.categories = [categoryId];
+        if (categoryId) {
+          updateData.category = categoryId;
+          updateData.categories = [categoryId];
           }
         }
 
@@ -800,7 +800,7 @@ const syncToStore = async (req, res) => {
     // 🚀 PERFORMANCE OPTIMIZATION: Batch process units
     if (allowed.units && unitsToSync.length > 0) {
       console.log(`🔄 Processing units for ${unitsToSync.length} products...`);
-      const importService = require('../services/odooImportService');
+            const importService = require('../services/odooImportService');
       
       // Get all store products in one query
       const storeProductIds = unitsToSync.map(op => op.store_product_id);
@@ -815,7 +815,7 @@ const syncToStore = async (req, res) => {
           try {
             const storeProd = storeProductMap.get(op.store_product_id.toString());
             if (storeProd) {
-              await importService.importProductUnits(op, storeProd);
+            await importService.importProductUnits(op, storeProd);
             }
           } catch (unitErr) {
             console.warn('Unit sync error for product', op.id, unitErr.message);
@@ -1075,6 +1075,108 @@ const pushBackStock = async (req, res) => {
   }
 };
 
+/**
+ * Sync specific categories with updated prices from Odoo
+ * Similar to fetchFromOdoo but only for selected categories
+ */
+const syncSelectedCategories = async (req, res) => {
+  try {
+    const { categoryIds = [] } = req.body;
+    const user = req.admin;
+
+    if (!Array.isArray(categoryIds) || categoryIds.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide an array of category IDs to sync',
+      });
+    }
+
+    console.log(`🚀 Starting selective category sync for ${categoryIds.length} categories:`, categoryIds);
+
+    const results = [];
+    const errors = [];
+
+    // Process each category
+    for (const categoryId of categoryIds) {
+      try {
+        console.log(`\n📂 Processing category ${categoryId}...`);
+
+        // Use the existing syncProductsByCategory method which properly handles prices
+        const result = await odooService.syncProductsByCategory(categoryId);
+        
+        results.push({
+          categoryId: parseInt(categoryId),
+          success: true,
+          syncedProducts: result.synced || 0,
+          totalProducts: result.total || 0,
+          categoryName: result.category?.name || result.category?.complete_name || `Category ${categoryId}`,
+          message: `Successfully synced ${result.synced || 0} products in category ${result.category?.complete_name || categoryId}`
+        });
+
+        console.log(`✅ Category ${categoryId} sync completed`);
+
+      } catch (categoryError) {
+        console.error(`❌ Error syncing category ${categoryId}:`, categoryError.message);
+        errors.push({
+          categoryId: parseInt(categoryId),
+          error: categoryError.message
+        });
+      }
+    }
+
+    const totalSynced = results.reduce((sum, r) => sum + (r.syncedProducts || 0), 0);
+    const successfulCategories = results.length;
+    const failedCategories = errors.length;
+
+    // Log the sync operation  
+    if (user) {
+      const OdooSyncLog = require('../models/OdooSyncLog');
+      await OdooSyncLog.create({
+        operation_type: 'selective_category_sync',
+        data_type: `categories_${categoryIds.join('_')}`,
+        status: errors.length === 0 ? 'completed' : 'completed_with_errors',
+        started_at: new Date(),
+        completed_at: new Date(),
+        summary: {
+          total: categoryIds.length,
+          processed: successfulCategories + failedCategories,
+          successful: successfulCategories,
+          failed: failedCategories,
+          synced_products: totalSynced
+        },
+        triggered_by: {
+          type: 'admin',
+          user_id: user._id,
+          user_name: user.name || user.email
+        }
+      });
+    }
+
+    res.status(200).json({
+      success: errors.length === 0,
+      message: `Processed ${categoryIds.length} categories. Successfully synced ${successfulCategories} categories with ${totalSynced} products total`,
+      data: {
+        results,
+        errors,
+        summary: {
+          totalCategories: categoryIds.length,
+          successfulCategories,
+          failedCategories,
+          totalProductsSynced: totalSynced
+        }
+      }
+    });
+
+  } catch (error) {
+    console.error('❌ Error in selective category sync:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to sync selected categories',
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   testConnection,
   getConnectionStatus,
@@ -1095,5 +1197,6 @@ module.exports = {
   importPromotions,
   getOdooBranches,
   pushBackStock,
-  importAllOdooCategories, // Add the new endpoint
+  importAllOdooCategories,
+  syncSelectedCategories, // Add the new endpoint
 }; 
