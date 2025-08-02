@@ -258,6 +258,13 @@ const OdooSync = () => {
     <>
       <PageTitle>Odoo Data Synchronization</PageTitle>
 
+      {/* Debug info */}
+      <div style={{padding: '10px', backgroundColor: 'yellow', marginBottom: '10px'}}>
+        <strong>DEBUG:</strong> Component rendered at {new Date().toLocaleTimeString()}
+        <br />
+        Buttons should be visible below. If not, check browser console for errors.
+      </div>
+
       {/* Action buttons */}
       <div className="flex flex-wrap gap-3 mb-6">
         <button
