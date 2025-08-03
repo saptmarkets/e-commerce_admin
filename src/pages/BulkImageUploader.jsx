@@ -52,12 +52,11 @@ const BulkImageUploader = () => {
   const checkConnections = async () => {
     try {
       // Check MongoDB connection using the bulk upload service
-      const BulkImageUploadService = (await import('@/services/BulkImageUploadService')).default;
-      const service = new BulkImageUploadService();
+      const service = (await import('@/services/BulkImageUploadService')).default;
       
       const dbResponse = await service.checkConnections();
-      setDbConnected(dbResponse.mongodb);
-      setCloudinaryConnected(dbResponse.cloudinary);
+      setDbConnected(dbResponse.dbConnected);
+      setCloudinaryConnected(dbResponse.cloudinaryConnected);
     } catch (error) {
       console.error('Connection check failed:', error);
       setDbConnected(false);
@@ -112,8 +111,7 @@ const BulkImageUploader = () => {
       toast.info('Loading products without images...');
       
       // Import and use the service
-      const BulkImageUploadService = (await import('@/services/BulkImageUploadService')).default;
-      const service = new BulkImageUploadService();
+      const service = (await import('@/services/BulkImageUploadService')).default;
       
       const data = await service.loadProductsWithoutImages();
       

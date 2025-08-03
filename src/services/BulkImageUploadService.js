@@ -1,17 +1,16 @@
-import axios from 'axios';
+import requests from './httpService';
 
 class BulkImageUploadService {
   constructor() {
-    this.baseURL = import.meta.env.VITE_APP_API_BASE_URL || 'https://e-commerce-backend-l0s0.onrender.com/api';
+    // No need for baseURL since httpService handles it
   }
 
   // Load images from directory (backend will handle file system)
   async loadImagesFromDirectory(directoryPath) {
     try {
-      const response = await axios.post(`${this.baseURL}/bulk-upload/load-images`, {
+      return await requests.post('/bulk-upload/load-images', {
         directoryPath
       });
-      return response.data;
     } catch (error) {
       throw new Error(`Failed to load images: ${error.message}`);
     }
@@ -33,8 +32,7 @@ class BulkImageUploadService {
         params.append('category', category);
       }
       
-      const response = await axios.get(`${this.baseURL}/bulk-upload/products/without-images?${params}`);
-      return response.data;
+      return await requests.get(`/bulk-upload/products/without-images?${params}`);
     } catch (error) {
       console.error('Error loading products without images:', error);
       throw new Error(`Failed to load products: ${error.message}`);
@@ -44,12 +42,11 @@ class BulkImageUploadService {
   // Match images with products
   async matchImagesWithProducts(images, products, settings) {
     try {
-      const response = await axios.post(`${this.baseURL}/bulk-upload/match`, {
+      return await requests.post('/bulk-upload/match', {
         images,
         products,
         settings
       });
-      return response.data;
     } catch (error) {
       throw new Error(`Failed to match products: ${error.message}`);
     }
@@ -92,26 +89,24 @@ class BulkImageUploadService {
 
   async uploadToCloudinary(fileOrPath) {
     try {
-      let response;
-      
       if (fileOrPath instanceof File) {
         // Upload file directly
         const formData = new FormData();
         formData.append('image', fileOrPath);
         
-        response = await axios.post(`${this.baseURL}/bulk-upload/upload-file`, formData, {
+        const response = await axios.post(`${this.baseURL}/bulk-upload/upload-file`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
         });
+        return response.data;
       } else {
         // Upload by path
-        response = await axios.post(`${this.baseURL}/bulk-upload/upload-to-cloudinary`, {
+        const response = await axios.post(`${this.baseURL}/bulk-upload/upload-to-cloudinary`, {
           imagePath: fileOrPath
         });
+        return response.data;
       }
-      
-      return response.data;
     } catch (error) {
       throw new Error(`Cloudinary upload failed: ${error.message}`);
     }
