@@ -33,8 +33,7 @@ class BulkImageUploadService {
         params.append('category', category);
       }
       
-      const response = await axios.get(`${this.baseURL}/bulk-upload/products/without-images?${params}`);
-      return response.data;
+      return await requests.get(`/bulk-upload/products/without-images?${params}`);
     } catch (error) {
       console.error('Error loading products without images:', error);
       throw new Error(`Failed to load products: ${error.message}`);
@@ -96,18 +95,16 @@ class BulkImageUploadService {
         const formData = new FormData();
         formData.append('image', fileOrPath);
         
-        const response = await axios.post(`${this.baseURL}/bulk-upload/upload-file`, formData, {
+        return await requests.post('/bulk-upload/upload-file', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
         });
-        return response.data;
       } else {
         // Upload by path
-        const response = await axios.post(`${this.baseURL}/bulk-upload/upload-to-cloudinary`, {
+        return await requests.post('/bulk-upload/upload-to-cloudinary', {
           imagePath: fileOrPath
         });
-        return response.data;
       }
     } catch (error) {
       throw new Error(`Cloudinary upload failed: ${error.message}`);
@@ -116,10 +113,9 @@ class BulkImageUploadService {
 
   async updateProductImage(productId, imageUrl) {
     try {
-      const response = await axios.put(`${this.baseURL}/bulk-upload/products/${productId}/image`, {
+      return await requests.put(`/bulk-upload/products/${productId}/image`, {
         image_url: imageUrl
       });
-      return response.data;
     } catch (error) {
       throw new Error(`Database update failed: ${error.message}`);
     }
@@ -129,15 +125,15 @@ class BulkImageUploadService {
   async checkConnections() {
     try {
       const [dbResponse, cloudinaryResponse] = await Promise.all([
-        axios.get(`${this.baseURL}/bulk-upload/check-mongodb`),
-        axios.get(`${this.baseURL}/bulk-upload/check-cloudinary`)
+        requests.get('/bulk-upload/check-mongodb'),
+        requests.get('/bulk-upload/check-cloudinary')
       ]);
       
       return {
-        dbConnected: dbResponse.data.connected,
-        cloudinaryConnected: cloudinaryResponse.data.connected,
-        dbStatus: dbResponse.data,
-        cloudinaryStatus: cloudinaryResponse.data
+        dbConnected: dbResponse.connected,
+        cloudinaryConnected: cloudinaryResponse.connected,
+        dbStatus: dbResponse,
+        cloudinaryStatus: cloudinaryResponse
       };
     } catch (error) {
       console.error('Connection check error:', error);
