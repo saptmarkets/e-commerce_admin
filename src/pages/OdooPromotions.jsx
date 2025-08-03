@@ -11,9 +11,12 @@ import {
   FiFilter,
   FiSearch,
   FiCheck,
-  FiX
+  FiX,
+  FiPackage,
+  FiDatabase
 } from 'react-icons/fi';
 import OdooPricelistServices from '@/services/OdooPricelistServices';
+import OdooCatalogServices from '@/services/OdooCatalogServices';
 import { notifySuccess, notifyError, notifyInfo } from '@/utils/toast';
 import Select from 'react-select';
 
@@ -36,6 +39,12 @@ const OdooPromotions = () => {
   const [showAllPages, setShowAllPages] = useState(false);
   const [customPageSize, setCustomPageSize] = useState(20);
   const [allSelectedIds, setAllSelectedIds] = useState(new Set()); // Track all selected across pages
+
+  // New states for product import functionality
+  const [importingProducts, setImportingProducts] = useState(false);
+  const [productImportProgress, setProductImportProgress] = useState(0);
+  const [importedProducts, setImportedProducts] = useState([]);
+  const [failedImports, setFailedImports] = useState([]);
 
   // Filter options
   const statusOptions = [
@@ -95,6 +104,141 @@ const OdooPromotions = () => {
     }
   };
 
+  // New function to extract unique product IDs from promotions
+  const extractProductIdsFromPromotions = () => {
+    const productIds = new Set();
+    items.forEach(item => {
+      if (item.product_id) {
+        productIds.add(item.product_id);
+      }
+    });
+    return Array.from(productIds);
+  };
+
+  // New function to import products from catalog to store
+  const importProductsFromCatalog = async () => {
+    try {
+      setImportingProducts(true);
+      setProductImportProgress(0);
+      setImportedProducts([]);
+      setFailedImports([]);
+
+      // Get unique product IDs from promotions
+      const productIds = extractProductIdsFromPromotions();
+      
+      if (productIds.length === 0) {
+        notifyError('No products found in promotions to import');
+        return;
+      }
+
+      notifyInfo(`Found ${productIds.length} unique products in promotions. Starting import...`);
+
+      // Import products in batches
+      const batchSize = 10;
+      const totalBatches = Math.ceil(productIds.length / batchSize);
+      
+      for (let i = 0; i < totalBatches; i++) {
+        const batch = productIds.slice(i * batchSize, (i + 1) * batchSize);
+        
+        try {
+          // Import batch from catalog to store products
+          const res = await OdooCatalogServices.runImport({
+            productIds: batch,
+            importType: 'products_only', // Only import products, not promotions
+            targetTable: 'store_products'
+          });
+
+          const results = res.data?.data || res.data;
+          
+          if (results?.imported) {
+            setImportedProducts(prev => [...prev, ...batch]);
+            notifySuccess(`Imported batch ${i + 1}/${totalBatches}: ${batch.length} products`);
+          }
+
+          if (results?.failed && results.failed.length > 0) {
+            setFailedImports(prev => [...prev, ...results.failed]);
+            notifyError(`Failed to import ${results.failed.length} products in batch ${i + 1}`);
+          }
+
+        } catch (err) {
+          console.error(`Batch ${i + 1} import failed:`, err);
+          setFailedImports(prev => [...prev, ...batch]);
+          notifyError(`Batch ${i + 1} import failed: ${err.message}`);
+        }
+
+        // Update progress
+        setProductImportProgress(((i + 1) / totalBatches) * 100);
+      }
+
+      // Final summary
+      const totalImported = importedProducts.length;
+      const totalFailed = failedImports.length;
+      
+      if (totalImported > 0) {
+        notifySuccess(`Successfully imported ${totalImported} products to store!`);
+      }
+      
+      if (totalFailed > 0) {
+        notifyError(`${totalFailed} products failed to import. Check logs for details.`);
+      }
+
+    } catch (err) {
+      console.error('Product import failed:', err);
+      notifyError(`Import failed: ${err.message}`);
+    } finally {
+      setImportingProducts(false);
+      setProductImportProgress(0);
+    }
+  };
+
+  // New function to check what products are available in promotions
+  const checkPromotionsProducts = async () => {
+    try {
+      setLoading(true);
+      
+      // Fetch all promotions to analyze products
+      const res = await OdooPricelistServices.listItems({ 
+        page: 1,
+        limit: 10000, // Get all items
+        active_only: 'true'
+      });
+      
+      const data = res.data?.data || res.data;
+      const allItems = data?.items || [];
+      
+      // Extract unique product information
+      const uniqueProducts = new Map();
+      
+      allItems.forEach(item => {
+        if (item.product_id && item.product_name) {
+          uniqueProducts.set(item.product_id, {
+            id: item.product_id,
+            name: item.product_name,
+            unit: item.barcode_unit_name || item.barcode_unit_id,
+            price: item.fixed_price,
+            count: (uniqueProducts.get(item.product_id)?.count || 0) + 1
+          });
+        }
+      });
+
+      const productsList = Array.from(uniqueProducts.values());
+      
+      notifySuccess(`Found ${productsList.length} unique products in promotions`);
+      
+      // Show summary
+      console.log('Products in promotions:', productsList);
+      
+      return productsList;
+      
+    } catch (err) {
+      console.error('Failed to check promotions products:', err);
+      notifyError('Failed to analyze promotions products');
+      return [];
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchItems();
   }, [showExpired, search, statusFilter]);
@@ -131,7 +275,7 @@ const OdooPromotions = () => {
     }
   };
 
-  const selectAllAcrossPages = () => {
+  const selectAllAcrossPages = async () => {
     if (allSelectedIds.size === pagination.total) {
       // Deselect all
       setAllSelectedIds(new Set());
@@ -213,6 +357,75 @@ const OdooPromotions = () => {
   return (
     <>
       <PageTitle>Odoo Promotions (Public Pricelist)</PageTitle>
+
+      {/* Action Bar */}
+      <div className="flex flex-wrap items-center justify-between mb-4 gap-4">
+        <div className="flex items-center gap-4">
+          <button
+            className={`px-4 py-2 text-white rounded flex items-center gap-2 ${selectedIds.length === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700'}`}
+            disabled={selectedIds.length === 0 || importing}
+            onClick={runImport}
+          >
+            {importing ? <FiRefreshCw className="animate-spin"/> : <FiDownload/>}
+            Import Selected ({selectedIds.length})
+          </button>
+
+          <button
+            className="px-4 py-2 bg-blue-600 text-white rounded flex items-center gap-2 hover:bg-blue-700"
+            onClick={() => fetchItems(pagination.current_page)}
+            disabled={loading}
+          >
+            <FiRefreshCw className={loading ? 'animate-spin' : ''}/>
+            Refresh
+          </button>
+
+          {/* New: Check Promotions Products Button */}
+          <button
+            className="px-4 py-2 bg-purple-600 text-white rounded flex items-center gap-2 hover:bg-purple-700"
+            onClick={checkPromotionsProducts}
+            disabled={loading}
+          >
+            <FiPackage className={loading ? 'animate-spin' : ''}/>
+            Check Products
+          </button>
+
+          {/* New: Import Products from Catalog Button */}
+          <button
+            className="px-4 py-2 bg-orange-600 text-white rounded flex items-center gap-2 hover:bg-orange-700"
+            onClick={importProductsFromCatalog}
+            disabled={importingProducts}
+          >
+            <FiDatabase className={importingProducts ? 'animate-spin' : ''}/>
+            {importingProducts ? 'Importing Products...' : 'Import Products to Store'}
+          </button>
+
+          <div className="flex items-center gap-4">
+            <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={showExpired} onChange={e=>setShowExpired(e.target.checked)} />Show expired</label>
+          </div>
+        </div>
+        <div className="text-sm text-gray-600">
+          Showing {items.length} of {pagination.total} items (Page {pagination.current_page} of {pagination.total_pages})
+        </div>
+      </div>
+
+      {/* Progress Bar for Product Import */}
+      {importingProducts && (
+        <div className="mb-4 bg-white p-4 rounded-lg shadow">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium text-gray-700">Importing Products to Store...</span>
+            <span className="text-sm text-gray-500">{Math.round(productImportProgress)}%</span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-2">
+            <div 
+              className="bg-orange-600 h-2 rounded-full transition-all duration-300" 
+              style={{ width: `${productImportProgress}%` }}
+            ></div>
+          </div>
+          <div className="mt-2 text-xs text-gray-600">
+            Imported: {importedProducts.length} | Failed: {failedImports.length}
+          </div>
+        </div>
+      )}
 
       {/* Search and Filter Section */}
       <div className="mb-6 bg-white shadow rounded-lg p-4">
