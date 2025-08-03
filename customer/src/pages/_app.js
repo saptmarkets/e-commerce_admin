@@ -8,9 +8,10 @@ import ReactGA from "react-ga4";
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/router";
 // import { SessionProvider } from "next-auth/react"; // Removed NextAuth SessionProvider
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider, Hydrate } from "@tanstack/react-query";
 import TawkMessengerReact from "@tawk.to/tawk-messenger-react";
 import Head from "next/head";
+import dynamic from "next/dynamic";
 
 // Internal imports
 import store from "@redux/store";
@@ -22,6 +23,12 @@ import SettingServices from "@services/SettingServices";
 import PageLoader from "@components/preloader/PageLoader";
 
 let persistor = persistStore(store);
+
+// Dynamically import TawkMessengerReact to prevent SSR issues
+const DynamicTawkMessenger = dynamic(
+  () => import("@tawk.to/tawk-messenger-react"),
+  { ssr: false }
+);
 
 // Optimized React Query configuration for better performance
 const queryClient = new QueryClient({
@@ -49,6 +56,14 @@ function MyApp({ Component, pageProps }) {
   const [isInitialized, setIsInitialized] = useState(false);
   const [isPageLoading, setIsPageLoading] = useState(false);
   const [isAppLoading, setIsAppLoading] = useState(true);
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  // Hydration check
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsHydrated(true);
+    }
+  }, []);
 
   // Memoized route handlers for better performance
   const handleRouteStart = useCallback(() => {
@@ -71,8 +86,8 @@ function MyApp({ Component, pageProps }) {
         setIsInitialized(true);
         setIsAppLoading(false);
 
-        // Initialize Google Analytics only once
-        if (settings?.google_analytic_status && !window.gtag) {
+        // Initialize Google Analytics only once and only on client
+        if (isHydrated && settings?.google_analytic_status && !window.gtag) {
           ReactGA.initialize(settings?.google_analytic_key || "");
           handlePageView();
         }
@@ -83,8 +98,10 @@ function MyApp({ Component, pageProps }) {
       }
     };
 
-    fetchStoreSettings();
-  }, []);
+    if (isHydrated) {
+      fetchStoreSettings();
+    }
+  }, [isHydrated]);
 
   // Optimized route event handlers
   useEffect(() => {
@@ -101,7 +118,7 @@ function MyApp({ Component, pageProps }) {
 
   // Sync <html> lang and dir on locale change - force English/Arabic only
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (isHydrated) {
       // Force only English or Arabic, ignore browser locale
       const currentLocale = ['en', 'ar'].includes(router.locale) ? router.locale : 'en';
       document.documentElement.lang = currentLocale;
@@ -114,38 +131,40 @@ function MyApp({ Component, pageProps }) {
         Cookies.set('NEXT_LOCALE', currentLocale, { expires: 365 });
       }
     }
-  }, [router.locale]);
+  }, [router.locale, isHydrated]);
 
   // Show loading during initial app load
-  if (isAppLoading) {
+  if (isAppLoading || !isHydrated) {
     return <PageLoader />;
   }
 
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        {/* Removed SessionProvider - using custom auth instead */}
-        <UserProvider>
-          <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-              <SidebarProvider>
-                <CartProvider>
-                  <DefaultSeo />
-                  {/* Show page loader during route transitions */}
-                  {isPageLoading && <PageLoader />}
-                  {/* Render TawkMessengerReact only if initialized and enabled */}
-                  {isInitialized && storeSetting?.tawk_chat_status && (
-                    <TawkMessengerReact
-                      propertyId={storeSetting?.tawk_chat_property_id || ""}
-                      widgetId={storeSetting?.tawk_chat_widget_id || ""}
-                    />
-                  )}
-                  <Component {...pageProps} />
-                </CartProvider>
-              </SidebarProvider>
-            </PersistGate>
-          </Provider>
-        </UserProvider>
+        <Hydrate state={pageProps.dehydratedState}>
+          {/* Removed SessionProvider - using custom auth instead */}
+          <UserProvider>
+            <Provider store={store}>
+              <PersistGate loading={<PageLoader />} persistor={persistor}>
+                <SidebarProvider>
+                  <CartProvider>
+                    <DefaultSeo />
+                    {/* Show page loader during route transitions */}
+                    {isPageLoading && <PageLoader />}
+                    {/* Render TawkMessengerReact only if initialized and enabled (client-side only) */}
+                    {isInitialized && storeSetting?.tawk_chat_status && isHydrated && (
+                      <DynamicTawkMessenger
+                        propertyId={storeSetting?.tawk_chat_property_id || ""}
+                        widgetId={storeSetting?.tawk_chat_widget_id || ""}
+                      />
+                    )}
+                    <Component {...pageProps} />
+                  </CartProvider>
+                </SidebarProvider>
+              </PersistGate>
+            </Provider>
+          </UserProvider>
+        </Hydrate>
       </QueryClientProvider>
     </>
   );

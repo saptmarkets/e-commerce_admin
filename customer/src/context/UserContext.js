@@ -1,25 +1,30 @@
 import Cookies from "js-cookie";
-import React, { createContext, useEffect, useReducer } from "react";
+import React, { createContext, useEffect, useReducer, useState } from "react";
 
 //internal imports
 import { setToken } from "@services/httpServices";
 
 export const UserContext = createContext();
 
+// Safe initial state - same on server and client
 const initialState = {
-  userInfo: Cookies.get("userInfo")
-    ? JSON.parse(Cookies.get("userInfo"))
-    : null,
-  shippingAddress: Cookies.get("shippingAddress")
-    ? JSON.parse(Cookies.get("shippingAddress"))
-    : {},
-  couponInfo: Cookies.get("couponInfo")
-    ? JSON.parse(Cookies.get("couponInfo"))
-    : {},
+  userInfo: null,
+  shippingAddress: {},
+  couponInfo: {},
 };
 
 function reducer(state, action) {
   switch (action.type) {
+    case "HYDRATE_FROM_COOKIES": {
+      // Load data from cookies after hydration
+      return {
+        ...state,
+        userInfo: action.payload.userInfo,
+        shippingAddress: action.payload.shippingAddress,
+        couponInfo: action.payload.couponInfo,
+      };
+    }
+
     case "USER_LOGIN": {
       // Set cookie with proper settings
       Cookies.set("userInfo", JSON.stringify(action.payload), {
@@ -68,6 +73,36 @@ function reducer(state, action) {
 
 export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  // Hydrate from cookies after component mounts (client-side only)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const userInfo = Cookies.get("userInfo") 
+          ? JSON.parse(Cookies.get("userInfo"))
+          : null;
+        
+        const shippingAddress = Cookies.get("shippingAddress")
+          ? JSON.parse(Cookies.get("shippingAddress"))
+          : {};
+        
+        const couponInfo = Cookies.get("couponInfo")
+          ? JSON.parse(Cookies.get("couponInfo"))
+          : {};
+
+        dispatch({
+          type: "HYDRATE_FROM_COOKIES",
+          payload: { userInfo, shippingAddress, couponInfo }
+        });
+        
+        setIsHydrated(true);
+      } catch (error) {
+        console.error("Failed to hydrate from cookies:", error);
+        setIsHydrated(true);
+      }
+    }
+  }, []);
 
   // Set token on startup and when userInfo changes
   useEffect(() => {
@@ -76,8 +111,10 @@ export const UserProvider = ({ children }) => {
     }
   }, [state.userInfo]);
 
-  // Check cookie expiry periodically (reduced frequency to prevent excessive requests)
+  // Check cookie expiry periodically (only after hydration)
   useEffect(() => {
+    if (!isHydrated) return;
+
     const checkCookie = () => {
       const userInfo = Cookies.get("userInfo");
       if (!userInfo && state.userInfo) {
@@ -89,8 +126,8 @@ export const UserProvider = ({ children }) => {
     // Check every 5 minutes instead of every minute to reduce server load
     const interval = setInterval(checkCookie, 300000);
     return () => clearInterval(interval);
-  }, [state.userInfo]);
+  }, [state.userInfo, isHydrated]);
 
-  const value = { state, dispatch };
+  const value = { state, dispatch, isHydrated };
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
