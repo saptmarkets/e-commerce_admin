@@ -130,40 +130,138 @@ const BulkImageUploader = () => {
   const handleStartMatching = async () => {
     try {
       setUploadState('matching');
-      toast.info('Starting image matching...');
+      toast.info('Starting product matching...');
       
-      // Use the matching service to get real matches
-      const matchingData = await BulkImageUploadService.matchImagesWithProducts(
-        images,
-        products,
-        settings
-      );
-      
-      // Process the matches to include product names
-      const processedMatches = matchingData.matches.map((match, index) => {
-        const matchedProduct = products.find(p => p._id === match.productId);
+      // Create matches for each product
+      const processedMatches = products.map((product) => {
+        // Find best matching image for this product
+        const bestImage = findBestImageForProduct(product, images, settings);
+        
         return {
-          imageName: match.imageName,
-          imagePath: match.imagePath,
-          imagePreview: images.find(img => img.name === match.imageName)?.preview,
-          productId: match.productId,
-          productName: matchedProduct ? {
-            en: matchedProduct.name?.en || matchedProduct.title?.en || 'Unknown',
-            ar: matchedProduct.name?.ar || matchedProduct.title?.ar || 'غير معروف'
-          } : null,
-          confidence: match.confidence || Math.floor(Math.random() * 40) + 60,
-          alternatives: match.alternatives || [],
-          status: match.status || (match.confidence > 70 ? 'matched' : 'manual')
+          productId: product._id,
+          productName: {
+            en: product.title?.en || product.name?.en || 'Unknown',
+            ar: product.title?.ar || product.name?.ar || 'غير معروف'
+          },
+          imageName: bestImage?.name || 'No image found',
+          imagePath: bestImage?.path || '',
+          imagePreview: bestImage?.preview || null,
+          confidence: bestImage?.confidence || 0,
+          alternatives: bestImage?.alternatives || [],
+          status: bestImage?.confidence > settings.confidenceThreshold ? 'matched' : 'no_match'
         };
       });
       
       setMatches(processedMatches);
-      toast.success(`Matched ${processedMatches.filter(m => m.status === 'matched').length} images`);
+      toast.success(`Matched ${processedMatches.filter(m => m.status === 'matched').length} products`);
       setUploadState('idle');
     } catch (error) {
-      toast.error('Failed to match images: ' + error.message);
+      toast.error('Failed to match products: ' + error.message);
       setUploadState('idle');
     }
+  };
+
+  const findBestImageForProduct = (product, images, settings) => {
+    let bestImage = null;
+    let bestScore = 0;
+    
+    for (const image of images) {
+      const score = calculateImageProductMatch(image, product, settings);
+      if (score > bestScore) {
+        bestScore = score;
+        bestImage = {
+          ...image,
+          confidence: score
+        };
+      }
+    }
+    
+    return bestImage;
+  };
+
+  const calculateImageProductMatch = (image, product, settings) => {
+    const imageKeywords = extractKeywordsFromImage(image.name);
+    const productNameEn = product.title?.en || product.name?.en || '';
+    const productNameAr = product.title?.ar || product.name?.ar || '';
+    const productSku = product.sku || '';
+    const productBarcode = product.barcode || '';
+    
+    let totalScore = 0;
+    let weightSum = 0;
+    
+    // Product name matching - English (40% weight)
+    if (settings.enableEnglishMatching && productNameEn) {
+      const score = fuzzyMatch(imageKeywords.product, productNameEn) * 0.4;
+      totalScore += score;
+      weightSum += 0.4;
+    }
+    
+    // Product name matching - Arabic (40% weight)
+    if (settings.enableArabicMatching && productNameAr) {
+      const score = fuzzyMatch(imageKeywords.product, productNameAr) * 0.4;
+      totalScore += score;
+      weightSum += 0.4;
+    }
+    
+    // SKU/Barcode matching (20% weight)
+    const skuScore = fuzzyMatch(imageKeywords.product, productSku) * 0.1;
+    const barcodeScore = fuzzyMatch(imageKeywords.product, productBarcode) * 0.1;
+    totalScore += Math.max(skuScore, barcodeScore);
+    weightSum += 0.2;
+    
+    return Math.round((totalScore / weightSum) * 100);
+  };
+
+  const extractKeywordsFromImage = (filename) => {
+    // Remove common extensions and separators
+    let cleanName = filename.replace(/\.(jpg|jpeg|png|gif|webp)$/i, '');
+    cleanName = cleanName.replace(/[_-]/g, ' ');
+    
+    // Remove company keywords
+    const companyKeywords = ['sapt', 'شركة', 'company', 'شركة سابت'];
+    for (const keyword of companyKeywords) {
+      cleanName = cleanName.replace(new RegExp(keyword, 'gi'), '');
+    }
+    
+    // Remove size patterns
+    const sizePatterns = [
+      /(كبير|صغير|متوسط)/i,
+      /(large|medium|small)/i,
+      /(\d+)\s*(كجم|كيلو|kg|g)/i,
+      /(\d+)\s*(لتر|liter|l)/i,
+      /(\d+)\s*(مل|ml)/i
+    ];
+    
+    for (const pattern of sizePatterns) {
+      cleanName = cleanName.replace(pattern, '');
+    }
+    
+    return {
+      product: cleanName.trim()
+    };
+  };
+
+  const fuzzyMatch = (str1, str2) => {
+    if (!str1 || !str2) return 0;
+    const s1 = str1.toLowerCase();
+    const s2 = str2.toLowerCase();
+    
+    if (s1.includes(s2) || s2.includes(s1)) return 1;
+    
+    const words1 = s1.split(/\s+/);
+    const words2 = s2.split(/\s+/);
+    
+    let matches = 0;
+    for (const word1 of words1) {
+      for (const word2 of words2) {
+        if (word1.length > 2 && word2.length > 2 && 
+            (word1.includes(word2) || word2.includes(word1))) {
+          matches++;
+        }
+      }
+    }
+    
+    return matches / Math.max(words1.length, words2.length);
   };
 
   const handleStartUpload = async () => {
@@ -559,10 +657,13 @@ const MatchingTable = ({ matches, onMatchUpdate, uploadState, filterStatus, onFi
           <thead className="bg-gray-50">
             <tr>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Image
+                Product Name (English)
               </th>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Matched Product
+                Product Name (Arabic)
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                Matched Image
               </th>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                 Confidence
@@ -586,44 +687,25 @@ const MatchingTable = ({ matches, onMatchUpdate, uploadState, filterStatus, onFi
                       onChange={() => onSelectMatch(index)}
                       className="mr-2"
                     />
-                    <div className="w-12 h-12 bg-gray-200 rounded flex items-center justify-center overflow-hidden">
-                      {match.imagePreview ? (
-                        <img 
-                          src={match.imagePreview} 
-                          alt={match.imageName}
-                          className="w-full h-full object-cover cursor-pointer"
-                          onClick={() => onMatchUpdate(index, 'preview')}
-                        />
-                      ) : (
-                        <FiImage className="text-gray-400" />
-                      )}
+                    <div className="text-sm font-medium text-gray-900">
+                      {match.productName?.en || 'Unknown'}
                     </div>
-                    <span className="ml-2 text-sm font-medium max-w-xs truncate">
-                      {match.imageName}
-                    </span>
                   </div>
                 </td>
                 <td className="px-4 py-3">
-                  <div>
-                    {match.productName ? (
-                      <>
-                        <div className="text-sm font-medium text-gray-900">
-                          {match.productName.en || 'Unknown'}
-                        </div>
-                        <div className="text-xs text-gray-600 mt-1">
-                          {match.productName.ar || 'غير معروف'}
-                        </div>
-                      </>
-                    ) : (
-                      <div className="text-sm text-gray-500 italic">
-                        No match found
-                      </div>
-                    )}
-                    {match.alternatives && match.alternatives.length > 0 && (
-                      <div className="text-xs text-gray-500 mt-1">
-                        Alternatives: {match.alternatives.slice(0, 2).join(', ')}
-                      </div>
-                    )}
+                  <div className="text-sm text-gray-700">
+                    {match.productName?.ar || 'غير معروف'}
+                  </div>
+                </td>
+                <td className="px-4 py-3">
+                  <div className="flex items-center">
+                    <span 
+                      className="text-sm font-medium text-blue-600 cursor-pointer hover:text-blue-800"
+                      onClick={() => onMatchUpdate(index, 'preview')}
+                      title="Click to preview image"
+                    >
+                      {match.imageName}
+                    </span>
                   </div>
                 </td>
                 <td className="px-4 py-3">
