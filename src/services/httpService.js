@@ -5,7 +5,7 @@ import { getCorrectApiUrl } from "../utils/apiDebugger";
 // Get the correct base URL from environment variable
 const getBaseUrl = () => {
   // Use environment variable for API base URL
-  const baseUrl = import.meta.env.VITE_APP_API_BASE_URL || "http://127.0.0.1:5055/api";
+  const baseUrl = import.meta.env.VITE_APP_API_BASE_URL || "https://e-commerce-backend-l0s0.onrender.com/api";
   // Log the configured base URL
   console.log("API Base URL from env:", import.meta.env.VITE_APP_API_BASE_URL);
   console.log("Using API Base URL:", baseUrl);

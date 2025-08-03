@@ -5,7 +5,7 @@
 import axios from 'axios';
 
 // Get API base URL from environment
-const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL || 'http://localhost:5055';
+const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL || 'https://e-commerce-backend-l0s0.onrender.com/api';
 
 // Test direct API access
 export const testApiAccess = async () => {
@@ -112,7 +112,7 @@ export const fixApiConnection = async () => {
       issue: 'Wrong API base URL',
       solution: 'Check the VITE_APP_API_BASE_URL environment variable',
       current: API_BASE_URL,
-      suggestion: 'Should be something like http://localhost:5055'
+      suggestion: 'Should be something like https://e-commerce-backend-l0s0.onrender.com/api'
     },
     {
       issue: 'Network error',
