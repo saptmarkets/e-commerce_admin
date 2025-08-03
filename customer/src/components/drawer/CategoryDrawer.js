@@ -21,4 +21,4 @@ const CategoryDrawer = () => {
     </Drawer>
   );
 };
-export default dynamic(() => Promise.resolve(CategoryDrawer), { ssr: false });
+export default CategoryDrawer;

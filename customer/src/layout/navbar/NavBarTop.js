@@ -150,4 +150,4 @@ const NavBarTop = () => {
   );
 };
 
-export default dynamic(() => Promise.resolve(NavBarTop), { ssr: false });
+export default NavBarTop;

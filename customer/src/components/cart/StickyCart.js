@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic";
 import React, { useContext } from "react";
 import { IoBagHandleOutline } from "react-icons/io5";
 import { useCart } from "react-use-cart";
@@ -35,4 +34,4 @@ const StickyCart = () => {
   );
 };
 
-export default dynamic(() => Promise.resolve(StickyCart), { ssr: false });
+export default StickyCart;

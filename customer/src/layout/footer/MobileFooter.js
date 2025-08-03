@@ -82,4 +82,4 @@ const MobileFooter = () => {
   );
 };
 
-export default dynamic(() => Promise.resolve(MobileFooter), { ssr: false });
+export default MobileFooter;

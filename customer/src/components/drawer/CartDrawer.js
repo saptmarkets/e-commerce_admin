@@ -21,4 +21,4 @@ const CartDrawer = () => {
     </Drawer>
   );
 };
-export default dynamic(() => Promise.resolve(CartDrawer), { ssr: false });
+export default CartDrawer;
