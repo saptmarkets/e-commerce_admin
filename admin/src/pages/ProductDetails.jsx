@@ -128,7 +128,7 @@ const ProductDetails = () => {
           <div className="mt-4 p-4 bg-gray-100 rounded-lg text-left">
             <h4 className="text-sm font-semibold mb-2">Debug Information:</h4>
             <p className="text-xs text-gray-600">
-              API Endpoint: {`${import.meta.env.VITE_APP_API_BASE_URL || 'http://localhost:5055'}/api/products/${id}`}
+              API Endpoint: {`${import.meta.env.VITE_APP_API_BASE_URL || 'https://e-commerce-backend-l0s0.onrender.com/api'}/products/${id}`}
             </p>
             <p className="text-xs text-gray-600 mt-1">
               Error: {error?.response?.status} - {error?.response?.data?.message || error?.message}

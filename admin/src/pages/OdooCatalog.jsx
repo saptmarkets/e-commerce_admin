@@ -16,6 +16,7 @@ import {
   FiChevronsLeft,
   FiChevronsRight
 } from "react-icons/fi";
+import { useTranslation } from "react-i18next";
 import PageTitle from "@/components/Typography/PageTitle";
 import Loading from "@/components/preloader/Loading";
 import { notifySuccess, notifyError, notifyInfo } from "@/utils/toast";
@@ -25,6 +26,7 @@ import useUtilsFunction from "@/hooks/useUtilsFunction";
 import requests from "@/services/httpService";
 
 const OdooCatalog = () => {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
@@ -165,6 +167,47 @@ const OdooCatalog = () => {
         });
         return newSelection;
       });
+    }
+  };
+
+  const selectAllAcrossPages = async () => {
+    try {
+      // Show loading state
+      notifyInfo('Fetching all product IDs for bulk selection...');
+      
+      // Get all product IDs from the API
+      const res = await OdooCatalogServices.listProducts({
+        page: 1,
+        limit: pagination.total || 10000, // Get all products
+        include: 'ids_only', // Request only IDs for efficiency
+        search: search || undefined,
+        category_id: selectedCat?.value || undefined,
+        sync_status: importStatusFilter?.value || undefined,
+      });
+      
+      const allProductIds = res?.products?.map(p => p.id) || [];
+      
+      if (allProductIds.length === 0) {
+        notifyError('No products found to select');
+        return;
+      }
+      
+      // Check if all are already selected
+      const allSelected = allProductIds.every(id => selectedIds.includes(id));
+      
+      if (allSelected) {
+        // Deselect all
+        setSelectedIds([]);
+        notifySuccess('Deselected all products');
+      } else {
+        // Select all
+        setSelectedIds(allProductIds);
+        notifySuccess(`Selected all ${allProductIds.length} products across all pages`);
+      }
+      
+    } catch (err) {
+      console.error('Error selecting all products:', err);
+      notifyError('Failed to select all products. Please try again.');
     }
   };
 
@@ -409,14 +452,24 @@ const OdooCatalog = () => {
                 Clear All
               </button>
             )}
-          <button
-            onClick={runImport}
-            disabled={selectedIds.length === 0 || importLoading}
-            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-          >
-            <FiDownload className={importLoading ? 'animate-spin' : ''} />
-            {importLoading ? 'Importing...' : `Import Selected (${selectedIds.length})`}
-          </button>
+            
+            {/* Select All Across Pages Button */}
+            <button
+              onClick={selectAllAcrossPages}
+              className="px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm flex items-center gap-2"
+            >
+              <FiCheck className="w-4 h-4" />
+              {selectedIds.length === 0 ? 'Select All' : 'Toggle All'}
+            </button>
+            
+            <button
+              onClick={runImport}
+              disabled={selectedIds.length === 0 || importLoading}
+              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            >
+              <FiDownload className={importLoading ? 'animate-spin' : ''} />
+              {importLoading ? 'Importing...' : `Import Selected (${selectedIds.length})`}
+            </button>
           </div>
         </div>
       </div>

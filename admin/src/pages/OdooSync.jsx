@@ -34,13 +34,24 @@ const OdooSync = () => {
   const [batchLimit, setBatchLimit] = useState(5000);
   const [batchLoading, setBatchLoading] = useState(false);
 
+  // Additional loading states for better UX
+  const [statsLoading, setStatsLoading] = useState(false);
+  const [connectionLoading, setConnectionLoading] = useState(false);
+  const [fetchLoading, setFetchLoading] = useState(false);
+  const [syncLoading, setSyncLoading] = useState(false);
+  const [pushLoading, setPushLoading] = useState(false);
+
   // Helper to update stats
   const loadStatistics = async () => {
     try {
+      setStatsLoading(true);
       const res = await OdooSyncServices.getStatistics();
       setStatistics(res.data || res);
     } catch (err) {
       console.error("Failed to load statistics", err);
+      notifyError("Failed to load statistics");
+    } finally {
+      setStatsLoading(false);
     }
   };
 
@@ -54,7 +65,7 @@ const OdooSync = () => {
 
   const handleConnectionTest = async () => {
     try {
-      setLoading(true);
+      setConnectionLoading(true);
       const res = await OdooSyncServices.testConnection();
       setConnectionStatus(res.data || res);
       if (res.success || res.data?.success) {
@@ -66,7 +77,7 @@ const OdooSync = () => {
       console.error(err);
       notifyError(err.response?.data?.message || "Odoo connection failed");
     } finally {
-      setLoading(false);
+      setConnectionLoading(false);
     }
   };
 
@@ -87,7 +98,7 @@ const OdooSync = () => {
     if (!window.confirm("Fetch data from Odoo? This might take a while.")) return;
 
     try {
-      setLoading(true);
+      setFetchLoading(true);
       setLastAction("fetch");
       const res = await OdooSyncServices.fetchFromOdoo();
       notifySuccess(res.message || "Data fetched successfully");
@@ -96,13 +107,12 @@ const OdooSync = () => {
       console.error(err);
       notifyError(err.response?.data?.message || "Failed to fetch data");
     } finally {
-      setLoading(false);
+      setFetchLoading(false);
     }
   };
 
   // Batch fetch handlers
   const handleOpenBatchModal = () => {
-    console.log('🔄 Opening batch modal...');
     setShowBatchModal(true);
   };
   
@@ -112,11 +122,9 @@ const OdooSync = () => {
     if (!window.confirm(`Fetch products ${batchOffset} to ${batchOffset + batchLimit} from Odoo?`)) return;
 
     try {
-      console.log('🚀 Starting batch fetch:', { offset: batchOffset, limit: batchLimit });
       setBatchLoading(true);
       setLastAction("batch_fetch");
       const res = await OdooSyncServices.fetchFromOdooBatched(['products'], batchOffset, batchLimit);
-      console.log('✅ Batch fetch response:', res);
       notifySuccess(res.message || `Batch fetch completed: ${res.data?.products || 0} products processed`);
       await loadStatistics();
       setShowBatchModal(false);
@@ -133,14 +141,14 @@ const OdooSync = () => {
 
   const handleRunSync = async () => {
     try {
-      setLoading(true);
+      setSyncLoading(true);
       const res = await OdooSyncServices.syncToStore({ fields: syncFields });
       notifySuccess(`Sync completed. Updated ${res.updated || 0} products`);
     } catch(err) {
       console.error(err);
       notifyError(err.response?.data?.message || 'Sync failed');
     } finally {
-      setLoading(false);
+      setSyncLoading(false);
       setShowSyncModal(false);
     }
   };
@@ -148,10 +156,8 @@ const OdooSync = () => {
   // New category-based sync functions
   const handleOpenCategoryModal = async () => {
     try {
-      console.log('🔄 Opening category modal...');
       setCategoryLoading(true);
       const res = await OdooSyncServices.getOdooCategories();
-      console.log('📂 Categories response:', res);
       setCategories(res.data?.categories || res.categories || []);
       setShowCategoryModal(true);
     } catch(err) {
@@ -187,33 +193,28 @@ const OdooSync = () => {
     if (!window.confirm(`Sync ${selectedCategories.length} selected categories? This will update prices from Odoo.`)) return;
     
     try {
-      console.log('🚀 Starting category sync for:', selectedCategories);
       setCategoryLoading(true);
       setSyncProgress({ status: 'syncing', message: `Syncing ${selectedCategories.length} categories...` });
       
       // Use the new enhanced selective category sync
       const res = await OdooSyncServices.syncSelectedCategories(selectedCategories);
-      console.log('✅ Category sync response:', res);
       
       if (res.success) {
         setSyncProgress({ 
           status: 'completed', 
-          message: res.message || `Successfully synced ${selectedCategories.length} categories`
+          message: `Successfully synced ${res.data?.updated || 0} products from ${selectedCategories.length} categories`,
+          details: res.data
         });
-        notifySuccess(res.message || `Categories synced successfully`);
-        await loadStatistics();
+        notifySuccess(`Category sync completed! Updated ${res.data?.updated || 0} products`);
+        await loadStatistics(); // Refresh stats
       } else {
-        setSyncProgress({ 
-          status: 'error', 
-          message: res.message || 'Sync failed'
-        });
-        notifyError(res.message || 'Category sync failed');
+        throw new Error(res.message || 'Sync failed');
       }
     } catch(err) {
-      console.error('❌ Category sync error:', err);
+      console.error('❌ Category sync failed:', err);
       setSyncProgress({ 
         status: 'error', 
-        message: err.response?.data?.message || 'Sync failed'
+        message: err.response?.data?.message || err.message || 'Category sync failed' 
       });
       notifyError(err.response?.data?.message || 'Category sync failed');
     } finally {
@@ -223,109 +224,105 @@ const OdooSync = () => {
 
   const openPushModal = async () => {
     try{
-      setLoading(true);
+      setPushLoading(true);
       const res = await OdooSyncServices.listBranches();
-      console.log('🔍 Branches API response:', res);
-      console.log('🔍 Branches data:', res.data?.data || res.data);
       const branchesData = res.data?.data || res.data || [];
-      console.log('🔍 Final branches array:', branchesData);
-      console.log('🔍 Branch details:', branchesData.map(b => ({ id: b.id, name: b.name, usage: b.usage })));
       setBranches(branchesData);
       setShowPushModal(true);
     }catch(err){
       console.error(err);
       notifyError(err.response?.data?.message || 'Failed to load branches');
-    }finally{setLoading(false);}
+    }finally{
+      setPushLoading(false);
+    }
   };
 
   const closePushModal = () => setShowPushModal(false);
 
   const handlePushBack = async () => {
     try{
-      setLoading(true);
+      setPushLoading(true);
       const res = await OdooSyncServices.pushBackStock({
         sourceLocationId: selectedSource?.id,
         destinationLocationId: selectedDestination?.id
       });
       notifySuccess(`Pushed ${res.pushed||0} units back to Odoo`);
+      setShowPushModal(false);
     }catch(err){
       console.error(err);
       notifyError(err.response?.data?.message || 'Push-back failed');
-    }finally{setLoading(false);setShowPushModal(false);}
+    }finally{
+      setPushLoading(false);
+    }
   };
 
   return (
     <>
       <PageTitle>Odoo Data Synchronization</PageTitle>
 
-      {/* Debug info */}
-      <div style={{padding: '10px', backgroundColor: 'yellow', marginBottom: '10px'}}>
-        <strong>DEBUG:</strong> Component rendered at {new Date().toLocaleTimeString()}
-        <br />
-        Buttons should be visible below. If not, check browser console for errors.
-      </div>
-
       {/* Action buttons */}
       <div className="flex flex-wrap gap-3 mb-6">
         <button
           onClick={handleConnectionTest}
-          className="flex items-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none"
+          disabled={connectionLoading}
+          className="flex items-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <FiCloud className="mr-2" /> Test Connection
+          {connectionLoading ? <FiRefreshCw className="mr-2 animate-spin" /> : <FiCloud className="mr-2" />}
+          Test Connection
         </button>
 
         <button
           onClick={handleFetchData}
-          className="flex items-center px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 focus:outline-none"
+          disabled={fetchLoading}
+          className="flex items-center px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <FiDownload className="mr-2" /> Fetch Data
+          {fetchLoading ? <FiRefreshCw className="mr-2 animate-spin" /> : <FiDownload className="mr-2" />}
+          Fetch Data
         </button>
 
-        {/* New Batch Fetch Button */}
         <button
           onClick={handleOpenBatchModal}
-          className="flex items-center px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none"
-          style={{border: '2px solid red'}} // Temporary test styling
+          disabled={batchLoading}
+          className="flex items-center px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <FiDownload className="mr-2" /> Batch Fetch
-        </button>
-
-        {/* Test Button to verify rendering */}
-        <button
-          onClick={() => alert('Test button works!')}
-          className="flex items-center px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 focus:outline-none"
-          style={{border: '2px solid blue'}} // Temporary test styling
-        >
-          <FiDownload className="mr-2" /> TEST BUTTON
+          {batchLoading ? <FiRefreshCw className="mr-2 animate-spin" /> : <FiDownload className="mr-2" />}
+          Batch Fetch
         </button>
 
         <button
           onClick={handleOpenSyncModal}
-          className="flex items-center px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700 focus:outline-none"
+          disabled={syncLoading}
+          className="flex items-center px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <FiRefreshCw className="mr-2" /> Sync Selected Fields
+          {syncLoading ? <FiRefreshCw className="mr-2 animate-spin" /> : <FiRefreshCw className="mr-2" />}
+          Sync Selected Fields
         </button>
 
-        {/* New Category-based Sync Button */}
         <button
           onClick={handleOpenCategoryModal}
-          className="flex items-center px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 focus:outline-none"
+          disabled={categoryLoading}
+          className="flex items-center px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <FiList className="mr-2" /> Sync by Category
+          {categoryLoading ? <FiRefreshCw className="mr-2 animate-spin" /> : <FiList className="mr-2" />}
+          Sync by Category
         </button>
 
         <button
           onClick={loadStatistics}
-          className="flex items-center px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 focus:outline-none"
+          disabled={statsLoading}
+          className="flex items-center px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <FiRefreshCw className="mr-2" /> Refresh Stats
+          {statsLoading ? <FiRefreshCw className="mr-2 animate-spin" /> : <FiRefreshCw className="mr-2" />}
+          Refresh Stats
         </button>
 
         <button
           onClick={openPushModal}
-          className="flex items-center px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700 focus:outline-none"
+          disabled={pushLoading}
+          className="flex items-center px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <FiArrowUpCircle className="mr-2" /> Push Stock Back
+          {pushLoading ? <FiRefreshCw className="mr-2 animate-spin" /> : <FiArrowUpCircle className="mr-2" />}
+          Push Stock Back
         </button>
       </div>
 
@@ -431,9 +428,16 @@ const OdooSync = () => {
               <button 
                 onClick={handleSyncCategories}
                 disabled={selectedCategories.length === 0 || categoryLoading}
-                className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {categoryLoading ? 'Syncing...' : `Sync ${selectedCategories.length} Categories`}
+                {categoryLoading ? (
+                  <>
+                    <FiRefreshCw className="mr-2 animate-spin" />
+                    Syncing...
+                  </>
+                ) : (
+                  `Sync ${selectedCategories.length} Categories`
+                )}
               </button>
             </div>
           </div>
@@ -494,9 +498,16 @@ const OdooSync = () => {
               <button 
                 onClick={handleBatchFetch}
                 disabled={batchLoading}
-                className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
+                className="flex items-center px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {batchLoading ? 'Fetching...' : 'Start Batch Fetch'}
+                {batchLoading ? (
+                  <>
+                    <FiRefreshCw className="mr-2 animate-spin" />
+                    Fetching...
+                  </>
+                ) : (
+                  'Start Batch Fetch'
+                )}
               </button>
             </div>
           </div>
@@ -515,7 +526,20 @@ const OdooSync = () => {
             ))}
             <div className="flex justify-end gap-3 mt-4">
               <button onClick={handleCloseSyncModal} className="px-3 py-1 bg-gray-200 rounded">Cancel</button>
-              <button onClick={handleRunSync} className="px-4 py-1 bg-green-600 text-white rounded">Sync</button>
+              <button 
+                onClick={handleRunSync} 
+                disabled={syncLoading}
+                className="flex items-center px-4 py-1 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {syncLoading ? (
+                  <>
+                    <FiRefreshCw className="mr-2 animate-spin" />
+                    Syncing...
+                  </>
+                ) : (
+                  'Sync'
+                )}
+              </button>
             </div>
           </div>
         </div>
@@ -553,7 +577,20 @@ const OdooSync = () => {
             )}
             <div className="flex justify-end gap-3">
               <button onClick={closePushModal} className="px-4 py-2 bg-gray-300 rounded">Cancel</button>
-              <button disabled={!(selectedSource && selectedDestination)} onClick={handlePushBack} className="px-4 py-2 bg-teal-600 text-white rounded disabled:opacity-50">Push</button>
+              <button 
+                disabled={!(selectedSource && selectedDestination) || pushLoading} 
+                onClick={handlePushBack} 
+                className="flex items-center px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {pushLoading ? (
+                  <>
+                    <FiRefreshCw className="mr-2 animate-spin" />
+                    Pushing...
+                  </>
+                ) : (
+                  'Push'
+                )}
+              </button>
             </div>
           </div>
         </div>

@@ -1,94 +1,54 @@
 @echo off
-echo ================================
-echo   SaptMarkets Customer App Deployment
-echo ================================
-echo.
-
-REM Get current directory
-set "ROOT_DIR=%CD%"
-echo Root directory: %ROOT_DIR%
-echo.
-
-REM Check if customer directory exists
-if not exist "customer" (
-    echo ❌ Customer directory not found!
-    pause
-    exit /b 1
-)
-
-echo ================================
-echo   PREPARING CUSTOMER APP
-echo ================================
-echo.
+echo 🚀 Preparing SAPT Markets Customer App for Deployment...
 
 REM Navigate to customer directory
 cd customer
 
-REM Check if .env file exists
-if not exist ".env" (
-    echo ⚠️  Warning: No .env file found!
-    echo Creating .env file from env.production...
-    copy env.production .env
-    if errorlevel 1 (
-        echo ❌ Failed to create .env file!
-        pause
-        exit /b 1
-    )
-)
+REM Remove node_modules if it exists
+echo 📦 Cleaning up node_modules...
+if exist node_modules rmdir /s /q node_modules
 
-REM Install dependencies
-echo 📦 Installing dependencies...
-call npm install
-if errorlevel 1 (
-    echo ❌ Failed to install dependencies!
-    pause
-    exit /b 1
-)
+REM Remove dist folder if it exists
+echo 🗂️ Cleaning up build folder...
+if exist .next rmdir /s /q .next
 
-REM Build the project
-echo 🔨 Building the project...
-call npm run build
-if errorlevel 1 (
-    echo ❌ Build failed!
-    pause
-    exit /b 1
-)
+REM Remove any existing git repository
+echo 🔧 Removing existing git repository...
+if exist .git rmdir /s /q .git
 
-REM Check if git is available
-git --version >nul 2>&1
-if errorlevel 1 (
-    echo ⚠️  Git not found, skipping git operations...
-) else (
-    REM Add and commit changes
-    echo 📝 Committing changes...
-    call git add .
-    call git commit -m "Deploy customer app updates - %date% %time%"
-    if errorlevel 1 (
-        echo ⚠️  No changes to commit or git error
-    )
-)
+REM Initialize new git repository
+echo 📝 Initializing new git repository...
+git init
 
-echo.
-echo ================================
-echo   CUSTOMER APP READY FOR DEPLOYMENT
-echo ================================
-echo.
-echo ✅ Customer app is ready for deployment!
+REM Add all files except those in .gitignore
+echo 📁 Adding files to git...
+git add .
+
+REM Create initial commit
+echo 💾 Creating initial commit...
+git commit -m "Initial commit: SAPT Markets Customer App"
+
+REM Add remote repository
+echo 🔗 Adding remote repository...
+git remote add origin https://github.com/saptmarkets/e-commerce_customer.git
+
+REM Push to main branch
+echo 🚀 Pushing to GitHub...
+git branch -M main
+git push -u origin main --force
+
+echo ✅ Customer app successfully pushed to GitHub!
+echo 🌐 Repository: https://github.com/saptmarkets/e-commerce_customer.git
 echo.
 echo 📋 Next Steps:
-echo 1. Push to GitHub: https://github.com/saptmarkets/e-commerce_customer.git
-echo 2. Deploy to Vercel: https://vercel.com
-echo 3. Set environment variables on Vercel
-echo 4. Test the deployed customer app
-echo.
-echo 🔗 Deployment Platforms:
-echo - Vercel: https://vercel.com (Recommended for Next.js)
-echo - Netlify: https://netlify.com
-echo - Railway: https://railway.app
+echo 1. Go to Vercel Dashboard: https://vercel.com/dashboard
+echo 2. Click 'New Project'
+echo 3. Import the repository: saptmarkets/e-commerce_customer
+echo 4. Configure environment variables
+echo 5. Deploy!
 echo.
 echo 📝 Environment Variables to set on Vercel:
 echo - NEXT_PUBLIC_API_BASE_URL: https://e-commerce-backend-l0s0.onrender.com/api
 echo - NEXTAUTH_SECRET: saptmarkets-customer-nextauth-secret-key-2024
 echo - NEXTAUTH_URL: https://your-customer-domain.vercel.app
-echo.
 pause 

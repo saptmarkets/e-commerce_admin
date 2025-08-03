@@ -37,7 +37,8 @@ const HomepageSections = () => {
   // Fetch all categories
   const fetchCategories = async () => {
     try {
-      const response = await fetch('http://localhost:5055/api/category/show');
+      const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL || 'https://e-commerce-backend-l0s0.onrender.com/api';
+      const response = await fetch(`${API_BASE_URL}/category/show`);
       const data = await response.json();
       setAllCategories(data || []);
     } catch (error) {
@@ -51,7 +52,8 @@ const HomepageSections = () => {
       setLoading(true);
       setMessage('Loading sections...');
       
-      const response = await fetch('http://localhost:5055/api/homepage-sections/admin/all');
+      const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL || 'https://e-commerce-backend-l0s0.onrender.com/api';
+      const response = await fetch(`${API_BASE_URL}/homepage-sections/admin/all`);
       const data = await response.json();
       
       // Ensure data is an array before using reduce
@@ -82,7 +84,8 @@ const HomepageSections = () => {
       setLoading(true);
       setMessage('Cleaning up duplicates...');
       
-      const response = await fetch('http://localhost:5055/api/homepage-sections/cleanup-duplicates', {
+      const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL || 'https://e-commerce-backend-l0s0.onrender.com/api';
+      const response = await fetch(`${API_BASE_URL}/homepage-sections/cleanup-duplicates`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
       });
@@ -104,7 +107,8 @@ const HomepageSections = () => {
   // Toggle section on/off
   const toggleSection = async (sectionId, currentStatus) => {
     try {
-      const response = await fetch(`http://localhost:5055/api/homepage-sections/${sectionId}/toggle`, {
+      const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL || 'https://e-commerce-backend-l0s0.onrender.com/api';
+      const response = await fetch(`${API_BASE_URL}/homepage-sections/${sectionId}/toggle`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ isActive: !currentStatus })
@@ -135,7 +139,8 @@ const HomepageSections = () => {
         sortOrder: index
       }));
 
-      const response = await fetch('http://localhost:5055/api/homepage-sections/order/update', {
+      const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL || 'https://e-commerce-backend-l0s0.onrender.com/api';
+      const response = await fetch(`${API_BASE_URL}/homepage-sections/order/update`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sections: orderData })
@@ -282,7 +287,8 @@ const HomepageSections = () => {
         }
       };
 
-      const response = await fetch(`http://localhost:5055/api/homepage-sections/${editingSection.sectionId}`, {
+      const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL || 'https://e-commerce-backend-l0s0.onrender.com/api';
+      const response = await fetch(`${API_BASE_URL}/homepage-sections/${editingSection.sectionId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updateData)
@@ -312,7 +318,8 @@ const HomepageSections = () => {
       setLoading(true);
       setMessage('Creating default sections...');
       
-      const response = await fetch('http://localhost:5055/api/homepage-sections/initialize', {
+      const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL || 'https://e-commerce-backend-l0s0.onrender.com/api';
+      const response = await fetch(`${API_BASE_URL}/homepage-sections/initialize`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
       });

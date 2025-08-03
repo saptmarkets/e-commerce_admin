@@ -9,10 +9,10 @@ echo 📦 Cleaning up node_modules...
 if exist node_modules rmdir /s /q node_modules
 
 REM Remove dist folder if it exists
-echo 🗂️ Cleaning up dist folder...
+echo 🗂️ Cleaning up build folder...
 if exist dist rmdir /s /q dist
 
-REM Remove any existing git repository
+REM Remove any existing git repository to start fresh
 echo 🔧 Removing existing git repository...
 if exist .git rmdir /s /q .git
 
@@ -20,30 +20,56 @@ REM Initialize new git repository
 echo 📝 Initializing new git repository...
 git init
 
+REM Create or update .gitignore for admin
+echo 🔒 Creating admin .gitignore...
+echo # Dependencies > .gitignore
+echo node_modules/ >> .gitignore
+echo npm-debug.log* >> .gitignore
+echo yarn-debug.log* >> .gitignore
+echo yarn-error.log* >> .gitignore
+echo .npm >> .gitignore
+echo .yarn-integrity >> .gitignore
+echo # Build outputs >> .gitignore
+echo dist/ >> .gitignore
+echo build/ >> .gitignore
+echo .next/ >> .gitignore
+echo # Environment files >> .gitignore
+echo .env >> .gitignore
+echo .env.local >> .gitignore
+echo .env.development.local >> .gitignore
+echo .env.test.local >> .gitignore
+echo .env.production.local >> .gitignore
+echo # Editor files >> .gitignore
+echo .DS_Store >> .gitignore
+echo .vscode/ >> .gitignore
+echo .idea/ >> .gitignore
+echo # Logs >> .gitignore
+echo *.log >> .gitignore
+echo logs/ >> .gitignore
+
 REM Add all files except those in .gitignore
 echo 📁 Adding files to git...
 git add .
 
 REM Create initial commit
 echo 💾 Creating initial commit...
-git commit -m "Initial commit: SAPT Markets Admin App"
+git commit -m "Clean deployment: SAPT Markets Admin App - Latest with Odoo sync improvements"
+
+REM Rename branch to main
+echo 🔄 Setting branch to main...
+git branch -M main
 
 REM Add remote repository
-echo 🔗 Adding remote repository...
+echo 🌐 Adding remote repository...
 git remote add origin https://github.com/saptmarkets/e-commerce_admin.git
 
-REM Push to main branch
-echo 🚀 Pushing to GitHub...
-git branch -M main
-git push -u origin main
+REM Force push to overwrite existing repository with clean files
+echo 🚀 Force pushing to clean admin repository...
+git push origin main --force
 
-echo ✅ Admin app successfully pushed to GitHub!
-echo 🌐 Repository: https://github.com/saptmarkets/e-commerce_admin.git
-echo.
-echo 📋 Next Steps:
-echo 1. Go to Vercel Dashboard: https://vercel.com/dashboard
-echo 2. Click 'New Project'
-echo 3. Import the repository: saptmarkets/e-commerce_admin
-echo 4. Configure environment variables
-echo 5. Deploy!
+echo ✅ Admin deployment completed successfully!
+echo 📦 Repository: https://github.com/saptmarkets/e-commerce_admin
+echo 🎯 Only admin files have been deployed
+
+cd ..
 pause 
