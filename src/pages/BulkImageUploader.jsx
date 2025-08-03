@@ -40,6 +40,12 @@ const BulkImageUploader = () => {
     enableEnglishMatching: true
   });
 
+  // Filtering states
+  const [filterStatus, setFilterStatus] = useState('all'); // all, matched, unmatched
+  const [selectedMatches, setSelectedMatches] = useState([]);
+  const [showImagePreview, setShowImagePreview] = useState(false);
+  const [previewImage, setPreviewImage] = useState(null);
+
   // Connection status states
   const [dbConnected, setDbConnected] = useState(false);
   const [cloudinaryConnected, setCloudinaryConnected] = useState(false);
@@ -180,8 +186,46 @@ const BulkImageUploader = () => {
       toast.info('Manual selection feature coming soon...');
     } else if (action === 'preview') {
       // Show image preview
-      toast.info('Image preview feature coming soon...');
+      const match = matches[index];
+      if (match && match.imagePreview) {
+        setPreviewImage(match.imagePreview);
+        setShowImagePreview(true);
+      } else {
+        toast.error('No image preview available');
+      }
     }
+  };
+
+  const handleFilterChange = (status) => {
+    setFilterStatus(status);
+  };
+
+  const handleSelectMatch = (index) => {
+    setSelectedMatches(prev => {
+      if (prev.includes(index)) {
+        return prev.filter(i => i !== index);
+      } else {
+        return [...prev, index];
+      }
+    });
+  };
+
+  const handleSelectAllMatches = () => {
+    const filteredMatches = getFilteredMatches();
+    setSelectedMatches(filteredMatches.map((_, index) => index));
+  };
+
+  const handleClearSelection = () => {
+    setSelectedMatches([]);
+  };
+
+  const getFilteredMatches = () => {
+    if (filterStatus === 'all') return matches;
+    return matches.filter(match => {
+      if (filterStatus === 'matched') return match.status === 'matched';
+      if (filterStatus === 'unmatched') return match.status === 'unmatched';
+      return true;
+    });
   };
 
   return (
@@ -249,11 +293,39 @@ const BulkImageUploader = () => {
 
         {/* Right Panel - Main Table & Preview */}
         <div className="lg:col-span-2">
-          <MatchingTable 
-            matches={matches}
-            onMatchUpdate={handleMatchUpdate}
-            uploadState={uploadState}
-          />
+                  <MatchingTable 
+          matches={matches} 
+          onMatchUpdate={handleMatchUpdate} 
+          uploadState={uploadState}
+          filterStatus={filterStatus}
+          onFilterChange={handleFilterChange}
+          selectedMatches={selectedMatches}
+          onSelectMatch={handleSelectMatch}
+          onSelectAllMatches={handleSelectAllMatches}
+          onClearSelection={handleClearSelection}
+        />
+
+        {/* Image Preview Modal */}
+        {showImagePreview && previewImage && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-4 max-w-2xl max-h-2xl">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold">Image Preview</h3>
+                <button
+                  onClick={() => setShowImagePreview(false)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  <FiX className="text-xl" />
+                </button>
+              </div>
+              <img 
+                src={previewImage} 
+                alt="Preview" 
+                className="w-full h-auto max-h-96 object-contain"
+              />
+            </div>
+          </div>
+        )}
           
           {/* Progress Section */}
           {uploadState === 'uploading' && (
@@ -415,7 +487,13 @@ const SettingsPanel = ({
 };
 
 // Matching Table Component
-const MatchingTable = ({ matches, onMatchUpdate, uploadState }) => {
+const MatchingTable = ({ matches, onMatchUpdate, uploadState, filterStatus, onFilterChange, selectedMatches, onSelectMatch, onSelectAllMatches, onClearSelection }) => {
+  const filteredMatches = filterStatus === 'all' ? matches : matches.filter(match => {
+    if (filterStatus === 'matched') return match.status === 'matched';
+    if (filterStatus === 'unmatched') return match.status === 'unmatched';
+    return true;
+  });
+
   if (matches.length === 0) {
     return (
       <div className="bg-white rounded-lg shadow-md p-8 text-center">
@@ -431,10 +509,41 @@ const MatchingTable = ({ matches, onMatchUpdate, uploadState }) => {
   return (
     <div className="bg-white rounded-lg shadow-md">
       <div className="p-4 border-b">
-        <h3 className="text-lg font-semibold">Product Matches</h3>
-        <p className="text-sm text-gray-600">
-          {matches.length} items • {matches.filter(m => m.status === 'matched').length} matched
-        </p>
+        <div className="flex justify-between items-center">
+          <div>
+            <h3 className="text-lg font-semibold">Product Matches</h3>
+            <p className="text-sm text-gray-600">
+              {filteredMatches.length} of {matches.length} items • {matches.filter(m => m.status === 'matched').length} matched
+            </p>
+          </div>
+          
+          {/* Filter Controls */}
+          <div className="flex items-center space-x-2">
+            <select 
+              value={filterStatus} 
+              onChange={(e) => onFilterChange(e.target.value)}
+              className="px-3 py-1 border border-gray-300 rounded text-sm"
+            >
+              <option value="all">All Matches</option>
+              <option value="matched">Matched Only</option>
+              <option value="unmatched">Unmatched Only</option>
+            </select>
+            
+            <button
+              onClick={onSelectAllMatches}
+              className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700"
+            >
+              Select All
+            </button>
+            
+            <button
+              onClick={onClearSelection}
+              className="px-3 py-1 bg-gray-600 text-white rounded text-sm hover:bg-gray-700"
+            >
+              Clear
+            </button>
+          </div>
+        </div>
       </div>
 
       <div className="overflow-x-auto">
@@ -459,12 +568,27 @@ const MatchingTable = ({ matches, onMatchUpdate, uploadState }) => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {matches.map((match, index) => (
-              <tr key={index} className="hover:bg-gray-50">
+            {filteredMatches.map((match, index) => (
+              <tr key={index} className={`hover:bg-gray-50 ${selectedMatches.includes(index) ? 'bg-blue-50' : ''}`}>
                 <td className="px-4 py-3">
                   <div className="flex items-center">
-                    <div className="w-12 h-12 bg-gray-200 rounded flex items-center justify-center">
-                      <FiImage className="text-gray-400" />
+                    <input
+                      type="checkbox"
+                      checked={selectedMatches.includes(index)}
+                      onChange={() => onSelectMatch(index)}
+                      className="mr-2"
+                    />
+                    <div className="w-12 h-12 bg-gray-200 rounded flex items-center justify-center overflow-hidden">
+                      {match.imagePreview ? (
+                        <img 
+                          src={match.imagePreview} 
+                          alt={match.imageName}
+                          className="w-full h-full object-cover cursor-pointer"
+                          onClick={() => onMatchUpdate(index, 'preview')}
+                        />
+                      ) : (
+                        <FiImage className="text-gray-400" />
+                      )}
                     </div>
                     <span className="ml-2 text-sm font-medium max-w-xs truncate">
                       {match.imageName}

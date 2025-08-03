@@ -17,7 +17,7 @@ class BulkImageUploadService {
   }
 
   // Load products without images
-  async loadProductsWithoutImages(page = 1, limit = 50, search = '', category = '') {
+  async loadProductsWithoutImages(page = 1, limit = 1000, search = '', category = '') {
     try {
       const params = new URLSearchParams({
         page: page.toString(),
@@ -32,7 +32,8 @@ class BulkImageUploadService {
         params.append('category', category);
       }
       
-      return await requests.get(`/bulk-upload/products/without-images?${params}`);
+      const response = await axios.get(`${this.baseURL}/bulk-upload/products/without-images?${params}`);
+      return response.data;
     } catch (error) {
       console.error('Error loading products without images:', error);
       throw new Error(`Failed to load products: ${error.message}`);
