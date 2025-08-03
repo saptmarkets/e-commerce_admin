@@ -36,6 +36,7 @@ const Banners = lazy(() => import("@/pages/Banners"));
 const OdooSync = lazy(() => import("@/pages/OdooSync"));
 const OdooCatalog = lazy(() => import("@/pages/OdooCatalog"));
 const OdooPromotions = lazy(() => import("@/pages/OdooPromotions"));
+const BulkImageUploader = lazy(() => import("@/pages/BulkImageUploader"));
 
 // Delivery Management Pages
 const DeliveryDashboard = lazy(() => import("@/pages/DeliveryDashboard"));
@@ -193,6 +194,10 @@ const routes = [
     path: '/odoo-promotions',
     component: OdooPromotions,
   },
+  {
+    path: '/bulk-image-uploader',
+    component: BulkImageUploader,
+  },
   
   // Delivery Management Routes
   {
@@ -289,6 +294,7 @@ const routeAccessList = [
   { label: "Odoo Sync", value: "odoo-sync" },
   { label: "Odoo Catalog", value: "odoo-catalog" },
   { label: "Odoo Promotions", value: "odoo-promotions" },
+  { label: "Bulk Image Uploader", value: "bulk-image-uploader" },
   { label: "Sales Analytics", value: "reports/sales" },
   { label: "Inventory Reports", value: "reports/inventory" },
   { label: "Customer Insights", value: "reports/customers" },

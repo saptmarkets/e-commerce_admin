@@ -86,6 +86,10 @@ const sidebar = [
         path: "/odoo-promotions",
         name: "Promotions (Pricelist)",
       },
+      {
+        path: "/bulk-image-uploader",
+        name: "Bulk Image Uploader",
+      },
     ],
   },
 

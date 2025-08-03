@@ -34,6 +34,7 @@ const mobileDeliveryRoutes = require("./routes/mobileDeliveryRoutes");
 const odooSyncRoutes = require("./routes/odooSyncRoutes");
 const odooRoutes = require("./routes/odooRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
+const bulkUploadRoutes = require("./routes/bulkUploadRoutes");
 const reportRoutes = require("./routes/reportRoutes");
 const { isAuth, isAdmin } = require("./config/auth");
 
@@ -178,6 +179,9 @@ app.use("/api/odoo", isAuth, isAdmin, odooRoutes);
 
 // Upload routes
 app.use("/api/upload", uploadRoutes);
+
+// Bulk upload routes (admin only)
+app.use("/api/bulk-upload", isAuth, isAdmin, bulkUploadRoutes);
 
 // Reports routes (admin only)
 app.use("/api/reports", reportRoutes);
