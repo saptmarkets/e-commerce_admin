@@ -17,6 +17,7 @@ import {
   FiClock
 } from 'react-icons/fi';
 import { toast } from 'react-toastify';
+import BulkImageUploadService from '@/services/BulkImageUploadService';
 
 const BulkImageUploader = () => {
   const [uploadState, setUploadState] = useState('idle'); // idle, loading, matching, uploading, completed
@@ -58,9 +59,7 @@ const BulkImageUploader = () => {
   const checkConnections = async () => {
     try {
       // Check MongoDB connection using the bulk upload service
-      const service = (await import('@/services/BulkImageUploadService')).default;
-      
-      const dbResponse = await service.checkConnections();
+      const dbResponse = await BulkImageUploadService.checkConnections();
       setDbConnected(dbResponse.dbConnected);
       setCloudinaryConnected(dbResponse.cloudinaryConnected);
     } catch (error) {
@@ -116,10 +115,7 @@ const BulkImageUploader = () => {
       setUploadState('loading');
       toast.info('Loading products without images...');
       
-      // Import and use the service
-      const service = (await import('@/services/BulkImageUploadService')).default;
-      
-      const data = await service.loadProductsWithoutImages();
+      const data = await BulkImageUploadService.loadProductsWithoutImages();
       
       setProducts(data.products || []);
       toast.success(`Loaded ${data.products?.length || 0} products without images`);
