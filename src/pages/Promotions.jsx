@@ -953,7 +953,6 @@ const Promotions = () => {
           handleDelete={confirmDelete}
           handleModalClose={() => setOpenModal(false)}
         />
-      </div>
     </Main>
   );
 };
