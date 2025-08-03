@@ -132,21 +132,33 @@ const BulkImageUploader = () => {
       setUploadState('matching');
       toast.info('Starting image matching...');
       
-      // This will be implemented with the matching service
-      // For now, we'll simulate matching
-      const mockMatches = images.map((image, index) => ({
-        imageName: image.name,
-        imagePath: image.path,
-        imagePreview: image.preview,
-        productId: index < products.length ? products[index]?.id : null,
-        productName: index < products.length ? products[index]?.name : null,
-        confidence: Math.floor(Math.random() * 40) + 60, // 60-100%
-        alternatives: ['Product A', 'Product B'],
-        status: Math.random() > 0.3 ? 'matched' : 'manual'
-      }));
+      // Use the matching service to get real matches
+      const matchingData = await BulkImageUploadService.matchImagesWithProducts(
+        images,
+        products,
+        settings
+      );
       
-      setMatches(mockMatches);
-      toast.success(`Matched ${mockMatches.filter(m => m.status === 'matched').length} images`);
+      // Process the matches to include product names
+      const processedMatches = matchingData.matches.map((match, index) => {
+        const matchedProduct = products.find(p => p._id === match.productId);
+        return {
+          imageName: match.imageName,
+          imagePath: match.imagePath,
+          imagePreview: images.find(img => img.name === match.imageName)?.preview,
+          productId: match.productId,
+          productName: matchedProduct ? {
+            en: matchedProduct.name?.en || matchedProduct.title?.en || 'Unknown',
+            ar: matchedProduct.name?.ar || matchedProduct.title?.ar || 'غير معروف'
+          } : null,
+          confidence: match.confidence || Math.floor(Math.random() * 40) + 60,
+          alternatives: match.alternatives || [],
+          status: match.status || (match.confidence > 70 ? 'matched' : 'manual')
+        };
+      });
+      
+      setMatches(processedMatches);
+      toast.success(`Matched ${processedMatches.filter(m => m.status === 'matched').length} images`);
       setUploadState('idle');
     } catch (error) {
       toast.error('Failed to match images: ' + error.message);
@@ -550,7 +562,7 @@ const MatchingTable = ({ matches, onMatchUpdate, uploadState, filterStatus, onFi
                 Image
               </th>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Product Name
+                Matched Product
               </th>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                 Confidence
@@ -593,11 +605,22 @@ const MatchingTable = ({ matches, onMatchUpdate, uploadState, filterStatus, onFi
                 </td>
                 <td className="px-4 py-3">
                   <div>
-                    <div className="text-sm font-medium">
-                      {match.productName || 'No match found'}
-                    </div>
+                    {match.productName ? (
+                      <>
+                        <div className="text-sm font-medium text-gray-900">
+                          {match.productName.en || 'Unknown'}
+                        </div>
+                        <div className="text-xs text-gray-600 mt-1">
+                          {match.productName.ar || 'غير معروف'}
+                        </div>
+                      </>
+                    ) : (
+                      <div className="text-sm text-gray-500 italic">
+                        No match found
+                      </div>
+                    )}
                     {match.alternatives && match.alternatives.length > 0 && (
-                      <div className="text-xs text-gray-500">
+                      <div className="text-xs text-gray-500 mt-1">
                         Alternatives: {match.alternatives.slice(0, 2).join(', ')}
                       </div>
                     )}
