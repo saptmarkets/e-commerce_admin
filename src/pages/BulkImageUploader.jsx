@@ -33,7 +33,7 @@ const BulkImageUploader = () => {
     skipped: 0
   });
   const [settings, setSettings] = useState({
-    confidenceThreshold: 70,
+    confidenceThreshold: 30,
     batchSize: 10,
     uploadQuality: 'auto',
     retryAttempts: 3,
@@ -148,12 +148,15 @@ const BulkImageUploader = () => {
           imagePreview: bestImage?.preview || null,
           confidence: bestImage?.confidence || 0,
           alternatives: bestImage?.alternatives || [],
-          status: bestImage?.confidence > settings.confidenceThreshold ? 'matched' : 'no_match'
+          status: bestImage?.confidence > settings.confidenceThreshold ? 'matched' : 'unmatched'
         };
       });
       
       setMatches(processedMatches);
-      toast.success(`Matched ${processedMatches.filter(m => m.status === 'matched').length} products`);
+      const matchedCount = processedMatches.filter(m => m.status === 'matched').length;
+      const unmatchedCount = processedMatches.filter(m => m.status === 'unmatched').length;
+      console.log('Matching results:', { matchedCount, unmatchedCount, total: processedMatches.length });
+      toast.success(`Matched ${matchedCount} products, ${unmatchedCount} unmatched`);
       setUploadState('idle');
     } catch (error) {
       toast.error('Failed to match products: ' + error.message);
@@ -269,16 +272,48 @@ const BulkImageUploader = () => {
       setUploadState('uploading');
       setUploadStats({ total: matches.length, processed: 0, success: 0, failed: 0, skipped: 0 });
       
-      // This will be implemented with the upload service
-      for (let i = 0; i < matches.length; i++) {
-        setUploadProgress(((i + 1) / matches.length) * 100);
-        setUploadStats(prev => ({ ...prev, processed: i + 1, success: i + 1 }));
-        
-        // Simulate upload delay
-        await new Promise(resolve => setTimeout(resolve, 500));
+      // Filter only matched products for upload
+      const matchedProducts = matches.filter(match => match.status === 'matched');
+      
+      if (matchedProducts.length === 0) {
+        toast.warning('No matched products to upload!');
+        setUploadState('idle');
+        return;
       }
       
-      toast.success('Upload completed successfully!');
+      for (let i = 0; i < matchedProducts.length; i++) {
+        const match = matchedProducts[i];
+        
+        try {
+          // Upload image to Cloudinary
+          const uploadResult = await BulkImageUploadService.uploadToCloudinary(match.imagePreview);
+          
+          // Update product with image URL
+          if (match.productId) {
+            await BulkImageUploadService.updateProductImage(match.productId, uploadResult.url);
+          }
+          
+          setUploadProgress(((i + 1) / matchedProducts.length) * 100);
+          setUploadStats(prev => ({ 
+            ...prev, 
+            processed: i + 1, 
+            success: prev.success + 1 
+          }));
+          
+        } catch (error) {
+          console.error(`Failed to upload ${match.imageName}:`, error);
+          setUploadStats(prev => ({ 
+            ...prev, 
+            processed: i + 1, 
+            failed: prev.failed + 1 
+          }));
+        }
+        
+        // Small delay to prevent overwhelming the server
+        await new Promise(resolve => setTimeout(resolve, 200));
+      }
+      
+      toast.success(`Upload completed! ${uploadStats.success} successful, ${uploadStats.failed} failed`);
       setUploadState('completed');
     } catch (error) {
       toast.error('Upload failed: ' + error.message);
@@ -725,11 +760,11 @@ const MatchingTable = ({ matches, onMatchUpdate, uploadState, filterStatus, onFi
                 <td className="px-4 py-3">
                   <span className={`px-2 py-1 rounded text-xs ${
                     match.status === 'matched' ? 'bg-green-100 text-green-800' :
-                    match.status === 'manual' ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-red-100 text-red-800'
+                    match.status === 'unmatched' ? 'bg-red-100 text-red-800' :
+                    'bg-yellow-100 text-yellow-800'
                   }`}>
                     {match.status === 'matched' ? '✅ Matched' :
-                     match.status === 'manual' ? '⚠️ Manual' : '❌ No Match'}
+                     match.status === 'unmatched' ? '❌ Unmatched' : '⚠️ Manual'}
                   </span>
                 </td>
                 <td className="px-4 py-3">
