@@ -7,6 +7,99 @@ const cloudinary = require('cloudinary').v2;
 const mongoose = require('mongoose');
 const Product = require('../models/Product');
 
+// Check MongoDB connection
+router.get('/check-mongodb', async (req, res) => {
+  try {
+    const dbStatus = mongoose.connection.readyState;
+    const isConnected = dbStatus === 1;
+    
+    console.log('=== MONGODB CONNECTION CHECK ===');
+    console.log('Connection status:', dbStatus);
+    console.log('Connection name:', mongoose.connection.name);
+    console.log('Connection host:', mongoose.connection.host);
+    console.log('Is connected:', isConnected);
+    
+    res.json({
+      connected: isConnected,
+      status: dbStatus,
+      name: mongoose.connection.name,
+      host: mongoose.connection.host,
+      message: isConnected ? 'MongoDB connected successfully' : 'MongoDB not connected'
+    });
+  } catch (error) {
+    console.error('MongoDB check error:', error);
+    res.status(500).json({
+      connected: false,
+      error: error.message,
+      message: 'Failed to check MongoDB connection'
+    });
+  }
+});
+
+// Check Cloudinary connection
+router.get('/check-cloudinary', async (req, res) => {
+  try {
+    console.log('=== CLOUDINARY CONNECTION CHECK ===');
+    
+    // Test Cloudinary configuration
+    const config = cloudinary.config();
+    console.log('Cloudinary config:', {
+      cloud_name: config.cloud_name,
+      api_key: config.api_key ? '***' : 'not set',
+      api_secret: config.api_secret ? '***' : 'not set'
+    });
+    
+    if (!config.cloud_name || !config.api_key || !config.api_secret) {
+      return res.json({
+        connected: false,
+        message: 'Cloudinary configuration incomplete',
+        config: {
+          cloud_name: !!config.cloud_name,
+          api_key: !!config.api_key,
+          api_secret: !!config.api_secret
+        }
+      });
+    }
+    
+    // Test upload with a small test image
+    try {
+      const testResult = await cloudinary.uploader.upload(
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
+        {
+          public_id: 'test-connection',
+          overwrite: true,
+          invalidate: true
+        }
+      );
+      
+      console.log('Cloudinary test upload successful');
+      
+      res.json({
+        connected: true,
+        message: 'Cloudinary connected successfully',
+        test_upload: {
+          public_id: testResult.public_id,
+          url: testResult.secure_url
+        }
+      });
+    } catch (uploadError) {
+      console.error('Cloudinary test upload failed:', uploadError);
+      res.json({
+        connected: false,
+        message: 'Cloudinary test upload failed',
+        error: uploadError.message
+      });
+    }
+  } catch (error) {
+    console.error('Cloudinary check error:', error);
+    res.status(500).json({
+      connected: false,
+      error: error.message,
+      message: 'Failed to check Cloudinary connection'
+    });
+  }
+});
+
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
