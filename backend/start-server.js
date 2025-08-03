@@ -319,6 +319,31 @@ app.get("/api/fix-indexes", async (req, res) => {
   }
 });
 
+// Health check endpoints (no authentication required)
+app.get('/api/health', (req, res) => {
+  const dbStatus = mongoose.connection.readyState;
+  res.json({
+    connected: dbStatus === 1,
+    status: dbStatus,
+    statusText: {
+      0: 'disconnected',
+      1: 'connected',
+      2: 'connecting',
+      3: 'disconnecting'
+    }[dbStatus]
+  });
+});
+
+app.get('/api/check-cloudinary', async (req, res) => {
+  try {
+    const cloudinary = require('cloudinary').v2;
+    await cloudinary.api.ping();
+    res.json({ connected: true });
+  } catch (err) {
+    res.status(500).json({ connected: false, error: err.message });
+  }
+});
+
 // Use express's default error handling middleware
 app.use((err, req, res, next) => {
   if (res.headersSent) return next(err);
