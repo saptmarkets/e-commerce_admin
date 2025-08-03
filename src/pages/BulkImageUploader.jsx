@@ -17,6 +17,7 @@ import {
   FiClock
 } from 'react-icons/fi';
 import { toast } from 'react-toastify';
+import BulkImageUploadService from '@/services/BulkImageUploadService';
 
 const BulkImageUploader = () => {
   const [uploadState, setUploadState] = useState('idle'); // idle, loading, matching, uploading, completed
@@ -51,12 +52,12 @@ const BulkImageUploader = () => {
 
   const checkConnections = async () => {
     try {
-      // Check MongoDB connection
-      const dbResponse = await fetch(`${import.meta.env.VITE_APP_API_BASE_URL || 'https://e-commerce-backend-l0s0.onrender.com/api'}/health`);
-      setDbConnected(dbResponse.ok);
+      // Use the service to check connections
+      const status = await BulkImageUploadService.checkConnections();
+      console.log('Connection status:', status);
       
-      // Check Cloudinary connection (we'll implement this later)
-      setCloudinaryConnected(true); // Placeholder for now
+      setDbConnected(status.dbConnected);
+      setCloudinaryConnected(status.cloudinaryConnected);
     } catch (error) {
       console.error('Connection check failed:', error);
       setDbConnected(false);
@@ -110,14 +111,15 @@ const BulkImageUploader = () => {
       setUploadState('loading');
       toast.info('Loading products without images...');
       
-      // This will fetch from your existing API
-      const response = await fetch(`${import.meta.env.VITE_APP_API_BASE_URL || 'https://e-commerce-backend-l0s0.onrender.com/api'}/products/without-images`);
-      const data = await response.json();
+      // Use the service to fetch products
+      const data = await BulkImageUploadService.loadProductsWithoutImages();
       
       setProducts(data.products || []);
       toast.success(`Loaded ${data.products?.length || 0} products without images`);
+      console.log('Products loaded:', data);
       setUploadState('idle');
     } catch (error) {
+      console.error('Error loading products:', error);
       toast.error('Failed to load products: ' + error.message);
       setUploadState('idle');
     }
