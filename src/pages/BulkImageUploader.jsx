@@ -69,17 +69,36 @@ const BulkImageUploader = () => {
       setUploadState('loading');
       toast.info('Loading images...');
       
-      // This will be implemented with file input or directory selection
-      // For now, we'll simulate loading
-      const mockImages = [
-        { name: 'شركة_سابت_منتج_كبير.jpg', path: '/images/1.jpg', preview: 'data:image/jpeg;base64,...' },
-        { name: 'SaptCompany_Product_Medium.png', path: '/images/2.png', preview: 'data:image/png;base64,...' },
-        { name: 'شركة_سابت_منتج_صغير.jpg', path: '/images/3.jpg', preview: 'data:image/jpeg;base64,...' }
-      ];
+      // Create file input for image selection
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.multiple = true;
+      input.accept = 'image/*';
       
-      setImages(mockImages);
-      toast.success(`Loaded ${mockImages.length} images`);
-      setUploadState('idle');
+      input.onchange = async (e) => {
+        const files = Array.from(e.target.files);
+        const imageFiles = [];
+        
+        for (const file of files) {
+          // Create preview URL
+          const preview = URL.createObjectURL(file);
+          
+          imageFiles.push({
+            name: file.name,
+            path: file.path || file.name,
+            size: file.size,
+            preview: preview,
+            file: file, // Keep the actual file for upload
+            lastModified: file.lastModified
+          });
+        }
+        
+        setImages(imageFiles);
+        toast.success(`Loaded ${imageFiles.length} images`);
+        setUploadState('idle');
+      };
+      
+      input.click();
     } catch (error) {
       toast.error('Failed to load images: ' + error.message);
       setUploadState('idle');

@@ -50,10 +50,12 @@ class BulkImageUploadService {
       
       try {
         // Upload to Cloudinary
-        const uploadResult = await this.uploadToCloudinary(match.imagePath);
+        const uploadResult = await this.uploadToCloudinary(match.file || match.imagePath);
         
         // Update database
-        await this.updateProductImage(match.productId, uploadResult.url);
+        if (match.productId) {
+          await this.updateProductImage(match.productId, uploadResult.url);
+        }
         
         results.push({
           ...match,
@@ -74,11 +76,27 @@ class BulkImageUploadService {
     return results;
   }
 
-  async uploadToCloudinary(imagePath) {
+  async uploadToCloudinary(fileOrPath) {
     try {
-      const response = await axios.post(`${this.baseURL}/bulk-upload/upload-to-cloudinary`, {
-        imagePath
-      });
+      let response;
+      
+      if (fileOrPath instanceof File) {
+        // Upload file directly
+        const formData = new FormData();
+        formData.append('image', fileOrPath);
+        
+        response = await axios.post(`${this.baseURL}/bulk-upload/upload-file`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+      } else {
+        // Upload by path
+        response = await axios.post(`${this.baseURL}/bulk-upload/upload-to-cloudinary`, {
+          imagePath: fileOrPath
+        });
+      }
+      
       return response.data;
     } catch (error) {
       throw new Error(`Cloudinary upload failed: ${error.message}`);
@@ -100,18 +118,22 @@ class BulkImageUploadService {
   async checkConnections() {
     try {
       const [dbResponse, cloudinaryResponse] = await Promise.all([
-        axios.get(`${this.baseURL}/health`),
+        axios.get(`${this.baseURL}/bulk-upload/check-mongodb`),
         axios.get(`${this.baseURL}/bulk-upload/check-cloudinary`)
       ]);
       
       return {
-        dbConnected: dbResponse.status === 200,
-        cloudinaryConnected: cloudinaryResponse.status === 200
+        dbConnected: dbResponse.data.connected,
+        cloudinaryConnected: cloudinaryResponse.data.connected,
+        dbStatus: dbResponse.data,
+        cloudinaryStatus: cloudinaryResponse.data
       };
     } catch (error) {
+      console.error('Connection check error:', error);
       return {
         dbConnected: false,
-        cloudinaryConnected: false
+        cloudinaryConnected: false,
+        error: error.message
       };
     }
   }
