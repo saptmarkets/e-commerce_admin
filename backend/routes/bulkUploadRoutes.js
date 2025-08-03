@@ -4,6 +4,7 @@ const fs = require('fs').promises;
 const path = require('path');
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
+const mongoose = require('mongoose');
 const Product = require('../models/Product');
 
 // Configure multer for file uploads
@@ -82,22 +83,54 @@ router.post('/load-images', async (req, res) => {
 // Get products without images
 router.get('/products/without-images', async (req, res) => {
   try {
+    // First check MongoDB connection
+    const dbStatus = mongoose.connection.readyState;
+    console.log('MongoDB connection status:', dbStatus);
+    
+    if (dbStatus !== 1) {
+      return res.status(500).json({ 
+        error: 'MongoDB not connected',
+        status: dbStatus,
+        message: 'Database connection is not ready'
+      });
+    }
+
+    // Get all products first to debug
+    const allProducts = await Product.find({}).select('_id title name company size description image_url').limit(10);
+    console.log('Sample products found:', allProducts.length);
+    console.log('Sample product structure:', allProducts[0]);
+
+    // Find products without images - check multiple possible field names
     const products = await Product.find({
       $or: [
         { image_url: { $exists: false } },
         { image_url: null },
         { image_url: '' },
-        { image_url: { $regex: /^$/, $options: 'i' } }
+        { image_url: { $regex: /^$/, $options: 'i' } },
+        { image: { $exists: false } },
+        { image: null },
+        { image: '' },
+        { image: { $regex: /^$/, $options: 'i' } },
+        { images: { $exists: false } },
+        { images: null },
+        { images: { $size: 0 } }
       ]
-    }).select('id name company size description');
+    }).select('_id title name company size description image_url image images');
+
+    console.log('Products without images found:', products.length);
 
     res.json({ 
       products: products,
-      total: products.length
+      total: products.length,
+      dbStatus: dbStatus,
+      sampleProducts: allProducts.slice(0, 3) // For debugging
     });
   } catch (error) {
     console.error('Error fetching products:', error);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ 
+      error: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
   }
 });
 
@@ -139,7 +172,40 @@ router.post('/match', async (req, res) => {
   }
 });
 
-// Upload image to Cloudinary
+// Upload file to Cloudinary
+router.post('/upload-file', upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No image file provided' });
+    }
+
+    // Upload to Cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: 'products',
+      resource_type: 'image',
+      transformation: [
+        { width: 800, height: 800, crop: 'limit' },
+        { quality: 'auto' }
+      ]
+    });
+
+    // Clean up uploaded file
+    await fs.unlink(req.file.path);
+
+    res.json({
+      url: result.secure_url,
+      publicId: result.public_id,
+      width: result.width,
+      height: result.height,
+      size: result.bytes
+    });
+  } catch (error) {
+    console.error('Error uploading file to Cloudinary:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Upload image to Cloudinary by path
 router.post('/upload-to-cloudinary', async (req, res) => {
   try {
     const { imagePath } = req.body;
@@ -209,6 +275,33 @@ router.put('/products/:id/image', async (req, res) => {
   } catch (error) {
     console.error('Error updating product image:', error);
     res.status(500).json({ error: error.message });
+  }
+});
+
+// Check MongoDB connection
+router.get('/check-mongodb', async (req, res) => {
+  try {
+    const dbStatus = mongoose.connection.readyState;
+    const statusText = {
+      0: 'disconnected',
+      1: 'connected',
+      2: 'connecting',
+      3: 'disconnecting'
+    };
+    
+    res.json({ 
+      connected: dbStatus === 1,
+      status: dbStatus,
+      statusText: statusText[dbStatus],
+      database: mongoose.connection.name,
+      host: mongoose.connection.host
+    });
+  } catch (error) {
+    console.error('MongoDB connection check error:', error);
+    res.status(500).json({ 
+      connected: false,
+      error: error.message 
+    });
   }
 });
 
