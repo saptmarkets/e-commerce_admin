@@ -83,17 +83,35 @@ router.post('/load-images', async (req, res) => {
 // Get products without images
 router.get('/products/without-images', async (req, res) => {
   try {
+    console.log('=== BULK UPLOAD: Products without images request ===');
+    
     // First check MongoDB connection
     const dbStatus = mongoose.connection.readyState;
     console.log('MongoDB connection status:', dbStatus);
+    console.log('MongoDB connection name:', mongoose.connection.name);
+    console.log('MongoDB connection host:', mongoose.connection.host);
     
     if (dbStatus !== 1) {
+      console.log('❌ MongoDB not connected, status:', dbStatus);
       return res.status(500).json({ 
         error: 'MongoDB not connected',
         status: dbStatus,
         message: 'Database connection is not ready'
       });
     }
+
+    console.log('✅ MongoDB connected successfully');
+
+    // Check if Product model exists
+    if (!Product) {
+      console.log('❌ Product model not found');
+      return res.status(500).json({ 
+        error: 'Product model not available',
+        message: 'Product model is not properly imported'
+      });
+    }
+
+    console.log('✅ Product model found');
 
     // Get all products first to debug
     const allProducts = await Product.find({}).select('_id title name company size description image_url').limit(10);
@@ -123,13 +141,25 @@ router.get('/products/without-images', async (req, res) => {
       products: products,
       total: products.length,
       dbStatus: dbStatus,
-      sampleProducts: allProducts.slice(0, 3) // For debugging
+      sampleProducts: allProducts.slice(0, 3), // For debugging
+      debug: {
+        connectionStatus: dbStatus,
+        connectionName: mongoose.connection.name,
+        connectionHost: mongoose.connection.host,
+        productModelExists: !!Product
+      }
     });
   } catch (error) {
-    console.error('Error fetching products:', error);
+    console.error('❌ Error fetching products:', error);
+    console.error('Error stack:', error.stack);
     res.status(500).json({ 
       error: error.message,
-      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
+      debug: {
+        connectionStatus: mongoose.connection.readyState,
+        connectionName: mongoose.connection.name,
+        connectionHost: mongoose.connection.host
+      }
     });
   }
 });

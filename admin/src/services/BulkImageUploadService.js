@@ -20,7 +20,7 @@ class BulkImageUploadService {
   // Load products without images
   async loadProductsWithoutImages() {
     try {
-      const response = await axios.get(`${this.baseURL}/products/without-images`);
+      const response = await axios.get(`${this.baseURL}/bulk-upload/products/without-images`);
       return response.data;
     } catch (error) {
       throw new Error(`Failed to load products: ${error.message}`);
@@ -105,7 +105,7 @@ class BulkImageUploadService {
 
   async updateProductImage(productId, imageUrl) {
     try {
-      const response = await axios.put(`${this.baseURL}/products/${productId}/image`, {
+      const response = await axios.put(`${this.baseURL}/bulk-upload/products/${productId}/image`, {
         image_url: imageUrl
       });
       return response.data;
