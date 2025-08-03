@@ -47,6 +47,72 @@ const Promotions = () => {
   const [openModal, setOpenModal] = useState(false);
   const dataLoadedRef = useRef(false);
   const [viewMode, setViewMode] = useState('cards'); // 'cards' or 'list'
+  const [selectedPromotions, setSelectedPromotions] = useState([]);
+  const [showAllPages, setShowAllPages] = useState(false);
+  const [customPageSize, setCustomPageSize] = useState(20);
+
+  // Page size options
+  const pageSizeOptions = [
+    { value: 20, label: '20 per page' },
+    { value: 50, label: '50 per page' },
+    { value: 100, label: '100 per page' },
+    { value: 200, label: '200 per page' },
+  ];
+
+  // Generate page numbers for pagination
+  const generatePageNumbers = () => {
+    const pages = [];
+    const totalPages = totalPages;
+    const currentPage = currentPage;
+    
+    if (totalPages <= 7) {
+      // Show all pages if 7 or fewer
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      // Smart pagination with ellipsis
+      if (currentPage <= 4) {
+        pages.push(1, 2, 3, 4, 5, '...', totalPages);
+      } else if (currentPage >= totalPages - 3) {
+        pages.push(1, '...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+      } else {
+        pages.push(1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages);
+      }
+    }
+    
+    return pages;
+  };
+
+  const toggleSelectPromotion = (promotionId) => {
+    setSelectedPromotions(prev => 
+      prev.includes(promotionId) 
+        ? prev.filter(id => id !== promotionId)
+        : [...prev, promotionId]
+    );
+  };
+
+  const toggleSelectAllPromotions = () => {
+    const allPromotionIds = promotions.map(p => p._id);
+    const allSelected = allPromotionIds.every(id => selectedPromotions.includes(id));
+    
+    if (allSelected) {
+      setSelectedPromotions([]);
+    } else {
+      setSelectedPromotions(allPromotionIds);
+    }
+  };
+
+  const handlePageSizeChange = (selectedOption) => {
+    setCustomPageSize(selectedOption.value);
+    // Refetch with new page size
+    refetch();
+  };
+
+  const toggleShowAllPages = () => {
+    setShowAllPages(!showAllPages);
+    setSelectedPromotions([]); // Clear selection when switching modes
+  };
 
   // Load promotion lists
   useEffect(() => {
@@ -398,27 +464,104 @@ const Promotions = () => {
                 
                 <button
                   onClick={handleManualRefresh}
-                  className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2 transition-colors duration-200"
+                  className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors duration-200 flex items-center gap-2"
                 >
-                  <FiRefreshCw className="w-4 h-4" />
+                  <FiRefreshCw className={`w-4 h-4 ${isPromotionsLoading ? 'animate-spin' : ''}`} />
                   Refresh
-                </button>
-                <button
-                  onClick={exportToCSV}
-                  className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2 transition-colors duration-200"
-                >
-                  <FiDownload className="w-4 h-4" />
-                  CSV
-                </button>
-                <button
-                  onClick={exportToExcel}
-                  className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2 transition-colors duration-200"
-                >
-                  <FiDownload className="w-4 h-4" />
-                  Excel
                 </button>
               </div>
             </div>
+
+            {/* Bulk Selection Controls */}
+            <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+              <div className="flex items-center gap-4">
+                <div className="text-sm text-gray-600">
+                  {selectedPromotions.length > 0 ? (
+                    <span>
+                      <span className="font-medium text-blue-600">{selectedPromotions.length}</span> promotion{selectedPromotions.length > 1 ? 's' : ''} selected
+                    </span>
+                  ) : (
+                    `${promotions.length} promotions found`
+                  )}
+                </div>
+                
+                {/* Page Size Selector */}
+                {!showAllPages && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-600">Show:</span>
+                    <select
+                      value={customPageSize}
+                      onChange={(e) => handlePageSizeChange({ value: parseInt(e.target.value) })}
+                      className="text-sm border border-gray-300 rounded px-2 py-1"
+                    >
+                      {pageSizeOptions.map(option => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+
+                {/* Show All Toggle */}
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={toggleShowAllPages}
+                    className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+                      showAllPages 
+                        ? 'bg-orange-100 text-orange-800 border border-orange-300' 
+                        : 'bg-gray-100 text-gray-700 border border-gray-300 hover:bg-gray-200'
+                    }`}
+                  >
+                    {showAllPages ? 'Show Paginated' : 'Show All Pages'}
+                  </button>
+                  {showAllPages && (
+                    <span className="text-xs text-orange-600 font-medium">
+                      Showing all {promotions.length} promotions
+                    </span>
+                  )}
+                </div>
+              </div>
+              
+              <div className="flex items-center gap-2">
+                {selectedPromotions.length > 0 && (
+                  <button
+                    onClick={() => setSelectedPromotions([])}
+                    className="px-3 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 text-sm"
+                  >
+                    Clear All
+                  </button>
+                )}
+                
+                {/* Bulk Actions */}
+                {selectedPromotions.length > 0 && (
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => {
+                        // Bulk delete selected promotions
+                        if (window.confirm(`Are you sure you want to delete ${selectedPromotions.length} promotions?`)) {
+                          // Implement bulk delete
+                          console.log('Bulk delete:', selectedPromotions);
+                        }
+                      }}
+                      className="px-3 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 text-sm"
+                    >
+                      Delete Selected
+                    </button>
+                    <button
+                      onClick={() => {
+                        // Bulk export selected promotions
+                        console.log('Bulk export:', selectedPromotions);
+                      }}
+                      className="px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm"
+                    >
+                      Export Selected
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
 
             {/* Status Filter */}
             <div className="flex flex-wrap gap-2">
