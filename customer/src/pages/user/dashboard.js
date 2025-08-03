@@ -1,5 +1,4 @@
 import Cookies from "js-cookie";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
@@ -234,4 +233,4 @@ const Dashboard = ({ title, description, children }) => {
   );
 };
 
-export default dynamic(() => Promise.resolve(Dashboard), { ssr: false });
+export default Dashboard;

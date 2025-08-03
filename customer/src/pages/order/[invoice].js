@@ -1,5 +1,4 @@
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import dynamic from "next/dynamic";
 import { useRef } from "react";
 import { IoCloudDownloadOutline, IoPrintOutline } from "react-icons/io5";
 import ReactToPrint from "react-to-print";
@@ -139,4 +138,4 @@ export const getServerSideProps = ({ params }) => {
   };
 };
 
-export default dynamic(() => Promise.resolve(Order), { ssr: false }); 
+export default Order; 

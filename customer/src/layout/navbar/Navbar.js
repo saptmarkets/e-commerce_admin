@@ -1,7 +1,6 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useCart } from "react-use-cart";
 import { IoSearchOutline } from "react-icons/io5";

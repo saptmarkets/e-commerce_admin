@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import {
   IoReturnUpBackOutline,
@@ -1717,4 +1716,4 @@ const Checkout = () => {
   );
 };
 
-export default dynamic(() => Promise.resolve(Checkout), { ssr: false });
+export default Checkout;

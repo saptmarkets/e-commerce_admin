@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import dynamic from "next/dynamic";
 import { useCart } from "react-use-cart";
 import { FiHome, FiUser, FiShoppingCart, FiAlignLeft } from "react-icons/fi";
 

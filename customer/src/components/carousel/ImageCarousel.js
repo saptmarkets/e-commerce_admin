@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRef } from "react";
 import { IoChevronBackOutline, IoChevronForward } from "react-icons/io5"; // requires a loader
@@ -64,4 +63,4 @@ const ImageCarousel = ({ images, handleChangeImage }) => {
   );
 };
 
-export default dynamic(() => Promise.resolve(ImageCarousel), { ssr: false });
+export default ImageCarousel;

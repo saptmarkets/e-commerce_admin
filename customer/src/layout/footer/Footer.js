@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import dynamic from "next/dynamic";
 import useTranslation from "next-translate/useTranslation";
 import SocialLinks from "@components/common/SocialLinks";
 import useHomepageSections from "@hooks/useHomepageSections";

@@ -2,7 +2,6 @@ import Link from "next/link";
 // import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
-import dynamic from "next/dynamic";
 import { IoLockOpenOutline } from "react-icons/io5";
 import { FiPhoneCall, FiUser, FiTruck } from "react-icons/fi";
 import { jwtDecode } from "jwt-decode";

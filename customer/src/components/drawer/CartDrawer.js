@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import dynamic from "next/dynamic";
 import Drawer from "rc-drawer";
 
 //internal import

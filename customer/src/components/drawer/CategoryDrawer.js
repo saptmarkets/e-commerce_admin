@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import dynamic from "next/dynamic";
 import Drawer from "rc-drawer";
 
 import Category from "@components/category/Category";
