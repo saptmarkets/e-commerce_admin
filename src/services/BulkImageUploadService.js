@@ -1,8 +1,9 @@
 import requests from './httpService';
+import axios from 'axios';
 
 class BulkImageUploadService {
   constructor() {
-    // No need for baseURL since httpService handles it
+    this.baseURL = import.meta.env.VITE_APP_API_BASE_URL || 'https://e-commerce-backend-l0s0.onrender.com/api';
   }
 
   // Load images from directory (backend will handle file system)
