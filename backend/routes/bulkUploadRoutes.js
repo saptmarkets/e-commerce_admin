@@ -113,13 +113,64 @@ router.get('/products/without-images', async (req, res) => {
 
     console.log('✅ Product model found');
 
-    // Get all products first to debug
-    const allProducts = await Product.find({}).select('_id title name company size description image_url').limit(10);
-    console.log('Sample products found:', allProducts.length);
-    console.log('Sample product structure:', allProducts[0]);
+    // Get query parameters like the products page
+    const { page = 1, limit = 50, title = '', category = '', searchType = 'all' } = req.query;
+    const skip = (page - 1) * limit;
 
-    // Find products without images - check multiple possible field names
-    const products = await Product.find({
+    console.log('Query parameters:', { page, limit, title, category, searchType });
+
+    // Build query like the products page
+    let queryObject = {};
+
+    // Add search functionality like products page
+    if (title) {
+      const escapeRegExp = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const searchTerm = title.trim();
+      
+      const exactMatch = { $regex: `^${escapeRegExp(searchTerm)}$`, $options: 'i' };
+      const startsWithMatch = { $regex: `^${escapeRegExp(searchTerm)}`, $options: 'i' };
+      const containsMatch = { $regex: escapeRegExp(searchTerm), $options: 'i' };
+      
+      const words = searchTerm.split(/\s+/).filter(Boolean);
+      const lookaheadPattern = words.map(w => `(?=.*${escapeRegExp(w)})`).join('');
+      const multiWordMatch = { $regex: `${lookaheadPattern}.*`, $options: 'i' };
+
+      if (searchType === 'barcode') {
+        queryObject.$or = [
+          { "barcode": exactMatch },
+          { "barcode": startsWithMatch },
+          { "barcode": containsMatch }
+        ];
+      } else if (searchType === 'sku') {
+        queryObject.$or = [
+          { "sku": exactMatch },
+          { "sku": startsWithMatch },
+          { "sku": containsMatch }
+        ];
+      } else {
+        // Default search across multiple fields
+        queryObject.$or = [
+          { "title.en": containsMatch },
+          { "title.ar": containsMatch },
+          { "name": containsMatch },
+          { "barcode": containsMatch },
+          { "sku": containsMatch }
+        ];
+      }
+    }
+
+    // Add category filter
+    if (category) {
+      try {
+        const categoryObjectId = new mongoose.Types.ObjectId(category);
+        queryObject.category = categoryObjectId;
+      } catch (error) {
+        console.error("Error in category filter:", error);
+      }
+    }
+
+    // Add the "no images" filter
+    const noImagesFilter = {
       $or: [
         { image_url: { $exists: false } },
         { image_url: null },
@@ -133,20 +184,46 @@ router.get('/products/without-images', async (req, res) => {
         { images: null },
         { images: { $size: 0 } }
       ]
-    }).select('_id title name company size description image_url image images');
+    };
+
+    // Combine the search query with the no images filter
+    if (queryObject.$or) {
+      queryObject = {
+        $and: [queryObject, noImagesFilter]
+      };
+    } else {
+      queryObject = noImagesFilter;
+    }
+
+    console.log('Final query object:', JSON.stringify(queryObject, null, 2));
+
+    // Execute the query
+    const products = await Product.find(queryObject)
+      .select('_id title name company size description image_url image images category')
+      .populate('category', 'name')
+      .sort({ _id: -1 })
+      .skip(skip)
+      .limit(parseInt(limit));
+
+    // Get total count for pagination
+    const total = await Product.countDocuments(queryObject);
 
     console.log('Products without images found:', products.length);
+    console.log('Total count:', total);
 
     res.json({ 
       products: products,
-      total: products.length,
+      total: total,
+      page: parseInt(page),
+      limit: parseInt(limit),
+      totalPages: Math.ceil(total / limit),
       dbStatus: dbStatus,
-      sampleProducts: allProducts.slice(0, 3), // For debugging
       debug: {
         connectionStatus: dbStatus,
         connectionName: mongoose.connection.name,
         connectionHost: mongoose.connection.host,
-        productModelExists: !!Product
+        productModelExists: !!Product,
+        queryObject: queryObject
       }
     });
   } catch (error) {

@@ -18,11 +18,25 @@ class BulkImageUploadService {
   }
 
   // Load products without images
-  async loadProductsWithoutImages() {
+  async loadProductsWithoutImages(page = 1, limit = 50, search = '', category = '') {
     try {
-      const response = await axios.get(`${this.baseURL}/bulk-upload/products/without-images`);
+      const params = new URLSearchParams({
+        page: page.toString(),
+        limit: limit.toString()
+      });
+      
+      if (search) {
+        params.append('title', search);
+      }
+      
+      if (category) {
+        params.append('category', category);
+      }
+      
+      const response = await axios.get(`${this.baseURL}/bulk-upload/products/without-images?${params}`);
       return response.data;
     } catch (error) {
+      console.error('Error loading products without images:', error);
       throw new Error(`Failed to load products: ${error.message}`);
     }
   }
