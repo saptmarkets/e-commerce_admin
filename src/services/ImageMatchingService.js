@@ -18,15 +18,15 @@ class ImageMatchingService {
         imageName: image.name,
         imagePath: image.path,
         imagePreview: image.preview,
-        productId: bestMatch?.product?.id || null,
-        productName: bestMatch?.product?.name || null,
+        productId: bestMatch?.product?._id || bestMatch?.product?.id || null,
+        productName: bestMatch?.product?.title || bestMatch?.product?.name || null,
         confidence: bestMatch?.confidence || 0,
         alternatives: bestMatch?.alternatives || [],
         status: this.determineStatus(bestMatch?.confidence, settings.confidenceThreshold)
       });
     }
     
-    return matches;
+    return { matches };
   }
 
   extractKeywords(filename) {
@@ -64,7 +64,7 @@ class ImageMatchingService {
       alternatives: alternatives
         .sort((a, b) => b.confidence - a.confidence)
         .slice(0, 3)
-        .map(alt => alt.product.name)
+        .map(alt => alt.product.title?.en || alt.product.title?.ar || 'Unknown')
     };
   }
 
@@ -72,31 +72,45 @@ class ImageMatchingService {
     let totalScore = 0;
     let weightSum = 0;
 
-    // Company matching (40% weight)
+    // Get product names in both languages
+    const productNameEn = product.title?.en || product.name?.en || '';
+    const productNameAr = product.title?.ar || product.name?.ar || '';
+    const productSku = product.sku || '';
+    const productBarcode = product.barcode || '';
+
+    // Company matching (30% weight)
     if (settings.enableEnglishMatching) {
-      const companyScore = fuzzyMatch(imageKeywords.company, product.company || '') * 0.4;
+      const companyScore = fuzzyMatch(imageKeywords.company, product.company || '') * 0.3;
       totalScore += companyScore;
-      weightSum += 0.4;
-    }
-
-    // Product name matching (40% weight)
-    if (settings.enableEnglishMatching) {
-      const productScore = fuzzyMatch(imageKeywords.product, product.name || '') * 0.4;
-      totalScore += productScore;
-      weightSum += 0.4;
-    }
-
-    // Arabic keyword matching (30% weight)
-    if (settings.enableArabicMatching && imageKeywords.arabicKeywords.length > 0) {
-      const arabicScore = this.calculateArabicScore(imageKeywords.arabicKeywords, product) * 0.3;
-      totalScore += arabicScore;
       weightSum += 0.3;
     }
 
-    // Size matching (20% weight)
-    const sizeScore = fuzzyMatch(imageKeywords.size, product.size || '') * 0.2;
-    totalScore += sizeScore;
-    weightSum += 0.2;
+    // Product name matching - English (25% weight)
+    if (settings.enableEnglishMatching && productNameEn) {
+      const productScoreEn = fuzzyMatch(imageKeywords.product, productNameEn) * 0.25;
+      totalScore += productScoreEn;
+      weightSum += 0.25;
+    }
+
+    // Product name matching - Arabic (25% weight)
+    if (settings.enableArabicMatching && productNameAr) {
+      const productScoreAr = fuzzyMatch(imageKeywords.product, productNameAr) * 0.25;
+      totalScore += productScoreAr;
+      weightSum += 0.25;
+    }
+
+    // Arabic keyword matching (20% weight)
+    if (settings.enableArabicMatching && imageKeywords.arabicKeywords.length > 0) {
+      const arabicScore = this.calculateArabicScore(imageKeywords.arabicKeywords, product) * 0.2;
+      totalScore += arabicScore;
+      weightSum += 0.2;
+    }
+
+    // SKU/Barcode matching (10% weight)
+    const skuScore = fuzzyMatch(imageKeywords.product, productSku) * 0.1;
+    const barcodeScore = fuzzyMatch(imageKeywords.product, productBarcode) * 0.1;
+    totalScore += Math.max(skuScore, barcodeScore);
+    weightSum += 0.1;
 
     // Normalize score
     return Math.round((totalScore / weightSum) * 100);
@@ -105,10 +119,19 @@ class ImageMatchingService {
   calculateArabicScore(arabicKeywords, product) {
     let maxScore = 0;
     
+    // Get product names in both languages
+    const productNameEn = product.title?.en || product.name?.en || '';
+    const productNameAr = product.title?.ar || product.name?.ar || '';
+    const productSku = product.sku || '';
+    const productBarcode = product.barcode || '';
+    
     for (const keyword of arabicKeywords) {
-      const score = fuzzyMatch(keyword, product.name || '') || 
-                   fuzzyMatch(keyword, product.company || '') ||
-                   fuzzyMatch(keyword, product.description || '');
+      const score = Math.max(
+        fuzzyMatch(keyword, productNameAr),
+        fuzzyMatch(keyword, productNameEn),
+        fuzzyMatch(keyword, productSku),
+        fuzzyMatch(keyword, productBarcode)
+      );
       maxScore = Math.max(maxScore, score);
     }
     
@@ -147,6 +170,19 @@ class ImageMatchingService {
     const companyKeywords = ['sapt', 'شركة', 'company', 'شركة سابت'];
     for (const keyword of companyKeywords) {
       cleanName = cleanName.replace(new RegExp(keyword, 'gi'), '');
+    }
+    
+    // Remove size patterns
+    const sizePatterns = [
+      /(كبير|صغير|متوسط)/i,
+      /(large|medium|small)/i,
+      /(\d+)\s*(كجم|كيلو|kg|g)/i,
+      /(\d+)\s*(لتر|liter|l)/i,
+      /(\d+)\s*(مل|ml)/i
+    ];
+    
+    for (const pattern of sizePatterns) {
+      cleanName = cleanName.replace(pattern, '');
     }
     
     return cleanName.trim();
