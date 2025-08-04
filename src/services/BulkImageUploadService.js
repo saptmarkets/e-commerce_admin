@@ -91,15 +91,18 @@ class BulkImageUploadService {
   async uploadToCloudinary(fileOrPath) {
     try {
       if (fileOrPath instanceof File) {
-        // Upload file directly
+        // Upload file directly using axios for better FormData handling
         const formData = new FormData();
         formData.append('image', fileOrPath);
         
-        return await requests.post('/bulk-upload/upload-file', formData, {
+        const response = await axios.post(`${this.baseURL}/bulk-upload/upload-file`, formData, {
           headers: {
-            'Content-Type': 'multipart/form-data'
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
         });
+        
+        return response.data;
       } else {
         // Upload by path
         return await requests.post('/bulk-upload/upload-to-cloudinary', {

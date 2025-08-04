@@ -157,7 +157,7 @@ const BulkImageUploader = () => {
       setMatches(processedMatches);
       const matchedCount = processedMatches.filter(m => m.status === 'matched').length;
       const unmatchedCount = processedMatches.filter(m => m.status === 'unmatched').length;
-      console.log('Matching results:', { matchedCount, unmatchedCount, total: processedMatches.length });
+      // Matching results logged
       toast.success(`Matched ${matchedCount} products, ${unmatchedCount} unmatched`);
       setUploadState('idle');
     } catch (error) {
@@ -216,18 +216,7 @@ const BulkImageUploader = () => {
     
     const finalScore = Math.round((totalScore / weightSum) * 100);
     
-    // Debug logging for specific cases (only for first few matches)
-    if (Math.random() < 0.01) { // Only log 1% of matches to reduce spam
-      console.log('Debug matching:', {
-        imageName: image.name,
-        imageKeywords: imageKeywords.product,
-        productNameEn,
-        productNameAr,
-        finalScore,
-        totalScore,
-        weightSum
-      });
-    }
+    // Debug logging removed to prevent console spam
     
     return finalScore;
   };
@@ -324,13 +313,6 @@ const BulkImageUploader = () => {
         const match = uploadProducts[i];
         
         try {
-          console.log('Uploading match:', {
-            imageName: match.imageName,
-            hasFile: !!match.file,
-            fileType: match.file?.type,
-            fileSize: match.file?.size
-          });
-          
           // Upload image to Cloudinary
           const uploadResult = await BulkImageUploadService.uploadToCloudinary(match.file);
           
