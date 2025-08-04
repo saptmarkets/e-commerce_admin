@@ -215,9 +215,8 @@ const BulkImageUploader = () => {
     
     const finalScore = Math.round((totalScore / weightSum) * 100);
     
-    // Debug logging for specific cases
-    if (productNameAr.includes('كابيلانو عسل 400 جم عبوة قابلة للضغط') || 
-        image.name.includes('كابيلانو عسل 400 جم عبوة قابلة للضغط')) {
+    // Debug logging for specific cases (only for first few matches)
+    if (Math.random() < 0.1) { // Only log 10% of matches to reduce spam
       console.log('Debug matching:', {
         imageName: image.name,
         imageKeywords: imageKeywords.product,
@@ -325,7 +324,7 @@ const BulkImageUploader = () => {
         
         try {
           // Upload image to Cloudinary
-          const uploadResult = await BulkImageUploadService.uploadToCloudinary(match.imagePreview);
+          const uploadResult = await BulkImageUploadService.uploadToCloudinary(match.file);
           
           // Update product with image URL
           if (match.productId) {
