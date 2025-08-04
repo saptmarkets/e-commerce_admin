@@ -342,7 +342,11 @@ const ProductDetails = () => {
                             <img
                               src={img}
                               alt={`Product ${i + 1}`}
-                              className="w-full h-40 object-cover rounded"
+                              className="w-full h-40 object-contain rounded bg-gray-50"
+                              onError={(e) => {
+                                e.target.src = 'https://via.placeholder.com/400x400?text=Image+Error';
+                                e.target.className = "w-full h-40 object-contain rounded bg-gray-100";
+                              }}
                             />
                           </div>
                         ))}
@@ -492,7 +496,11 @@ const ProductDetails = () => {
                           <img
                             src={img}
                             alt={`Product ${i + 1}`}
-                            className="w-full h-40 object-cover rounded-lg"
+                            className="w-full h-40 object-contain rounded-lg bg-gray-50"
+                            onError={(e) => {
+                              e.target.src = 'https://via.placeholder.com/400x400?text=Image+Error';
+                              e.target.className = "w-full h-40 object-contain rounded-lg bg-gray-100";
+                            }}
                           />
                           <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-lg">
                             <a

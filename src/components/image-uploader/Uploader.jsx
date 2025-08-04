@@ -17,8 +17,8 @@ const Uploader = ({
   imageUrl,
   product,
   folder,
-  targetWidth = 800, // Set default fixed width
-  targetHeight = 800, // Set default fixed height
+  targetWidth = 1200, // Increased for better quality
+  targetHeight = 1200, // Increased for better quality
 }) => {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -55,9 +55,22 @@ const Uploader = ({
 
     await img.decode();
 
+    // Calculate aspect ratio to maintain proportions
+    const aspectRatio = img.width / img.height;
+    let finalWidth = width;
+    let finalHeight = height;
+
+    // If image is wider than target, adjust height
+    if (aspectRatio > 1) {
+      finalHeight = width / aspectRatio;
+    } else {
+      // If image is taller than target, adjust width
+      finalWidth = height * aspectRatio;
+    }
+
     const canvas = document.createElement("canvas");
-    canvas.width = width;
-    canvas.height = height;
+    canvas.width = finalWidth;
+    canvas.height = finalHeight;
 
     return new Promise((resolve) => {
       pica
@@ -66,7 +79,7 @@ const Uploader = ({
           unsharpRadius: 0.6,
           unsharpThreshold: 2,
         })
-        .then((result) => pica.toBlob(result, file.type, 0.9))
+        .then((result) => pica.toBlob(result, file.type, 0.95)) // Increased quality to 0.95
         .then((blob) => {
           const resizedFile = new File([blob], file.name, { type: file.type });
           resolve(resizedFile);

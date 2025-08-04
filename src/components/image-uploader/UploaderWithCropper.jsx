@@ -18,8 +18,8 @@ const UploaderWithCropper = ({
   imageUrl,
   product,
   folder,
-  targetWidth = 800,
-  targetHeight = 800,
+  targetWidth = 1200, // Increased for better quality
+  targetHeight = 1200, // Increased for better quality
   context, // New prop to specify the context (banner, category-icon, etc.)
   location, // For banners - the specific location
   layoutType, // For banners - single or triple layout

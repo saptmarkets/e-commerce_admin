@@ -105,15 +105,18 @@ const ProductTable = ({ products, isCheck, setIsCheck }) => {
                   {product?.image[0] ? (
                     <div className="hidden p-1 mr-2 md:block bg-gray-50 shadow-none w-10 h-10 rounded-full overflow-hidden">
                       <img
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain"
                         src={product?.image[0]}
                         alt="product"
+                        onError={(e) => {
+                          e.target.src = `https://res.cloudinary.com/dxjobesyt/image/upload/v1752706908/placeholder_kvepfp_wkyfut.png`;
+                        }}
                       />
                     </div>
                   ) : (
                     <div className="hidden p-1 mr-2 md:block bg-gray-50 shadow-none w-10 h-10 rounded-full overflow-hidden">
                       <img
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain"
                         src={`https://res.cloudinary.com/dxjobesyt/image/upload/v1752706908/placeholder_kvepfp_wkyfut.png`}
                         alt="product"
                       />
