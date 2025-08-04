@@ -273,11 +273,14 @@ const OdooSync = () => {
 
   const handleDownloadReport = async () => {
     try {
+      const adminInfo = Cookies.get("adminInfo");
+      const token = adminInfo ? JSON.parse(adminInfo).token : null;
+      
       const response = await fetch(`${import.meta.env.VITE_APP_API_BASE_URL || 'https://e-commerce-backend-l0s0.onrender.com/api'}/odoo-sync/download-report`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${Cookies.get("adminInfo")}`
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ reportData: pushReport })
       });
@@ -704,10 +707,26 @@ const OdooSync = () => {
                     <tbody>
                       {pushReport.successfulTransfers.map((transfer, index) => (
                         <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                          <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">{transfer.storeProductName}</td>
-                          <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">{transfer.storeUnitName}</td>
-                          <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">{transfer.odooProductName}</td>
-                          <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">{transfer.odooUnitName}</td>
+                          <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">
+                            {typeof transfer.storeProductName === 'object' ? 
+                              (transfer.storeProductName?.en || transfer.storeProductName?.ar || 'Unknown') : 
+                              (transfer.storeProductName || 'Unknown')}
+                          </td>
+                          <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">
+                            {typeof transfer.storeUnitName === 'object' ? 
+                              (transfer.storeUnitName?.en || transfer.storeUnitName?.ar || 'Unknown') : 
+                              (transfer.storeUnitName || 'Unknown')}
+                          </td>
+                          <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">
+                            {typeof transfer.odooProductName === 'object' ? 
+                              (transfer.odooProductName?.en || transfer.odooProductName?.ar || 'Unknown') : 
+                              (transfer.odooProductName || 'Unknown')}
+                          </td>
+                          <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">
+                            {typeof transfer.odooUnitName === 'object' ? 
+                              (transfer.odooUnitName?.en || transfer.odooUnitName?.ar || 'Unknown') : 
+                              (transfer.odooUnitName || 'Unknown')}
+                          </td>
                           <td className="border border-gray-300 dark:border-gray-600 px-3 py-2 font-bold">{transfer.quantity}</td>
                           <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">{transfer.sourceLocationName || transfer.sourceLocation}</td>
                           <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">{transfer.destinationLocationName || transfer.destinationLocation}</td>
@@ -736,8 +755,16 @@ const OdooSync = () => {
                     <tbody>
                       {pushReport.failedTransfers.map((transfer, index) => (
                         <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                          <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">{transfer.storeProductName}</td>
-                          <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">{transfer.storeUnitName}</td>
+                          <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">
+                            {typeof transfer.storeProductName === 'object' ? 
+                              (transfer.storeProductName?.en || transfer.storeProductName?.ar || 'Unknown') : 
+                              (transfer.storeProductName || 'Unknown')}
+                          </td>
+                          <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">
+                            {typeof transfer.storeUnitName === 'object' ? 
+                              (transfer.storeUnitName?.en || transfer.storeUnitName?.ar || 'Unknown') : 
+                              (transfer.storeUnitName || 'Unknown')}
+                          </td>
                           <td className="border border-gray-300 dark:border-gray-600 px-3 py-2 font-bold">{transfer.quantity}</td>
                           <td className="border border-gray-300 dark:border-gray-600 px-3 py-2 text-red-600">{transfer.error}</td>
                         </tr>
