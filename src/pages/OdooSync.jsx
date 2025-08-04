@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FiRefreshCw, FiCloud, FiDownload, FiUpload, FiArrowUpCircle, FiList, FiCheckSquare, FiX } from "react-icons/fi";
+import Cookies from "js-cookie";
 
 // internal imports
 import PageTitle from "@/components/Typography/PageTitle";
@@ -268,6 +269,37 @@ const OdooSync = () => {
   const closeReportModal = () => {
     setShowReportModal(false);
     setPushReport(null);
+  };
+
+  const handleDownloadReport = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_APP_API_BASE_URL || 'https://e-commerce-backend-l0s0.onrender.com/api'}/odoo-sync/download-report`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${Cookies.get("adminInfo")}`
+        },
+        body: JSON.stringify({ reportData: pushReport })
+      });
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `push-back-report-${new Date().toISOString().split('T')[0]}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+        notifySuccess('Report downloaded successfully');
+      } else {
+        notifyError('Failed to download report');
+      }
+    } catch (error) {
+      console.error('Download error:', error);
+      notifyError('Failed to download report');
+    }
   };
 
   return (
@@ -645,8 +677,8 @@ const OdooSync = () => {
               
               <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded">
                 <div className="text-sm">
-                  <strong>Source Location:</strong> {pushReport.sourceLocation}<br/>
-                  <strong>Destination Location:</strong> {pushReport.destinationLocation}<br/>
+                  <strong>Source Location:</strong> {pushReport.sourceLocationName || pushReport.sourceLocation}<br/>
+                  <strong>Destination Location:</strong> {pushReport.destinationLocationName || pushReport.destinationLocation}<br/>
                   <strong>Timestamp:</strong> {new Date(pushReport.timestamp).toLocaleString()}
                 </div>
               </div>
@@ -677,8 +709,8 @@ const OdooSync = () => {
                           <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">{transfer.odooProductName}</td>
                           <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">{transfer.odooUnitName}</td>
                           <td className="border border-gray-300 dark:border-gray-600 px-3 py-2 font-bold">{transfer.quantity}</td>
-                          <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">{transfer.sourceLocation}</td>
-                          <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">{transfer.destinationLocation}</td>
+                          <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">{transfer.sourceLocationName || transfer.sourceLocation}</td>
+                          <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">{transfer.destinationLocationName || transfer.destinationLocation}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -716,7 +748,13 @@ const OdooSync = () => {
               </div>
             )}
 
-            <div className="flex justify-end mt-6">
+            <div className="flex justify-end gap-3 mt-6">
+              <button 
+                onClick={handleDownloadReport}
+                className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+              >
+                Download Report
+              </button>
               <button 
                 onClick={closeReportModal}
                 className="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-400 dark:hover:bg-gray-500"
