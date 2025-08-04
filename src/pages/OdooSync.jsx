@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FiRefreshCw, FiCloud, FiDownload, FiUpload, FiArrowUpCircle, FiList, FiCheckSquare } from "react-icons/fi";
+import { FiRefreshCw, FiCloud, FiDownload, FiUpload, FiArrowUpCircle, FiList, FiCheckSquare, FiX } from "react-icons/fi";
 
 // internal imports
 import PageTitle from "@/components/Typography/PageTitle";
