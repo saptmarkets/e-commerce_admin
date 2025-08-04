@@ -246,6 +246,10 @@ const routes = [
     path: "/reports/executive",
     component: ExecutiveDashboard,
   },
+  {
+    path: "/stock-movements",
+    component: StockMovements,
+  },
 ];
 
 // Debug logging
@@ -301,6 +305,7 @@ const routeAccessList = [
   { label: "Delivery Performance", value: "reports/delivery" },
   { label: "Financial Reports", value: "reports/financial" },
   { label: "Executive Dashboard", value: "reports/executive" },
+  { label: "Stock Movements", value: "stock-movements" },
 ];
 
 export { routeAccessList, routes };

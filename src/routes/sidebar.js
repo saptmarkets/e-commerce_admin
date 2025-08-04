@@ -90,6 +90,10 @@ const sidebar = [
         path: "/bulk-image-uploader",
         name: "Bulk Image Uploader",
       },
+      {
+        path: "/stock-movements",
+        name: "Stock Movement History",
+      },
     ],
   },
 
