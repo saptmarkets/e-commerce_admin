@@ -11,6 +11,7 @@ import {
   FiEye,
   FiCheck,
   FiX,
+  FiEdit,
   FiAlertCircle,
   FiInfo,
   FiCheckCircle,
@@ -33,7 +34,7 @@ const BulkImageUploader = () => {
     skipped: 0
   });
   const [settings, setSettings] = useState({
-    confidenceThreshold: 30,
+    confidenceThreshold: 10,
     batchSize: 10,
     uploadQuality: 'auto',
     retryAttempts: 3,
@@ -310,17 +311,17 @@ const BulkImageUploader = () => {
       setUploadState('uploading');
       setUploadStats({ total: matches.length, processed: 0, success: 0, failed: 0, skipped: 0 });
       
-      // Filter only matched products for upload
-      const matchedProducts = matches.filter(match => match.status === 'matched');
+      // Filter matched and manual products for upload
+      const uploadProducts = matches.filter(match => match.status === 'matched' || match.status === 'manual');
       
-      if (matchedProducts.length === 0) {
-        toast.warning('No matched products to upload!');
+      if (uploadProducts.length === 0) {
+        toast.warning('No products selected for upload! Select matched or manual products.');
         setUploadState('idle');
         return;
       }
       
-      for (let i = 0; i < matchedProducts.length; i++) {
-        const match = matchedProducts[i];
+      for (let i = 0; i < uploadProducts.length; i++) {
+        const match = uploadProducts[i];
         
         try {
           // Upload image to Cloudinary
@@ -331,7 +332,7 @@ const BulkImageUploader = () => {
             await BulkImageUploadService.updateProductImage(match.productId, uploadResult.url);
           }
           
-          setUploadProgress(((i + 1) / matchedProducts.length) * 100);
+          setUploadProgress(((i + 1) / uploadProducts.length) * 100);
           setUploadStats(prev => ({ 
             ...prev, 
             processed: i + 1, 
@@ -360,9 +361,21 @@ const BulkImageUploader = () => {
   };
 
   const handleMatchUpdate = (index, action) => {
-    if (action === 'edit') {
-      // Open edit modal or dropdown for manual selection
-      toast.info('Manual selection feature coming soon...');
+    if (action === 'approve') {
+      setMatches(prev => prev.map((match, i) => 
+        i === index ? { ...match, status: 'matched' } : match
+      ));
+      toast.success('Product marked as matched');
+    } else if (action === 'reject') {
+      setMatches(prev => prev.map((match, i) => 
+        i === index ? { ...match, status: 'unmatched' } : match
+      ));
+      toast.info('Product marked as unmatched');
+    } else if (action === 'manual') {
+      setMatches(prev => prev.map((match, i) => 
+        i === index ? { ...match, status: 'manual' } : match
+      ));
+      toast.success('Product marked for manual upload');
     } else if (action === 'preview') {
       // Show image preview
       const match = matches[index];
@@ -402,6 +415,7 @@ const BulkImageUploader = () => {
     if (filterStatus === 'all') return matches;
     return matches.filter(match => {
       if (filterStatus === 'matched') return match.status === 'matched';
+      if (filterStatus === 'manual') return match.status === 'manual';
       if (filterStatus === 'unmatched') return match.status === 'unmatched';
       return true;
     });
@@ -705,6 +719,7 @@ const MatchingTable = ({ matches, onMatchUpdate, uploadState, filterStatus, onFi
             >
               <option value="all">All Matches</option>
               <option value="matched">Matched Only</option>
+              <option value="manual">Manual Only</option>
               <option value="unmatched">Unmatched Only</option>
             </select>
             
@@ -798,11 +813,13 @@ const MatchingTable = ({ matches, onMatchUpdate, uploadState, filterStatus, onFi
                 <td className="px-4 py-3">
                   <span className={`px-2 py-1 rounded text-xs ${
                     match.status === 'matched' ? 'bg-green-100 text-green-800' :
+                    match.status === 'manual' ? 'bg-blue-100 text-blue-800' :
                     match.status === 'unmatched' ? 'bg-red-100 text-red-800' :
                     'bg-yellow-100 text-yellow-800'
                   }`}>
                     {match.status === 'matched' ? '✅ Matched' :
-                     match.status === 'unmatched' ? '❌ Unmatched' : '⚠️ Manual'}
+                     match.status === 'manual' ? '🔧 Manual' :
+                     match.status === 'unmatched' ? '❌ Unmatched' : '⚠️ Unknown'}
                   </span>
                 </td>
                 <td className="px-4 py-3">
@@ -815,11 +832,25 @@ const MatchingTable = ({ matches, onMatchUpdate, uploadState, filterStatus, onFi
                       <FiEye className="w-4 h-4" />
                     </button>
                     <button
-                      onClick={() => onMatchUpdate(index, 'edit')}
+                      onClick={() => onMatchUpdate(index, 'approve')}
                       className="text-green-600 hover:text-green-800"
-                      title="Edit Match"
+                      title="Approve Match"
                     >
                       <FiCheck className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => onMatchUpdate(index, 'manual')}
+                      className="text-blue-600 hover:text-blue-800"
+                      title="Mark for Manual Upload"
+                    >
+                      <FiEdit className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => onMatchUpdate(index, 'reject')}
+                      className="text-red-600 hover:text-red-800"
+                      title="Reject Match"
+                    >
+                      <FiX className="w-4 h-4" />
                     </button>
                   </div>
                 </td>
