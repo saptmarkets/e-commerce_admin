@@ -505,16 +505,16 @@ const Promotions = () => {
 
                 {/* Show All Toggle */}
                 <div className="flex items-center gap-2">
-                  <button
+                <button
                     onClick={toggleShowAllPages}
                     className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
                       showAllPages 
                         ? 'bg-orange-100 text-orange-800 border border-orange-300' 
                         : 'bg-gray-100 text-gray-700 border border-gray-300 hover:bg-gray-200'
                     }`}
-                  >
+                >
                     {showAllPages ? 'Show Paginated' : 'Show All Pages'}
-                  </button>
+                </button>
                   {showAllPages && (
                     <span className="text-xs text-orange-600 font-medium">
                       Showing all {promotions.length} promotions
@@ -525,7 +525,7 @@ const Promotions = () => {
               
               <div className="flex items-center gap-2">
                 {selectedPromotions.length > 0 && (
-                  <button
+                <button
                     onClick={() => setSelectedPromotions([])}
                     className="px-3 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 text-sm"
                   >
@@ -545,7 +545,7 @@ const Promotions = () => {
                         }
                       }}
                       className="px-3 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 text-sm"
-                    >
+                >
                       Delete Selected
                     </button>
                     <button
@@ -556,12 +556,12 @@ const Promotions = () => {
                       className="px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm"
                     >
                       Export Selected
-                    </button>
+                </button>
                   </div>
                 )}
               </div>
+              </div>
             </div>
-          </div>
 
             {/* Status Filter */}
             <div className="flex flex-wrap gap-2">

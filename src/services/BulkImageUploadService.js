@@ -131,6 +131,30 @@ class BulkImageUploadService {
     }
   }
 
+  // Fetch images from a website
+  async fetchImagesFromSite(siteUrl, productNameEn, productNameAr) {
+    try {
+      return await requests.post('/bulk-upload/fetch-images-from-site', {
+        siteUrl,
+        productNameEn,
+        productNameAr
+      });
+    } catch (error) {
+      throw new Error(`Failed to fetch images from site: ${error.message}`);
+    }
+  }
+
+  // Upload image from URL to Cloudinary
+  async uploadImageFromUrl(imageUrl) {
+    try {
+      return await requests.post('/bulk-upload/upload-from-url', {
+        imageUrl
+      });
+    } catch (error) {
+      throw new Error(`Failed to upload image from URL: ${error.message}`);
+    }
+  }
+
   // Check connection status
   async checkConnections() {
     try {

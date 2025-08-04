@@ -15,16 +15,19 @@ import {
   FiAlertCircle,
   FiInfo,
   FiCheckCircle,
-  FiClock
+  FiClock,
+  FiLink,
+  FiSearch
 } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 import BulkImageUploadService from '@/services/BulkImageUploadService';
 
 const BulkImageUploader = () => {
-  const [uploadState, setUploadState] = useState('idle'); // idle, loading, matching, uploading, completed
-  const [images, setImages] = useState([]);
+  const [uploadState, setUploadState] = useState('idle'); // idle, loading, fetching, uploading, completed
   const [products, setProducts] = useState([]);
-  const [matches, setMatches] = useState([]);
+  const [siteLinks, setSiteLinks] = useState(['', '', '', '', '']); // 5 site links
+  const [productImages, setProductImages] = useState({}); // productId: { siteIndex: [images] }
+  const [selectedImages, setSelectedImages] = useState({}); // productId: [selectedImageUrls]
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadStats, setUploadStats] = useState({
     total: 0,
@@ -33,18 +36,10 @@ const BulkImageUploader = () => {
     failed: 0,
     skipped: 0
   });
-  const [settings, setSettings] = useState({
-    confidenceThreshold: 10,
-    batchSize: 10,
-    uploadQuality: 'auto',
-    retryAttempts: 3,
-    enableArabicMatching: true,
-    enableEnglishMatching: true
-  });
 
   // Filtering states
-  const [filterStatus, setFilterStatus] = useState('all'); // all, matched, unmatched
-  const [selectedMatches, setSelectedMatches] = useState([]);
+  const [filterStatus, setFilterStatus] = useState('all'); // all, with_images, without_images
+  const [selectedProducts, setSelectedProducts] = useState([]);
   const [showImagePreview, setShowImagePreview] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
 
@@ -70,43 +65,52 @@ const BulkImageUploader = () => {
     }
   };
 
-  const handleLoadImages = async () => {
+  const handleAddSiteLink = (index, url) => {
+    const newSiteLinks = [...siteLinks];
+    newSiteLinks[index] = url;
+    setSiteLinks(newSiteLinks);
+  };
+
+  const handleFetchImagesFromSites = async (productId) => {
     try {
-      setUploadState('loading');
-      toast.info('Loading images...');
+      setUploadState('fetching');
+      toast.info('Fetching images from sites...');
       
-      // Create file input for image selection
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.multiple = true;
-      input.accept = 'image/*';
+      const product = products.find(p => p._id === productId);
+      if (!product) {
+        toast.error('Product not found');
+        return;
+      }
+
+      const productName = product.title?.en || product.name?.en || '';
+      const productNameAr = product.title?.ar || product.name?.ar || '';
       
-      input.onchange = async (e) => {
-        const files = Array.from(e.target.files);
-        const imageFiles = [];
+      // Fetch images from each site link
+      const fetchedImages = {};
+      
+      for (let i = 0; i < siteLinks.length; i++) {
+        const siteUrl = siteLinks[i];
+        if (!siteUrl.trim()) continue;
         
-        for (const file of files) {
-          // Create preview URL
-          const preview = URL.createObjectURL(file);
-          
-          imageFiles.push({
-            name: file.name,
-            path: file.path || file.name,
-            size: file.size,
-            preview: preview,
-            file: file, // Keep the actual file for upload
-            lastModified: file.lastModified
-          });
+        try {
+          // Call backend service to fetch images from the site
+          const response = await BulkImageUploadService.fetchImagesFromSite(siteUrl, productName, productNameAr);
+          fetchedImages[i] = response.images || [];
+        } catch (error) {
+          console.error(`Failed to fetch from site ${i}:`, error);
+          fetchedImages[i] = [];
         }
-        
-        setImages(imageFiles);
-        toast.success(`Loaded ${imageFiles.length} images`);
-        setUploadState('idle');
-      };
+      }
       
-      input.click();
+      setProductImages(prev => ({
+        ...prev,
+        [productId]: fetchedImages
+      }));
+      
+      toast.success('Images fetched from sites');
+      setUploadState('idle');
     } catch (error) {
-      toast.error('Failed to load images: ' + error.message);
+      toast.error('Failed to fetch images: ' + error.message);
       setUploadState('idle');
     }
   };
@@ -128,42 +132,45 @@ const BulkImageUploader = () => {
     }
   };
 
-  const handleStartMatching = async () => {
-    try {
-      setUploadState('matching');
-      toast.info('Starting product matching...');
+  const handleSelectImage = (productId, imageUrl, isSelected) => {
+    setSelectedImages(prev => {
+      const currentSelected = prev[productId] || [];
       
-      // Create matches for each product
-      const processedMatches = products.map((product) => {
-        // Find best matching image for this product
-        const bestImage = findBestImageForProduct(product, images, settings);
-        
+      if (isSelected) {
+        // Add image to selection
         return {
-          productId: product._id,
-          productName: {
-            en: product.title?.en || product.name?.en || 'Unknown',
-            ar: product.title?.ar || product.name?.ar || 'غير معروف'
-          },
-          imageName: bestImage?.name || 'No image found',
-          imagePath: bestImage?.path || '',
-          imagePreview: bestImage?.preview || null,
-          file: bestImage?.file || null, // Store the actual file
-          confidence: bestImage?.confidence || 0,
-          alternatives: bestImage?.alternatives || [],
-          status: bestImage?.confidence > settings.confidenceThreshold ? 'matched' : 'unmatched'
+          ...prev,
+          [productId]: [...currentSelected, imageUrl]
         };
-      });
-      
-      setMatches(processedMatches);
-      const matchedCount = processedMatches.filter(m => m.status === 'matched').length;
-      const unmatchedCount = processedMatches.filter(m => m.status === 'unmatched').length;
-      // Matching results logged
-      toast.success(`Matched ${matchedCount} products, ${unmatchedCount} unmatched`);
-      setUploadState('idle');
-    } catch (error) {
-      toast.error('Failed to match products: ' + error.message);
-      setUploadState('idle');
-    }
+      } else {
+        // Remove image from selection
+        return {
+          ...prev,
+          [productId]: currentSelected.filter(url => url !== imageUrl)
+        };
+      }
+    });
+  };
+
+  const handleSelectAllImagesForProduct = (productId) => {
+    const productImagesData = productImages[productId] || {};
+    const allImages = [];
+    
+    Object.values(productImagesData).forEach(siteImages => {
+      allImages.push(...siteImages);
+    });
+    
+    setSelectedImages(prev => ({
+      ...prev,
+      [productId]: allImages.map(img => img.url)
+    }));
+  };
+
+  const handleClearSelectionForProduct = (productId) => {
+    setSelectedImages(prev => ({
+      ...prev,
+      [productId]: []
+    }));
   };
 
   const findBestImageForProduct = (product, images, settings) => {
@@ -298,47 +305,59 @@ const BulkImageUploader = () => {
   const handleStartUpload = async () => {
     try {
       setUploadState('uploading');
-      setUploadStats({ total: matches.length, processed: 0, success: 0, failed: 0, skipped: 0 });
       
-      // Filter matched and manual products for upload
-      const uploadProducts = matches.filter(match => match.status === 'matched' || match.status === 'manual');
+      // Get all products with selected images
+      const productsToUpload = Object.keys(selectedImages).filter(productId => 
+        selectedImages[productId] && selectedImages[productId].length > 0
+      );
       
-      if (uploadProducts.length === 0) {
-        toast.warning('No products selected for upload! Select matched or manual products.');
+      if (productsToUpload.length === 0) {
+        toast.warning('No images selected for upload! Please select images first.');
         setUploadState('idle');
         return;
       }
       
-      for (let i = 0; i < uploadProducts.length; i++) {
-        const match = uploadProducts[i];
+      // Calculate total images to upload
+      const totalImages = productsToUpload.reduce((total, productId) => 
+        total + selectedImages[productId].length, 0
+      );
+      
+      setUploadStats({ total: totalImages, processed: 0, success: 0, failed: 0, skipped: 0 });
+      
+      let processedCount = 0;
+      
+      for (const productId of productsToUpload) {
+        const imageUrls = selectedImages[productId];
         
-        try {
-          // Upload image to Cloudinary
-          const uploadResult = await BulkImageUploadService.uploadToCloudinary(match.file);
-          
-          // Update product with image URL
-          if (match.productId) {
-            await BulkImageUploadService.updateProductImage(match.productId, uploadResult.url);
+        for (const imageUrl of imageUrls) {
+          try {
+            // Upload image from URL to Cloudinary
+            const uploadResult = await BulkImageUploadService.uploadImageFromUrl(imageUrl);
+            
+            // Update product with image URL
+            await BulkImageUploadService.updateProductImage(productId, uploadResult.url);
+            
+            processedCount++;
+            setUploadProgress((processedCount / totalImages) * 100);
+            setUploadStats(prev => ({ 
+              ...prev, 
+              processed: processedCount, 
+              success: prev.success + 1 
+            }));
+            
+          } catch (error) {
+            console.error(`Failed to upload image ${imageUrl}:`, error);
+            processedCount++;
+            setUploadStats(prev => ({ 
+              ...prev, 
+              processed: processedCount, 
+              failed: prev.failed + 1 
+            }));
           }
           
-          setUploadProgress(((i + 1) / uploadProducts.length) * 100);
-          setUploadStats(prev => ({ 
-            ...prev, 
-            processed: i + 1, 
-            success: prev.success + 1 
-          }));
-          
-        } catch (error) {
-          console.error(`Failed to upload ${match.imageName}:`, error);
-          setUploadStats(prev => ({ 
-            ...prev, 
-            processed: i + 1, 
-            failed: prev.failed + 1 
-          }));
+          // Small delay to prevent overwhelming the server
+          await new Promise(resolve => setTimeout(resolve, 300));
         }
-        
-        // Small delay to prevent overwhelming the server
-        await new Promise(resolve => setTimeout(resolve, 200));
       }
       
       toast.success(`Upload completed! ${uploadStats.success} successful, ${uploadStats.failed} failed`);
@@ -415,11 +434,11 @@ const BulkImageUploader = () => {
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-gray-800 flex items-center">
-          <FiUpload className="mr-3 text-blue-600" />
-          Bulk Image Uploader
+          <FiLink className="mr-3 text-blue-600" />
+          Product Image Finder
         </h1>
         <p className="text-gray-600 mt-2">
-          Upload and match product images with database products (English & Arabic support)
+          Find and upload product images from multiple websites (English & Arabic support)
         </p>
       </div>
 

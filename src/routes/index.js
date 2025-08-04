@@ -36,7 +36,7 @@ const Banners = lazy(() => import("@/pages/Banners"));
 const OdooSync = lazy(() => import("@/pages/OdooSync"));
 const OdooCatalog = lazy(() => import("@/pages/OdooCatalog"));
 const OdooPromotions = lazy(() => import("@/pages/OdooPromotions"));
-const BulkImageUploader = lazy(() => import("@/pages/BulkImageUploader"));
+// BulkImageUploader replaced with ProductImageFinder
 
 // Delivery Management Pages
 const DeliveryDashboard = lazy(() => import("@/pages/DeliveryDashboard"));
@@ -196,7 +196,7 @@ const routes = [
   },
   {
     path: '/bulk-image-uploader',
-    component: BulkImageUploader,
+    component: lazy(() => import('@/pages/ProductImageFinder')),
   },
   
   // Delivery Management Routes

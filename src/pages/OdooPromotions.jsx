@@ -32,7 +32,7 @@ const OdooPromotions = () => {
   const [selectedIds, setSelectedIds] = useState([]);
   const [importing, setImporting] = useState(false);
   const [showExpired, setShowExpired] = useState(false);
-  
+
   // New states for enhanced functionality
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState(null);
@@ -85,7 +85,7 @@ const OdooPromotions = () => {
       setItems(newItems);
       
       if (!showAllPages) {
-        setPagination(data?.pagination || pagination);
+      setPagination(data?.pagination || pagination);
       } else {
         // When showing all pages, update pagination to reflect total
         setPagination(prev => ({
@@ -311,7 +311,7 @@ const OdooPromotions = () => {
       // Show all pages if 7 or fewer
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
-      }
+    }
     } else {
       // Smart pagination with ellipsis
       if (currentPage <= 4) {
@@ -590,7 +590,7 @@ const OdooPromotions = () => {
             const isFuture = item.date_start && new Date(item.date_start) > new Date();
             
             return (
-              <tr key={item.id} className="border-t hover:bg-gray-50">
+            <tr key={item.id} className="border-t hover:bg-gray-50">
                 <td className="px-3 py-2">
                   <input 
                     type="checkbox" 
@@ -599,13 +599,13 @@ const OdooPromotions = () => {
                     className="rounded"
                   />
                 </td>
-                <td className="px-3 py-2">{item.product_name || item.product_id}</td>
-                <td className="px-3 py-2">{item.barcode_unit_name || item.barcode_unit_id || '-'}</td>
-                <td className="px-3 py-2">{item.fixed_price?.toFixed(2)}</td>
-                <td className="px-3 py-2">{item.min_quantity || 1}</td>
-                <td className="px-3 py-2">{item.max_quantity || '-'}</td>
-                <td className="px-3 py-2">{item.date_start ? new Date(item.date_start).toLocaleDateString() : '-'}</td>
-                <td className="px-3 py-2">{item.date_end ? new Date(item.date_end).toLocaleDateString() : '-'}</td>
+              <td className="px-3 py-2">{item.product_name || item.product_id}</td>
+              <td className="px-3 py-2">{item.barcode_unit_name || item.barcode_unit_id || '-'}</td>
+              <td className="px-3 py-2">{item.fixed_price?.toFixed(2)}</td>
+              <td className="px-3 py-2">{item.min_quantity || 1}</td>
+              <td className="px-3 py-2">{item.max_quantity || '-'}</td>
+              <td className="px-3 py-2">{item.date_start ? new Date(item.date_start).toLocaleDateString() : '-'}</td>
+              <td className="px-3 py-2">{item.date_end ? new Date(item.date_end).toLocaleDateString() : '-'}</td>
                 <td className="px-3 py-2">
                   <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
                     isExpired 
@@ -617,7 +617,7 @@ const OdooPromotions = () => {
                     {isExpired ? 'Expired' : isFuture ? 'Future' : 'Active'}
                   </span>
                 </td>
-              </tr>
+            </tr>
             );
           })}
           {items.length === 0 && (
