@@ -1,5 +1,6 @@
 import requests from './httpService';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 class BulkImageUploadService {
   constructor() {
@@ -95,10 +96,16 @@ class BulkImageUploadService {
         const formData = new FormData();
         formData.append('image', fileOrPath);
         
+        // Get authentication token from cookies (same as httpService)
+        let adminInfo;
+        if (Cookies.get("adminInfo")) {
+          adminInfo = JSON.parse(Cookies.get("adminInfo"));
+        }
+        
         const response = await axios.post(`${this.baseURL}/bulk-upload/upload-file`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
+            'Authorization': adminInfo ? `Bearer ${adminInfo.token}` : null
           }
         });
         
