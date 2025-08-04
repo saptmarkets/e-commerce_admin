@@ -18,6 +18,7 @@ import {
 import PageTitle from '@/components/Typography/PageTitle';
 import { Card, CardBody } from '@windmill/react-ui';
 import { toast } from 'react-toastify';
+import Cookies from 'js-cookie';
 
 // @version 1.0.1
 const StockMovements = () => {
@@ -57,11 +58,20 @@ const StockMovements = () => {
         ...Object.fromEntries(Object.entries(filters).filter(([_, v]) => v))
       });
 
-      const response = await fetch(`/api/admin/stock-movements?${queryParams}`, {
+      // Get admin token from cookies
+      const adminInfo = Cookies.get("adminInfo");
+      const token = adminInfo ? JSON.parse(adminInfo).token : null;
+
+      const response = await fetch(`${import.meta.env.VITE_APP_API_BASE_URL}/admin/stock-movements?${queryParams}`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
         }
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
       const data = await response.json();
       if (data.success) {
@@ -80,11 +90,20 @@ const StockMovements = () => {
   // Load statistics
   const loadStatistics = async () => {
     try {
-      const response = await fetch('/api/admin/stock-movements/statistics', {
+      // Get admin token from cookies
+      const adminInfo = Cookies.get("adminInfo");
+      const token = adminInfo ? JSON.parse(adminInfo).token : null;
+
+      const response = await fetch(`${import.meta.env.VITE_APP_API_BASE_URL}/admin/stock-movements/statistics`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
         }
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
       const data = await response.json();
       if (data.success) {
@@ -103,10 +122,10 @@ const StockMovements = () => {
   // Handle filter changes
   const handleFilterChange = (key, value) => {
     setFilters(prev => ({ ...prev, [key]: value }));
-    setCurrentPage(1); // Reset to first page when filtering
+    setCurrentPage(1); // Reset to first page when filters change
   };
 
-  // Clear filters
+  // Clear all filters
   const clearFilters = () => {
     setFilters({
       search: '',
@@ -124,13 +143,13 @@ const StockMovements = () => {
   // Handle movement selection
   const handleSelectMovement = (movementId) => {
     setSelectedMovements(prev => 
-      prev.includes(movementId)
+      prev.includes(movementId) 
         ? prev.filter(id => id !== movementId)
         : [...prev, movementId]
     );
   };
 
-  // Select all movements
+  // Handle select all
   const handleSelectAll = () => {
     if (selectedMovements.length === movements.length) {
       setSelectedMovements([]);
@@ -139,20 +158,29 @@ const StockMovements = () => {
     }
   };
 
-  // Sync single movement
+  // Handle sync movement
   const handleSyncMovement = async (movementId) => {
     try {
-      const response = await fetch(`/api/admin/stock-movements/sync/${movementId}`, {
+      // Get admin token from cookies
+      const adminInfo = Cookies.get("adminInfo");
+      const token = adminInfo ? JSON.parse(adminInfo).token : null;
+
+      const response = await fetch(`${import.meta.env.VITE_APP_API_BASE_URL}/admin/stock-movements/sync/${movementId}`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
         }
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
       const data = await response.json();
       if (data.success) {
         toast.success('Movement synced successfully');
-        loadMovements();
+        loadMovements(); // Refresh the list
       } else {
         toast.error(data.message || 'Failed to sync movement');
       }
@@ -162,7 +190,7 @@ const StockMovements = () => {
     }
   };
 
-  // Bulk sync movements
+  // Handle bulk sync
   const handleBulkSync = async () => {
     if (selectedMovements.length === 0) {
       toast.warning('Please select movements to sync');
@@ -170,61 +198,73 @@ const StockMovements = () => {
     }
 
     try {
-      const response = await fetch('/api/admin/stock-movements/bulk-sync', {
+      // Get admin token from cookies
+      const adminInfo = Cookies.get("adminInfo");
+      const token = adminInfo ? JSON.parse(adminInfo).token : null;
+
+      const response = await fetch(`${import.meta.env.VITE_APP_API_BASE_URL}/admin/stock-movements/bulk-sync`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
-          movementIds: selectedMovements,
-          batchName: `Bulk-${new Date().toISOString().slice(0, 10)}`
+          movementIds: selectedMovements
         })
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
       const data = await response.json();
       if (data.success) {
-        toast.success(`Bulk sync completed: ${data.data.successful} successful, ${data.data.failed} failed`);
-        setSelectedMovements([]);
-        loadMovements();
+        toast.success(`Successfully synced ${data.syncedCount} movements`);
+        setSelectedMovements([]); // Clear selection
+        loadMovements(); // Refresh the list
       } else {
-        toast.error(data.message || 'Failed to perform bulk sync');
+        toast.error(data.message || 'Failed to sync movements');
       }
     } catch (error) {
-      console.error('Error in bulk sync:', error);
-      toast.error('Failed to perform bulk sync');
+      console.error('Error bulk syncing movements:', error);
+      toast.error('Failed to sync movements');
     }
   };
 
-  // Export movements
+  // Handle export
   const handleExport = async () => {
     try {
-      const response = await fetch('/api/admin/stock-movements/export', {
+      // Get admin token from cookies
+      const adminInfo = Cookies.get("adminInfo");
+      const token = adminInfo ? JSON.parse(adminInfo).token : null;
+
+      const response = await fetch(`${import.meta.env.VITE_APP_API_BASE_URL}/admin/stock-movements/export`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
-          movementIds: selectedMovements.length > 0 ? selectedMovements : null,
-          filters: Object.fromEntries(Object.entries(filters).filter(([_, v]) => v))
+          filters,
+          selectedIds: selectedMovements.length > 0 ? selectedMovements : null
         })
       });
 
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `stock-movements-${new Date().toISOString().split('T')[0]}.csv`;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
-        toast.success('Export completed successfully');
-      } else {
-        toast.error('Failed to export movements');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `stock-movements-${new Date().toISOString().split('T')[0]}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      
+      toast.success('Export completed successfully');
     } catch (error) {
       console.error('Error exporting movements:', error);
       toast.error('Failed to export movements');
