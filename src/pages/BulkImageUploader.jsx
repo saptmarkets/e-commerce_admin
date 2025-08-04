@@ -212,7 +212,23 @@ const BulkImageUploader = () => {
     totalScore += Math.max(skuScore, barcodeScore);
     weightSum += 0.2;
     
-    return Math.round((totalScore / weightSum) * 100);
+    const finalScore = Math.round((totalScore / weightSum) * 100);
+    
+    // Debug logging for specific cases
+    if (productNameAr.includes('كابيلانو عسل 400 جم عبوة قابلة للضغط') || 
+        image.name.includes('كابيلانو عسل 400 جم عبوة قابلة للضغط')) {
+      console.log('Debug matching:', {
+        imageName: image.name,
+        imageKeywords: imageKeywords.product,
+        productNameEn,
+        productNameAr,
+        finalScore,
+        totalScore,
+        weightSum
+      });
+    }
+    
+    return finalScore;
   };
 
   const extractKeywordsFromImage = (filename) => {
@@ -226,7 +242,7 @@ const BulkImageUploader = () => {
       cleanName = cleanName.replace(new RegExp(keyword, 'gi'), '');
     }
     
-    // Remove size patterns
+    // Remove size patterns but keep the numbers
     const sizePatterns = [
       /(كبير|صغير|متوسط)/i,
       /(large|medium|small)/i,
@@ -239,32 +255,54 @@ const BulkImageUploader = () => {
       cleanName = cleanName.replace(pattern, '');
     }
     
+    // Clean up extra spaces
+    cleanName = cleanName.replace(/\s+/g, ' ').trim();
+    
     return {
-      product: cleanName.trim()
+      product: cleanName
     };
   };
 
   const fuzzyMatch = (str1, str2) => {
     if (!str1 || !str2) return 0;
-    const s1 = str1.toLowerCase();
-    const s2 = str2.toLowerCase();
     
-    if (s1.includes(s2) || s2.includes(s1)) return 1;
+    const s1 = str1.toLowerCase().trim();
+    const s2 = str2.toLowerCase().trim();
     
-    const words1 = s1.split(/\s+/);
-    const words2 = s2.split(/\s+/);
+    // Exact match
+    if (s1 === s2) return 1;
     
-    let matches = 0;
+    // Contains match (high score)
+    if (s1.includes(s2) || s2.includes(s1)) return 0.9;
+    
+    // Word-by-word matching
+    const words1 = s1.split(/\s+/).filter(w => w.length > 2);
+    const words2 = s2.split(/\s+/).filter(w => w.length > 2);
+    
+    if (words1.length === 0 || words2.length === 0) return 0;
+    
+    let exactWordMatches = 0;
+    let partialWordMatches = 0;
+    
     for (const word1 of words1) {
       for (const word2 of words2) {
-        if (word1.length > 2 && word2.length > 2 && 
-            (word1.includes(word2) || word2.includes(word1))) {
-          matches++;
+        // Exact word match
+        if (word1 === word2) {
+          exactWordMatches++;
+        }
+        // Partial word match (one contains the other)
+        else if (word1.includes(word2) || word2.includes(word1)) {
+          partialWordMatches++;
         }
       }
     }
     
-    return matches / Math.max(words1.length, words2.length);
+    // Calculate score based on word matches
+    const totalWords = Math.max(words1.length, words2.length);
+    const exactScore = exactWordMatches / totalWords;
+    const partialScore = partialWordMatches / totalWords * 0.5;
+    
+    return Math.min(0.8, exactScore + partialScore);
   };
 
   const handleStartUpload = async () => {
