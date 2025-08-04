@@ -363,17 +363,29 @@ const ProductImageFinder = () => {
                     </td>
                     {siteLinks.map((link, siteIndex) => (
                       <td key={siteIndex} className="px-4 py-3">
-                        {productImages[product._id]?.[siteIndex] ? (
+                        {uploadState === 'fetching' && !productImages[product._id]?.[siteIndex] ? (
+                          <div className="flex items-center justify-center">
+                            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+                            <span className="ml-2 text-xs text-gray-500">Loading...</span>
+                          </div>
+                        ) : productImages[product._id]?.[siteIndex] ? (
                           <div className="flex flex-wrap gap-1">
                             {productImages[product._id][siteIndex].map((image, imgIndex) => (
                               <div key={imgIndex} className="relative">
                                 <img
                                   src={image.url}
-                                  alt="Product"
+                                  alt={image.title || "Product"}
                                   className="w-12 h-12 object-cover rounded cursor-pointer border-2 border-transparent hover:border-blue-500"
                                   onClick={() => {
                                     setPreviewImage(image.url);
                                     setShowImagePreview(true);
+                                  }}
+                                  onError={(e) => {
+                                    e.target.src = 'https://via.placeholder.com/48x48?text=Error';
+                                    e.target.alt = 'Image failed to load';
+                                  }}
+                                  onLoad={(e) => {
+                                    e.target.style.borderColor = 'transparent';
                                   }}
                                 />
                                 <input
@@ -382,6 +394,9 @@ const ProductImageFinder = () => {
                                   onChange={(e) => handleSelectImage(product._id, image.url, e.target.checked)}
                                   className="absolute -top-1 -right-1 w-4 h-4"
                                 />
+                                <div className="absolute -bottom-1 -left-1 bg-blue-500 text-white text-xs px-1 rounded">
+                                  {imgIndex + 1}
+                                </div>
                               </div>
                             ))}
                           </div>
