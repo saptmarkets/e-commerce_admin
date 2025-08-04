@@ -13,6 +13,7 @@ import {
   FiSettings,
   FiCalendar
 } from 'react-icons/fi';
+// Stock Movements Component - Build Fix
 import PageTitle from '@/components/Typography/PageTitle';
 import { Card, CardBody } from '@windmill/react-ui';
 import { toast } from 'react-toastify';
