@@ -1,3 +1,4 @@
+// Stock Movements Component v1.0.1 - Clean Build
 import React, { useState, useEffect } from 'react';
 import {
   FiSearch,
@@ -18,6 +19,7 @@ import PageTitle from '@/components/Typography/PageTitle';
 import { Card, CardBody } from '@windmill/react-ui';
 import { toast } from 'react-toastify';
 
+// @version 1.0.1
 const StockMovements = () => {
   const [movements, setMovements] = useState([]);
   const [loading, setLoading] = useState(true);
