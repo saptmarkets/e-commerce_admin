@@ -88,30 +88,39 @@ const ProductImageFinder = () => {
       const productName = product.title?.en || product.name?.en || '';
       const productNameAr = product.title?.ar || product.name?.ar || '';
       
-      // Fetch images from each site link
-      const fetchedImages = {};
+      // Filter out empty site links
+      const validSiteUrls = siteLinks.filter(link => link && link.trim());
       
-      for (let i = 0; i < siteLinks.length; i++) {
-        const siteUrl = siteLinks[i];
-        if (!siteUrl.trim()) continue;
-        
-        try {
-          // Call backend service to fetch images from the site
-          const response = await BulkImageUploadService.fetchImagesFromSite(siteUrl, productName, productNameAr);
-          fetchedImages[i] = response.images || [];
-        } catch (error) {
-          console.error(`Failed to fetch from site ${i}:`, error);
-          fetchedImages[i] = [];
-        }
+      if (validSiteUrls.length === 0) {
+        toast.warning('Please add at least one website URL first');
+        setUploadState('idle');
+        return;
       }
       
-      setProductImages(prev => ({
-        ...prev,
-        [productId]: fetchedImages
-      }));
-      
-      toast.success('Images fetched from sites');
-      setUploadState('idle');
+      try {
+        // Call backend service to fetch images from all sites at once
+        const response = await BulkImageUploadService.fetchImagesFromMultipleSites(validSiteUrls, productName, productNameAr);
+        
+        // Map the results back to the original site indices
+        const fetchedImages = {};
+        validSiteUrls.forEach((siteUrl, index) => {
+          const originalIndex = siteLinks.indexOf(siteUrl);
+          fetchedImages[originalIndex] = response.images[index] || [];
+        });
+        
+        setProductImages(prev => ({
+          ...prev,
+          [productId]: fetchedImages
+        }));
+        
+        const totalImages = Object.values(fetchedImages).reduce((sum, images) => sum + images.length, 0);
+        toast.success(`Found ${totalImages} images from ${validSiteUrls.length} sites`);
+        setUploadState('idle');
+      } catch (error) {
+        console.error('Failed to fetch images:', error);
+        toast.error('Failed to fetch images: ' + error.message);
+        setUploadState('idle');
+      }
     } catch (error) {
       toast.error('Failed to fetch images: ' + error.message);
       setUploadState('idle');

@@ -144,6 +144,19 @@ class BulkImageUploadService {
     }
   }
 
+  // Fetch images from multiple websites
+  async fetchImagesFromMultipleSites(siteUrls, productNameEn, productNameAr) {
+    try {
+      return await requests.post('/bulk-upload/fetch-images-from-multiple-sites', {
+        siteUrls,
+        productNameEn,
+        productNameAr
+      });
+    } catch (error) {
+      throw new Error(`Failed to fetch images from multiple sites: ${error.message}`);
+    }
+  }
+
   // Upload image from URL to Cloudinary
   async uploadImageFromUrl(imageUrl) {
     try {
