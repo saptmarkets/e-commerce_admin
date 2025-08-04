@@ -40,6 +40,8 @@ const OdooSync = () => {
   const [fetchLoading, setFetchLoading] = useState(false);
   const [syncLoading, setSyncLoading] = useState(false);
   const [pushLoading, setPushLoading] = useState(false);
+  const [pushReport, setPushReport] = useState(null);
+  const [showReportModal, setShowReportModal] = useState(false);
 
   // Helper to update stats
   const loadStatistics = async () => {
@@ -246,6 +248,13 @@ const OdooSync = () => {
         sourceLocationId: selectedSource?.id,
         destinationLocationId: selectedDestination?.id
       });
+      
+      // Store the detailed report
+      if (res.detailedReport) {
+        setPushReport(res.detailedReport);
+        setShowReportModal(true);
+      }
+      
       notifySuccess(`Pushed ${res.pushed||0} units back to Odoo`);
       setShowPushModal(false);
     }catch(err){
@@ -254,6 +263,11 @@ const OdooSync = () => {
     }finally{
       setPushLoading(false);
     }
+  };
+
+  const closeReportModal = () => {
+    setShowReportModal(false);
+    setPushReport(null);
   };
 
   return (
@@ -590,6 +604,124 @@ const OdooSync = () => {
                 ) : (
                   'Push'
                 )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Detailed Report Modal */}
+      {showReportModal && pushReport && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold">Push Back Report</h2>
+              <button onClick={closeReportModal} className="text-gray-500 hover:text-gray-700">
+                <FiX size={24} />
+              </button>
+            </div>
+
+            {/* Summary Section */}
+            <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+              <h3 className="text-lg font-semibold mb-3">Summary</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-blue-600">{pushReport.summary.totalUnits}</div>
+                  <div className="text-sm text-gray-600">Total Units</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-green-600">{pushReport.summary.successfulPushes}</div>
+                  <div className="text-sm text-gray-600">Successful</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-red-600">{pushReport.summary.failedPushes}</div>
+                  <div className="text-sm text-gray-600">Failed</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-purple-600">{pushReport.summary.totalQuantity}</div>
+                  <div className="text-sm text-gray-600">Total Quantity</div>
+                </div>
+              </div>
+              
+              <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded">
+                <div className="text-sm">
+                  <strong>Source Location:</strong> {pushReport.sourceLocation}<br/>
+                  <strong>Destination Location:</strong> {pushReport.destinationLocation}<br/>
+                  <strong>Timestamp:</strong> {new Date(pushReport.timestamp).toLocaleString()}
+                </div>
+              </div>
+            </div>
+
+            {/* Successful Transfers */}
+            {pushReport.successfulTransfers.length > 0 && (
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold mb-3 text-green-600">✅ Successful Transfers</h3>
+                <div className="overflow-x-auto">
+                  <table className="w-full border-collapse border border-gray-300 dark:border-gray-600">
+                    <thead>
+                      <tr className="bg-gray-100 dark:bg-gray-700">
+                        <th className="border border-gray-300 dark:border-gray-600 px-3 py-2 text-left">Store Product</th>
+                        <th className="border border-gray-300 dark:border-gray-600 px-3 py-2 text-left">Store Unit</th>
+                        <th className="border border-gray-300 dark:border-gray-600 px-3 py-2 text-left">Odoo Product</th>
+                        <th className="border border-gray-300 dark:border-gray-600 px-3 py-2 text-left">Odoo Unit</th>
+                        <th className="border border-gray-300 dark:border-gray-600 px-3 py-2 text-left">Quantity</th>
+                        <th className="border border-gray-300 dark:border-gray-600 px-3 py-2 text-left">Source</th>
+                        <th className="border border-gray-300 dark:border-gray-600 px-3 py-2 text-left">Destination</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {pushReport.successfulTransfers.map((transfer, index) => (
+                        <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                          <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">{transfer.storeProductName}</td>
+                          <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">{transfer.storeUnitName}</td>
+                          <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">{transfer.odooProductName}</td>
+                          <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">{transfer.odooUnitName}</td>
+                          <td className="border border-gray-300 dark:border-gray-600 px-3 py-2 font-bold">{transfer.quantity}</td>
+                          <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">{transfer.sourceLocation}</td>
+                          <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">{transfer.destinationLocation}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {/* Failed Transfers */}
+            {pushReport.failedTransfers.length > 0 && (
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold mb-3 text-red-600">❌ Failed Transfers</h3>
+                <div className="overflow-x-auto">
+                  <table className="w-full border-collapse border border-gray-300 dark:border-gray-600">
+                    <thead>
+                      <tr className="bg-gray-100 dark:bg-gray-700">
+                        <th className="border border-gray-300 dark:border-gray-600 px-3 py-2 text-left">Store Product</th>
+                        <th className="border border-gray-300 dark:border-gray-600 px-3 py-2 text-left">Store Unit</th>
+                        <th className="border border-gray-300 dark:border-gray-600 px-3 py-2 text-left">Quantity</th>
+                        <th className="border border-gray-300 dark:border-gray-600 px-3 py-2 text-left">Error</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {pushReport.failedTransfers.map((transfer, index) => (
+                        <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                          <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">{transfer.storeProductName}</td>
+                          <td className="border border-gray-300 dark:border-gray-600 px-3 py-2">{transfer.storeUnitName}</td>
+                          <td className="border border-gray-300 dark:border-gray-600 px-3 py-2 font-bold">{transfer.quantity}</td>
+                          <td className="border border-gray-300 dark:border-gray-600 px-3 py-2 text-red-600">{transfer.error}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            <div className="flex justify-end mt-6">
+              <button 
+                onClick={closeReportModal}
+                className="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-400 dark:hover:bg-gray-500"
+              >
+                Close
               </button>
             </div>
           </div>
