@@ -142,10 +142,14 @@ export const SidebarProvider = ({ children }) => {
 
     const removeRegion = (langCode) => langCode?.split("-")[0];
 
-    let selectedLang = removeRegion(cookieLang || defaultLang);
-
-    // Ensure language consistency with global settings
-    if (globalSetting?.default_language) {
+    // Force English as default, only use Arabic if explicitly set
+    let selectedLang = "en"; // Default to English
+    
+    // Only use Arabic if cookie is explicitly set to "ar"
+    if (cookieLang === "ar") {
+      selectedLang = "ar";
+    } else if (globalSetting?.default_language) {
+      // Use global setting if it's not Arabic
       selectedLang = removeRegion(globalSetting.default_language);
     }
 
