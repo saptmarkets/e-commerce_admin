@@ -147,6 +147,7 @@ const BulkImageUploader = () => {
           imageName: bestImage?.name || 'No image found',
           imagePath: bestImage?.path || '',
           imagePreview: bestImage?.preview || null,
+          file: bestImage?.file || null, // Store the actual file
           confidence: bestImage?.confidence || 0,
           alternatives: bestImage?.alternatives || [],
           status: bestImage?.confidence > settings.confidenceThreshold ? 'matched' : 'unmatched'
@@ -216,7 +217,7 @@ const BulkImageUploader = () => {
     const finalScore = Math.round((totalScore / weightSum) * 100);
     
     // Debug logging for specific cases (only for first few matches)
-    if (Math.random() < 0.1) { // Only log 10% of matches to reduce spam
+    if (Math.random() < 0.01) { // Only log 1% of matches to reduce spam
       console.log('Debug matching:', {
         imageName: image.name,
         imageKeywords: imageKeywords.product,
@@ -323,6 +324,13 @@ const BulkImageUploader = () => {
         const match = uploadProducts[i];
         
         try {
+          console.log('Uploading match:', {
+            imageName: match.imageName,
+            hasFile: !!match.file,
+            fileType: match.file?.type,
+            fileSize: match.file?.size
+          });
+          
           // Upload image to Cloudinary
           const uploadResult = await BulkImageUploadService.uploadToCloudinary(match.file);
           
