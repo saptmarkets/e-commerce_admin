@@ -5,7 +5,7 @@ import {
   FiDownload,
   FiRefreshCw,
   FiEye,
-  FiSync,
+  FiRotateCw,
   FiCheck,
   FiX,
   FiClock,
@@ -428,7 +428,7 @@ const StockMovements = () => {
                   onClick={handleBulkSync}
                   className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                 >
-                  <FiSync className="mr-2" />
+                                      <FiRotateCw className="mr-2" />
                   Sync Selected
                 </button>
                 <button
@@ -569,7 +569,7 @@ const StockMovements = () => {
                                 className="text-green-600 hover:text-green-900"
                                 title="Sync to Odoo"
                               >
-                                <FiSync />
+                                <FiRotateCw />
                               </button>
                             )}
                           </div>
