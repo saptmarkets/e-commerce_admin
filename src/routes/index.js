@@ -4,6 +4,7 @@ import Promotions from '../pages/Promotions';
 const PromotionManagement = lazy(() => import("@/pages/PromotionManagement"));
 const ProductImportExport = lazy(() => import("@/pages/ProductImportExport"));
 const CategoryImportExport = lazy(() => import("@/pages/CategoryImportExport"));
+const StockMovements = lazy(() => import("@/pages/StockMovements"));
 
 // use lazy for better code splitting
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
