@@ -142,35 +142,37 @@ export const SidebarProvider = ({ children }) => {
 
     const removeRegion = (langCode) => langCode?.split("-")[0];
 
-    // Force English as default, only use Arabic if explicitly set
-    let selectedLang = "en"; // Default to English
+    // Force English as default - clear Arabic cookies if they exist
+    let selectedLang = "en"; // Always default to English
     
-    // Only use Arabic if cookie is explicitly set to "ar"
+    // Clear any existing Arabic cookies to force English
     if (cookieLang === "ar") {
-      selectedLang = "ar";
-    } else if (globalSetting?.default_language) {
-      // Use global setting if it's not Arabic
+      Cookies.remove("i18next");
+      Cookies.remove("_currLang");
+      selectedLang = "en";
+    } else if (globalSetting?.default_language && globalSetting.default_language !== "ar") {
+      // Use global setting only if it's not Arabic
       selectedLang = removeRegion(globalSetting.default_language);
     }
 
     // Update state with selected language
     setLang(selectedLang);
 
-    // Set i18next language & update cookies **only when needed**
-    if (!cookieLang || cookieLang !== selectedLang) {
-      Cookies.set("i18next", selectedLang, {
+    // Always set English cookie unless explicitly Arabic
+    if (selectedLang !== "ar") {
+      Cookies.set("i18next", "en", {
         sameSite: "None",
         secure: true,
       });
     }
 
-    // Change i18n language **only if it differs**
-    if (i18n.language !== selectedLang && !currLang) {
+    // Change i18n language to English by default
+    if (i18n.language !== selectedLang) {
       i18n.changeLanguage(selectedLang);
     }
 
-    // Find the corresponding language object
-    if (languages?.length && !pathname && !currLang) {
+    // Find the corresponding language object (English)
+    if (languages?.length && !pathname) {
       const result = languages?.find((lang) => lang?.iso_code === selectedLang);
       setCurrLang(result);
     }
