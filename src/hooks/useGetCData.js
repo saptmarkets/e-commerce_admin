@@ -80,7 +80,7 @@ const useGetCData = () => {
                 "dashboard", "products", "categories", "attributes", "units",
                 "promotions", "banners", "coupons", "orders", "our-staff",
                 "settings", "languages", "currencies", "store", "customers",
-                "odoo-sync", "odoo-catalog", "reports", "reports/sales", "reports/inventory",
+                "odoo-sync", "odoo-catalog", "stock-movements", "reports", "reports/sales", "reports/inventory",
                 "reports/customers", "reports/delivery", "reports/financial", "reports/executive",
                 "delivery/dashboard", "delivery/assignments", "delivery/drivers", "delivery/tracking",
                 "delivery/settings", "products/import-export", "categories/import-export"
@@ -104,7 +104,7 @@ const useGetCData = () => {
               "dashboard", "products", "categories", "attributes", "units",
               "promotions", "banners", "coupons", "orders", "our-staff", 
               "settings", "languages", "currencies", "store", "customers",
-              "odoo-sync", "odoo-catalog", "reports", "reports/sales", "reports/inventory",
+              "odoo-sync", "odoo-catalog", "stock-movements", "reports", "reports/sales", "reports/inventory",
               "reports/customers", "reports/delivery", "reports/financial", "reports/executive",
               "delivery/dashboard", "delivery/assignments", "delivery/drivers", "delivery/tracking",
               "delivery/settings", "products/import-export", "categories/import-export"
