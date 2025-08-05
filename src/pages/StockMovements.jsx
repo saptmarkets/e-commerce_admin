@@ -44,28 +44,31 @@ const StockMovements = () => {
   // Helper function to safely get product information
   const getProductInfo = (movement) => {
     try {
+      console.log('Movement data:', movement); // Debug log
+      console.log('Product data:', movement?.product); // Debug log
+
       if (!movement || !movement.product) {
-        return { title: t('UnknownProduct'), image: null, id: 'Unknown' };
+        return { title: String(t('UnknownProduct')), image: null, id: 'Unknown' };
       }
       
       // If product is an ObjectId (string)
       if (typeof movement.product === 'string') {
-        return { title: `${t('Product')} ID: ${movement.product}`, image: null, id: movement.product };
+        return { title: String(`${t('Product')} ID: ${movement.product}`), image: null, id: movement.product };
       }
       
       // If product is an object (populated)
       if (typeof movement.product === 'object' && movement.product !== null) {
-        return {
-          title: movement.product.title || movement.product.name || `${t('Product')} ID: ${movement.product._id || t('Unknown')}`,
-          image: movement.product.image || movement.product.images?.[0] || null,
-          id: movement.product._id || t('Unknown')
-        };
+        const title = String(movement.product.title || movement.product.name || `${t('Product')} ID: ${movement.product._id || t('Unknown')}`);
+        const image = movement.product.image || movement.product.images?.[0] || null;
+        const id = String(movement.product._id || t('Unknown'));
+        
+        return { title, image, id };
       }
       
-      return { title: t('UnknownProduct'), image: null, id: t('Unknown') };
+      return { title: String(t('UnknownProduct')), image: null, id: String(t('Unknown')) };
     } catch (error) {
       console.error('Error in getProductInfo:', error);
-      return { title: t('UnknownProduct'), image: null, id: t('Unknown') };
+      return { title: String(t('UnknownProduct')), image: null, id: String(t('Unknown')) };
     }
   };
 
@@ -96,14 +99,14 @@ const StockMovements = () => {
 
       const data = await response.json();
       console.log('Stock movements API response:', data); // Debug log
+      console.log('Stock movements data array:', data.data); // Debug log
+      console.log('Stock movements pagination:', data.pagination); // Debug log
+
       if (data.success) {
-        // Handle the case where data.data is an array directly
-        const movements = Array.isArray(data.data) ? data.data : (data.data?.movements || []);
-        const total = data.data?.total || data.pagination?.total || movements.length;
-        
-        setMovements(movements);
-        setTotalItems(total);
-        setTotalPages(Math.ceil(total / itemsPerPage));
+        // Handle the case where data is an array directly
+        setMovements(data.data || []);
+        setTotalItems(data.pagination?.total || 0);
+        setTotalPages(Math.ceil((data.pagination?.total || 0) / itemsPerPage));
       } else {
         toast.error(data.message || 'Failed to load stock movements');
       }
@@ -164,19 +167,24 @@ const StockMovements = () => {
   // Get sync status display
   const getSyncStatusDisplay = (status) => {
     try {
+      console.log('Sync status:', status); // Debug log
+      const text = String(t(status === 'synced' ? 'Synced' : 
+                         status === 'pending' ? 'PendingSync' : 
+                         status === 'failed' ? 'Failed' : 'Unknown'));
+      
       switch (status) {
         case 'synced':
-          return { text: t('Synced'), color: 'text-green-600', bgColor: 'bg-green-100' };
+          return { text, color: 'text-green-600', bgColor: 'bg-green-100' };
         case 'pending':
-          return { text: t('PendingSync'), color: 'text-yellow-600', bgColor: 'bg-yellow-100' };
+          return { text, color: 'text-yellow-600', bgColor: 'bg-yellow-100' };
         case 'failed':
-          return { text: t('Failed'), color: 'text-red-600', bgColor: 'bg-red-100' };
+          return { text, color: 'text-red-600', bgColor: 'bg-red-100' };
         default:
-          return { text: t('Unknown'), color: 'text-gray-600', bgColor: 'bg-gray-100' };
+          return { text, color: 'text-gray-600', bgColor: 'bg-gray-100' };
       }
     } catch (error) {
       console.error('Error in getSyncStatusDisplay:', error);
-      return { text: t('Unknown'), color: 'text-gray-600', bgColor: 'bg-gray-100' };
+      return { text: String(t('Unknown')), color: 'text-gray-600', bgColor: 'bg-gray-100' };
     }
   };
 
@@ -338,7 +346,6 @@ const StockMovements = () => {
                   {movements && movements.length > 0 ? movements.map((movement) => {
                     try {
                       const productInfo = getProductInfo(movement);
-                      const syncStatus = getSyncStatusDisplay(movement?.odoo_sync_status || 'unknown');
                       
                       return (
                         <tr key={movement._id || movement.movement_id || Math.random()} className="hover:bg-gray-50">
@@ -382,9 +389,14 @@ const StockMovements = () => {
                             {movement?.invoice_number || 'N/A'}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${syncStatus.bgColor} ${syncStatus.color}`}>
-                              {syncStatus.text}
-                            </span>
+                            {(() => {
+                              const status = getSyncStatusDisplay(movement?.odoo_sync_status || 'unknown');
+                              return (
+                                <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${status.bgColor} ${status.color}`}>
+                                  {String(status.text)}
+                                </span>
+                              );
+                            })()}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <button
