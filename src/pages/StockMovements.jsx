@@ -17,8 +17,10 @@ import PageTitle from '@/components/Typography/PageTitle';
 import { Card, CardBody } from '@windmill/react-ui';
 import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
+import { useTranslation } from 'react-i18next';
 
 const StockMovements = () => {
+  const { t } = useTranslation();
   const [movements, setMovements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedMovement, setSelectedMovement] = useState(null);
@@ -43,27 +45,27 @@ const StockMovements = () => {
   const getProductInfo = (movement) => {
     try {
       if (!movement || !movement.product) {
-        return { title: 'Unknown Product', image: null, id: 'Unknown' };
+        return { title: t('UnknownProduct'), image: null, id: 'Unknown' };
       }
       
       // If product is an ObjectId (string)
       if (typeof movement.product === 'string') {
-        return { title: `Product ID: ${movement.product}`, image: null, id: movement.product };
+        return { title: `${t('Product')} ID: ${movement.product}`, image: null, id: movement.product };
       }
       
       // If product is an object (populated)
       if (typeof movement.product === 'object' && movement.product !== null) {
         return {
-          title: movement.product.title || movement.product.name || `Product ID: ${movement.product._id || 'Unknown'}`,
+          title: movement.product.title || movement.product.name || `${t('Product')} ID: ${movement.product._id || t('Unknown')}`,
           image: movement.product.image || movement.product.images?.[0] || null,
-          id: movement.product._id || 'Unknown'
+          id: movement.product._id || t('Unknown')
         };
       }
       
-      return { title: 'Unknown Product', image: null, id: 'Unknown' };
+      return { title: t('UnknownProduct'), image: null, id: t('Unknown') };
     } catch (error) {
       console.error('Error in getProductInfo:', error);
-      return { title: 'Unknown Product', image: null, id: 'Unknown' };
+      return { title: t('UnknownProduct'), image: null, id: t('Unknown') };
     }
   };
 
@@ -164,17 +166,17 @@ const StockMovements = () => {
     try {
       switch (status) {
         case 'synced':
-          return { text: 'Synced', color: 'text-green-600', bgColor: 'bg-green-100' };
+          return { text: t('Synced'), color: 'text-green-600', bgColor: 'bg-green-100' };
         case 'pending':
-          return { text: 'Pending Sync', color: 'text-yellow-600', bgColor: 'bg-yellow-100' };
+          return { text: t('PendingSync'), color: 'text-yellow-600', bgColor: 'bg-yellow-100' };
         case 'failed':
-          return { text: 'Failed', color: 'text-red-600', bgColor: 'bg-red-100' };
+          return { text: t('Failed'), color: 'text-red-600', bgColor: 'bg-red-100' };
         default:
-          return { text: 'Unknown', color: 'text-gray-600', bgColor: 'bg-gray-100' };
+          return { text: t('Unknown'), color: 'text-gray-600', bgColor: 'bg-gray-100' };
       }
     } catch (error) {
       console.error('Error in getSyncStatusDisplay:', error);
-      return { text: 'Unknown', color: 'text-gray-600', bgColor: 'bg-gray-100' };
+      return { text: t('Unknown'), color: 'text-gray-600', bgColor: 'bg-gray-100' };
     }
   };
 
@@ -244,7 +246,7 @@ const StockMovements = () => {
               <div className="flex-1 min-w-64">
                 <input
                   type="text"
-                  placeholder="Search movements..."
+                  placeholder={t('SearchMovements')}
                   value={filters.search}
                   onChange={(e) => handleFilterChange('search', e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -271,11 +273,11 @@ const StockMovements = () => {
                 onChange={(e) => handleFilterChange('movementType', e.target.value)}
                 className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
-                <option value="">All Types</option>
-                <option value="sale">Sale</option>
-                <option value="purchase">Purchase</option>
-                <option value="adjustment">Adjustment</option>
-                <option value="return">Return</option>
+                <option value="">{t('AllTypes')}</option>
+                <option value="sale">{t('Sale')}</option>
+                <option value="purchase">{t('Purchase')}</option>
+                <option value="adjustment">{t('Adjustment')}</option>
+                <option value="return">{t('Return')}</option>
               </select>
 
               <select
@@ -283,17 +285,17 @@ const StockMovements = () => {
                 onChange={(e) => handleFilterChange('syncStatus', e.target.value)}
                 className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
-                <option value="">All Status</option>
-                <option value="synced">Synced</option>
-                <option value="pending">Pending</option>
-                <option value="failed">Failed</option>
+                <option value="">{t('AllStatus')}</option>
+                <option value="synced">{t('Synced')}</option>
+                <option value="pending">{t('PendingSync')}</option>
+                <option value="failed">{t('Failed')}</option>
               </select>
 
               <button
                 onClick={clearFilters}
                 className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
               >
-                Clear
+                {t('Clear')}
               </button>
             </div>
           </CardBody>
@@ -307,28 +309,28 @@ const StockMovements = () => {
                 <thead className="bg-gray-50">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Date/Time
+                      {t('DateTime')}
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Product
+                      {t('Product')}
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Type
+                      {t('Type')}
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Before
+                      {t('Before')}
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      After
+                      {t('After')}
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Invoice
+                      {t('Invoice')}
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Sync Status
+                      {t('SyncStatus')}
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Actions
+                      {t('Actions')}
                     </th>
                   </tr>
                 </thead>
@@ -399,7 +401,7 @@ const StockMovements = () => {
                       return (
                         <tr key={`error-${Math.random()}`} className="hover:bg-gray-50">
                           <td colSpan="8" className="px-6 py-4 text-sm text-red-500">
-                            Error rendering movement data
+                            {t('ErrorRenderingMovementData')}
                           </td>
                         </tr>
                       );
@@ -407,7 +409,7 @@ const StockMovements = () => {
                   }) : (
                     <tr>
                       <td colSpan="8" className="px-6 py-4 text-center text-sm text-gray-500">
-                        No movements found
+                        {t('NoMovementsFound')}
                       </td>
                     </tr>
                   )}
@@ -419,7 +421,7 @@ const StockMovements = () => {
             {totalPages > 1 && (
               <div className="flex items-center justify-between mt-6">
                 <div className="text-sm text-gray-700">
-                  Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, totalItems)} of {totalItems} results
+                  {t('Showing')} {((currentPage - 1) * itemsPerPage) + 1} {t('to')} {Math.min(currentPage * itemsPerPage, totalItems)} {t('of')} {totalItems} {t('results')}
                 </div>
                 <div className="flex space-x-2">
                   <button
@@ -427,14 +429,14 @@ const StockMovements = () => {
                     disabled={currentPage === 1}
                     className="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Previous
+                    {t('Previous')}
                   </button>
                   <button
                     onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                     disabled={currentPage === totalPages}
                     className="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Next
+                    {t('Next')}
                   </button>
                 </div>
               </div>
@@ -448,46 +450,46 @@ const StockMovements = () => {
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
           <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
             <div className="mt-3">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Movement Details</h3>
+              <h3 className="text-lg font-medium text-gray-900 mb-4">{t('MovementDetails')}</h3>
               <div className="space-y-3">
                 <div>
-                  <span className="font-semibold">Movement ID:</span>
+                  <span className="font-semibold">{t('MovementID')}:</span>
                   <p className="text-sm text-gray-600">{selectedMovement.movement_id}</p>
                 </div>
                 <div>
-                  <span className="font-semibold">Product:</span>
+                  <span className="font-semibold">{t('Product')}:</span>
                   <p className="text-sm text-gray-600">{getProductInfo(selectedMovement).title}</p>
                 </div>
                 <div>
-                  <span className="font-semibold">Type:</span>
+                  <span className="font-semibold">{t('Type')}:</span>
                   <p className="text-sm text-gray-600">{selectedMovement.movement_type}</p>
                 </div>
                 <div>
-                  <span className="font-semibold">Quantity Before:</span>
+                  <span className="font-semibold">{t('QuantityBefore')}:</span>
                   <p className="text-sm text-gray-600">{selectedMovement.quantity_before}</p>
                 </div>
                 <div>
-                  <span className="font-semibold">Quantity After:</span>
+                  <span className="font-semibold">{t('QuantityAfter')}:</span>
                   <p className="text-sm text-gray-600">{selectedMovement.quantity_after}</p>
                 </div>
                 <div>
-                  <span className="font-semibold">Quantity Changed:</span>
+                  <span className="font-semibold">{t('QuantityChanged')}:</span>
                   <p className="text-sm text-gray-600">{selectedMovement.quantity_changed}</p>
                 </div>
                 <div>
-                  <span className="font-semibold">Invoice Number:</span>
+                  <span className="font-semibold">{t('InvoiceNumber')}:</span>
                   <p className="text-sm text-gray-600">{selectedMovement.invoice_number || 'N/A'}</p>
                 </div>
                 <div>
-                  <span className="font-semibold">Reference Document:</span>
+                  <span className="font-semibold">{t('ReferenceDocument')}:</span>
                   <p className="text-sm text-gray-600">{selectedMovement.reference_document || 'N/A'}</p>
                 </div>
                 <div>
-                  <span className="font-semibold">Sync Status:</span>
+                  <span className="font-semibold">{t('SyncStatus')}:</span>
                   <p className="text-sm text-gray-600">{getSyncStatusDisplay(selectedMovement.odoo_sync_status).text}</p>
                 </div>
                 <div>
-                  <span className="font-semibold">Date:</span>
+                  <span className="font-semibold">{t('Date')}:</span>
                   <p className="text-sm text-gray-600">{formatDate(selectedMovement.movement_date)}</p>
                 </div>
               </div>
@@ -496,7 +498,7 @@ const StockMovements = () => {
                   onClick={() => setShowDetailModal(false)}
                   className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
                 >
-                  Close
+                  {t('Close')}
                 </button>
               </div>
             </div>
