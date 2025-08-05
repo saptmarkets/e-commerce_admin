@@ -54,7 +54,7 @@ const StockMovements = () => {
       // If product is a string (ObjectId)
       if (typeof movement.product === 'string') {
         return { 
-          title: String(movement.movement_id || movement.reference_document || t('UnknownProduct')), 
+          title: String(movement.reference_document || movement.movement_id || t('UnknownProduct')), 
           image: null, 
           id: movement.product 
         };
@@ -68,30 +68,37 @@ const StockMovements = () => {
           productName = movement.reference_document.split('Order:')[1].trim();
         }
 
-        return {
-          title: String(
-            movement.product.title || 
-            movement.product.name || 
-            productName ||
-            movement.movement_id ||
-            `${t('Product')} ID: ${movement.product._id || t('Unknown')}`
-          ),
-          image: movement.product.image || 
-                 (movement.product.images && movement.product.images.length > 0 ? movement.product.images[0] : null),
-          id: String(movement.product._id || movement.product || t('Unknown'))
-        };
+        // Get product title
+        const title = String(
+          movement.product.title || 
+          movement.product.name || 
+          productName ||
+          movement.movement_id ||
+          `${t('Product')} ID: ${movement.product._id || t('Unknown')}`
+        );
+
+        // Get product image
+        const image = movement.product.image || 
+                     (movement.product.images && movement.product.images.length > 0 ? movement.product.images[0] : null);
+
+        // Get product ID
+        const id = String(movement.product._id || movement.product || t('Unknown'));
+
+        console.log('Product info:', { title, image, id }); // Debug log
+
+        return { title, image, id };
       }
 
       // Fallback to movement ID or reference document
       return { 
-        title: String(movement.movement_id || movement.reference_document || t('UnknownProduct')), 
+        title: String(movement.reference_document || movement.movement_id || t('UnknownProduct')), 
         image: null, 
         id: String(movement._id || 'Unknown') 
       };
     } catch (error) {
       console.error('Error in getProductInfo:', error, movement);
       return { 
-        title: String(movement?.movement_id || movement?.reference_document || t('UnknownProduct')), 
+        title: String(movement?.reference_document || movement?.movement_id || t('UnknownProduct')), 
         image: null, 
         id: String(movement?._id || 'Unknown') 
       };
