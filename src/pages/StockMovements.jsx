@@ -50,25 +50,51 @@ const StockMovements = () => {
       if (!movement || !movement.product) {
         return { title: String(t('UnknownProduct')), image: null, id: 'Unknown' };
       }
-      
-      // If product is an ObjectId (string)
+
+      // If product is a string (ObjectId)
       if (typeof movement.product === 'string') {
-        return { title: String(`${t('Product')} ID: ${movement.product}`), image: null, id: movement.product };
+        return { 
+          title: String(movement.movement_id || movement.reference_document || t('UnknownProduct')), 
+          image: null, 
+          id: movement.product 
+        };
       }
-      
-      // If product is an object (populated)
+
+      // If product is an object
       if (typeof movement.product === 'object' && movement.product !== null) {
-        const title = String(movement.product.title || movement.product.name || `${t('Product')} ID: ${movement.product._id || t('Unknown')}`);
-        const image = movement.product.image || movement.product.images?.[0] || null;
-        const id = String(movement.product._id || t('Unknown'));
-        
-        return { title, image, id };
+        // Extract product name from reference document if available
+        let productName = '';
+        if (movement.reference_document && movement.reference_document.startsWith('Order:')) {
+          productName = movement.reference_document.split('Order:')[1].trim();
+        }
+
+        return {
+          title: String(
+            movement.product.title || 
+            movement.product.name || 
+            productName ||
+            movement.movement_id ||
+            `${t('Product')} ID: ${movement.product._id || t('Unknown')}`
+          ),
+          image: movement.product.image || 
+                 (movement.product.images && movement.product.images.length > 0 ? movement.product.images[0] : null),
+          id: String(movement.product._id || movement.product || t('Unknown'))
+        };
       }
-      
-      return { title: String(t('UnknownProduct')), image: null, id: String(t('Unknown')) };
+
+      // Fallback to movement ID or reference document
+      return { 
+        title: String(movement.movement_id || movement.reference_document || t('UnknownProduct')), 
+        image: null, 
+        id: String(movement._id || 'Unknown') 
+      };
     } catch (error) {
-      console.error('Error in getProductInfo:', error);
-      return { title: String(t('UnknownProduct')), image: null, id: String(t('Unknown')) };
+      console.error('Error in getProductInfo:', error, movement);
+      return { 
+        title: String(movement?.movement_id || movement?.reference_document || t('UnknownProduct')), 
+        image: null, 
+        id: String(movement?._id || 'Unknown') 
+      };
     }
   };
 
@@ -369,7 +395,7 @@ const StockMovements = () => {
                                   {productInfo.title}
                                 </div>
                                 <div className="text-xs text-gray-500">
-                                  {movement?.movement_id || 'N/A'}
+                                  {movement?.reference_document || movement?.movement_id || 'N/A'}
                                 </div>
                               </div>
                             </div>
