@@ -48,6 +48,29 @@ const StockMovements = () => {
     invoiceNumber: ''
   });
 
+  // Helper function to safely get product information
+  const getProductInfo = (movement) => {
+    if (!movement.product) {
+      return { title: 'Unknown Product', image: null, id: 'Unknown' };
+    }
+    
+    // If product is an ObjectId (string)
+    if (typeof movement.product === 'string') {
+      return { title: `Product ID: ${movement.product}`, image: null, id: movement.product };
+    }
+    
+    // If product is an object (populated)
+    if (typeof movement.product === 'object' && movement.product !== null) {
+      return {
+        title: movement.product.title || `Product ID: ${movement.product._id || 'Unknown'}`,
+        image: movement.product.image || null,
+        id: movement.product._id || 'Unknown'
+      };
+    }
+    
+    return { title: 'Unknown Product', image: null, id: 'Unknown' };
+  };
+
   // Load movements
   const loadMovements = async () => {
     try {
@@ -557,21 +580,28 @@ const StockMovements = () => {
                         </td>
                         <td className="px-4 py-4 whitespace-nowrap">
                           <div className="flex items-center">
-                            {movement.product?.image && (
-                              <img
-                                src={movement.product.image}
-                                alt={movement.product?.title}
-                                className="w-8 h-8 rounded-full mr-3 object-cover"
-                              />
-                            )}
-                            <div>
-                              <div className="text-sm font-medium text-gray-900">
-                                {movement.product?.title || 'Unknown Product'}
-                              </div>
-                              <div className="text-xs text-gray-500">
-                                {movement.movement_id}
-                              </div>
-                            </div>
+                            {(() => {
+                              const productInfo = getProductInfo(movement);
+                              return (
+                                <>
+                                  {productInfo.image && (
+                                    <img
+                                      src={productInfo.image}
+                                      alt={productInfo.title}
+                                      className="w-8 h-8 rounded-full mr-3 object-cover"
+                                    />
+                                  )}
+                                  <div>
+                                    <div className="text-sm font-medium text-gray-900">
+                                      {productInfo.title}
+                                    </div>
+                                    <div className="text-xs text-gray-500">
+                                      {movement.movement_id}
+                                    </div>
+                                  </div>
+                                </>
+                              );
+                            })()}
                           </div>
                         </td>
                         <td className="px-4 py-4 whitespace-nowrap">
@@ -687,7 +717,7 @@ const StockMovements = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700">Product</label>
-                    <p className="mt-1 text-sm text-gray-900">{selectedMovement.product?.title}</p>
+                    <p className="mt-1 text-sm text-gray-900">{getProductInfo(selectedMovement).title}</p>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700">Movement Type</label>
