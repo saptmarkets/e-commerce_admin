@@ -2,10 +2,8 @@ import { useContext, useState, useEffect } from "react";
 import { useLocation } from 'react-router-dom';
 import { SidebarContext } from "@/context/SidebarContext";
 import { notifySuccess, notifyError } from "@/utils/toast";
-import { useTranslation } from "react-i18next";
 
 const useToggleDrawer = () => {
-  const { t } = useTranslation();
   const location = useLocation();
   const { toggleDrawer, isDrawerOpen, toggleModal, toggleBulkDrawer, closeDrawer: sidebarCloseDrawer } = useContext(SidebarContext);
   const [serviceId, setServiceId] = useState('');
@@ -95,11 +93,11 @@ const useToggleDrawer = () => {
       if (serviceId) {
         console.log('TOGGLE DRAWER: Updating existing record with ID:', serviceId);
         await ProductServices.updateProduct(serviceId, standardizedData);
-        notifySuccess(t("Item updated successfully!"));
+        notifySuccess("Item updated successfully!");
       } else {
         console.log('TOGGLE DRAWER: Creating new record');
         await ProductServices.addProduct(standardizedData);
-        notifySuccess(t("Item added successfully!"));
+        notifySuccess("Item added successfully!");
       }
       
       closeDrawer();
@@ -107,7 +105,7 @@ const useToggleDrawer = () => {
       if (reset) reset();
     } catch (err) {
       console.error('TOGGLE DRAWER: Submission error:', err);
-      notifyError(err ? err.message : t("Error submitting form!"));
+      notifyError(err ? err.message : "Error submitting form!");
     } finally {
       setIsSubmitting(false);
     }

@@ -1,10 +1,8 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { FiEdit, FiTrash2, FiCheck, FiX } from "react-icons/fi";
 
 const UnitTable = ({ units, handleUpdate, handleDelete }) => {
-  const { t, i18n } = useTranslation();
-  const isArabic = i18n.language === 'ar';
+  const isArabic = false; // Always use English for now
 
   const renderStatusBadge = (status) => {
     const isActive = status === 'show';
@@ -44,7 +42,7 @@ const UnitTable = ({ units, handleUpdate, handleDelete }) => {
         {/* Show indicator if Arabic name is missing */}
         {!hasArabicName && (
           <span className="text-xs text-orange-500 dark:text-orange-400 mt-1">
-            {t('Arabic name not set')}
+            Arabic name not set
           </span>
         )}
       </div>
@@ -57,22 +55,22 @@ const UnitTable = ({ units, handleUpdate, handleDelete }) => {
         <thead className="bg-gray-50 dark:bg-gray-700">
           <tr>
             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-              {t('Name')}
+              Name
             </th>
             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-              {t('Short Code')}
+              Short Code
             </th>
             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-              {t('Type')}
+              Type
             </th>
             <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-              {t('Base Unit')}
+              Base Unit
             </th>
             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-              {t('Status')}
+              Status
             </th>
             <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-              {t('Actions')}
+              Actions
             </th>
           </tr>
         </thead>
@@ -105,14 +103,14 @@ const UnitTable = ({ units, handleUpdate, handleDelete }) => {
                   <button
                     onClick={() => handleUpdate(unit)}
                     className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 p-1 rounded hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-colors"
-                    title={t('Edit Unit')}
+                    title="Edit Unit"
                   >
                     <FiEdit className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => handleDelete(unit._id)}
                     className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 p-1 rounded hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
-                    title={t('Delete Unit')}
+                    title="Delete Unit"
                   >
                     <FiTrash2 className="w-4 h-4" />
                   </button>

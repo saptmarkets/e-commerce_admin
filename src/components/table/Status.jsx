@@ -1,31 +1,28 @@
 import { Badge } from "@windmill/react-ui";
-import { useTranslation } from "react-i18next";
 
 const Status = ({ status }) => {
-  const { t } = useTranslation();
-
   const getStatusText = (status) => {
     switch (status) {
       case "Delivered":
-        return t("Delivered");
+        return "Delivered";
       case "Processing":
-        return t("Processing");
+        return "Processing";
       case "Pending":
-        return t("Pending");
+        return "Pending";
       case "Received":
-        return t("Received");
+        return "Received";
       case "Out for Delivery":
-        return t("OutForDelivery");
+        return "Out for Delivery";
       case "Cancelled":
-        return t("Cancelled");
+        return "Cancelled";
       case "Cancel":
-        return t("Cancelled");
+        return "Cancelled";
       case "Active":
-        return t("Active");
+        return "Active";
       case "Inactive":
-        return t("Inactive");
+        return "Inactive";
       case "Waiting for Password Reset":
-        return t("WaitingForPasswordReset");
+        return "Waiting for Password Reset";
       default:
         return status;
     }
