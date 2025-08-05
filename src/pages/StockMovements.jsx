@@ -41,25 +41,30 @@ const StockMovements = () => {
 
   // Helper function to safely get product information
   const getProductInfo = (movement) => {
-    if (!movement.product) {
+    try {
+      if (!movement || !movement.product) {
+        return { title: 'Unknown Product', image: null, id: 'Unknown' };
+      }
+      
+      // If product is an ObjectId (string)
+      if (typeof movement.product === 'string') {
+        return { title: `Product ID: ${movement.product}`, image: null, id: movement.product };
+      }
+      
+      // If product is an object (populated)
+      if (typeof movement.product === 'object' && movement.product !== null) {
+        return {
+          title: movement.product.title || movement.product.name || `Product ID: ${movement.product._id || 'Unknown'}`,
+          image: movement.product.image || movement.product.images?.[0] || null,
+          id: movement.product._id || 'Unknown'
+        };
+      }
+      
+      return { title: 'Unknown Product', image: null, id: 'Unknown' };
+    } catch (error) {
+      console.error('Error in getProductInfo:', error);
       return { title: 'Unknown Product', image: null, id: 'Unknown' };
     }
-    
-    // If product is an ObjectId (string)
-    if (typeof movement.product === 'string') {
-      return { title: `Product ID: ${movement.product}`, image: null, id: movement.product };
-    }
-    
-    // If product is an object (populated)
-    if (typeof movement.product === 'object' && movement.product !== null) {
-      return {
-        title: movement.product.title || `Product ID: ${movement.product._id || 'Unknown'}`,
-        image: movement.product.image || null,
-        id: movement.product._id || 'Unknown'
-      };
-    }
-    
-    return { title: 'Unknown Product', image: null, id: 'Unknown' };
   };
 
   // Load movements
@@ -156,45 +161,61 @@ const StockMovements = () => {
 
   // Get sync status display
   const getSyncStatusDisplay = (status) => {
-    switch (status) {
-      case 'synced':
-        return { text: 'Synced', color: 'text-green-600', bgColor: 'bg-green-100' };
-      case 'pending':
-        return { text: 'Pending Sync', color: 'text-yellow-600', bgColor: 'bg-yellow-100' };
-      case 'failed':
-        return { text: 'Failed', color: 'text-red-600', bgColor: 'bg-red-100' };
-      default:
-        return { text: 'Unknown', color: 'text-gray-600', bgColor: 'bg-gray-100' };
+    try {
+      switch (status) {
+        case 'synced':
+          return { text: 'Synced', color: 'text-green-600', bgColor: 'bg-green-100' };
+        case 'pending':
+          return { text: 'Pending Sync', color: 'text-yellow-600', bgColor: 'bg-yellow-100' };
+        case 'failed':
+          return { text: 'Failed', color: 'text-red-600', bgColor: 'bg-red-100' };
+        default:
+          return { text: 'Unknown', color: 'text-gray-600', bgColor: 'bg-gray-100' };
+      }
+    } catch (error) {
+      console.error('Error in getSyncStatusDisplay:', error);
+      return { text: 'Unknown', color: 'text-gray-600', bgColor: 'bg-gray-100' };
     }
   };
 
   // Get movement type color
   const getMovementTypeColor = (type) => {
-    switch (type) {
-      case 'sale':
-        return 'text-red-600 bg-red-100';
-      case 'purchase':
-        return 'text-green-600 bg-green-100';
-      case 'adjustment':
-        return 'text-blue-600 bg-blue-100';
-      case 'return':
-        return 'text-purple-600 bg-purple-100';
-      default:
-        return 'text-gray-600 bg-gray-100';
+    try {
+      switch (type) {
+        case 'sale':
+          return 'text-red-600 bg-red-100';
+        case 'purchase':
+          return 'text-green-600 bg-green-100';
+        case 'adjustment':
+          return 'text-blue-600 bg-blue-100';
+        case 'return':
+          return 'text-purple-600 bg-purple-100';
+        default:
+          return 'text-gray-600 bg-gray-100';
+      }
+    } catch (error) {
+      console.error('Error in getMovementTypeColor:', error);
+      return 'text-gray-600 bg-gray-100';
     }
   };
 
   // Format date
   const formatDate = (dateString) => {
-    if (!dateString) return 'N/A';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+    try {
+      if (!dateString) return 'N/A';
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return 'Invalid Date';
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return 'Invalid Date';
+    }
   };
 
   // Load data on component mount
@@ -312,64 +333,84 @@ const StockMovements = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {movements.map((movement) => {
-                    const productInfo = getProductInfo(movement);
-                    const syncStatus = getSyncStatusDisplay(movement.odoo_sync_status);
-                    
-                    return (
-                      <tr key={movement._id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {formatDate(movement.movement_date)}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center">
-                            {productInfo.image && (
-                              <img
-                                src={productInfo.image}
-                                alt={productInfo.title}
-                                className="w-8 h-8 rounded-full mr-3 object-cover"
-                              />
-                            )}
-                            <div>
-                              <div className="text-sm font-medium text-gray-900">
-                                {productInfo.title}
-                              </div>
-                              <div className="text-xs text-gray-500">
-                                {movement.movement_id}
+                  {movements && movements.length > 0 ? movements.map((movement) => {
+                    try {
+                      const productInfo = getProductInfo(movement);
+                      const syncStatus = getSyncStatusDisplay(movement?.odoo_sync_status || 'unknown');
+                      
+                      return (
+                        <tr key={movement._id || movement.movement_id || Math.random()} className="hover:bg-gray-50">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {formatDate(movement?.movement_date)}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="flex items-center">
+                              {productInfo.image && (
+                                <img
+                                  src={productInfo.image}
+                                  alt={productInfo.title}
+                                  className="w-8 h-8 rounded-full mr-3 object-cover"
+                                  onError={(e) => {
+                                    e.target.style.display = 'none';
+                                  }}
+                                />
+                              )}
+                              <div>
+                                <div className="text-sm font-medium text-gray-900">
+                                  {productInfo.title}
+                                </div>
+                                <div className="text-xs text-gray-500">
+                                  {movement?.movement_id || 'N/A'}
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getMovementTypeColor(movement.movement_type)}`}>
-                            {movement.movement_type}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {movement.quantity_before}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {movement.quantity_after}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {movement.invoice_number || 'N/A'}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${syncStatus.bgColor} ${syncStatus.color}`}>
-                            {syncStatus.text}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          <button
-                            onClick={() => handleViewDetails(movement)}
-                            className="text-blue-600 hover:text-blue-900 mr-3"
-                          >
-                            <FiEye className="w-4 h-4" />
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getMovementTypeColor(movement?.movement_type || 'unknown')}`}>
+                              {movement?.movement_type || 'Unknown'}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {movement?.quantity_before || 0}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {movement?.quantity_after || 0}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {movement?.invoice_number || 'N/A'}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${syncStatus.bgColor} ${syncStatus.color}`}>
+                              {syncStatus.text}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <button
+                              onClick={() => handleViewDetails(movement)}
+                              className="text-blue-600 hover:text-blue-900 mr-3"
+                            >
+                              <FiEye className="w-4 h-4" />
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    } catch (error) {
+                      console.error('Error rendering movement row:', error);
+                      return (
+                        <tr key={`error-${Math.random()}`} className="hover:bg-gray-50">
+                          <td colSpan="8" className="px-6 py-4 text-sm text-red-500">
+                            Error rendering movement data
+                          </td>
+                        </tr>
+                      );
+                    }
+                  }) : (
+                    <tr>
+                      <td colSpan="8" className="px-6 py-4 text-center text-sm text-gray-500">
+                        No movements found
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
