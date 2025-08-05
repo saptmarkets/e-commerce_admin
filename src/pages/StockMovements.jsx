@@ -19,9 +19,11 @@ import PageTitle from '@/components/Typography/PageTitle';
 import { Card, CardBody } from '@windmill/react-ui';
 import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
+import { useTranslation } from 'react-i18next';
 
-// @version 1.0.1
+// @version 1.0.2
 const StockMovements = () => {
+  const { t } = useTranslation();
   const [movements, setMovements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [statistics, setStatistics] = useState({});
@@ -314,38 +316,38 @@ const StockMovements = () => {
 
   return (
     <>
-      <PageTitle>Stock Movement History</PageTitle>
+      <PageTitle>{t("Stock Movement History")}</PageTitle>
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
         <Card>
           <CardBody className="text-center">
             <div className="text-2xl font-bold text-blue-600">{statistics.overview?.todayMovements || 0}</div>
-            <div className="text-sm text-gray-600">Today</div>
+            <div className="text-sm text-gray-600">{t("Today")}</div>
           </CardBody>
         </Card>
         <Card>
           <CardBody className="text-center">
             <div className="text-2xl font-bold text-green-600">{statistics.overview?.weekMovements || 0}</div>
-            <div className="text-sm text-gray-600">This Week</div>
+            <div className="text-sm text-gray-600">{t("This Week")}</div>
           </CardBody>
         </Card>
         <Card>
           <CardBody className="text-center">
             <div className="text-2xl font-bold text-yellow-600">{statistics.overview?.pendingSync || 0}</div>
-            <div className="text-sm text-gray-600">Pending Sync</div>
+            <div className="text-sm text-gray-600">{t("Pending Sync")}</div>
           </CardBody>
         </Card>
         <Card>
           <CardBody className="text-center">
             <div className="text-2xl font-bold text-green-600">{statistics.overview?.successfulSync || 0}</div>
-            <div className="text-sm text-gray-600">Synced</div>
+            <div className="text-sm text-gray-600">{t("Synced")}</div>
           </CardBody>
         </Card>
         <Card>
           <CardBody className="text-center">
             <div className="text-2xl font-bold text-red-600">{statistics.overview?.failedSync || 0}</div>
-            <div className="text-sm text-gray-600">Failed</div>
+            <div className="text-sm text-gray-600">{t("Failed")}</div>
           </CardBody>
         </Card>
       </div>
@@ -359,7 +361,7 @@ const StockMovements = () => {
                 <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="Search products, invoices, users..."
+                  placeholder={t("Search products, invoices, users...")}
                   className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   value={filters.search}
                   onChange={(e) => handleFilterChange('search', e.target.value)}
@@ -370,7 +372,7 @@ const StockMovements = () => {
                 className="flex items-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
               >
                 <FiFilter className="mr-2" />
-                Filters
+                {t("Filters")}
               </button>
             </div>
             
@@ -380,14 +382,14 @@ const StockMovements = () => {
                 className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
               >
                 <FiDownload className="mr-2" />
-                Export
+                {t("Export")}
               </button>
               <button
                 onClick={loadMovements}
                 className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
               >
                 <FiRefreshCw className="mr-2" />
-                Refresh
+                {t("Refresh")}
               </button>
             </div>
           </div>
@@ -396,7 +398,7 @@ const StockMovements = () => {
           {showFilters && (
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 bg-gray-50 rounded-lg">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t("Start Date")}</label>
                 <input
                   type="date"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
@@ -405,7 +407,7 @@ const StockMovements = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t("End Date")}</label>
                 <input
                   type="date"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
@@ -414,34 +416,34 @@ const StockMovements = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Movement Type</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t("Movement Type")}</label>
                 <select
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
                   value={filters.movementType}
                   onChange={(e) => handleFilterChange('movementType', e.target.value)}
                 >
-                  <option value="">All Types</option>
-                  <option value="sale">Sale</option>
-                  <option value="purchase">Purchase</option>
-                  <option value="transfer">Transfer</option>
-                  <option value="return">Return</option>
-                  <option value="adjustment">Adjustment</option>
-                  <option value="sync">Sync</option>
+                  <option value="">{t("All Types")}</option>
+                  <option value="sale">{t("Sale")}</option>
+                  <option value="purchase">{t("Purchase")}</option>
+                  <option value="transfer">{t("Transfer")}</option>
+                  <option value="return">{t("Return")}</option>
+                  <option value="adjustment">{t("Adjustment")}</option>
+                  <option value="sync">{t("Sync")}</option>
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Sync Status</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t("Sync Status")}</label>
                 <select
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
                   value={filters.syncStatus}
                   onChange={(e) => handleFilterChange('syncStatus', e.target.value)}
                 >
-                  <option value="">All Status</option>
-                  <option value="pending">Pending</option>
-                  <option value="syncing">Syncing</option>
-                  <option value="success">Success</option>
-                  <option value="failed">Failed</option>
-                  <option value="retry">Retry</option>
+                  <option value="">{t("All Status")}</option>
+                  <option value="pending">{t("Pending")}</option>
+                  <option value="syncing">{t("Syncing")}</option>
+                  <option value="success">{t("Success")}</option>
+                  <option value="failed">{t("Failed")}</option>
+                  <option value="retry">{t("Retry")}</option>
                 </select>
               </div>
               <div className="md:col-span-3 lg:col-span-4 flex gap-2">
@@ -449,7 +451,7 @@ const StockMovements = () => {
                   onClick={clearFilters}
                   className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
                 >
-                  Clear Filters
+                  {t("Clear Filters")}
                 </button>
               </div>
             </div>
@@ -508,31 +510,31 @@ const StockMovements = () => {
                         />
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Date/Time
+                        {t("Date/Time")}
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Product
+                        {t("Product")}
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Type
+                        {t("Type")}
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Qty
+                        {t("Qty")}
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Before
+                        {t("Before")}
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        After
+                        {t("After")}
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Invoice
+                        {t("Invoice")}
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Sync Status
+                        {t("Sync Status")}
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Actions
+                        {t("Actions")}
                       </th>
                     </tr>
                   </thead>
