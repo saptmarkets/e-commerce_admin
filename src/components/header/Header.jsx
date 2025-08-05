@@ -15,7 +15,6 @@ import {
 } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import cookies from "js-cookie";
-import { useTranslation } from "react-i18next";
 
 //internal import
 import ellipse from "@/assets/img/icons/ellipse.svg";
@@ -41,7 +40,6 @@ const Header = () => {
   const nRef = useRef();
 
   const currentLanguageCode = cookies.get("i18next") || "en";
-  const { t } = useTranslation();
   const { updated, setUpdated } = useNotification();
   const { showDateTimeFormat } = useUtilsFunction();
 
@@ -167,7 +165,7 @@ const Header = () => {
                   <li className="relative group" key={route.name}>
                     <button className="flex items-center gap-1.5 font-bold text-emerald-700 dark:text-emerald-200 hover:text-yellow-500 dark:hover:text-yellow-300 focus:outline-none transition-colors duration-200 text-xs md:text-sm lg:text-base px-1.5 py-0.5 rounded-xl bg-white/10 hover:bg-white/20 dark:bg-emerald-900/20 dark:hover:bg-emerald-900/40 shadow-md max-w-[96px] md:max-w-[112px] lg:max-w-none truncate">
                       <route.icon className="w-5 h-5" />
-                      <span className="truncate">{t(`${route.name}`)}</span>
+                      <span className="truncate">{route.name}</span>
                       <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                       </svg>
@@ -180,7 +178,7 @@ const Header = () => {
                             target={sub.outside ? '_blank' : '_self'} 
                             className="block px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-emerald-50 dark:hover:bg-gray-700 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors duration-200 first:rounded-t-lg last:rounded-b-lg"
                           >
-                            {t(`${sub.name}`)}
+                            {sub.name}
                           </Link>
                         </li>
                       ))}
@@ -193,7 +191,7 @@ const Header = () => {
                       className="flex items-center gap-1.5 font-bold text-emerald-700 dark:text-emerald-200 hover:text-yellow-500 dark:hover:text-yellow-300 transition-colors duration-200 text-xs md:text-sm lg:text-base px-1.5 py-0.5 rounded-xl bg-white/10 hover:bg-white/20 dark:bg-emerald-900/20 dark:hover:bg-emerald-900/40 shadow-md max-w-[96px] md:max-w-[112px] lg:max-w-none truncate"
                     >
                       <route.icon className="w-5 h-5" />
-                      <span className="truncate">{t(`${route.name}`)}</span>
+                      <span className="truncate">{route.name}</span>
                     </Link>
                   </li>
                 )
@@ -391,7 +389,7 @@ const Header = () => {
                     <Link to="/dashboard">
                       <span className="flex items-center text-sm">
                         <FiGrid className="w-4 h-4 mr-3" aria-hidden="true" />
-                        <span>{t("Dashboard")}</span>
+                        <span>Dashboard</span>
                       </span>
                     </Link>
                   </li>
@@ -403,7 +401,7 @@ const Header = () => {
                           className="w-4 h-4 mr-3"
                           aria-hidden="true"
                         />
-                        <span>{t("EditProfile")}</span>
+                        <span>EditProfile</span>
                       </span>
                     </Link>
                   </li>
@@ -414,7 +412,7 @@ const Header = () => {
                   >
                     <span className="flex items-center text-sm">
                       <FiLogOut className="w-4 h-4 mr-3" aria-hidden="true" />
-                      <span>{t("LogOut")}</span>
+                      <span>LogOut</span>
                     </span>
                   </li>
                 </ul>
