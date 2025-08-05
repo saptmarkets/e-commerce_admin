@@ -237,7 +237,7 @@ const StockMovements = () => {
   return (
     <>
       <div className="container mx-auto px-6 py-8">
-        <PageTitle>Stock Movement History</PageTitle>
+        <PageTitle>{t('Stock Movement History')}</PageTitle>
 
         {/* Filters */}
         <Card className="mb-6">
