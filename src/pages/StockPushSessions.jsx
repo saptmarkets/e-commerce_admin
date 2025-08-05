@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
 import { FiEye, FiRefreshCw, FiTrash2 } from 'react-icons/fi';
-import { Card, CardBody } from '../components/Cards';
-import PageTitle from '../components/Typography/PageTitle';
-import Button from '../components/Buttons/Button';
-import Modal from '../components/Modal/Modal';
+import { Card, CardBody } from '@windmill/react-ui';
+import PageTitle from '@/components/Typography/PageTitle';
+import Button from '@/components/form/button/CMButton';
+import Modal from '@/components/modal/MainModal';
 
 const StockPushSessions = () => {
   const { t } = useTranslation();
