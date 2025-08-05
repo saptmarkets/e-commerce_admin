@@ -5,6 +5,7 @@ const PromotionManagement = lazy(() => import("@/pages/PromotionManagement"));
 const ProductImportExport = lazy(() => import("@/pages/ProductImportExport"));
 const CategoryImportExport = lazy(() => import("@/pages/CategoryImportExport"));
 const StockMovements = lazy(() => import("@/pages/StockMovements"));
+const StockPushSessions = lazy(() => import("@/pages/StockPushSessions"));
 
 // use lazy for better code splitting
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
@@ -251,6 +252,10 @@ const routes = [
     path: "/stock-movements",
     component: StockMovements,
   },
+  {
+    path: "/stock-push-sessions",
+    component: StockPushSessions,
+  },
 ];
 
 // Debug logging
@@ -307,6 +312,7 @@ const routeAccessList = [
   { label: "Financial Reports", value: "reports/financial" },
   { label: "Executive Dashboard", value: "reports/executive" },
   { label: "Stock Movements", value: "stock-movements" },
+  { label: "Stock Push Sessions", value: "stock-push-sessions" },
 ];
 
 export { routeAccessList, routes };

@@ -226,6 +226,18 @@ const sidebar = [
       },
     ],
   },
+  {
+    path: '/stock-movements',
+    icon: 'MdLocalShipping',
+    name: 'Stock Movement History',
+    permissionKey: 'stock_movements',
+  },
+  {
+    path: '/stock-push-sessions',
+    icon: 'MdSync',
+    name: 'Stock Push Sessions',
+    permissionKey: 'stock_movements',
+  },
 ];
 
 export default sidebar; 
