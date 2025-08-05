@@ -30,4 +30,15 @@ i18n
     interpolation: {
       escapeValue: false,
     },
+    // Custom missing key handler to prevent returning objects
+    missingKeyHandler: (lng, ns, key) => {
+      console.warn(`Missing translation key: ${key}`);
+      return key; // Always return the key as a string
+    },
+    // Ensure we always return strings, never objects
+    returnObjects: false,
+    returnEmptyString: false,
+    returnNull: false,
   });
+
+export default i18n;

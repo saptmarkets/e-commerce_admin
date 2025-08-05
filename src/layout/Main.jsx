@@ -26,12 +26,33 @@ const Main = ({ children }) => {
   // 1. User is Super Admin (role-based bypass)
   // 2. Current path is in the access list
   // 3. If accessList is empty/undefined and user is authenticated (fallback for decryption issues)
-  const hasAccess = isSuperAdmin || 
-                   accessList?.includes(path) || 
-                   accessList?.includes(fullPath) ||
-                   (adminInfo?.email && (!accessList || accessList.length === 0));
+  const pathInAccessList = accessList?.includes(path);
+  const fullPathInAccessList = accessList?.includes(fullPath);
+  const fallbackAccess = adminInfo?.email && (!accessList || accessList.length === 0);
+  
+  const hasAccess = isSuperAdmin || pathInAccessList || fullPathInAccessList || fallbackAccess;
 
-  if (!hasAccess) {
+  // Temporary override for stock-movements page
+  const isStockMovementsPage = path === "stock-movements" || fullPath === "stock-movements";
+  const finalHasAccess = hasAccess || (isSuperAdmin && isStockMovementsPage);
+
+  // Detailed debug logging
+  console.log("Main component detailed access check:", {
+    path,
+    fullPath,
+    isSuperAdmin,
+    pathInAccessList,
+    fullPathInAccessList,
+    fallbackAccess,
+    hasAccess,
+    isStockMovementsPage,
+    finalHasAccess,
+    accessListLength: accessList?.length,
+    accessListIncludes: accessList?.includes ? 'yes' : 'no',
+    adminEmail: adminInfo?.email
+  });
+
+  if (!finalHasAccess) {
     return <NotFoundPage />;
   }
 
