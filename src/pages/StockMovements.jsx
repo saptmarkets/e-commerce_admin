@@ -90,9 +90,13 @@ const StockMovements = () => {
       const data = await response.json();
       console.log('Stock movements API response:', data); // Debug log
       if (data.success) {
-        setMovements(data.data.movements || []);
-        setTotalItems(data.data.total || 0);
-        setTotalPages(Math.ceil((data.data.total || 0) / itemsPerPage));
+        // Handle the case where data.data is an array directly
+        const movements = Array.isArray(data.data) ? data.data : (data.data?.movements || []);
+        const total = data.data?.total || data.pagination?.total || movements.length;
+        
+        setMovements(movements);
+        setTotalItems(total);
+        setTotalPages(Math.ceil(total / itemsPerPage));
       } else {
         toast.error(data.message || 'Failed to load stock movements');
       }
