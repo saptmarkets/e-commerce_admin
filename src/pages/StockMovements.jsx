@@ -19,25 +19,9 @@ import PageTitle from '@/components/Typography/PageTitle';
 import { Card, CardBody } from '@windmill/react-ui';
 import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
-import { useTranslation } from 'react-i18next';
 
-// @version 1.0.2
+// @version 1.0.3 - No Translation
 const StockMovements = () => {
-  const { t: rawT } = useTranslation();
-  const t = React.useCallback((key, options) => {
-    const res = rawT(key, options);
-    // If i18next returns the full language object (e.g. { ar, en }),
-    // fall back to the key itself to avoid rendering an object.
-    if (typeof res === 'object' && res !== null) {
-      console.warn(`Translation for "${key}" returned an object. Falling back to key.`);
-      return key;
-    }
-    return res;
-  }, [rawT]);
-
-  // Remove previous safeT usage for PageTitle and headers by redefining safeT to use the new t
-  const safeT = (key, defaultValue = key) => t(key) || defaultValue;
-  
   const [movements, setMovements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [statistics, setStatistics] = useState({});
@@ -330,38 +314,38 @@ const StockMovements = () => {
 
   return (
     <>
-      <PageTitle>{safeT("Stock Movement History", "Stock Movement History")}</PageTitle>
+      <PageTitle>Stock Movement History</PageTitle>
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
         <Card>
           <CardBody className="text-center">
             <div className="text-2xl font-bold text-blue-600">{statistics.overview?.todayMovements || 0}</div>
-            <div className="text-sm text-gray-600">{safeT("Today", "Today")}</div>
+            <div className="text-sm text-gray-600">Today</div>
           </CardBody>
         </Card>
         <Card>
           <CardBody className="text-center">
             <div className="text-2xl font-bold text-green-600">{statistics.overview?.weekMovements || 0}</div>
-            <div className="text-sm text-gray-600">{safeT("This Week", "This Week")}</div>
+            <div className="text-sm text-gray-600">This Week</div>
           </CardBody>
         </Card>
         <Card>
           <CardBody className="text-center">
             <div className="text-2xl font-bold text-yellow-600">{statistics.overview?.pendingSync || 0}</div>
-            <div className="text-sm text-gray-600">{safeT("Pending Sync", "Pending Sync")}</div>
+            <div className="text-sm text-gray-600">Pending Sync</div>
           </CardBody>
         </Card>
         <Card>
           <CardBody className="text-center">
             <div className="text-2xl font-bold text-green-600">{statistics.overview?.successfulSync || 0}</div>
-            <div className="text-sm text-gray-600">{safeT("Synced", "Synced")}</div>
+            <div className="text-sm text-gray-600">Synced</div>
           </CardBody>
         </Card>
         <Card>
           <CardBody className="text-center">
             <div className="text-2xl font-bold text-red-600">{statistics.overview?.failedSync || 0}</div>
-            <div className="text-sm text-gray-600">{safeT("Failed", "Failed")}</div>
+            <div className="text-sm text-gray-600">Failed</div>
           </CardBody>
         </Card>
       </div>
@@ -375,7 +359,7 @@ const StockMovements = () => {
                 <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
                   type="text"
-                  placeholder={safeT("Search products, invoices, users...", "Search products, invoices, users...")}
+                  placeholder="Search products, invoices, users..."
                   className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   value={filters.search}
                   onChange={(e) => handleFilterChange('search', e.target.value)}
@@ -386,7 +370,7 @@ const StockMovements = () => {
                 className="flex items-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
               >
                 <FiFilter className="mr-2" />
-                {safeT("Filters", "Filters")}
+                Filters
               </button>
             </div>
             
@@ -396,14 +380,14 @@ const StockMovements = () => {
                 className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
               >
                 <FiDownload className="mr-2" />
-                {safeT("Export", "Export")}
+                Export
               </button>
               <button
                 onClick={loadMovements}
                 className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
               >
                 <FiRefreshCw className="mr-2" />
-                {safeT("Refresh", "Refresh")}
+                Refresh
               </button>
             </div>
           </div>
@@ -412,7 +396,7 @@ const StockMovements = () => {
           {showFilters && (
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 bg-gray-50 rounded-lg">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{safeT("Start Date", "Start Date")}</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
                 <input
                   type="date"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
@@ -421,7 +405,7 @@ const StockMovements = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{safeT("End Date", "End Date")}</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
                 <input
                   type="date"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
@@ -430,34 +414,34 @@ const StockMovements = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{safeT("Movement Type", "Movement Type")}</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Movement Type</label>
                 <select
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
                   value={filters.movementType}
                   onChange={(e) => handleFilterChange('movementType', e.target.value)}
                 >
-                  <option value="">{safeT("All Types", "All Types")}</option>
-                  <option value="sale">{safeT("Sale", "Sale")}</option>
-                  <option value="purchase">{safeT("Purchase", "Purchase")}</option>
-                  <option value="transfer">{safeT("Transfer", "Transfer")}</option>
-                  <option value="return">{safeT("Return", "Return")}</option>
-                  <option value="adjustment">{safeT("Adjustment", "Adjustment")}</option>
-                  <option value="sync">{safeT("Sync", "Sync")}</option>
+                  <option value="">All Types</option>
+                  <option value="sale">Sale</option>
+                  <option value="purchase">Purchase</option>
+                  <option value="transfer">Transfer</option>
+                  <option value="return">Return</option>
+                  <option value="adjustment">Adjustment</option>
+                  <option value="sync">Sync</option>
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{safeT("Sync Status", "Sync Status")}</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Sync Status</label>
                 <select
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
                   value={filters.syncStatus}
                   onChange={(e) => handleFilterChange('syncStatus', e.target.value)}
                 >
-                  <option value="">{safeT("All Status", "All Status")}</option>
-                  <option value="pending">{safeT("Pending", "Pending")}</option>
-                  <option value="syncing">{safeT("Syncing", "Syncing")}</option>
-                  <option value="success">{safeT("Success", "Success")}</option>
-                  <option value="failed">{safeT("Failed", "Failed")}</option>
-                  <option value="retry">{safeT("Retry", "Retry")}</option>
+                  <option value="">All Status</option>
+                  <option value="pending">Pending</option>
+                  <option value="syncing">Syncing</option>
+                  <option value="success">Success</option>
+                  <option value="failed">Failed</option>
+                  <option value="retry">Retry</option>
                 </select>
               </div>
               <div className="md:col-span-3 lg:col-span-4 flex gap-2">
@@ -465,7 +449,7 @@ const StockMovements = () => {
                   onClick={clearFilters}
                   className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
                 >
-                  {safeT("Clear Filters", "Clear Filters")}
+                  Clear Filters
                 </button>
               </div>
             </div>
@@ -524,31 +508,31 @@ const StockMovements = () => {
                         />
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {safeT("Date/Time", "Date/Time")}
+                        Date/Time
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {safeT("Product", "Product")}
+                        Product
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {safeT("Type", "Type")}
+                        Type
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {safeT("Qty", "Qty")}
+                        Qty
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {safeT("Before", "Before")}
+                        Before
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {safeT("After", "After")}
+                        After
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {safeT("Invoice", "Invoice")}
+                        Invoice
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {safeT("Sync Status", "Sync Status")}
+                        Sync Status
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {safeT("Actions", "Actions")}
+                        Actions
                       </th>
                     </tr>
                   </thead>
