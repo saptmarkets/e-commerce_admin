@@ -5,8 +5,6 @@ import TextTranslateServices from "@/services/TextTranslateServices";
 const useTranslationValue = () => {
   const { globalSetting, languages } = useUtilsFunction();
 
-  // console.log("globalSetting", globalSetting);
-
   // Check if any key-value pair in the current data is invalid (e.g., contains error message)
   const cleanInvalidTranslations = (currentData) => {
     if (!currentData) return currentData;
@@ -18,13 +16,13 @@ const useTranslationValue = () => {
 
       // Check if the translation contains error messages or is invalid
       if (
+        typeof translation === 'object' ||
         translation?.toLowerCase().includes("authentication failure") ||
         translation?.toLowerCase().includes("error") ||
         !translation
       ) {
         console.log(`Removing invalid translation for language: ${lang}`);
         delete validData[lang]; // Remove invalid translations
-        // validData[lang] = ""; // Clear the invalid translation value, keep the key
       }
     });
 
@@ -33,14 +31,6 @@ const useTranslationValue = () => {
 
   const hasKeyChanged = (currentData, updatedData) => {
     const langIsoCodes = languages?.map((lang) => lang?.iso_code);
-    // console.log(
-    //   "currentData",
-    //   currentData,
-    //   "updatedData",
-    //   updatedData,
-    //   "langIsoCodes",
-    //   langIsoCodes
-    // );
 
     //if currentData not have then it's new data so, need to add the translation
     if (!currentData) return true;
@@ -75,6 +65,7 @@ const useTranslationValue = () => {
       const translatedText = res?.responseData?.translatedText;
       // Check if the response contains an error message instead of valid translation
       if (
+        typeof translatedText === 'object' ||
         translatedText?.toLowerCase().includes("authentication failure") ||
         translatedText?.toLowerCase().includes("error") ||
         !translatedText
@@ -85,7 +76,7 @@ const useTranslationValue = () => {
         );
         return null; // Return null to indicate failure
       }
-      return translatedText;
+      return String(translatedText);
     } catch (error) {
       console.error("error on translation", error);
       return null;
@@ -94,8 +85,6 @@ const useTranslationValue = () => {
 
   // text translate handler
   const handlerTextTranslateHandler = async (text, tnsForm, currentData) => {
-    // const getAllLanguages = await LanguageServices.getAllLanguages();
-
     // First, clean up invalid translations from current data
     const cleanedCurrentData = cleanInvalidTranslations(currentData);
     if (!globalSetting?.allow_auto_trans) return false;
@@ -103,64 +92,50 @@ const useTranslationValue = () => {
     const isKeyUpdated =
       hasKeyChanged(cleanedCurrentData, { [tnsForm]: text }) || false;
 
-    // console.log("isKeyUpdated", isKeyUpdated);
     if (!isKeyUpdated) return false;
 
     const filterLanguage = languages?.filter(
       (lan) => lan?.iso_code !== tnsForm
     );
 
-    // console.log("filterLanguage", filterLanguage);
-    // return;
-
     const promisesArray = filterLanguage.map((lan) => {
       return text
-        ? handleTranslateCallApi(text?.toLowerCase(), tnsForm, lan?.iso_code)
+        ? handleTranslateCallApi(String(text)?.toLowerCase(), tnsForm, lan?.iso_code)
         : "";
     });
 
     const results = await Promise.all(promisesArray);
 
-    // const languageArray = filterLanguage.map((lan, index) => {
-    //   return {
-    //     lang: lan?.iso_code,
-    //     text: results[index],
-    //   };
-    // });
-
-    // let objectTnsLanguage = languageArray.reduce(
-    //   (obj, item) => Object.assign(obj, { [item.lang]: item.text }),
-    //   {}
-    // );
     // Filter out null or empty translations
     const languageArray = filterLanguage
       .map((lan, index) => {
         const translation = results[index];
-        return translation ? { lang: lan?.iso_code, text: translation } : null;
+        return translation ? { lang: lan?.iso_code, text: String(translation) } : null;
       })
       .filter(Boolean); // Remove null values
 
     // Only include translations that are valid (non-null)
     let objectTnsLanguage = languageArray.reduce(
-      (obj, item) => Object.assign(obj, { [item.lang]: item.text }),
+      (obj, item) => Object.assign(obj, { [item.lang]: String(item.text) }),
       {}
     );
     // Add the original text (for example, in English) if it exists in the cleaned data
     if (cleanedCurrentData && cleanedCurrentData[tnsForm]) {
-      objectTnsLanguage[tnsForm] = cleanedCurrentData[tnsForm];
+      objectTnsLanguage[tnsForm] = String(cleanedCurrentData[tnsForm]);
     }
 
     return objectTnsLanguage;
   };
 
   const handleRemoveEmptyKey = (obj) => {
+    const result = {};
     for (const key in obj) {
-      if (obj[key].trim() === "") {
-        delete obj[key];
+      const value = obj[key];
+      if (typeof value === 'string' && value.trim() !== "") {
+        result[key] = value;
       }
     }
-    // console.log("obj", obj);
-    return obj;
+    return result;
   };
 
   return {

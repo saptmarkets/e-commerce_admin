@@ -34,6 +34,7 @@ i18n
     returnObjects: false,
     returnEmptyString: false,
     returnNull: false,
+    parseMissingKeyHandler: (key) => key,
     // Custom missing key handler
     missingKeyHandler: (lng, ns, key) => {
       return key;
@@ -43,21 +44,26 @@ i18n
 // Override the t function to always return strings
 const originalT = i18n.t;
 i18n.t = function(key, options) {
-  const result = originalT.call(this, key, options);
-  
-  // If the result is an object, return the key instead
-  if (typeof result === 'object' && result !== null) {
-    console.warn(`Translation returned object for key "${key}", returning key instead`);
+  try {
+    const result = originalT.call(this, key, options);
+    
+    // If the result is an object, return the key instead
+    if (typeof result === 'object' && result !== null) {
+      console.warn(`Translation returned object for key "${key}", returning key instead`);
+      return key;
+    }
+    
+    // If the result is undefined or null, return the key
+    if (result === undefined || result === null) {
+      return key;
+    }
+    
+    // Ensure we always return a string
+    return String(result);
+  } catch (error) {
+    console.error('Translation error:', error);
     return key;
   }
-  
-  // If the result is undefined or null, return the key
-  if (result === undefined || result === null) {
-    return key;
-  }
-  
-  // Ensure we always return a string
-  return String(result);
 };
 
 export default i18n;
