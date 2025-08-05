@@ -145,7 +145,7 @@
   "Settings": "Settings",
   "ViewStore": "View Store",
   "StoreSettings": "Store Settings",
-  
+
   "Dashboard": "Dashboard",
   "TodayRevenue": "Today's Revenue",
   "YesterdaySales": "Yesterday's Sales",
@@ -190,7 +190,7 @@
   "Price": "Price",
   "UnknownProduct": "Unknown Product",
   "NA": "N/A",
-  
+
   "ProductsPage": "Products",
   "BulkAction": "Bulk Action",
   "Delete": "Delete",
@@ -220,7 +220,7 @@
   "ActionsTbl": "Actions",
   "Base": "Base",
   "Total": "Total",
-  
+
   "Status": "Status",
   "PageOrderDelivered": "Delivered",
   "PageOrderPending": "Pending",
@@ -250,44 +250,44 @@
   "SorryNoOrders": "Sorry, There are no orders right now.",
   "Product": "Product",
   "NoPendingOrders": "No Pending Orders",
-  
+
   "DeleteUnit": "Delete Unit",
   "UnitDeletedSuccessfully": "Unit deleted successfully!",
   "FailedToDeleteUnit": "Failed to delete unit",
   "Cancel": "Cancel",
-  
+
   "ProductsLimit": "Products Limit",
   "PopularProductsTitle": "Popular Products",
   "LatestDiscountedProductsTitle": "Latest Discounted Products",
   "FeatureProductsLimit": "Feature Products Limit",
   "PopularProductsLimit": "Popular Products Limit",
   "LatestDiscountProductsLimit": "Latest Discount Products Limit",
-  
+
   "LowStockThreshold": "Low Stock Threshold",
   "OutOfStock": "Out of Stock",
   "LowStock": "Low Stock",
-  
+
   "ViewDetails": "View Details",
   "Close": "Close",
-  
+
   "FixedPrice": "Fixed Price",
   "ImportCompletedSuccessfully": "Import completed successfully!",
   "ImportCompletedWithErrors": "Import completed with errors. Check results below.",
   "ProcessingPleaseWait": "Processing... please wait",
-  
+
   "BulkAutoAssignmentCompleted": "Bulk auto-assignment completed!",
   "PendingOrders": "Pending Orders",
-  
+
   "DiscoverThousandsOfProducts": "Discover thousands of premium products...",
-  
+
   "WaitingForPasswordReset": "Waiting for Password Reset",
-  
+
   "ErrorDeletingProducts": "Error deleting products",
   "ErrorOpeningBulkActions": "Error opening bulk actions",
-  
+
   "AuthenticationFailure": "Authentication failure",
   "Error": "Error",
-  
+
   "StoreSetting": "Store Setting",
   "GlobalSetting": "Global Setting",
   "Languages": "Languages",
@@ -298,7 +298,7 @@
   "IsKeyUpdated": "Is Key Updated",
   "FilterLanguage": "Filter Language",
   "Obj": "Object",
-  
+
   "StoreCustomizationSetting": "Store Customization Setting",
   "StoreCustomizationSettingDataSubmit": "Store Customization Setting Data Submit",
   "Notification": "Notification",
@@ -318,7 +318,7 @@
   "Login": "Login",
   "Logout": "Logout",
   "Checkout": "Checkout",
-  
+
   "One": "One",
   "Two": "Two",
   "Three": "Three",
@@ -334,7 +334,7 @@
   "Thirteen": "Thirteen",
   "Fourteen": "Fourteen",
   "Fifteen": "Fifteen",
-  
+
   "SaptMarketsAnalytics": "SaptMarkets Analytics",
   "RealTimeInsights": "Real-time insights and performance metrics for your business",
   "WeeklyPerformance": "Weekly Performance",
@@ -572,5 +572,31 @@
   "ProductNotFound": "Product not found",
   "StoreStock": "Store Stock",
   "BranchStockBreakdown": "Branch Stock Breakdown",
-  "BackToProducts": "Back to Products"
+  "BackToProducts": "Back to Products",
+  "Stock Movement History": "Stock Movement History",
+  "Bulk Image Uploader": "Bulk Image Uploader",
+  "Search products, invoices, users...": "Search products, invoices, users...",
+  "Filters": "Filters",
+  "Export": "Export",
+  "Refresh": "Refresh",
+  "All Types": "All Types",
+  "Sale": "Sale",
+  "Purchase": "Purchase",
+  "Transfer": "Transfer",
+  "Return": "Return",
+  "Adjustment": "Adjustment",
+  "Sync": "Sync",
+  "All Status": "All Status",
+  "Syncing": "Syncing",
+  "Success": "Success",
+  "Retry": "Retry",
+  "Clear Filters": "Clear Filters",
+  "Date/Time": "Date/Time",
+  "Type": "Type",
+  "Before": "Before",
+  "After": "After",
+  "Invoice": "Invoice",
+  "Sync Status": "Sync Status",
+  "Synced": "Synced",
+  "Pending Sync": "Pending Sync"
 }

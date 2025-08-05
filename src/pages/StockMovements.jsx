@@ -24,6 +24,23 @@ import { useTranslation } from 'react-i18next';
 // @version 1.0.2
 const StockMovements = () => {
   const { t } = useTranslation();
+  
+  // Debug translation function
+  const safeT = (key, defaultValue = key) => {
+    try {
+      const result = t(key);
+      // If result is an object (contains ar/en keys), return the default
+      if (typeof result === 'object' && result !== null) {
+        console.warn(`Translation for "${key}" returned object:`, result);
+        return defaultValue;
+      }
+      return result || defaultValue;
+    } catch (error) {
+      console.error(`Translation error for "${key}":`, error);
+      return defaultValue;
+    }
+  };
+  
   const [movements, setMovements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [statistics, setStatistics] = useState({});
@@ -316,38 +333,38 @@ const StockMovements = () => {
 
   return (
     <>
-      <PageTitle>{t("Stock Movement History")}</PageTitle>
+      <PageTitle>{safeT("Stock Movement History", "Stock Movement History")}</PageTitle>
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
         <Card>
           <CardBody className="text-center">
             <div className="text-2xl font-bold text-blue-600">{statistics.overview?.todayMovements || 0}</div>
-            <div className="text-sm text-gray-600">{t("Today")}</div>
+            <div className="text-sm text-gray-600">{safeT("Today", "Today")}</div>
           </CardBody>
         </Card>
         <Card>
           <CardBody className="text-center">
             <div className="text-2xl font-bold text-green-600">{statistics.overview?.weekMovements || 0}</div>
-            <div className="text-sm text-gray-600">{t("This Week")}</div>
+            <div className="text-sm text-gray-600">{safeT("This Week", "This Week")}</div>
           </CardBody>
         </Card>
         <Card>
           <CardBody className="text-center">
             <div className="text-2xl font-bold text-yellow-600">{statistics.overview?.pendingSync || 0}</div>
-            <div className="text-sm text-gray-600">{t("Pending Sync")}</div>
+            <div className="text-sm text-gray-600">{safeT("Pending Sync", "Pending Sync")}</div>
           </CardBody>
         </Card>
         <Card>
           <CardBody className="text-center">
             <div className="text-2xl font-bold text-green-600">{statistics.overview?.successfulSync || 0}</div>
-            <div className="text-sm text-gray-600">{t("Synced")}</div>
+            <div className="text-sm text-gray-600">{safeT("Synced", "Synced")}</div>
           </CardBody>
         </Card>
         <Card>
           <CardBody className="text-center">
             <div className="text-2xl font-bold text-red-600">{statistics.overview?.failedSync || 0}</div>
-            <div className="text-sm text-gray-600">{t("Failed")}</div>
+            <div className="text-sm text-gray-600">{safeT("Failed", "Failed")}</div>
           </CardBody>
         </Card>
       </div>
@@ -510,31 +527,31 @@ const StockMovements = () => {
                         />
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {t("Date/Time")}
+                        {safeT("Date/Time", "Date/Time")}
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {t("Product")}
+                        {safeT("Product", "Product")}
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {t("Type")}
+                        {safeT("Type", "Type")}
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {t("Qty")}
+                        {safeT("Qty", "Qty")}
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {t("Before")}
+                        {safeT("Before", "Before")}
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {t("After")}
+                        {safeT("After", "After")}
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {t("Invoice")}
+                        {safeT("Invoice", "Invoice")}
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {t("Sync Status")}
+                        {safeT("Sync Status", "Sync Status")}
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {t("Actions")}
+                        {safeT("Actions", "Actions")}
                       </th>
                     </tr>
                   </thead>
