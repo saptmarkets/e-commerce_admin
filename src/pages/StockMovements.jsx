@@ -68,10 +68,34 @@ const StockMovements = () => {
           productName = movement.reference_document.split('Order:')[1].trim();
         }
 
+        // Handle product title - it might be an object with language keys
+        let productTitle = '';
+        if (movement.product.title) {
+          if (typeof movement.product.title === 'object') {
+            // If title is an object with language keys, get the current language or fallback to 'en'
+            const currentLang = localStorage.getItem('i18nextLng') || 'en';
+            productTitle = movement.product.title[currentLang] || movement.product.title.en || movement.product.title.ar || Object.values(movement.product.title)[0] || '';
+          } else {
+            productTitle = String(movement.product.title);
+          }
+        }
+
+        // Handle product name - it might also be an object with language keys
+        let productNameFromProduct = '';
+        if (movement.product.name) {
+          if (typeof movement.product.name === 'object') {
+            // If name is an object with language keys, get the current language or fallback to 'en'
+            const currentLang = localStorage.getItem('i18nextLng') || 'en';
+            productNameFromProduct = movement.product.name[currentLang] || movement.product.name.en || movement.product.name.ar || Object.values(movement.product.name)[0] || '';
+          } else {
+            productNameFromProduct = String(movement.product.name);
+          }
+        }
+
         // Get product title
         const title = String(
-          movement.product.title || 
-          movement.product.name || 
+          productTitle || 
+          productNameFromProduct || 
           productName ||
           movement.movement_id ||
           `${t('Product')} ID: ${movement.product._id || t('Unknown')}`
