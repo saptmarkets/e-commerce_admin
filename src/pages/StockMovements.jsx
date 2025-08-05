@@ -129,17 +129,75 @@ const StockMovements = () => {
     }
   };
 
-  // Load movements
+  // Load movements with aggregation support
   const loadMovements = async () => {
     try {
       setLoading(true);
       const queryParams = new URLSearchParams({
         page: currentPage,
         limit: itemsPerPage,
+        groupBy: 'day', // Can be 'day', 'week', 'month', 'product'
         ...Object.fromEntries(Object.entries(filters).filter(([_, v]) => v))
       });
 
       // Get admin token from cookies
+      const adminInfo = Cookies.get("adminInfo");
+      const token = adminInfo ? JSON.parse(adminInfo).token : null;
+
+      // Use aggregated endpoint for better performance
+      const response = await fetch(`${import.meta.env.VITE_APP_API_BASE_URL}/admin/stock-movements/aggregated?${queryParams}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log('Aggregated stock movements API response:', data);
+
+      if (data.success) {
+        // Transform aggregated data to match existing structure
+        const transformedMovements = data.data.map(group => {
+          // Use the first movement as the representative for the group
+          const representativeMovement = group.movements[0];
+          return {
+            ...representativeMovement,
+            _id: group._id,
+            totalQuantity: group.totalQuantity,
+            totalValue: group.totalValue,
+            movementCount: group.movementCount,
+            product: group.productInfo || representativeMovement.product
+          };
+        });
+
+        setMovements(transformedMovements || []);
+        setTotalItems(data.pagination?.total || 0);
+        setTotalPages(Math.ceil((data.pagination?.total || 0) / itemsPerPage));
+      } else {
+        toast.error(data.message || 'Failed to load stock movements');
+      }
+    } catch (error) {
+      console.error('Error loading movements:', error);
+      // Fallback to regular endpoint if aggregated fails
+      await loadMovementsFallback();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fallback to regular movements endpoint
+  const loadMovementsFallback = async () => {
+    try {
+      const queryParams = new URLSearchParams({
+        page: currentPage,
+        limit: itemsPerPage,
+        ...Object.fromEntries(Object.entries(filters).filter(([_, v]) => v))
+      });
+
       const adminInfo = Cookies.get("adminInfo");
       const token = adminInfo ? JSON.parse(adminInfo).token : null;
 
@@ -155,12 +213,9 @@ const StockMovements = () => {
       }
 
       const data = await response.json();
-      console.log('Stock movements API response:', data); // Debug log
-      console.log('Stock movements data array:', data.data); // Debug log
-      console.log('Stock movements pagination:', data.pagination); // Debug log
+      console.log('Fallback stock movements API response:', data);
 
       if (data.success) {
-        // Handle the case where data is an array directly
         setMovements(data.data || []);
         setTotalItems(data.pagination?.total || 0);
         setTotalPages(Math.ceil((data.pagination?.total || 0) / itemsPerPage));
@@ -168,10 +223,8 @@ const StockMovements = () => {
         toast.error(data.message || 'Failed to load stock movements');
       }
     } catch (error) {
-      console.error('Error loading movements:', error);
+      console.error('Error in fallback loading:', error);
       toast.error('Failed to load stock movements');
-    } finally {
-      setLoading(false);
     }
   };
 
