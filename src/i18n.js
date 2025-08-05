@@ -23,22 +23,41 @@ i18n
       en: { translation: en },
       ar: { translation: ar },
     },
-    debug: true,
-    fallbackLng: "en", // Always fallback to English
-    lng: defaultLanguage, // Set initial language to English
+    debug: false, // Disable debug to reduce console noise
+    fallbackLng: "en",
+    lng: defaultLanguage,
     nonExplicitSupportedLngs: true,
     interpolation: {
       escapeValue: false,
     },
-    // Custom missing key handler to prevent returning objects
-    missingKeyHandler: (lng, ns, key) => {
-      console.warn(`Missing translation key: ${key}`);
-      return key; // Always return the key as a string
-    },
-    // Ensure we always return strings, never objects
+    // Force return strings only
     returnObjects: false,
     returnEmptyString: false,
     returnNull: false,
+    // Custom missing key handler
+    missingKeyHandler: (lng, ns, key) => {
+      return key;
+    },
   });
+
+// Override the t function to always return strings
+const originalT = i18n.t;
+i18n.t = function(key, options) {
+  const result = originalT.call(this, key, options);
+  
+  // If the result is an object, return the key instead
+  if (typeof result === 'object' && result !== null) {
+    console.warn(`Translation returned object for key "${key}", returning key instead`);
+    return key;
+  }
+  
+  // If the result is undefined or null, return the key
+  if (result === undefined || result === null) {
+    return key;
+  }
+  
+  // Ensure we always return a string
+  return String(result);
+};
 
 export default i18n;
