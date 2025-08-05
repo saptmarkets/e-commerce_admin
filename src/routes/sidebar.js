@@ -94,6 +94,10 @@ const sidebar = [
         path: "/stock-movements",
         name: "Stock Movement History",
       },
+      {
+        path: "/stock-push-sessions",
+        name: "Stock Push Sessions",
+      },
     ],
   },
 
@@ -225,18 +229,6 @@ const sidebar = [
         name: "Coming Soon",
       },
     ],
-  },
-  {
-    path: '/stock-movements',
-    icon: 'MdLocalShipping',
-    name: 'Stock Movement History',
-    permissionKey: 'stock_movements',
-  },
-  {
-    path: '/stock-push-sessions',
-    icon: 'MdSync',
-    name: 'Stock Push Sessions',
-    permissionKey: 'stock_movements',
   },
 ];
 
