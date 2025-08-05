@@ -1,12 +1,10 @@
 {
   "version": 2,
-  "name": "saptmarkets-customer-store",
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/next"
-    }
-  ],
+  "name": "saptmarkets-admin-dashboard",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "installCommand": "npm install",
+  "framework": "vite",
   "routes": [
     {
       "src": "/api/(.*)",
@@ -14,25 +12,13 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/$1"
+      "dest": "/index.html"
     }
   ],
   "env": {
-    "NEXT_PUBLIC_API_BASE_URL": "@next_public_api_base_url",
-    "NEXTAUTH_SECRET": "@nextauth_secret",
-    "NEXTAUTH_URL": "@nextauth_url",
-    "GOOGLE_CLIENT_ID": "@google_client_id",
-    "GOOGLE_CLIENT_SECRET": "@google_client_secret",
-    "STRIPE_PUBLISHABLE_KEY": "@stripe_publishable_key",
-    "STRIPE_SECRET_KEY": "@stripe_secret_key",
-    "CLOUDINARY_CLOUD_NAME": "@cloudinary_cloud_name",
-    "CLOUDINARY_API_KEY": "@cloudinary_api_key",
-    "CLOUDINARY_API_SECRET": "@cloudinary_api_secret"
-  },
-  "functions": {
-    "app/api/**/*.js": {
-      "maxDuration": 30
-    }
+    "VITE_API_BASE_URL": "@vite_api_base_url",
+    "VITE_APP_NAME": "@vite_app_name",
+    "VITE_APP_VERSION": "@vite_app_version"
   },
   "headers": [
     {
@@ -57,16 +43,7 @@
       ]
     },
     {
-      "source": "/api/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=300, s-maxage=600"
-        }
-      ]
-    },
-    {
-      "source": "/_next/static/(.*)",
+      "source": "/assets/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -87,8 +64,8 @@
   "redirects": [
     {
       "source": "/admin",
-      "destination": "https://your-admin-dashboard.vercel.app",
-      "permanent": true
+      "destination": "/",
+      "permanent": false
     }
   ]
 } 
