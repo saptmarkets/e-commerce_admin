@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
 import { FiEye, FiRefreshCw, FiTrash2 } from 'react-icons/fi';
-import { Card, CardBody, Modal } from '@windmill/react-ui';
+import { Card, CardBody } from '@windmill/react-ui';
 import PageTitle from '@/components/Typography/PageTitle';
 import Button from '@/components/form/button/CMButton';
 import { pdf, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
@@ -586,101 +586,100 @@ const StockPushSessions = () => {
 
       {/* Detail Modal */}
       {showDetailModal && selectedSession && (
-        <Modal isOpen={showDetailModal} onClose={() => setShowDetailModal(false)}>
-          <div className="px-6 py-4 border-b">
-            <div className="flex items-center justify-between">
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          {/* overlay */}
+          <div className="absolute inset-0 bg-black bg-opacity-50" onClick={() => setShowDetailModal(false)} />
+          {/* panel */}
+          <div className="relative bg-white rounded-lg shadow-xl w-[96vw] max-w-6xl h-[90vh] overflow-hidden">
+            {/* header */}
+            <div className="px-6 py-4 border-b flex items-center justify-between">
               <h3 className="text-xl font-semibold">{t('Push Session Details')}</h3>
-            </div>
-          </div>
-          <div className="p-6">
-            {/* Width wrapper to enlarge modal content area */}
-            <div className="w-[92vw] max-w-6xl">
-            <div className="mb-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div>
-                <div className="font-semibold">{t('Session ID')}:</div>
-                <div className="text-gray-700 break-all">{selectedSession.session_id}</div>
-              </div>
-              <div>
-                <div className="font-semibold">{t('Date/Time')}:</div>
-                <div className="text-gray-700">{new Date(selectedSession.push_timestamp).toLocaleString()}</div>
-              </div>
-              <div>
-                <div className="font-semibold">{t('Source Branch')}:</div>
-                <div className="text-gray-700">{getSourceBranchName(selectedSession)}</div>
-              </div>
-              <div>
-                <div className="font-semibold">{t('Destination Branch')}:</div>
-                <div className="text-gray-700">{getDestinationBranchName(selectedSession)}</div>
+              <div className="flex items-center gap-2">
+                <Button onClick={handleDownloadPdf}>{t('Download PDF')}</Button>
+                <Button layout="outline" onClick={() => setShowDetailModal(false)}>{t('Close')}</Button>
               </div>
             </div>
+            {/* body */}
+            <div className="p-6 h-[calc(90vh-64px)] overflow-auto">
+              <div className="mb-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div>
+                  <div className="font-semibold">{t('Session ID')}:</div>
+                  <div className="text-gray-700 break-all">{selectedSession.session_id}</div>
+                </div>
+                <div>
+                  <div className="font-semibold">{t('Date/Time')}:</div>
+                  <div className="text-gray-700">{new Date(selectedSession.push_timestamp).toLocaleString()}</div>
+                </div>
+                <div>
+                  <div className="font-semibold">{t('Source Branch')}:</div>
+                  <div className="text-gray-700">{getSourceBranchName(selectedSession)}</div>
+                </div>
+                <div>
+                  <div className="font-semibold">{t('Destination Branch')}:</div>
+                  <div className="text-gray-700">{getDestinationBranchName(selectedSession)}</div>
+                </div>
+              </div>
 
-            {/* Actions */}
-            <div className="flex items-center justify-end gap-2 mb-4">
-              <Button onClick={handleDownloadPdf}>{t('Download PDF')}</Button>
-              <Button layout="outline" onClick={() => setShowDetailModal(false)}>{t('Close')}</Button>
-            </div>
-
-            <div className="mb-4">
-              <div className="font-semibold">{t('Products')}:</div>
-              <div className="mt-2 max-h-[28rem] overflow-y-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('Product')}</th>
-                      <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('Before')}</th>
-                      <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('After')}</th>
-                      <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('Changed')}</th>
-                      <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('Status')}</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {selectedSession.products_summary && selectedSession.products_summary.length > 0 ? (
-                      selectedSession.products_summary.map((product, index) => (
-                        <tr key={`product-${index}`} className="hover:bg-gray-50">
-                          <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">
-                            <div className="flex items-center">
-                              {/* Product image if available */}
-                              {(() => {
-                                const info = product?.product || {};
-                                const img = info.image || (Array.isArray(info.images) && info.images[0]) || info.thumbnail || null;
-                                return img ? (
-                                  <img
-                                    src={img}
-                                    alt={resolveProductTitle(product)}
-                                    className="w-10 h-10 rounded mr-2 object-cover border"
-                                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                                  />
-                                ) : null;
-                              })()}
-                              <span>{resolveProductTitle(product)}</span>
-                            </div>
-                          </td>
-                          <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">{product.quantity_before || 0}</td>
-                          <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">{product.quantity_after || 0}</td>
-                          <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">
-                            <span className={product.total_changed > 0 ? 'text-green-600' : 'text-red-600'}>
-                              {product.total_changed > 0 ? '+' : ''}{product.total_changed}
-                            </span>
-                          </td>
-                          <td className="px-2 py-2 whitespace-nowrap">
-                            <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusDisplay(product.sync_status || 'pending').bgColor} ${getStatusDisplay(product.sync_status || 'pending').color}`}>
-                              {getStatusDisplay(product.sync_status || 'pending').text}
-                            </span>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
+              <div className="mb-4">
+                <div className="font-semibold">{t('Products')}:</div>
+                <div className="mt-2 max-h-[60vh] overflow-y-auto">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
                       <tr>
-                        <td colSpan="5" className="px-2 py-2 text-center text-sm text-gray-500">{t('No products found')}</td>
+                        <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('Product')}</th>
+                        <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('Before')}</th>
+                        <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('After')}</th>
+                        <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('Changed')}</th>
+                        <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('Status')}</th>
                       </tr>
-                    )}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {selectedSession.products_summary && selectedSession.products_summary.length > 0 ? (
+                        selectedSession.products_summary.map((product, index) => (
+                          <tr key={`product-${index}`} className="hover:bg-gray-50">
+                            <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">
+                              <div className="flex items-center">
+                                {(() => {
+                                  const info = product?.product || {};
+                                  const img = info.image || (Array.isArray(info.images) && info.images[0]) || info.thumbnail || null;
+                                  return img ? (
+                                    <img
+                                      src={img}
+                                      alt={resolveProductTitle(product)}
+                                      className="w-10 h-10 rounded mr-2 object-cover border"
+                                      onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                                    />
+                                  ) : null;
+                                })()}
+                                <span>{resolveProductTitle(product)}</span>
+                              </div>
+                            </td>
+                            <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">{product.quantity_before || 0}</td>
+                            <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">{product.quantity_after || 0}</td>
+                            <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">
+                              <span className={product.total_changed > 0 ? 'text-green-600' : 'text-red-600'}>
+                                {product.total_changed > 0 ? '+' : ''}{product.total_changed}
+                              </span>
+                            </td>
+                            <td className="px-2 py-2 whitespace-nowrap">
+                              <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusDisplay(product.sync_status || 'pending').bgColor} ${getStatusDisplay(product.sync_status || 'pending').color}`}>
+                                {getStatusDisplay(product.sync_status || 'pending').text}
+                              </span>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="5" className="px-2 py-2 text-center text-sm text-gray-500">{t('No products found')}</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
-            </div>
           </div>
-        </Modal>
+        </div>
       )}
     </>
   );
