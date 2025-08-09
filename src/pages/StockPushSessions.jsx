@@ -93,9 +93,10 @@ const StockPushSessions = () => {
         row: { flexDirection: 'row', marginBottom: 6 },
         header: { fontWeight: 700, borderBottomWidth: 1, borderColor: '#eee', paddingBottom: 6, marginBottom: 6 },
         tableRow: { flexDirection: 'row', borderBottomWidth: 1, borderColor: '#eee', paddingVertical: 6 },
-        colProduct: { width: '42%' },
-        colSmall: { width: '12%', textAlign: 'right' },
-        colStatus: { width: '22%' },
+        colProduct: { width: '46%' },
+        colNumeric: { width: '12%', textAlign: 'right' },
+        colChanged: { width: '14%', textAlign: 'right', paddingRight: 6 },
+        colStatus: { width: '16%' },
       });
 
       const srcName = getSourceBranchName(selectedSession);
@@ -119,17 +120,17 @@ const StockPushSessions = () => {
             </View>
             <View style={[styles.tableRow, styles.header]}>
               <Text style={styles.colProduct}>Product</Text>
-              <Text style={styles.colSmall}>Before</Text>
-              <Text style={styles.colSmall}>After</Text>
-              <Text style={styles.colSmall}>Changed</Text>
+              <Text style={styles.colNumeric}>Before</Text>
+              <Text style={styles.colNumeric}>After</Text>
+              <Text style={styles.colChanged}>Changed</Text>
               <Text style={styles.colStatus}>Status</Text>
             </View>
             {(selectedSession.products_summary || []).map((p, idx) => (
               <View key={idx} style={styles.tableRow}>
                 <Text style={styles.colProduct}>{resolveProductTitle(p)}</Text>
-                <Text style={styles.colSmall}>{p.quantity_before || 0}</Text>
-                <Text style={styles.colSmall}>{p.quantity_after || 0}</Text>
-                <Text style={styles.colSmall}>{p.total_changed || 0}</Text>
+                <Text style={styles.colNumeric}>{p.quantity_before || 0}</Text>
+                <Text style={styles.colNumeric}>{p.quantity_after || 0}</Text>
+                <Text style={styles.colChanged}>{p.total_changed || 0}</Text>
                 <Text style={styles.colStatus}>{String(p.sync_status || 'synced')}</Text>
               </View>
             ))}
