@@ -587,17 +587,15 @@ const StockPushSessions = () => {
       {/* Detail Modal */}
       {showDetailModal && selectedSession && (
         <Modal isOpen={showDetailModal} onClose={() => setShowDetailModal(false)}>
-          <div className="px-6 py-4 border-b w-full max-w-6xl">
+          <div className="px-6 py-4 border-b">
             <div className="flex items-center justify-between">
               <h3 className="text-xl font-semibold">{t('Push Session Details')}</h3>
-              <div className="flex items-center gap-2">
-                <Button onClick={handleDownloadPdf}>{t('Download PDF')}</Button>
-                <Button layout="outline" onClick={() => setShowDetailModal(false)}>{t('Close')}</Button>
-              </div>
             </div>
           </div>
-          <div className="p-6 w-full max-w-6xl">
-            <div className="mb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="p-6">
+            {/* Width wrapper to enlarge modal content area */}
+            <div className="w-[92vw] max-w-6xl">
+            <div className="mb-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div>
                 <div className="font-semibold">{t('Session ID')}:</div>
                 <div className="text-gray-700 break-all">{selectedSession.session_id}</div>
@@ -614,6 +612,12 @@ const StockPushSessions = () => {
                 <div className="font-semibold">{t('Destination Branch')}:</div>
                 <div className="text-gray-700">{getDestinationBranchName(selectedSession)}</div>
               </div>
+            </div>
+
+            {/* Actions */}
+            <div className="flex items-center justify-end gap-2 mb-4">
+              <Button onClick={handleDownloadPdf}>{t('Download PDF')}</Button>
+              <Button layout="outline" onClick={() => setShowDetailModal(false)}>{t('Close')}</Button>
             </div>
 
             <div className="mb-4">
@@ -634,7 +638,22 @@ const StockPushSessions = () => {
                       selectedSession.products_summary.map((product, index) => (
                         <tr key={`product-${index}`} className="hover:bg-gray-50">
                           <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">
-                            {resolveProductTitle(product)}
+                            <div className="flex items-center">
+                              {/* Product image if available */}
+                              {(() => {
+                                const info = product?.product || {};
+                                const img = info.image || (Array.isArray(info.images) && info.images[0]) || info.thumbnail || null;
+                                return img ? (
+                                  <img
+                                    src={img}
+                                    alt={resolveProductTitle(product)}
+                                    className="w-10 h-10 rounded mr-2 object-cover border"
+                                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                                  />
+                                ) : null;
+                              })()}
+                              <span>{resolveProductTitle(product)}</span>
+                            </div>
                           </td>
                           <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">{product.quantity_before || 0}</td>
                           <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">{product.quantity_after || 0}</td>
@@ -658,6 +677,7 @@ const StockPushSessions = () => {
                   </tbody>
                 </table>
               </div>
+            </div>
             </div>
           </div>
         </Modal>
