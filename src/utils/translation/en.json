@@ -1,4 +1,8 @@
 {
+  "LoginTitle": "Sign in",
+  "Please enter your credentials to continue": "Please enter your credentials to continue",
+  "Email": "Email",
+  "Password": "Password",
   "Product Import/Export": "Product Import/Export",
   "Category Import/Export": "Category Import/Export",
   "Promotions": "Promotions",
