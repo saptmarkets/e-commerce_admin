@@ -7,6 +7,7 @@ import { Card, CardBody, Modal } from '@windmill/react-ui';
 import PageTitle from '@/components/Typography/PageTitle';
 import Button from '@/components/form/button/CMButton';
 import { pdf, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import OdooSyncServices from '@/services/OdooSyncServices';
 
 const StockPushSessions = () => {
   const { t } = useTranslation();
@@ -27,6 +28,29 @@ const StockPushSessions = () => {
     pending: 0,
     success_rate: 0
   });
+  const [branchMap, setBranchMap] = useState({});
+
+  const ensureBranchesLoaded = async () => {
+    if (Object.keys(branchMap).length > 0) return;
+    try {
+      const res = await OdooSyncServices.listBranches();
+      const branches = res.data?.data || res.data || [];
+      const map = {};
+      branches.forEach(b => { map[b.id] = b.name; });
+      setBranchMap(map);
+    } catch (err) {
+      console.error('Failed to load branches:', err);
+    }
+  };
+
+  const getSourceBranchName = (sess) => {
+    const id = sess?.settings?.sourceLocationId;
+    return (id && branchMap[id]) || 'Unknown';
+  };
+  const getDestinationBranchName = (sess) => {
+    const id = sess?.settings?.destinationLocationId;
+    return (id && branchMap[id]) || 'Unknown';
+  };
 
   // Helper: resolve product title from populated product or stored title
   const resolveProductTitle = (product) => {
@@ -67,13 +91,15 @@ const StockPushSessions = () => {
         page: { padding: 24, fontSize: 11, fontFamily: 'Helvetica' },
         title: { fontSize: 16, marginBottom: 12, fontWeight: 700 },
         row: { flexDirection: 'row', marginBottom: 6 },
-        cell: { flexGrow: 1 },
         header: { fontWeight: 700, borderBottomWidth: 1, borderColor: '#eee', paddingBottom: 6, marginBottom: 6 },
         tableRow: { flexDirection: 'row', borderBottomWidth: 1, borderColor: '#eee', paddingVertical: 6 },
         colProduct: { width: '42%' },
         colSmall: { width: '12%', textAlign: 'right' },
         colStatus: { width: '22%' },
       });
+
+      const srcName = getSourceBranchName(selectedSession);
+      const dstName = getDestinationBranchName(selectedSession);
 
       const doc = (
         <Document>
@@ -84,6 +110,9 @@ const StockPushSessions = () => {
             </View>
             <View style={styles.row}>
               <Text>Date/Time: {new Date(selectedSession.push_timestamp).toLocaleString()}</Text>
+            </View>
+            <View style={styles.row}>
+              <Text>Source: {srcName}  →  Destination: {dstName}</Text>
             </View>
             <View style={[styles.row, styles.header]}> 
               <Text>Summary</Text>
@@ -190,10 +219,11 @@ const StockPushSessions = () => {
     }
   };
 
-  // Handle view details
-  const handleViewDetails = (session) => {
+  // Open details
+  const handleViewDetails = async (session) => {
     setSelectedSession(session);
     setShowDetailModal(true);
+    await ensureBranchesLoaded();
   };
 
   // Format date
@@ -575,6 +605,14 @@ const StockPushSessions = () => {
               <div>
                 <div className="font-semibold">{t('Date/Time')}:</div>
                 <div className="text-gray-700">{new Date(selectedSession.push_timestamp).toLocaleString()}</div>
+              </div>
+              <div>
+                <div className="font-semibold">{t('Source Branch')}:</div>
+                <div className="text-gray-700">{getSourceBranchName(selectedSession)}</div>
+              </div>
+              <div>
+                <div className="font-semibold">{t('Destination Branch')}:</div>
+                <div className="text-gray-700">{getDestinationBranchName(selectedSession)}</div>
               </div>
             </div>
 
