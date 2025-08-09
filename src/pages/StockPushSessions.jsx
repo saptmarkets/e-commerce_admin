@@ -3,10 +3,9 @@ import { useTranslation } from 'react-i18next';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
 import { FiEye, FiRefreshCw, FiTrash2 } from 'react-icons/fi';
-import { Card, CardBody } from '@windmill/react-ui';
+import { Card, CardBody, Modal } from '@windmill/react-ui';
 import PageTitle from '@/components/Typography/PageTitle';
 import Button from '@/components/form/button/CMButton';
-import Modal from '@/components/modal/MainModal';
 
 const StockPushSessions = () => {
   const { t } = useTranslation();
@@ -461,11 +460,10 @@ const StockPushSessions = () => {
 
       {/* Detail Modal */}
       {showDetailModal && selectedSession && (
-        <Modal
-          isOpen={showDetailModal}
-          onClose={() => setShowDetailModal(false)}
-          title={t('Push Session Details')}
-        >
+        <Modal isOpen={showDetailModal} onClose={() => setShowDetailModal(false)}>
+          <div className="px-4 py-3 border-b">
+            <h3 className="text-lg font-semibold">{t('Push Session Details')}</h3>
+          </div>
           <div className="p-4">
             <div className="mb-4">
               <div className="font-semibold">{t('Session ID')}:</div>
