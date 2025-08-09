@@ -590,7 +590,7 @@ const StockPushSessions = () => {
           {/* overlay */}
           <div className="absolute inset-0 bg-black bg-opacity-50" onClick={() => setShowDetailModal(false)} />
           {/* panel */}
-          <div className="relative bg-white rounded-lg shadow-xl w-[96vw] max-w-6xl h-[90vh] overflow-hidden">
+          <div className="relative bg-white rounded-lg shadow-xl w-[98vw] max-w-[1600px] h-[92vh] overflow-hidden">
             {/* header */}
             <div className="px-6 py-4 border-b flex items-center justify-between">
               <h3 className="text-xl font-semibold">{t('Push Session Details')}</h3>
@@ -600,7 +600,7 @@ const StockPushSessions = () => {
               </div>
             </div>
             {/* body */}
-            <div className="p-6 h-[calc(90vh-64px)] overflow-auto">
+            <div className="p-6 h-[calc(92vh-64px)] overflow-auto">
               <div className="mb-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div>
                   <div className="font-semibold">{t('Session ID')}:</div>
@@ -622,22 +622,22 @@ const StockPushSessions = () => {
 
               <div className="mb-4">
                 <div className="font-semibold">{t('Products')}:</div>
-                <div className="mt-2 max-h-[60vh] overflow-y-auto">
-                  <table className="min-w-full divide-y divide-gray-200">
+                <div className="mt-2 max-h-[60vh] overflow-y-auto overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200 table-auto">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('Product')}</th>
-                        <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('Before')}</th>
-                        <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('After')}</th>
-                        <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('Changed')}</th>
-                        <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('Status')}</th>
+                        <th className="px-3 py-2 text-left text-xs font-medium text-gray-600 uppercase tracking-wider w-[40%] min-w-[420px]">{t('Product')}</th>
+                        <th className="px-3 py-2 text-left text-xs font-medium text-gray-600 uppercase tracking-wider w-24">{t('Before')}</th>
+                        <th className="px-3 py-2 text-left text-xs font-medium text-gray-600 uppercase tracking-wider w-24">{t('After')}</th>
+                        <th className="px-3 py-2 text-left text-xs font-medium text-gray-600 uppercase tracking-wider w-28">{t('Changed')}</th>
+                        <th className="px-3 py-2 text-left text-xs font-medium text-gray-600 uppercase tracking-wider w-32">{t('Status')}</th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                       {selectedSession.products_summary && selectedSession.products_summary.length > 0 ? (
                         selectedSession.products_summary.map((product, index) => (
                           <tr key={`product-${index}`} className="hover:bg-gray-50">
-                            <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">
+                            <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-900">
                               <div className="flex items-center">
                                 {(() => {
                                   const info = product?.product || {};
@@ -646,22 +646,22 @@ const StockPushSessions = () => {
                                     <img
                                       src={img}
                                       alt={resolveProductTitle(product)}
-                                      className="w-10 h-10 rounded mr-2 object-cover border"
+                                      className="w-10 h-10 rounded mr-3 object-cover border"
                                       onError={(e) => { e.currentTarget.style.display = 'none'; }}
                                     />
                                   ) : null;
                                 })()}
-                                <span>{resolveProductTitle(product)}</span>
+                                <span className="font-medium">{resolveProductTitle(product)}</span>
                               </div>
                             </td>
-                            <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">{product.quantity_before || 0}</td>
-                            <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">{product.quantity_after || 0}</td>
-                            <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">
+                            <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-900">{product.quantity_before || 0}</td>
+                            <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-900">{product.quantity_after || 0}</td>
+                            <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-900">
                               <span className={product.total_changed > 0 ? 'text-green-600' : 'text-red-600'}>
                                 {product.total_changed > 0 ? '+' : ''}{product.total_changed}
                               </span>
                             </td>
-                            <td className="px-2 py-2 whitespace-nowrap">
+                            <td className="px-3 py-2 whitespace-nowrap">
                               <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusDisplay(product.sync_status || 'pending').bgColor} ${getStatusDisplay(product.sync_status || 'pending').color}`}>
                                 {getStatusDisplay(product.sync_status || 'pending').text}
                               </span>
@@ -670,7 +670,7 @@ const StockPushSessions = () => {
                         ))
                       ) : (
                         <tr>
-                          <td colSpan="5" className="px-2 py-2 text-center text-sm text-gray-500">{t('No products found')}</td>
+                          <td colSpan="5" className="px-3 py-2 text-center text-sm text-gray-500">{t('No products found')}</td>
                         </tr>
                       )}
                     </tbody>
