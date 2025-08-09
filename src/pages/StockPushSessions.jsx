@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
 import { FiEye, FiRefreshCw, FiTrash2 } from 'react-icons/fi';
-import { Card, CardBody } from '@windmill/react-ui';
+import { Card, CardBody, Button as WButton } from '@windmill/react-ui';
 import PageTitle from '@/components/Typography/PageTitle';
-import Button from '@/components/form/button/CMButton';
+import CMButton from '@/components/form/button/CMButton';
 import { pdf, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 import OdooSyncServices from '@/services/OdooSyncServices';
 
@@ -407,6 +407,8 @@ const StockPushSessions = () => {
   useEffect(() => {
     loadSessions();
     loadStats();
+    // Preload branches for name resolution
+    (async () => { try { await ensureBranchesLoaded(); } catch(_) {} })();
   }, [currentPage, itemsPerPage]);
 
   if (loading && sessions.length === 0) {
@@ -422,9 +424,9 @@ const StockPushSessions = () => {
       <div className="container mx-auto px-6 py-8">
         <div className="flex justify-between items-center mb-6">
           <PageTitle>{t('Stock Push Sessions')}</PageTitle>
-          <Button onClick={createPushSession}>
+          <CMButton onClick={createPushSession}>
             {t('Create New Push Session')}
-          </Button>
+          </CMButton>
         </div>
 
         {/* Statistics */}
@@ -595,8 +597,8 @@ const StockPushSessions = () => {
             <div className="px-6 py-4 border-b flex items-center justify-between">
               <h3 className="text-xl font-semibold">{t('Push Session Details')}</h3>
               <div className="flex items-center gap-2">
-                <Button onClick={handleDownloadPdf}>{t('Download PDF')}</Button>
-                <Button layout="outline" onClick={() => setShowDetailModal(false)}>{t('Close')}</Button>
+                <WButton onClick={handleDownloadPdf}>{t('Download PDF')}</WButton>
+                <WButton layout="outline" onClick={() => setShowDetailModal(false)}>{t('Close')}</WButton>
               </div>
             </div>
             {/* body */}
