@@ -6,6 +6,7 @@ import { FiEye, FiRefreshCw, FiTrash2 } from 'react-icons/fi';
 import { Card, CardBody, Modal } from '@windmill/react-ui';
 import PageTitle from '@/components/Typography/PageTitle';
 import Button from '@/components/form/button/CMButton';
+import { pdf, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 
 const StockPushSessions = () => {
   const { t } = useTranslation();
@@ -26,6 +27,101 @@ const StockPushSessions = () => {
     pending: 0,
     success_rate: 0
   });
+
+  // Helper: resolve product title from populated product or stored title
+  const resolveProductTitle = (product) => {
+    try {
+      const productInfo = product?.product || {};
+      if (productInfo.title) {
+        if (typeof productInfo.title === 'object') {
+          const currentLang = localStorage.getItem('i18nextLng') || 'en';
+          return productInfo.title[currentLang] || productInfo.title.en || productInfo.title.ar || Object.values(productInfo.title)[0] || 'Unknown Product';
+        }
+        return String(productInfo.title);
+      }
+      if (product?.productTitle) {
+        if (typeof product.productTitle === 'object') {
+          const currentLang = localStorage.getItem('i18nextLng') || 'en';
+          return product.productTitle[currentLang] || product.productTitle.en || product.productTitle.ar || Object.values(product.productTitle)[0] || 'Unknown Product';
+        }
+        return String(product.productTitle);
+      }
+      if (productInfo.name) {
+        if (typeof productInfo.name === 'object') {
+          const currentLang = localStorage.getItem('i18nextLng') || 'en';
+          return productInfo.name[currentLang] || productInfo.name.en || productInfo.name.ar || Object.values(productInfo.name)[0] || 'Unknown Product';
+        }
+        return String(productInfo.name);
+      }
+      return 'Unknown Product';
+    } catch {
+      return 'Unknown Product';
+    }
+  };
+
+  // PDF download
+  const handleDownloadPdf = async () => {
+    try {
+      if (!selectedSession) return;
+      const styles = StyleSheet.create({
+        page: { padding: 24, fontSize: 11, fontFamily: 'Helvetica' },
+        title: { fontSize: 16, marginBottom: 12, fontWeight: 700 },
+        row: { flexDirection: 'row', marginBottom: 6 },
+        cell: { flexGrow: 1 },
+        header: { fontWeight: 700, borderBottomWidth: 1, borderColor: '#eee', paddingBottom: 6, marginBottom: 6 },
+        tableRow: { flexDirection: 'row', borderBottomWidth: 1, borderColor: '#eee', paddingVertical: 6 },
+        colProduct: { width: '42%' },
+        colSmall: { width: '12%', textAlign: 'right' },
+        colStatus: { width: '22%' },
+      });
+
+      const doc = (
+        <Document>
+          <Page size="A4" style={styles.page}>
+            <Text style={styles.title}>Push Back Report</Text>
+            <View style={[styles.row, styles.header]}>
+              <Text>Session ID: {selectedSession.session_id}</Text>
+            </View>
+            <View style={styles.row}>
+              <Text>Date/Time: {new Date(selectedSession.push_timestamp).toLocaleString()}</Text>
+            </View>
+            <View style={[styles.row, styles.header]}> 
+              <Text>Summary</Text>
+            </View>
+            <View style={[styles.tableRow, styles.header]}>
+              <Text style={styles.colProduct}>Product</Text>
+              <Text style={styles.colSmall}>Before</Text>
+              <Text style={styles.colSmall}>After</Text>
+              <Text style={styles.colSmall}>Changed</Text>
+              <Text style={styles.colStatus}>Status</Text>
+            </View>
+            {(selectedSession.products_summary || []).map((p, idx) => (
+              <View key={idx} style={styles.tableRow}>
+                <Text style={styles.colProduct}>{resolveProductTitle(p)}</Text>
+                <Text style={styles.colSmall}>{p.quantity_before || 0}</Text>
+                <Text style={styles.colSmall}>{p.quantity_after || 0}</Text>
+                <Text style={styles.colSmall}>{p.total_changed || 0}</Text>
+                <Text style={styles.colStatus}>{String(p.sync_status || 'synced')}</Text>
+              </View>
+            ))}
+          </Page>
+        </Document>
+      );
+
+      const blob = await pdf(doc).toBlob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `push-session-${selectedSession.session_id}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (err) {
+      console.error('PDF generation failed:', err);
+      toast.error('Failed to download PDF');
+    }
+  };
 
   // Load sessions
   const loadSessions = async () => {
@@ -461,164 +557,69 @@ const StockPushSessions = () => {
       {/* Detail Modal */}
       {showDetailModal && selectedSession && (
         <Modal isOpen={showDetailModal} onClose={() => setShowDetailModal(false)}>
-          <div className="px-4 py-3 border-b">
-            <h3 className="text-lg font-semibold">{t('Push Session Details')}</h3>
-          </div>
-          <div className="p-4">
-            <div className="mb-4">
-              <div className="font-semibold">{t('Session ID')}:</div>
-              <div className="text-gray-700">{selectedSession.session_id}</div>
-            </div>
-            
-            <div className="mb-4">
-              <div className="font-semibold">{t('Date/Time')}:</div>
-              <div className="text-gray-700">{formatDate(selectedSession.push_timestamp)}</div>
-            </div>
-            
-            <div className="mb-4">
-              <div className="font-semibold">{t('Status')}:</div>
-              <div className="text-gray-700">
-                <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusDisplay(selectedSession.status).bgColor} ${getStatusDisplay(selectedSession.status).color}`}>
-                  {getStatusDisplay(selectedSession.status).text}
-                </span>
+          <div className="px-6 py-4 border-b w-full max-w-6xl">
+            <div className="flex items-center justify-between">
+              <h3 className="text-xl font-semibold">{t('Push Session Details')}</h3>
+              <div className="flex items-center gap-2">
+                <Button onClick={handleDownloadPdf}>{t('Download PDF')}</Button>
+                <Button layout="outline" onClick={() => setShowDetailModal(false)}>{t('Close')}</Button>
               </div>
             </div>
-            
-            <div className="mb-4">
-              <div className="font-semibold">{t('User')}:</div>
-              <div className="text-gray-700">{selectedSession.user?.name || 'N/A'}</div>
+          </div>
+          <div className="p-6 w-full max-w-6xl">
+            <div className="mb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <div className="font-semibold">{t('Session ID')}:</div>
+                <div className="text-gray-700 break-all">{selectedSession.session_id}</div>
+              </div>
+              <div>
+                <div className="font-semibold">{t('Date/Time')}:</div>
+                <div className="text-gray-700">{new Date(selectedSession.push_timestamp).toLocaleString()}</div>
+              </div>
             </div>
-            
-            <div className="mb-4">
-              <div className="font-semibold">{t('Notes')}:</div>
-              <div className="text-gray-700">{selectedSession.notes || 'N/A'}</div>
-            </div>
-            
-            <div className="mb-4">
-              <div className="font-semibold">{t('Last Push Date')}:</div>
-              <div className="text-gray-700">{formatDate(selectedSession.last_push_date) || 'N/A'}</div>
-            </div>
-            
+
             <div className="mb-4">
               <div className="font-semibold">{t('Products')}:</div>
-              <div className="mt-2 max-h-96 overflow-y-auto">
+              <div className="mt-2 max-h-[28rem] overflow-y-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {t('Product')}
-                      </th>
-                      <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {t('Before')}
-                      </th>
-                      <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {t('After')}
-                      </th>
-                      <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {t('Changed')}
-                      </th>
-                      <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {t('Status')}
-                      </th>
+                      <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('Product')}</th>
+                      <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('Before')}</th>
+                      <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('After')}</th>
+                      <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('Changed')}</th>
+                      <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('Status')}</th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
                     {selectedSession.products_summary && selectedSession.products_summary.length > 0 ? (
-                      selectedSession.products_summary.map((product, index) => {
-                        const productInfo = product.product || {};
-                        let productTitle = 'Unknown Product';
-                        
-                        if (productInfo.title) {
-                          if (typeof productInfo.title === 'object') {
-                            // If title is an object with language keys, get the current language or fallback to 'en'
-                            const currentLang = localStorage.getItem('i18nextLng') || 'en';
-                            productTitle = productInfo.title[currentLang] || 
-                                          productInfo.title.en || 
-                                          productInfo.title.ar || 
-                                          Object.values(productInfo.title)[0] || 
-                                          'Unknown Product';
-                          } else {
-                            productTitle = String(productInfo.title);
-                          }
-                        } else if (productInfo.name) {
-                          if (typeof productInfo.name === 'object') {
-                            const currentLang = localStorage.getItem('i18nextLng') || 'en';
-                            productTitle = productInfo.name[currentLang] || 
-                                          productInfo.name.en || 
-                                          productInfo.name.ar || 
-                                          Object.values(productInfo.name)[0] || 
-                                          'Unknown Product';
-                          } else {
-                            productTitle = String(productInfo.name);
-                          }
-                        }
-                        
-                        return (
-                          <tr key={`product-${index}`} className="hover:bg-gray-50">
-                            <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">
-                              <div className="flex items-center">
-                                {productInfo.image && (
-                                  <img
-                                    src={productInfo.image}
-                                    alt={productTitle}
-                                    className="w-8 h-8 rounded-full mr-2 object-cover"
-                                    onError={(e) => {
-                                      e.target.style.display = 'none';
-                                    }}
-                                  />
-                                )}
-                                <div>
-                                  <div className="text-sm font-medium text-gray-900">
-                                    {productTitle}
-                                  </div>
-                                  <div className="text-xs text-gray-500">
-                                    {product.invoice_numbers?.join(', ') || 'N/A'}
-                                  </div>
-                                </div>
-                              </div>
-                            </td>
-                            <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">
-                              {product.quantity_before || 0}
-                            </td>
-                            <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">
-                              {product.quantity_after || 0}
-                            </td>
-                            <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">
-                              <span className={product.total_changed > 0 ? 'text-green-600' : 'text-red-600'}>
-                                {product.total_changed > 0 ? '+' : ''}{product.total_changed}
-                              </span>
-                            </td>
-                            <td className="px-2 py-2 whitespace-nowrap">
-                              <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusDisplay(product.sync_status || 'pending').bgColor} ${getStatusDisplay(product.sync_status || 'pending').color}`}>
-                                {getStatusDisplay(product.sync_status || 'pending').text}
-                              </span>
-                            </td>
-                          </tr>
-                        );
-                      })
+                      selectedSession.products_summary.map((product, index) => (
+                        <tr key={`product-${index}`} className="hover:bg-gray-50">
+                          <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">
+                            {resolveProductTitle(product)}
+                          </td>
+                          <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">{product.quantity_before || 0}</td>
+                          <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">{product.quantity_after || 0}</td>
+                          <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">
+                            <span className={product.total_changed > 0 ? 'text-green-600' : 'text-red-600'}>
+                              {product.total_changed > 0 ? '+' : ''}{product.total_changed}
+                            </span>
+                          </td>
+                          <td className="px-2 py-2 whitespace-nowrap">
+                            <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusDisplay(product.sync_status || 'pending').bgColor} ${getStatusDisplay(product.sync_status || 'pending').color}`}>
+                              {getStatusDisplay(product.sync_status || 'pending').text}
+                            </span>
+                          </td>
+                        </tr>
+                      ))
                     ) : (
                       <tr>
-                        <td colSpan="5" className="px-2 py-2 text-center text-sm text-gray-500">
-                          {t('No products found')}
-                        </td>
+                        <td colSpan="5" className="px-2 py-2 text-center text-sm text-gray-500">{t('No products found')}</td>
                       </tr>
                     )}
                   </tbody>
                 </table>
               </div>
-            </div>
-            
-            <div className="flex justify-end mt-4">
-              <Button
-                onClick={() => syncPushSession(selectedSession._id)}
-                disabled={syncingSession === selectedSession._id}
-                className="mr-2"
-              >
-                {syncingSession === selectedSession._id ? t('Syncing...') : t('Sync to Odoo')}
-              </Button>
-              <Button onClick={() => setShowDetailModal(false)}>
-                {t('Close')}
-              </Button>
             </div>
           </div>
         </Modal>
