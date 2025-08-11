@@ -105,7 +105,8 @@ const OrderServices = {
 };
 
 export const adminCancelOrder = async (orderId, cancelReason) => {
-  return requests.put(`/order/${orderId}/cancel`, { cancelReason });
+  // Use admin route, not customer route
+  return requests.put(`/orders/${orderId}/cancel`, { cancelReason, cancelledBy: 'admin' });
 };
 
 export default OrderServices;
