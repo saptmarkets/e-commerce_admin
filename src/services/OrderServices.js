@@ -1,4 +1,4 @@
-import requests from "./httpService";
+import requests from "./httpServices";
 
 const OrderServices = {
   getAllOrders: async ({
@@ -102,6 +102,10 @@ const OrderServices = {
   sendEmailInvoiceToCustomer: async (body) => {
     return requests.post("/order/customer/invoice", body);
   },
+};
+
+export const adminCancelOrder = async (orderId, cancelReason) => {
+  return requests.put(`/order/${orderId}/cancel`, { cancelReason });
 };
 
 export default OrderServices;
