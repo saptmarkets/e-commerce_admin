@@ -1,4 +1,4 @@
-import requests from "./httpServices";
+import requests from "./httpService";
 
 const OrderServices = {
   getAllOrders: async ({
