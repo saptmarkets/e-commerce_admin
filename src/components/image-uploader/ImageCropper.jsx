@@ -2,6 +2,7 @@ import React, { useState, useCallback, useRef } from 'react';
 import Cropper from 'react-easy-crop';
 import { FiCrop, FiCheck, FiX, FiRotateCw, FiZoomIn, FiZoomOut } from 'react-icons/fi';
 import { notifyError, notifySuccess } from '@/utils/toast';
+import { useTranslation } from 'react-i18next';
 
 // Aspect ratio configurations for different contexts
 export const ASPECT_RATIOS = {
@@ -53,6 +54,7 @@ const ImageCropper = ({
   const [rotation, setRotation] = useState(0);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const { t } = useTranslation();
 
   const aspectRatioConfig = ASPECT_RATIOS[aspectRatioType] || ASPECT_RATIOS.default;
 
@@ -146,7 +148,7 @@ const ImageCropper = ({
 
   const handleCropConfirm = async () => {
     if (!croppedAreaPixels) {
-      notifyError('Please select a crop area');
+      notifyError(t('PleaseSelectACropArea'));
       return;
     }
 
@@ -161,13 +163,13 @@ const ImageCropper = ({
         });
         
         onCropComplete(croppedFile, croppedImageBlob);
-        notifySuccess('Image cropped successfully!');
+        notifySuccess(t('ImageCroppedSuccessfully'));
       } else {
-        notifyError('Failed to crop image');
+        notifyError(t('FailedToCropImage'));
       }
     } catch (error) {
       console.error('Error cropping image:', error);
-      notifyError('Error processing image');
+      notifyError(t('ErrorProcessingImage'));
     } finally {
       setIsProcessing(false);
     }
@@ -186,10 +188,10 @@ const ImageCropper = ({
         <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
           <div>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-              {title}
+              {title || t('CropImage')}
             </h3>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Aspect Ratio: {aspectRatioConfig.label}
+              {t('AspectRatio')}: {aspectRatioConfig.label}
             </p>
           </div>
           <button
@@ -235,7 +237,7 @@ const ImageCropper = ({
                 type="button"
                 onClick={() => setZoom(Math.max(0.1, zoom - 0.1))}
                 className="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors"
-                title="Zoom Out"
+                title={t('ZoomOut')}
               >
                 <FiZoomOut className="text-gray-500" />
               </button>
@@ -252,7 +254,7 @@ const ImageCropper = ({
                 type="button"
                 onClick={() => setZoom(Math.min(5, zoom + 0.1))}
                 className="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors"
-                title="Zoom In"
+                title={t('ZoomIn')}
               >
                 <FiZoomIn className="text-gray-500" />
               </button>
@@ -264,7 +266,7 @@ const ImageCropper = ({
                 type="button"
                 onClick={() => setRotation((rotation - 90 + 360) % 360)}
                 className="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors"
-                title="Rotate Left 90°"
+                title={t('RotateLeft90')}
               >
                 <FiRotateCw className="text-gray-500 transform -scale-x-100" />
               </button>
@@ -281,7 +283,7 @@ const ImageCropper = ({
                 type="button"
                 onClick={() => setRotation((rotation + 90) % 360)}
                 className="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors"
-                title="Rotate Right 90°"
+                title={t('RotateRight90')}
               >
                 <FiRotateCw className="text-gray-500" />
               </button>
@@ -294,7 +296,7 @@ const ImageCropper = ({
                   type="button"
                   onClick={() => setZoom(0.5)}
                   className="px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded transition-colors"
-                  title="Zoom to 50%"
+                  title={t('ZoomTo50')}
                 >
                   50%
                 </button>
@@ -302,7 +304,7 @@ const ImageCropper = ({
                   type="button"
                   onClick={() => setZoom(1)}
                   className="px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded transition-colors"
-                  title="Zoom to 100%"
+                  title={t('ZoomTo100')}
                 >
                   100%
                 </button>
@@ -310,7 +312,7 @@ const ImageCropper = ({
                   type="button"
                   onClick={() => setZoom(2)}
                   className="px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded transition-colors"
-                  title="Zoom to 200%"
+                  title={t('ZoomTo200')}
                 >
                   200%
                 </button>
@@ -319,7 +321,7 @@ const ImageCropper = ({
                 onClick={resetCrop}
                 className="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-md transition-colors"
               >
-                Reset All
+                {t('ResetAll')}
               </button>
             </div>
           </div>
@@ -330,7 +332,7 @@ const ImageCropper = ({
               onClick={onCancel}
               className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
             >
-              Cancel
+              {t('Cancel')}
             </button>
             <button
               onClick={handleCropConfirm}
@@ -340,12 +342,12 @@ const ImageCropper = ({
               {isProcessing ? (
                 <>
                   <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-                  <span>{t("Processing")}</span>
+                  <span>{t('Processing')}</span>
                 </>
               ) : (
                 <>
                   <FiCheck size={16} />
-                  <span>Apply Crop</span>
+                  <span>{t('ApplyCrop') || 'Apply Crop'}</span>
                 </>
               )}
             </button>
