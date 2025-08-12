@@ -39,15 +39,17 @@ const Category = () => {
   const { toggleDrawer, lang } = useContext(SidebarContext);
   const history = useHistory();
 
-  const { data, loading, error } = useAsync(CategoryServices.getAllCategory);
-  const { data: getAllCategories } = useAsync(
-    CategoryServices.getAllCategories
-  );
+  const { data: activeCategories, loading, error } = useAsync(CategoryServices.getAllCategory);
+  const { data: allCategories } = useAsync(CategoryServices.getAllCategories);
 
   const { handleDeleteMany, allId, handleUpdateMany, serviceId } =
     useToggleDrawer();
 
   const { t } = useTranslation();
+
+  // Toggle: show all categories (active + inactive) vs only active
+  const [showAllCategories, setShowAllCategories] = useState(true);
+  const sourceData = showAllCategories ? (allCategories || []) : (activeCategories || []);
 
   const {
     handleSubmitCategory,
@@ -63,7 +65,7 @@ const Category = () => {
     handleSelectFile,
     handleUploadMultiple,
     handleRemoveSelectFile,
-  } = useFilter(data);
+  } = useFilter(sourceData);
 
   // react hooks
   const [isCheckAll, setIsCheckAll] = useState(false);
@@ -84,8 +86,6 @@ const Category = () => {
     categoryRef.current.value = "";
   };
 
-  // console.log("serviceData", serviceData, "tableData", dataTable);
-
   return (
     <>
       <PageTitle>{t("Category")}</PageTitle>
@@ -95,27 +95,25 @@ const Category = () => {
         ids={allId}
         title="Categories"
         lang={lang}
-        data={data}
+        data={sourceData}
         isCheck={isCheck}
       />
 
       <MainDrawer>
-        <CategoryDrawer id={serviceId} data={data} lang={lang} />
+        <CategoryDrawer id={serviceId} data={sourceData} lang={lang} />
       </MainDrawer>
 
       <AnimatedContent>
         <Card className="min-w-0 shadow-xs overflow-hidden bg-white dark:bg-gray-800 mb-5">
           <CardBody className="">
-            {/* <div className="flex md:flex-row flex-col gap-3 justify-end items-end"> */}
             <form
               onSubmit={handleSubmitCategory}
               className="py-3  grid gap-4 lg:gap-6 xl:gap-6  xl:flex"
             >
-              {/* </div> */}
               <div className="flex justify-start w-1/2 xl:w-1/2 md:w-full">
                 <UploadMany
                   title="Categories"
-                  exportData={getAllCategories}
+                  exportData={allCategories}
                   filename={filename}
                   isDisabled={isDisabled}
                   handleSelectFile={handleSelectFile}
@@ -134,7 +132,6 @@ const Category = () => {
                     <span className="mr-2">
                       <FiEdit />
                     </span>
-
                     {t("BulkAction")}
                   </Button>
                 </div>
@@ -147,7 +144,6 @@ const Category = () => {
                     <span className="mr-2">
                       <FiTrash2 />
                     </span>
-
                     {t("Delete")}
                   </Button>
                 </div>
@@ -159,7 +155,6 @@ const Category = () => {
                     <span className="mr-2">
                       <FiUpload />
                     </span>
-
                     Import/Export
                   </Button>
                 </div>
@@ -171,7 +166,6 @@ const Category = () => {
                     <span className="mr-2">
                       <FiPlus />
                     </span>
-
                     {t("AddCategory")}
                   </Button>
                 </div>
@@ -216,12 +210,22 @@ const Category = () => {
         </Card>
       </AnimatedContent>
 
-      <SwitchToggleChildCat
-        title=" "
-        handleProcess={setShowChild}
-        processOption={showChild}
-        name={showChild}
-      />
+      {/* Toggles */}
+      <div className="flex items-center gap-4 mb-2">
+        <SwitchToggleChildCat
+          title={t('Show child categories')}
+          handleProcess={setShowChild}
+          processOption={showChild}
+          name={showChild}
+        />
+        <SwitchToggleChildCat
+          title={t('Show all categories (active + inactive)')}
+          handleProcess={setShowAllCategories}
+          processOption={showAllCategories}
+          name={showAllCategories}
+        />
+      </div>
+
       {loading ? (
         <TableLoading row={12} col={6} width={190} height={20} />
       ) : error ? (
@@ -255,7 +259,7 @@ const Category = () => {
             </TableHeader>
 
             <CategoryTable
-              data={data}
+              data={sourceData}
               lang={lang}
               isCheck={isCheck}
               categories={dataTable}
