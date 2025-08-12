@@ -18,6 +18,7 @@ import ProductServices from "@/services/ProductServices";
 import { SimpleTableBody, SimpleTableCell, SimpleTableRow } from "@/components/table/SimpleTable";
 
 const ProductTable = ({ products, isCheck, setIsCheck }) => {
+  const { t } = useTranslation();
   const { title, serviceId, handleModalOpen, handleUpdate } = useToggleDrawer();
   const { currency, showingTranslateValue, getNumberTwo } = useUtilsFunction();
   const [expandedProducts, setExpandedProducts] = useState({});
