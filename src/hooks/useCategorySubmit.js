@@ -31,47 +31,37 @@ const useCategorySubmit = (id, data) => {
     formState: { errors },
   } = useForm();
 
-  // console.log("lang", lang, language);
-
-  // console.log("resData", resData);
-
   const onSubmit = async ({ name, description }) => {
     try {
       setIsSubmitting(true);
-      const nameTranslates = await handlerTextTranslateHandler(
-        name,
-        language,
-        resData?.name
-      );
-      // console.log("nameTranslates", nameTranslates);
-      // return;
-      const descriptionTranslates = await handlerTextTranslateHandler(
-        description,
-        language,
-        resData?.description
-      );
+
+      // Preserve existing translations; only update the active language field
+      const existingName = resData?.name && typeof resData.name === 'object' ? resData.name : {};
+      const existingDescription = resData?.description && typeof resData.description === 'object' ? resData.description : {};
+
+      const safeName = { ...existingName, [language]: name };
+      const safeDescription = { ...existingDescription, [language]: description || "" };
+
+      // If this is a new category, generate translations; otherwise keep existing
+      let finalName = safeName;
+      let finalDescription = safeDescription;
+      if (!id) {
+        const nameTranslates = await handlerTextTranslateHandler(name, language, existingName);
+        const descTranslates = await handlerTextTranslateHandler(description, language, existingDescription);
+        finalName = { ...nameTranslates, [language]: name };
+        finalDescription = { ...descTranslates, [language]: description || "" };
+      }
 
       const categoryData = {
-        name: {
-          ...nameTranslates,
-          [language]: name,
-        },
-        description: {
-          ...descriptionTranslates,
-          [language]: description ? description : "",
-        },
+        name: finalName,
+        description: finalDescription,
         parentId: checked ? checked : undefined,
         parentName: selectCategoryName ? selectCategoryName : "Home",
-
         icon: imageUrl,
         headerImage: headerImageUrl,
         status: published ? "show" : "hide",
         lang: language,
       };
-
-      // console.log("category submit", categoryData);
-      // setIsSubmitting(false);
-      // return;
 
       if (id) {
         const res = await CategoryServices.updateCategory(id, categoryData);
@@ -130,7 +120,6 @@ const useCategorySubmit = (id, data) => {
       (async () => {
         try {
           const res = await CategoryServices.getCategoryById(id);
-          // console.log("res category", res);
 
           if (res) {
             setResData(res);
