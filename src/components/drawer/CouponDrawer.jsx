@@ -1,5 +1,6 @@
 import { Input } from "@windmill/react-ui";
-import { t } from "i18next";
+import React from "react";
+import { useTranslation } from "react-i18next";
 import { Scrollbars } from "react-custom-scrollbars-2";
 
 //internal import
@@ -30,6 +31,8 @@ const CouponDrawer = ({ id }) => {
     isSubmitting,
     handleSelectLanguage,
   } = useCouponSubmit(id);
+
+  const { t } = useTranslation();
 
   return (
     <>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { FiZoomIn, FiInfo } from "react-icons/fi";
 import { FiChevronDown, FiChevronRight } from "react-icons/fi";
 import { Link } from "react-router-dom";

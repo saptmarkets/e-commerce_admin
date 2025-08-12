@@ -10,8 +10,8 @@ import {
   TableFooter,
   TableHeader,
 } from "@windmill/react-ui";
-import { t } from "i18next";
 import React, { useState, useContext } from "react";
+import { useTranslation } from "react-i18next";
 import { FiEdit, FiTrash2, FiPlus } from "react-icons/fi";
 
 //internal import

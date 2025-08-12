@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { useDropzone } from "react-dropzone";
 import { DndProvider } from "react-dnd";
@@ -20,6 +20,7 @@ const Uploader = ({
   targetWidth = 1200, // Increased for better quality
   targetHeight = 1200, // Increased for better quality
 }) => {
+  const { t } = useTranslation();
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [err, setError] = useState("");

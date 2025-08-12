@@ -1,7 +1,7 @@
 import { TableBody, TableCell, TableRow, Badge } from "@windmill/react-ui";
 import dayjs from "dayjs";
-import { t } from "i18next";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { FiZoomIn, FiStar, FiFileText, FiTrendingUp, FiEye } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
@@ -17,6 +17,7 @@ import EditDeleteButton from "@/components/table/EditDeleteButton";
 
 const CustomerTable = ({ customers }) => {
   const { title, serviceId, handleModalOpen, handleUpdate } = useToggleDrawer();
+  const { t } = useTranslation();
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {
