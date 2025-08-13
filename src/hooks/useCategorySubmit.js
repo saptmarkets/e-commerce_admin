@@ -155,6 +155,14 @@ const useCategorySubmit = (id, data) => {
     }
   }, [id, setValue, isDrawerOpen, language, clearErrors, data, lang]);
 
+  // When switching to main category, clear any selected parent and set Home label in the UI
+  useEffect(() => {
+    if (isMain) {
+      setChecked("");
+      setSelectCategoryName("Home");
+    }
+  }, [isMain]);
+
   return {
     register,
     handleSubmit,
