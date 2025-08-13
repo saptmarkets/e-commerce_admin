@@ -19,6 +19,7 @@ const useCategorySubmit = (id, data) => {
   const [published, setPublished] = useState(true);
   const [selectCategoryName, setSelectCategoryName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isMain, setIsMain] = useState(false);
 
   const { handlerTextTranslateHandler } = useTranslationValue();
 
@@ -52,11 +53,19 @@ const useCategorySubmit = (id, data) => {
         finalDescription = { ...descTranslates, [language]: description || "" };
       }
 
+      // Determine parent fields based on isMain toggle
+      let parentIdField = checked || undefined;
+      let parentNameField = selectCategoryName ? selectCategoryName : "Home";
+      if (isMain) {
+        parentIdField = undefined;
+        parentNameField = "Home";
+      }
+
       const categoryData = {
         name: finalName,
         description: finalDescription,
-        parentId: checked ? checked : undefined,
-        parentName: selectCategoryName ? selectCategoryName : "Home",
+        parentId: parentIdField,
+        parentName: parentNameField,
         icon: imageUrl,
         headerImage: headerImageUrl,
         status: published ? "show" : "hide",
@@ -103,6 +112,7 @@ const useCategorySubmit = (id, data) => {
       setImageUrl("");
       setHeaderImageUrl("");
       setPublished(true);
+      setIsMain(false);
       clearErrors("name");
       clearErrors("parentId");
       clearErrors("parentName");
@@ -136,6 +146,7 @@ const useCategorySubmit = (id, data) => {
             setImageUrl(res.icon);
             setHeaderImageUrl(res.headerImage || "");
             setPublished(res.status === "show" ? true : false);
+            setIsMain(!res.parentId);
           }
         } catch (err) {
           notifyError(err ? err.response.data.message : err.message);
@@ -163,6 +174,8 @@ const useCategorySubmit = (id, data) => {
     selectCategoryName,
     setSelectCategoryName,
     handleSelectLanguage,
+    isMain,
+    setIsMain,
   };
 };
 

@@ -40,6 +40,8 @@ const CategoryDrawer = ({ id, data }) => {
     setSelectCategoryName,
     handleSelectLanguage,
     isSubmitting,
+    isMain,
+    setIsMain,
   } = useCategorySubmit(id, data);
 
   const { showingTranslateValue } = useUtilsFunction();
@@ -175,8 +177,19 @@ const CategoryDrawer = ({ id, data }) => {
             <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
               <LabelArea label={t("ParentCategory")} />
               <div className="col-span-8 sm:col-span-4 relative">
+                <div className="flex items-center mb-2">
+                  <input
+                    id="isMain"
+                    type="checkbox"
+                    className="mr-2"
+                    checked={isMain}
+                    onChange={(e)=>setIsMain(e.target.checked)}
+                  />
+                  <label htmlFor="isMain" className="text-sm text-gray-700">{t('Is it main category?')}</label>
+                </div>
                 <Input
                   readOnly
+                  disabled={isMain}
                   {...register(`parent`, {
                     required: false,
                   })}
@@ -192,7 +205,7 @@ const CategoryDrawer = ({ id, data }) => {
                     expandAction="click"
                     treeData={renderCategories(data)}
                     selectedKeys={[checked]}
-                    onSelect={(v) => handleSelect(v[0])}
+                    onSelect={(v) => !isMain && handleSelect(v[0])}
                     motion={motion}
                     animation="slide-up"
                   />
