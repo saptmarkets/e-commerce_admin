@@ -27,6 +27,7 @@ const HomepageSections = () => {
   const [draggedItem, setDraggedItem] = useState(null);
   const [allCategories, setAllCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [categorySearch, setCategorySearch] = useState('');
 
   // Load sections on page load
   useEffect(() => {
@@ -38,7 +39,8 @@ const HomepageSections = () => {
   const fetchCategories = async () => {
     try {
       const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL || 'https://e-commerce-backend-l0s0.onrender.com/api';
-      const response = await fetch(`${API_BASE_URL}/category/show`);
+      // Use full list to ensure all categories are available for selection
+      const response = await fetch(`${API_BASE_URL}/category/all`);
       const data = await response.json();
       setAllCategories(data || []);
     } catch (error) {
@@ -758,30 +760,44 @@ const HomepageSections = () => {
                             {/* Available Categories */}
                             <div className="mb-4">
                               <h6 className="text-sm font-medium text-gray-600 mb-2">Available Categories:</h6>
-                              <div className="max-h-32 overflow-y-auto border rounded p-2 bg-gray-50">
+                              <input
+                                type="text"
+                                value={categorySearch}
+                                onChange={(e) => setCategorySearch(e.target.value)}
+                                className="w-full mb-2 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="Search categories..."
+                              />
+                              <div className="max-h-60 overflow-y-auto border rounded p-2 bg-gray-50">
                                 {allCategories
                                   .filter(cat => !selectedCategories.find(sel => sel.categoryId === cat._id))
+                                  .filter(cat => {
+                                    if (!categorySearch) return true;
+                                    const q = categorySearch.toLowerCase();
+                                    const en = (cat.name?.en || cat.name || '').toString().toLowerCase();
+                                    const ar = (cat.name?.ar || '').toString().toLowerCase();
+                                    return en.includes(q) || ar.includes(q);
+                                  })
                                   .map(category => (
-                                    <div 
-                                      key={category._id}
-                                      className="flex items-center justify-between p-2 hover:bg-gray-100 rounded cursor-pointer"
-                                      onClick={() => {
-                                        const newSelected = [...selectedCategories, {
-                                          categoryId: category._id,
-                                          name: category.name,
-                                          icon: category.icon,
-                                          sortOrder: selectedCategories.length
-                                        }];
-                                        setSelectedCategories(newSelected);
-                                      }}
-                                    >
-                                      <span className="text-sm">{category.name?.en || category.name}</span>
-                                      <button className="text-blue-600 text-sm">+ Add</button>
-                                    </div>
-                                  ))
-                                }
-                              </div>
-                            </div>
+                                     <div 
+                                       key={category._id}
+                                       className="flex items-center justify-between p-2 hover:bg-gray-100 rounded cursor-pointer"
+                                       onClick={() => {
+                                         const newSelected = [...selectedCategories, {
+                                           categoryId: category._id,
+                                           name: category.name,
+                                           icon: category.icon,
+                                           sortOrder: selectedCategories.length
+                                         }];
+                                         setSelectedCategories(newSelected);
+                                       }}
+                                     >
+                                       <span className="text-sm">{category.name?.en || category.name}</span>
+                                       <button className="text-blue-600 text-sm">+ Add</button>
+                                     </div>
+                                   ))
+                                 }
+                               </div>
+                             </div>
 
                             {/* Selected Categories */}
                             <div>
