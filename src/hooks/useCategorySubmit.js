@@ -57,7 +57,7 @@ const useCategorySubmit = (id, data) => {
       let parentIdField = checked || undefined;
       let parentNameField = selectCategoryName ? selectCategoryName : "Home";
       if (isMain) {
-        parentIdField = undefined;
+        parentIdField = null;
         parentNameField = "Home";
       }
 
