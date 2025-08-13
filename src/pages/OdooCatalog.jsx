@@ -129,10 +129,28 @@ const OdooCatalog = () => {
       try {
         const res = await OdooCatalogServices.getCategories({ limit: 1000 });
         const catsRaw = res?.data?.categories || res.data?.data?.categories || res?.categories || [];
-        const options = catsRaw.map(c => ({
-          value: c.id,
-          label: c.complete_name || c.name || `Category ${c.id}`
-        })).sort((a,b)=>a.label.localeCompare(b.label));
+        // Keep only leaf (sub) categories
+        const leaves = catsRaw.filter(c => !Array.isArray(c.child_ids) || c.child_ids.length === 0);
+        // Further filter to categories that actually have products (lightweight check)
+        const checks = await Promise.all(
+          leaves.map(async (c) => {
+            try {
+              const pr = await OdooCatalogServices.listProducts({ category_id: c.id, limit: 1 });
+              const pdata = pr.data?.data || pr.data;
+              const total = pdata?.pagination?.total ?? (Array.isArray(pdata?.products) ? pdata.products.length : 0);
+              return total > 0 ? c : null;
+            } catch (e) {
+              return null;
+            }
+          })
+        );
+        const validLeaves = checks.filter(Boolean);
+        const options = validLeaves
+          .map(c => ({
+            value: c.id,
+            label: c.complete_name || c.name || `Category ${c.id}`
+          }))
+          .sort((a,b)=>a.label.localeCompare(b.label));
         setCategories(options);
       } catch (e) {
         console.error(e);
