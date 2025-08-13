@@ -791,7 +791,7 @@ const HomepageSections = () => {
                                          setSelectedCategories(newSelected);
                                        }}
                                      >
-                                       <span className="text-sm">{category.name?.en || category.name}</span>
+                                       <span className="text-sm">{category.name?.en || category.name?.ar || (typeof category.name === 'string' ? category.name : '')}</span>
                                        <button className="text-blue-600 text-sm">+ Add</button>
                                      </div>
                                    ))
@@ -811,7 +811,7 @@ const HomepageSections = () => {
                                     <div className="flex items-center">
                                       <span className="text-gray-400 cursor-move mr-2">⋮⋮</span>
                                       <span className="text-sm font-medium">{index + 1}.</span>
-                                      <span className="text-sm ml-2">{category.name?.en || category.name}</span>
+                                      <span className="text-sm ml-2">{category.name?.en || category.name?.ar || (typeof category.name === 'string' ? category.name : '')}</span>
                                     </div>
                                     <div className="flex items-center gap-2">
                                       <button
