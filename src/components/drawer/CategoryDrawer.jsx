@@ -14,6 +14,7 @@ import LabelArea from "@/components/form/selectOption/LabelArea";
 import SwitchToggle from "@/components/form/switch/SwitchToggle";
 import TextAreaCom from "@/components/form/input/TextAreaCom";
 import UploaderWithCropper from "@/components/image-uploader/UploaderWithCropper";
+import Uploader from "@/components/image-uploader/Uploader";
 import useCategorySubmit from "@/hooks/useCategorySubmit";
 import CategoryServices from "@/services/CategoryServices";
 import DrawerButton from "@/components/form/button/DrawerButton";
@@ -215,12 +216,12 @@ const CategoryDrawer = ({ id, data }) => {
             <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
               <LabelArea label="Category Header Image" />
               <div className="col-span-8 sm:col-span-4">
-                <UploaderWithCropper
+                <Uploader
                   imageUrl={headerImageUrl}
                   setImageUrl={setHeaderImageUrl}
-                  context="category-header"
                   folder="category-headers"
-                  title="Upload Category Header"
+                  targetWidth={1200}
+                  targetHeight={300}
                 />
                 <p className="text-xs text-gray-500 mt-1">
                   Recommended size: 1200×300px. This image will be used as the banner when this category is viewed.
