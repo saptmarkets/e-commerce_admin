@@ -39,8 +39,7 @@ const Category = () => {
   const { toggleDrawer, lang } = useContext(SidebarContext);
   const history = useHistory();
 
-  const { data: activeCategories, loading, error } = useAsync(CategoryServices.getAllCategory);
-  const { data: allCategories } = useAsync(CategoryServices.getAllCategories);
+  const { data: allNestedCategories, loading, error } = useAsync(CategoryServices.getAllCategory);
 
   const { handleDeleteMany, allId, handleUpdateMany, serviceId } =
     useToggleDrawer();
@@ -49,7 +48,20 @@ const Category = () => {
 
   // Toggle: show all categories (active + inactive) vs only active
   const [showAllCategories, setShowAllCategories] = useState(true);
-  const sourceData = showAllCategories ? (allCategories || []) : (activeCategories || []);
+
+  // Keep hierarchy always; optionally filter out inactive nodes
+  const filterNestedByStatus = (list = [], status = 'show') => {
+    return (list || [])
+      .filter(node => node.status === status)
+      .map(node => ({
+        ...node,
+        children: filterNestedByStatus(node.children || [], status)
+      }));
+  };
+
+  const sourceData = showAllCategories
+    ? (allNestedCategories || [])
+    : filterNestedByStatus(allNestedCategories || [], 'show');
 
   const {
     handleSubmitCategory,
@@ -113,7 +125,7 @@ const Category = () => {
               <div className="flex justify-start w-1/2 xl:w-1/2 md:w-full">
                 <UploadMany
                   title="Categories"
-                  exportData={allCategories}
+                  exportData={allNestedCategories}
                   filename={filename}
                   isDisabled={isDisabled}
                   handleSelectFile={handleSelectFile}
