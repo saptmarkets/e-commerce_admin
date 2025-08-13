@@ -769,6 +769,9 @@ const HomepageSections = () => {
                               />
                               <div className="max-h-60 overflow-y-auto border rounded p-2 bg-gray-50">
                                 {allCategories
+                                  // Show only main (top-level) categories
+                                  .filter(cat => !cat.parentId && cat.parentId !== 0)
+                                  // Exclude already selected
                                   .filter(cat => !selectedCategories.find(sel => sel.categoryId === cat._id))
                                   .filter(cat => {
                                     if (!categorySearch) return true;
