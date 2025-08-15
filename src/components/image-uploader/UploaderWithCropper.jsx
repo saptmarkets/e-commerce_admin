@@ -144,11 +144,16 @@ const UploaderWithCropper = ({
         try {
           const file = files[0];
           const name = file.name.replaceAll(/\s/g, "");
-          const public_id = name?.substring(0, name.lastIndexOf("."));
+          const baseName = name?.substring(0, name.lastIndexOf(".")) || "image";
+          
+          // Generate unique public_id to prevent overwriting
+          const timestamp = Date.now();
+          const randomId = Math.random().toString(36).substr(2, 9);
+          const uniquePublicId = `${baseName}_${timestamp}_${randomId}`;
 
           const formData = new FormData();
           formData.append("image", file);
-          formData.append("public_id", public_id);
+          formData.append("public_id", uniquePublicId);
           if (folder) formData.append("folder", folder);
           if (context) formData.append("context", context);
 
