@@ -111,7 +111,14 @@ const BannerDrawer = ({ id }) => {
     formState: { errors },
     reset,
     watch
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      textAlignment: {
+        en: 'left',
+        ar: 'right'
+      }
+    }
+  });
 
   const watchedLocation = watch('location');
   const watchedLayoutType = watch('layoutType');
@@ -178,9 +185,11 @@ const BannerDrawer = ({ id }) => {
             setValue('endDate', banner.endDate ? banner.endDate.split('T')[0] : '');
             setValue('openInNewTab', banner.openInNewTab || false);
             setValue('layoutType', banner.layoutType || 'single');
-            setValue('leftImageAnimation', banner.leftImageAnimation || 'slideUp');
-            setValue('rightImageAnimation', banner.rightImageAnimation || 'slideUp');
-            setValue('centerImageAnimation', banner.centerImageAnimation || 'slideRight');
+                    setValue('leftImageAnimation', banner.leftImageAnimation || 'slideUp');
+        setValue('rightImageAnimation', banner.rightImageAnimation || 'slideUp');
+        setValue('centerImageAnimation', banner.centerImageAnimation || 'slideRight');
+        setValue('textAlignment.en', banner.textAlignment?.en || 'left');
+        setValue('textAlignment.ar', banner.textAlignment?.ar || 'right');
             
             setImageUrl(Array.isArray(banner.imageUrl) ? banner.imageUrl : (banner.imageUrl ? [banner.imageUrl] : [])); // Ensure it's always an array
             setLeftImageUrl(banner.leftImageUrl || '');
@@ -569,6 +578,39 @@ const BannerDrawer = ({ id }) => {
                           <option value="fadeIn">Fade In</option>
                           <option value="slideDown">Slide Down</option>
                         </Select>
+                      </div>
+                    </div>
+
+                    {/* Text Alignment Settings */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                      <div>
+                        <LabelArea label="Text Alignment (English)" />
+                        <Select
+                          className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                          {...register("textAlignment.en")}
+                        >
+                          <option value="left">Left</option>
+                          <option value="center">Center</option>
+                          <option value="right">Right</option>
+                        </Select>
+                        <p className="text-xs text-gray-500 mt-1">
+                          Control where English text appears on the banner
+                        </p>
+                      </div>
+
+                      <div>
+                        <LabelArea label="Text Alignment (Arabic)" />
+                        <Select
+                          className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                          {...register("textAlignment.ar")}
+                        >
+                          <option value="left">Left</option>
+                          <option value="center">Center</option>
+                          <option value="right">Right</option>
+                        </Select>
+                        <p className="text-xs text-gray-500 mt-1">
+                          Control where Arabic text appears on the banner
+                        </p>
                       </div>
                     </div>
                   </div>

@@ -51,12 +51,20 @@ const Category = () => {
 
   // Keep hierarchy always; optionally filter out inactive nodes
   const filterNestedByStatus = (list = [], status = 'show') => {
-    return (list || [])
-      .filter(node => node.status === status)
-      .map(node => ({
-        ...node,
-        children: filterNestedByStatus(node.children || [], status)
-      }));
+    const out = [];
+    for (const node of list || []) {
+      const filteredChildren = filterNestedByStatus(node.children || [], status);
+      const isActive = node.status === status;
+      // Keep node if it is active OR it has any active descendant
+      if (isActive || filteredChildren.length > 0) {
+        out.push({
+          ...node,
+          // Only include children that are active or have active descendants
+          children: filteredChildren,
+        });
+      }
+    }
+    return out;
   };
 
   const sourceData = showAllCategories
