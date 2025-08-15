@@ -113,10 +113,8 @@ const BannerDrawer = ({ id }) => {
     watch
   } = useForm({
     defaultValues: {
-      textAlignment: {
-        en: 'left',
-        ar: 'right'
-      }
+      textAlignmentEn: 'left',
+      textAlignmentAr: 'right'
     }
   });
 
@@ -188,8 +186,8 @@ const BannerDrawer = ({ id }) => {
                     setValue('leftImageAnimation', banner.leftImageAnimation || 'slideUp');
         setValue('rightImageAnimation', banner.rightImageAnimation || 'slideUp');
         setValue('centerImageAnimation', banner.centerImageAnimation || 'slideRight');
-        setValue('textAlignment.en', banner.textAlignment?.en || 'left');
-        setValue('textAlignment.ar', banner.textAlignment?.ar || 'right');
+        setValue('textAlignmentEn', banner.textAlignment?.en || 'left');
+        setValue('textAlignmentAr', banner.textAlignment?.ar || 'right');
             
             setImageUrl(Array.isArray(banner.imageUrl) ? banner.imageUrl : (banner.imageUrl ? [banner.imageUrl] : [])); // Ensure it's always an array
             setLeftImageUrl(banner.leftImageUrl || '');
@@ -289,7 +287,7 @@ const BannerDrawer = ({ id }) => {
         ar: data.linkTextAr || '',
       };
       // Remove flat fields so they don't overwrite the object
-      const { title, titleAr, description, descriptionAr, linkText, linkTextAr, ...restData } = data;
+      const { title, titleAr, description, descriptionAr, linkText, linkTextAr, textAlignmentEn, textAlignmentAr, ...restData } = data;
 
       // Prepare banner data
       const bannerData = {
@@ -297,6 +295,10 @@ const BannerDrawer = ({ id }) => {
         title: titleObj,
         description: descriptionObj,
         linkText: linkTextObj,
+        textAlignment: {
+          en: data.textAlignmentEn || 'left',
+          ar: data.textAlignmentAr || 'right'
+        },
         imageUrl: imageUrl[0] || '',
         leftImageUrl: data.layoutType === 'triple' ? leftImageUrl : null,
         rightImageUrl: data.layoutType === 'triple' ? rightImageUrl : null,
@@ -587,7 +589,7 @@ const BannerDrawer = ({ id }) => {
                         <LabelArea label="Text Alignment (English)" />
                         <Select
                           className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
-                          {...register("textAlignment.en")}
+                          {...register("textAlignmentEn")}
                         >
                           <option value="left">Left</option>
                           <option value="center">Center</option>
@@ -602,7 +604,7 @@ const BannerDrawer = ({ id }) => {
                         <LabelArea label="Text Alignment (Arabic)" />
                         <Select
                           className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
-                          {...register("textAlignment.ar")}
+                          {...register("textAlignmentAr")}
                         >
                           <option value="left">Left</option>
                           <option value="center">Center</option>
