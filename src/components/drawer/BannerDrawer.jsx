@@ -583,40 +583,41 @@ const BannerDrawer = ({ id }) => {
                       </div>
                     </div>
 
-                    {/* Text Alignment Settings */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                      <div>
-                        <LabelArea label="Text Alignment (English)" />
-                        <Select
-                          className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
-                          {...register("textAlignmentEn")}
-                        >
-                          <option value="left">Left</option>
-                          <option value="center">Center</option>
-                          <option value="right">Right</option>
-                        </Select>
-                        <p className="text-xs text-gray-500 mt-1">
-                          Control where English text appears on the banner
-                        </p>
-                      </div>
-
-                      <div>
-                        <LabelArea label="Text Alignment (Arabic)" />
-                        <Select
-                          className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
-                          {...register("textAlignmentAr")}
-                        >
-                          <option value="left">Left</option>
-                          <option value="center">Center</option>
-                          <option value="right">Right</option>
-                        </Select>
-                        <p className="text-xs text-gray-500 mt-1">
-                          Control where Arabic text appears on the banner
-                        </p>
-                      </div>
-                    </div>
                   </div>
                 )}
+
+                {/* Text Alignment Settings - Always Visible */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                  <div>
+                    <LabelArea label="Text Alignment (English)" />
+                    <Select
+                      className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                      {...register("textAlignmentEn")}
+                    >
+                      <option value="left">Left</option>
+                      <option value="center">Center</option>
+                      <option value="right">Right</option>
+                    </Select>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Control where English text appears on the banner
+                    </p>
+                  </div>
+
+                  <div>
+                    <LabelArea label="Text Alignment (Arabic)" />
+                    <Select
+                      className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                      {...register("textAlignmentAr")}
+                    >
+                      <option value="left">Left</option>
+                      <option value="center">Center</option>
+                      <option value="right">Right</option>
+                    </Select>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Control where Arabic text appears on the banner
+                        </p>
+                  </div>
+                </div>
 
                 {/* Banner Location */}
                 <div>
