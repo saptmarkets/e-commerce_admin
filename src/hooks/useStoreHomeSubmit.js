@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -12,6 +13,38 @@ const useStoreHomeSubmit = () => {
   const history = useHistory();
   const { t } = useTranslation();
 
+  // Form handling
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    control,
+    formState: { errors },
+  } = useForm();
+
+  // State variables for essential settings only
+  const [headerLogo, setHeaderLogo] = useState("");
+  const [footerLogo, setFooterLogo] = useState("");
+  const [paymentImage, setPaymentImage] = useState("");
+  
+  // Footer block states
+  const [footerBlock1, setFooterBlock1] = useState(false);
+  const [footerBlock2, setFooterBlock2] = useState(false);
+  const [footerBlock3, setFooterBlock3] = useState(false);
+  const [footerBlock4, setFooterBlock4] = useState(false);
+  const [footerSocialLinks, setFooterSocialLinks] = useState(false);
+  const [footerPaymentMethod, setFooterPaymentMethod] = useState(false);
+  const [footerBottomContact, setFooterBottomContact] = useState(false);
+  
+  // Menu link states
+  const [categoriesMenuLink, setCategoriesMenuLink] = useState("");
+  const [aboutUsMenuLink, setAboutUsMenuLink] = useState("");
+  const [contactUsMenuLink, setContactUsMenuLink] = useState("");
+  const [offersMenuLink, setOffersMenuLink] = useState("");
+  const [faqMenuLink, setFaqMenuLink] = useState("");
+  const [privacyPolicyMenuLink, setPrivacyPolicyMenuLink] = useState("");
+  const [termsConditionsMenuLink, setTermsConditionsMenuLink] = useState("");
+
   const onSubmit = async (data) => {
     try {
       setIsSubmitting(true);
@@ -22,7 +55,7 @@ const useStoreHomeSubmit = () => {
         // Header settings
         help_text: data.help_text,
         phone_number: data.phone_number,
-        header_logo: data.header_logo,
+        header_logo: headerLogo,
         
         // Menu editor settings
         categories: data.categories,
@@ -39,15 +72,15 @@ const useStoreHomeSubmit = () => {
         checkout: data.checkout,
         
         // Footer settings
-        footer_logo: data.footer_logo,
-        payment_image: data.payment_image,
-        footer_block_one: data.footer_block_one,
-        footer_block_two: data.footer_block_two,
-        footer_block_three: data.footer_block_three,
-        footer_block_four: data.footer_block_four,
-        footer_social_links: data.footer_social_links,
-        footer_payment_method: data.footer_payment_method,
-        footer_bottom_contact: data.footer_bottom_contact,
+        footer_logo: footerLogo,
+        payment_image: paymentImage,
+        footer_block_one: footerBlock1,
+        footer_block_two: footerBlock2,
+        footer_block_three: footerBlock3,
+        footer_block_four: footerBlock4,
+        footer_social_links: footerSocialLinks,
+        footer_payment_method: footerPaymentMethod,
+        footer_bottom_contact: footerBottomContact,
       };
 
       const res = await SettingServices.updateStoreCustomizationSetting(submitData);
@@ -66,9 +99,59 @@ const useStoreHomeSubmit = () => {
   };
 
   return {
+    // Form handling
+    register,
+    handleSubmit,
+    setValue,
+    control,
+    errors,
+    
+    // Submit handling
     onSubmit,
     isSubmitting,
     isSave,
+    
+    // Header states
+    headerLogo,
+    setHeaderLogo,
+    
+    // Footer states
+    footerLogo,
+    setFooterLogo,
+    paymentImage,
+    setPaymentImage,
+    
+    // Footer block states
+    footerBlock1,
+    setFooterBlock1,
+    footerBlock2,
+    setFooterBlock2,
+    footerBlock3,
+    setFooterBlock3,
+    footerBlock4,
+    setFooterBlock4,
+    footerSocialLinks,
+    setFooterSocialLinks,
+    footerPaymentMethod,
+    setFooterPaymentMethod,
+    footerBottomContact,
+    setFooterBottomContact,
+    
+    // Menu link states
+    categoriesMenuLink,
+    setCategoriesMenuLink,
+    aboutUsMenuLink,
+    setAboutUsMenuLink,
+    contactUsMenuLink,
+    setContactUsMenuLink,
+    offersMenuLink,
+    setOffersMenuLink,
+    faqMenuLink,
+    setFaqMenuLink,
+    privacyPolicyMenuLink,
+    setPrivacyPolicyMenuLink,
+    termsConditionsMenuLink,
+    setTermsConditionsMenuLink,
   };
 };
 
