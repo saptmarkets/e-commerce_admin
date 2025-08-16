@@ -48,42 +48,99 @@ const useStoreHomeSubmit = () => {
   const onSubmit = async (data) => {
     try {
       setIsSubmitting(true);
-      setIsSave(true);
+      setIsSave(false);
 
-      // Prepare the data object with only essential fields
-      const submitData = {
-        // Header settings
-        help_text: data.help_text,
-        phone_number: data.phone_number,
-        header_logo: headerLogo,
-        
-        // Menu editor settings
-        categories: data.categories,
-        about_us: data.about_us,
-        contact_us: data.contact_us,
-        offers: data.offers,
-        faq: data.faq,
-        privacy_policy: data.privacy_policy,
-        term_and_condition: data.term_and_condition,
-        pages: data.pages,
-        my_account: data.my_account,
-        login: data.login,
-        logout: data.logout,
-        checkout: data.checkout,
-        
-        // Footer settings
-        footer_logo: footerLogo,
-        payment_image: paymentImage,
-        footer_block_one: footerBlock1,
-        footer_block_two: footerBlock2,
-        footer_block_three: footerBlock3,
-        footer_block_four: footerBlock4,
-        footer_social_links: footerSocialLinks,
-        footer_payment_method: footerPaymentMethod,
-        footer_bottom_contact: footerBottomContact,
+      // Prepare the data object in the correct structure that backend expects
+      const storeCustomizationSettingData = {
+        name: "storeCustomizationSetting",
+        setting: {
+          navbar: {
+            // Header settings
+            help_text: {
+              en: data.help_text || "",
+              ar: data.help_text || ""
+            },
+            phone: data.phone_number || "",
+            logo: headerLogo || "",
+            
+            // Menu editor settings
+            categories: {
+              en: data.categories || "",
+              ar: data.categories || ""
+            },
+            about_us: {
+              en: data.about_us || "",
+              ar: data.about_us || ""
+            },
+            contact_us: {
+              en: data.contact_us || "",
+              ar: data.contact_us || ""
+            },
+            offers: {
+              en: data.offers || "",
+              ar: data.offers || ""
+            },
+            faq: {
+              en: data.faq || "",
+              ar: data.faq || ""
+            },
+            privacy_policy: {
+              en: data.privacy_policy || "",
+              ar: data.privacy_policy || ""
+            },
+            term_and_condition: {
+              en: data.term_and_condition || "",
+              ar: data.term_and_condition || ""
+            },
+            pages: {
+              en: data.pages || "",
+              ar: data.pages || ""
+            },
+            my_account: {
+              en: data.my_account || "",
+              ar: data.my_account || ""
+            },
+            login: {
+              en: data.login || "",
+              ar: data.login || ""
+            },
+            logout: {
+              en: data.logout || "",
+              ar: data.logout || ""
+            },
+            checkout: {
+              en: data.checkout || "",
+              ar: data.checkout || ""
+            },
+            
+            // Menu status toggles
+            categories_menu_status: categoriesMenuLink,
+            about_menu_status: aboutUsMenuLink,
+            contact_menu_status: contactUsMenuLink,
+            offers_menu_status: offersMenuLink,
+            faq_status: faqMenuLink,
+            privacy_policy_status: privacyPolicyMenuLink,
+            term_and_condition_status: termsConditionsMenuLink,
+          },
+          footer: {
+            logo: footerLogo || "",
+            payment_image: paymentImage || "",
+            footer_block_one: footerBlock1,
+            footer_block_two: footerBlock2,
+            footer_block_three: footerBlock3,
+            footer_block_four: footerBlock4,
+            footer_social_links: footerSocialLinks,
+            footer_payment_method: footerPaymentMethod,
+            footer_bottom_contact: footerBottomContact,
+          }
+        }
       };
 
-      const res = await SettingServices.updateStoreCustomizationSetting(submitData);
+      // Debug: Log what we're sending
+      console.log("Submitting data:", storeCustomizationSettingData);
+      console.log("Form data:", data);
+
+      const res = await SettingServices.updateStoreCustomizationSetting(storeCustomizationSettingData);
 
       if (res) {
         toast.success(t("StoreHomeUpdatedSuccessfully"));
@@ -92,6 +149,7 @@ const useStoreHomeSubmit = () => {
         history.push("/store-home");
       }
     } catch (error) {
+      console.error("Update failed:", error);
       setIsSubmitting(false);
       setIsSave(false);
       toast.error(t("StoreHomeUpdateFailed"));
