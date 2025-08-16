@@ -1449,58 +1449,22 @@ const StoreHome = () => {
   const searchParams = new URLSearchParams(location.search);
   const storeTab = searchParams.get("storeTab") || "home-settings";
 
-  // Use the original store home hook
+  // Use the simplified store home hook
   const {
     register,
     handleSubmit,
     setValue,
     onSubmit,
     errors,
-    imageUrl,
-    setImageUrl,
     isSave,
     isSubmitting,
-    // All the state variables from the original hook
+    // Essential state variables only
     headerLogo,
     setHeaderLogo,
-    sliderImage,
-    setSliderImage,
-    sliderImageTwo,
-    setSliderImageTwo,
-    sliderImageThree,
-    setSliderImageThree,
-    sliderImageFour,
-    setSliderImageFour,
-    sliderImageFive,
-    setSliderImageFive,
-    placeholderImage,
-    setPlaceHolderImage,
-    quickSectionImage,
-    setQuickSectionImage,
-    getYourDailyNeedImageLeft,
-    setGetYourDailyNeedImageLeft,
-    getYourDailyNeedImageRight,
-    setGetYourDailyNeedImageRight,
     footerLogo,
     setFooterLogo,
     paymentImage,
     setPaymentImage,
-    isCoupon,
-    isSliderFullWidth,
-    setIsCoupon,
-    setIsSliderFullWidth,
-    featuredCategories,
-    setFeaturedCategories,
-    popularProducts,
-    setPopularProducts,
-    setQuickDelivery,
-    quickDelivery,
-    setLatestDiscounted,
-    latestDiscounted,
-    setDailyNeeds,
-    dailyNeeds,
-    setFeaturePromo,
-    featurePromo,
     setFooterBlock1,
     footerBlock1,
     setFooterBlock2,
@@ -1513,18 +1477,6 @@ const StoreHome = () => {
     footerSocialLinks,
     setFooterPaymentMethod,
     footerPaymentMethod,
-    allowPromotionBanner,
-    setAllowPromotionBanner,
-    setLeftRightArrow,
-    leftRightArrow,
-    setBottomDots,
-    bottomDots,
-    setBothSliderOption,
-    bothSliderOption,
-    getButton1image,
-    setGetButton1image,
-    getButton2image,
-    setGetButton2image,
     setFooterBottomContact,
     footerBottomContact,
     setCategoriesMenuLink,
@@ -1541,113 +1493,6 @@ const StoreHome = () => {
     privacyPolicyMenuLink,
     setTermsConditionsMenuLink,
     termsConditionsMenuLink,
-    couponList,
-    setCouponList,
-    // About Us states
-    setAboutHeaderBg,
-    aboutHeaderBg,
-    setAboutPageHeader,
-    aboutPageHeader,
-    setAboutTopContentLeft,
-    aboutTopContentLeft,
-    setAboutTopContentRight,
-    aboutTopContentRight,
-    setAboutTopContentRightImage,
-    aboutTopContentRightImage,
-    setAboutMiddleContentSection,
-    aboutMiddleContentSection,
-    setAboutMiddleContentImage,
-    aboutMiddleContentImage,
-    setOurFounderSection,
-    ourFounderSection,
-    setOurFounderOneImage,
-    ourFounderOneImage,
-    setOurFounderTwoImage,
-    ourFounderTwoImage,
-    setOurFounderThreeImage,
-    ourFounderThreeImage,
-    setOurFounderFourImage,
-    ourFounderFourImage,
-    setOurFounderFiveImage,
-    ourFounderFiveImage,
-    setOurFounderSixImage,
-    ourFounderSixImage,
-    // Additional founder images
-    setOurFounderSevenImage,
-    ourFounderSevenImage,
-    setOurFounderEightImage,
-    ourFounderEightImage,
-    setOurFounderNineImage,
-    ourFounderNineImage,
-    setOurFounderTenImage,
-    ourFounderTenImage,
-    setOurFounderElevenImage,
-    ourFounderElevenImage,
-    setOurFounderTwelveImage,
-    ourFounderTwelveImage,
-    // About Us section toggles
-    setAboutCoreValues,
-    aboutCoreValues,
-    setAboutBranches,
-    aboutBranches,
-    // Privacy Policy states
-    setPrivacyPolicy,
-    privacyPolicy,
-    setTermsConditions,
-    termsConditions,
-    setPrivacyPolicyHeaderBg,
-    privacyPolicyHeaderBg,
-    setTermsConditionsHeaderBg,
-    termsConditionsHeaderBg,
-    textEdit,
-    setTextEdit,
-    termsConditionsTextEdit,
-    setTermsConditionsTextEdit,
-    // FAQ states
-    setFaqStatus,
-    faqStatus,
-    setFaqHeaderBg,
-    faqHeaderBg,
-    setFaqLeftColStatus,
-    faqLeftColStatus,
-    setFaqLeftColImage,
-    faqLeftColImage,
-    setFaqRightColStatus,
-    faqRightColStatus,
-    setEmailUsBox,
-    emailUsBox,
-    setCallUsBox,
-    callUsBox,
-    setAddressBox,
-    addressBox,
-    // Contact Us states
-    setContactPageHeader,
-    contactPageHeader,
-    setContactHeaderBg,
-    contactHeaderBg,
-    setContactFormStatus,
-    contactFormStatus,
-    setContactMidLeftColStatus,
-    contactMidLeftColStatus,
-    setContactMidLeftColImage,
-    contactMidLeftColImage,
-    // Single Page states
-    setSingleProductPageRightBox,
-    singleProductPageRightBox,
-    // Offers states
-    setOffersPageHeader,
-    offersPageHeader,
-    setOffersHeaderBg,
-    offersHeaderBg,
-    couponList1,
-    setCouponList1,
-    // Discount coupon states
-    setDiscount_coupon_status,
-    discount_coupon_status,
-    // All other states from the hook
-    control,
-    coupons,
-    handleSelectLanguage,
   } = useStoreHomeSubmit();
 
   // Render the appropriate tab content
@@ -1658,48 +1503,14 @@ const StoreHome = () => {
           <HomePage
             register={register}
             errors={errors}
-            coupons={coupons}
             headerLogo={headerLogo}
             setHeaderLogo={setHeaderLogo}
-            sliderImage={sliderImage}
-            setSliderImage={setSliderImage}
-            sliderImageTwo={sliderImageTwo}
-            setSliderImageTwo={setSliderImageTwo}
-            sliderImageThree={sliderImageThree}
-            setSliderImageThree={setSliderImageThree}
-            sliderImageFour={sliderImageFour}
-            setSliderImageFour={setSliderImageFour}
-            sliderImageFive={sliderImageFive}
-            setSliderImageFive={setSliderImageFive}
-            placeholderImage={placeholderImage}
-            setPlaceHolderImage={setPlaceHolderImage}
-            quickSectionImage={quickSectionImage}
-            setQuickSectionImage={setQuickSectionImage}
-            getYourDailyNeedImageLeft={getYourDailyNeedImageLeft}
-            setGetYourDailyNeedImageLeft={setGetYourDailyNeedImageLeft}
-            getYourDailyNeedImageRight={getYourDailyNeedImageRight}
-            setGetYourDailyNeedImageRight={setGetYourDailyNeedImageRight}
             footerLogo={footerLogo}
             setFooterLogo={setFooterLogo}
             paymentImage={paymentImage}
             setPaymentImage={setPaymentImage}
             isSave={isSave}
-            isCoupon={isCoupon}
-            isSliderFullWidth={isSliderFullWidth}
-            setIsCoupon={setIsCoupon}
-            setIsSliderFullWidth={setIsSliderFullWidth}
-            featuredCategories={featuredCategories}
-            setFeaturedCategories={setFeaturedCategories}
-            popularProducts={popularProducts}
-            setPopularProducts={setPopularProducts}
-            setQuickDelivery={setQuickDelivery}
-            quickDelivery={quickDelivery}
-            setLatestDiscounted={setLatestDiscounted}
-            latestDiscounted={latestDiscounted}
-            setDailyNeeds={setDailyNeeds}
-            dailyNeeds={dailyNeeds}
-            setFeaturePromo={setFeaturePromo}
-            featurePromo={featurePromo}
+            isSubmitting={isSubmitting}
             setFooterBlock1={setFooterBlock1}
             footerBlock1={footerBlock1}
             setFooterBlock2={setFooterBlock2}
@@ -1712,19 +1523,6 @@ const StoreHome = () => {
             footerSocialLinks={footerSocialLinks}
             setFooterPaymentMethod={setFooterPaymentMethod}
             footerPaymentMethod={footerPaymentMethod}
-            allowPromotionBanner={allowPromotionBanner}
-            setAllowPromotionBanner={setAllowPromotionBanner}
-            isSubmitting={isSubmitting}
-            setLeftRightArrow={setLeftRightArrow}
-            leftRightArrow={leftRightArrow}
-            setBottomDots={setBottomDots}
-            bottomDots={bottomDots}
-            setBothSliderOption={setBothSliderOption}
-            bothSliderOption={bothSliderOption}
-            getButton1image={getButton1image}
-            setGetButton1image={setGetButton1image}
-            getButton2image={getButton2image}
-            setGetButton2image={setGetButton2image}
             setFooterBottomContact={setFooterBottomContact}
             footerBottomContact={footerBottomContact}
             setCategoriesMenuLink={setCategoriesMenuLink}
@@ -1741,8 +1539,6 @@ const StoreHome = () => {
             privacyPolicyMenuLink={privacyPolicyMenuLink}
             setTermsConditionsMenuLink={setTermsConditionsMenuLink}
             termsConditionsMenuLink={termsConditionsMenuLink}
-            couponList={couponList}
-            setCouponList={setCouponList}
           />
         );
 
