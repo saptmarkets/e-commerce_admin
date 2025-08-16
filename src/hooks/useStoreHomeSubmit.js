@@ -269,7 +269,7 @@ const useStoreHomeSubmit = () => {
     termsConditionsMenuLink,
     setTermsConditionsMenuLink,
 
-    // Single page states
+        // Single page states
     singleProductPageRightBox,
     setSingleProductPageRightBox,
 
