@@ -18,7 +18,6 @@ const useStoreHomeSubmit = () => {
     register,
     handleSubmit,
     setValue,
-    control,
     formState: { errors },
   } = useForm();
 
@@ -219,7 +218,6 @@ const useStoreHomeSubmit = () => {
     register,
     handleSubmit,
     setValue,
-    control,
     errors,
     
     // Submit handling
