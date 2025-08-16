@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 //internal import
-import { StoreHomeServices } from "@/services/StoreHomeServices";
+import SettingServices from "@/services/SettingServices";
 
 const useStoreHomeSubmit = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -50,7 +50,7 @@ const useStoreHomeSubmit = () => {
         footer_bottom_contact: data.footer_bottom_contact,
       };
 
-      const res = await StoreHomeServices.updateStoreHome(submitData);
+      const res = await SettingServices.updateStoreCustomizationSetting(submitData);
 
       if (res) {
         toast.success(t("StoreHomeUpdatedSuccessfully"));
