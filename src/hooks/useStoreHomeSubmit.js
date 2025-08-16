@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { useRouter } from "next/router";
-import useTranslation from "next-translate/useTranslation";
+import { useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 //internal import
 import { StoreHomeServices } from "@/services/StoreHomeServices";
@@ -9,7 +9,7 @@ import { StoreHomeServices } from "@/services/StoreHomeServices";
 const useStoreHomeSubmit = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSave, setIsSave] = useState(false);
-  const router = useRouter();
+  const history = useHistory();
   const { t } = useTranslation();
 
   const onSubmit = async (data) => {
@@ -56,7 +56,7 @@ const useStoreHomeSubmit = () => {
         toast.success(t("StoreHomeUpdatedSuccessfully"));
         setIsSubmitting(false);
         setIsSave(false);
-        router.push("/store-home");
+        history.push("/store-home");
       }
     } catch (error) {
       setIsSubmitting(false);
