@@ -45,6 +45,64 @@ const useStoreHomeSubmit = () => {
   const [privacyPolicyMenuLink, setPrivacyPolicyMenuLink] = useState("");
   const [termsConditionsMenuLink, setTermsConditionsMenuLink] = useState("");
 
+  // Single page states
+  const [singleProductPageRightBox, setSingleProductPageRightBox] = useState(false);
+
+  // About Us states (minimal set to prevent errors)
+  const [aboutHeaderBg, setAboutHeaderBg] = useState("");
+  const [aboutPageHeader, setAboutPageHeader] = useState("");
+  const [aboutTopContentLeft, setAboutTopContentLeft] = useState("");
+  const [aboutTopContentRight, setAboutTopContentRight] = useState("");
+  const [aboutTopContentRightImage, setAboutTopContentRightImage] = useState("");
+  const [aboutMiddleContentSection, setAboutMiddleContentSection] = useState("");
+  const [aboutMiddleContentImage, setAboutMiddleContentImage] = useState("");
+  const [ourFounderSection, setOurFounderSection] = useState(false);
+  const [ourFounderOneImage, setOurFounderOneImage] = useState("");
+  const [ourFounderTwoImage, setOurFounderTwoImage] = useState("");
+  const [ourFounderThreeImage, setOurFounderThreeImage] = useState("");
+  const [ourFounderFourImage, setOurFounderFourImage] = useState("");
+  const [ourFounderFiveImage, setOurFounderFiveImage] = useState("");
+  const [ourFounderSixImage, setOurFounderSixImage] = useState("");
+  const [ourFounderSevenImage, setOurFounderSevenImage] = useState("");
+  const [ourFounderEightImage, setOurFounderEightImage] = useState("");
+  const [ourFounderNineImage, setOurFounderNineImage] = useState("");
+  const [ourFounderTenImage, setOurFounderTenImage] = useState("");
+  const [ourFounderElevenImage, setOurFounderElevenImage] = useState("");
+  const [ourFounderTwelveImage, setOurFounderTwelveImage] = useState("");
+  const [aboutCoreValues, setAboutCoreValues] = useState(false);
+  const [aboutBranches, setAboutBranches] = useState(false);
+
+  // Privacy Policy states
+  const [privacyPolicy, setPrivacyPolicy] = useState("");
+  const [termsConditions, setTermsConditions] = useState("");
+  const [privacyPolicyHeaderBg, setPrivacyPolicyHeaderBg] = useState("");
+  const [termsConditionsHeaderBg, setTermsConditionsHeaderBg] = useState("");
+  const [textEdit, setTextEdit] = useState("");
+  const [termsConditionsTextEdit, setTermsConditionsTextEdit] = useState("");
+
+  // FAQ states
+  const [faqStatus, setFaqStatus] = useState(false);
+  const [faqHeaderBg, setFaqHeaderBg] = useState("");
+  const [faqLeftColStatus, setFaqLeftColStatus] = useState(false);
+  const [faqLeftColImage, setFaqLeftColImage] = useState("");
+  const [faqRightColStatus, setFaqRightColStatus] = useState(false);
+  const [emailUsBox, setEmailUsBox] = useState(false);
+  const [callUsBox, setCallUsBox] = useState(false);
+  const [addressBox, setAddressBox] = useState(false);
+
+  // Contact Us states
+  const [contactPageHeader, setContactPageHeader] = useState("");
+  const [contactHeaderBg, setContactHeaderBg] = useState("");
+  const [contactFormStatus, setContactFormStatus] = useState(false);
+  const [contactMidLeftColStatus, setContactMidLeftColStatus] = useState(false);
+  const [contactMidLeftColImage, setContactMidLeftColImage] = useState("");
+
+  // Offers states
+  const [offersPageHeader, setOffersPageHeader] = useState("");
+  const [offersHeaderBg, setOffersHeaderBg] = useState("");
+
+
+
   const onSubmit = async (data) => {
     try {
       setIsSubmitting(true);
@@ -210,6 +268,106 @@ const useStoreHomeSubmit = () => {
     setPrivacyPolicyMenuLink,
     termsConditionsMenuLink,
     setTermsConditionsMenuLink,
+
+    // Single page states
+    singleProductPageRightBox,
+    setSingleProductPageRightBox,
+
+    // About Us states
+    aboutHeaderBg,
+    setAboutHeaderBg,
+    aboutPageHeader,
+    setAboutPageHeader,
+    aboutTopContentLeft,
+    setAboutTopContentLeft,
+    aboutTopContentRight,
+    setAboutTopContentRight,
+    aboutTopContentRightImage,
+    setAboutTopContentRightImage,
+    aboutMiddleContentSection,
+    setAboutMiddleContentSection,
+    aboutMiddleContentImage,
+    setAboutMiddleContentImage,
+    ourFounderSection,
+    setOurFounderSection,
+    ourFounderOneImage,
+    setOurFounderOneImage,
+    ourFounderTwoImage,
+    setOurFounderTwoImage,
+    ourFounderThreeImage,
+    setOurFounderThreeImage,
+    ourFounderFourImage,
+    setOurFounderFourImage,
+    ourFounderFiveImage,
+    setOurFounderFiveImage,
+    ourFounderSixImage,
+    setOurFounderSixImage,
+    ourFounderSevenImage,
+    setOurFounderSevenImage,
+    ourFounderEightImage,
+    setOurFounderEightImage,
+    ourFounderNineImage,
+    setOurFounderNineImage,
+    ourFounderTenImage,
+    setOurFounderTenImage,
+    ourFounderElevenImage,
+    setOurFounderElevenImage,
+    ourFounderTwelveImage,
+    setOurFounderTwelveImage,
+    aboutCoreValues,
+    setAboutCoreValues,
+    aboutBranches,
+    setAboutBranches,
+
+    // Privacy Policy states
+    privacyPolicy,
+    setPrivacyPolicy,
+    termsConditions,
+    setTermsConditions,
+    privacyPolicyHeaderBg,
+    setPrivacyPolicyHeaderBg,
+    termsConditionsHeaderBg,
+    setTermsConditionsHeaderBg,
+    textEdit,
+    setTextEdit,
+    termsConditionsTextEdit,
+    setTermsConditionsTextEdit,
+
+    // FAQ states
+    faqStatus,
+    setFaqStatus,
+    faqHeaderBg,
+    setFaqHeaderBg,
+    faqLeftColStatus,
+    setFaqLeftColStatus,
+    faqLeftColImage,
+    setFaqLeftColImage,
+    faqRightColStatus,
+    setFaqRightColStatus,
+    emailUsBox,
+    setEmailUsBox,
+    callUsBox,
+    setCallUsBox,
+    addressBox,
+    setAddressBox,
+
+    // Contact Us states
+    contactPageHeader,
+    setContactPageHeader,
+    contactHeaderBg,
+    setContactHeaderBg,
+    contactFormStatus,
+    setContactFormStatus,
+    contactMidLeftColStatus,
+    setContactMidLeftColStatus,
+    contactMidLeftColImage,
+    setContactMidLeftColImage,
+
+    // Offers states
+    offersPageHeader,
+    setOffersPageHeader,
+    offersHeaderBg,
+    setOffersHeaderBg,
   };
 };
 
