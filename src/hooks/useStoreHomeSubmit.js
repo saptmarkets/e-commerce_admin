@@ -1066,15 +1066,15 @@ const useStoreHomeSubmit = () => {
             // rights boxes 1-6
             ...( (() => {
               return Array.from({length:6}).reduce((acc,_,idx)=>{
-                acc[`right_${n}_name`] = handleRemoveEmptyKey({
-                  ...resData?.privacy_policy?.[`right_${n}_name`],
-                  [language]: data[`pp_right_${n}_name`] || "",
+                acc[`right_${idx+1}_name`] = handleRemoveEmptyKey({
+                  ...resData?.privacy_policy?.[`right_${idx+1}_name`],
+                  [language]: data[`pp_right_${idx+1}_name`] || "",
                 });
-                acc[`right_${n}_desc`] = handleRemoveEmptyKey({
-                  ...resData?.privacy_policy?.[`right_${n}_desc`],
-                  [language]: data[`pp_right_${n}_desc`] || "",
+                acc[`right_${idx+1}_desc`] = handleRemoveEmptyKey({
+                  ...resData?.privacy_policy?.[`right_${idx+1}_desc`],
+                  [language]: data[`pp_right_${idx+1}_desc`] || "",
                 });
-                acc[`right_${n}_emoji`] = data[`pp_right_${n}_emoji`] || "";
+                acc[`right_${idx+1}_emoji`] = data[`pp_right_${idx+1}_emoji`] || "";
                 return acc;
               }, {});
             })() ),
