@@ -459,47 +459,47 @@ const useStoreHomeSubmit = () => {
             }),
             founder_one_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_one_sub,
-              [language]: data.about_page_ourfounder_one_sub_title || "",
+              [language]: data.about_page_founder_one_position || "",
             }),
             founder_two_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_two_name,
-              [language]: data.about_page_ourfounder_two_title || "",
+              [language]: data.about_page_founder_two_name || "",
             }),
             founder_two_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_two_sub,
-              [language]: data.about_page_ourfounder_two_sub_title || "",
+              [language]: data.about_page_founder_two_position || "",
             }),
             founder_three_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_three_name,
-              [language]: data.about_page_ourfounder_three_title || "",
+              [language]: data.about_page_founder_three_name || "",
             }),
             founder_three_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_three_sub,
-              [language]: data.about_page_ourfounder_three_sub_title || "",
+              [language]: data.about_page_founder_three_position || "",
             }),
             founder_four_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_four_name,
-              [language]: data.about_page_ourfounder_four_title || "",
+              [language]: data.about_page_founder_four_name || "",
             }),
             founder_four_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_four_sub,
-              [language]: data.about_page_ourfounder_four_sub_title || "",
+              [language]: data.about_page_founder_four_position || "",
             }),
             founder_five_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_five_name,
-              [language]: data.about_page_ourfounder_five_title || "",
+              [language]: data.about_page_founder_five_name || "",
             }),
             founder_five_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_five_sub,
-              [language]: data.about_page_ourfounder_five_sub_title || "",
+              [language]: data.about_page_founder_five_position || "",
             }),
             founder_six_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_six_name,
-              [language]: data.about_page_ourfounder_six_title || "",
+              [language]: data.about_page_founder_six_name || "",
             }),
             founder_six_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_six_sub,
-              [language]: data.about_page_ourfounder_six_sub_title || "",
+              [language]: data.about_page_founder_six_position || "",
             }),
             // Core Values Section
             values_title: handleRemoveEmptyKey({
@@ -728,10 +728,6 @@ const useStoreHomeSubmit = () => {
               ...resData?.about_us?.founder_seven_sub,
               [language]: data.about_page_founder_seven_position || "",
             }),
-            founder_seven_position: handleRemoveEmptyKey({
-              ...resData?.about_us?.founder_seven_position,
-              [language]: data.about_page_founder_seven_position || "",
-            }),
 
             founder_eight_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_eight_name,
@@ -739,10 +735,6 @@ const useStoreHomeSubmit = () => {
             }),
             founder_eight_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_eight_sub,
-              [language]: data.about_page_founder_eight_position || "",
-            }),
-            founder_eight_position: handleRemoveEmptyKey({
-              ...resData?.about_us?.founder_eight_position,
               [language]: data.about_page_founder_eight_position || "",
             }),
 
@@ -754,10 +746,6 @@ const useStoreHomeSubmit = () => {
               ...resData?.about_us?.founder_nine_sub,
               [language]: data.about_page_founder_nine_position || "",
             }),
-            founder_nine_position: handleRemoveEmptyKey({
-              ...resData?.about_us?.founder_nine_position,
-              [language]: data.about_page_founder_nine_position || "",
-            }),
 
             founder_ten_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_ten_name,
@@ -765,10 +753,6 @@ const useStoreHomeSubmit = () => {
             }),
             founder_ten_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_ten_sub,
-              [language]: data.about_page_founder_ten_position || "",
-            }),
-            founder_ten_position: handleRemoveEmptyKey({
-              ...resData?.about_us?.founder_ten_position,
               [language]: data.about_page_founder_ten_position || "",
             }),
 
@@ -780,10 +764,6 @@ const useStoreHomeSubmit = () => {
               ...resData?.about_us?.founder_eleven_sub,
               [language]: data.about_page_founder_eleven_position || "",
             }),
-            founder_eleven_position: handleRemoveEmptyKey({
-              ...resData?.about_us?.founder_eleven_position,
-              [language]: data.about_page_founder_eleven_position || "",
-            }),
 
             founder_twelve_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_twelve_name,
@@ -791,10 +771,6 @@ const useStoreHomeSubmit = () => {
             }),
             founder_twelve_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_twelve_sub,
-              [language]: data.about_page_founder_twelve_position || "",
-            }),
-            founder_twelve_position: handleRemoveEmptyKey({
-              ...resData?.about_us?.founder_twelve_position,
               [language]: data.about_page_founder_twelve_position || "",
             }),
 
@@ -815,6 +791,10 @@ const useStoreHomeSubmit = () => {
             branches_cta_description: handleRemoveEmptyKey({
               ...resData?.about_us?.branches_cta_description,
               [language]: data.about_page_branches_cta_description || "",
+            }),
+            upcoming_branches_title: handleRemoveEmptyKey({
+              ...resData?.about_us?.upcoming_branches_title,
+              [language]: data.about_page_upcoming_branches_title || "",
             }),
 
             // Individual Branch Data
@@ -876,185 +856,7 @@ const useStoreHomeSubmit = () => {
               [language]: data.about_page_branch_two_directions || "",
             }),
 
-            branch_three_name: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_three_name,
-              [language]: data.about_page_branch_three_name || "",
-            }),
-            branch_three_address: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_three_address,
-              [language]: data.about_page_branch_three_address || "",
-            }),
-            branch_three_phone: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_three_phone,
-              [language]: data.about_page_branch_three_phone || "",
-            }),
-            branch_three_hours: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_three_hours,
-              [language]: data.about_page_branch_three_hours || "",
-            }),
-            branch_three_subtitle: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_three_subtitle,
-              [language]: data.about_page_branch_three_subtitle || "",
-            }),
-            branch_three_services: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_three_services,
-              [language]: data.about_page_branch_three_services || "",
-            }),
-            branch_three_directions: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_three_directions,
-              [language]: data.about_page_branch_three_directions || "",
-            }),
-
-            branch_four_name: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_four_name,
-              [language]: data.about_page_branch_four_name || "",
-            }),
-            branch_four_address: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_four_address,
-              [language]: data.about_page_branch_four_address || "",
-            }),
-            branch_four_phone: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_four_phone,
-              [language]: data.about_page_branch_four_phone || "",
-            }),
-            branch_four_hours: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_four_hours,
-              [language]: data.about_page_branch_four_hours || "",
-            }),
-            branch_four_subtitle: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_four_subtitle,
-              [language]: data.about_page_branch_four_subtitle || "",
-            }),
-            branch_four_services: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_four_services,
-              [language]: data.about_page_branch_four_services || "",
-            }),
-            branch_four_directions: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_four_directions,
-              [language]: data.about_page_branch_four_directions || "",
-            }),
-
-            branch_five_name: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_five_name,
-              [language]: data.about_page_branch_five_name || "",
-            }),
-            branch_five_address: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_five_address,
-              [language]: data.about_page_branch_five_address || "",
-            }),
-            branch_five_phone: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_five_phone,
-              [language]: data.about_page_branch_five_phone || "",
-            }),
-            branch_five_hours: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_five_hours,
-              [language]: data.about_page_branch_five_hours || "",
-            }),
-            branch_five_subtitle: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_five_subtitle,
-              [language]: data.about_page_branch_five_subtitle || "",
-            }),
-            branch_five_services: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_five_services,
-              [language]: data.about_page_branch_five_services || "",
-            }),
-            branch_five_directions: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_five_directions,
-              [language]: data.about_page_branch_five_directions || "",
-            }),
-
-            branch_six_name: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_six_name,
-              [language]: data.about_page_branch_six_name || "",
-            }),
-            branch_six_address: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_six_address,
-              [language]: data.about_page_branch_six_address || "",
-            }),
-            branch_six_phone: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_six_phone,
-              [language]: data.about_page_branch_six_phone || "",
-            }),
-            branch_six_hours: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_six_hours,
-              [language]: data.about_page_branch_six_hours || "",
-            }),
-            branch_six_subtitle: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_six_subtitle,
-              [language]: data.about_page_branch_six_subtitle || "",
-            }),
-            branch_six_services: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_six_services,
-              [language]: data.about_page_branch_six_services || "",
-            }),
-            branch_six_directions: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_six_directions,
-              [language]: data.about_page_branch_six_directions || "",
-            }),
-
-            branch_seven_name: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_seven_name,
-              [language]: data.about_page_branch_seven_name || "",
-            }),
-            branch_seven_address: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_seven_address,
-              [language]: data.about_page_branch_seven_address || "",
-            }),
-            branch_seven_phone: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_seven_phone,
-              [language]: data.about_page_branch_seven_phone || "",
-            }),
-            branch_seven_hours: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_seven_hours,
-              [language]: data.about_page_branch_seven_hours || "",
-            }),
-            branch_seven_subtitle: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_seven_subtitle,
-              [language]: data.about_page_branch_seven_subtitle || "",
-            }),
-            branch_seven_services: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_seven_services,
-              [language]: data.about_page_branch_seven_services || "",
-            }),
-            branch_seven_directions: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_seven_directions,
-              [language]: data.about_page_branch_seven_directions || "",
-            }),
-
-            branch_eight_name: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_eight_name,
-              [language]: data.about_page_branch_eight_name || "",
-            }),
-            branch_eight_address: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_eight_address,
-              [language]: data.about_page_branch_eight_address || "",
-            }),
-            branch_eight_phone: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_eight_phone,
-              [language]: data.about_page_branch_eight_phone || "",
-            }),
-            branch_eight_hours: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_eight_hours,
-              [language]: data.about_page_branch_eight_hours || "",
-            }),
-            branch_eight_subtitle: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_eight_subtitle,
-              [language]: data.about_page_branch_eight_subtitle || "",
-            }),
-            branch_eight_services: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_eight_services,
-              [language]: data.about_page_branch_eight_services || "",
-            }),
-            branch_eight_directions: handleRemoveEmptyKey({
-              ...resData?.about_us?.branch_eight_directions,
-              [language]: data.about_page_branch_eight_directions || "",
-            }),
-
-            upcoming_branches_title: handleRemoveEmptyKey({
-              ...resData?.about_us?.upcoming_branches_title,
-              [language]: data.about_page_upcoming_branches_title || "",
-            }),
-
+            // Upcoming branches
             upcoming_branch_one_name: handleRemoveEmptyKey({
               ...resData?.about_us?.upcoming_branch_one_name,
               [language]: data.about_page_upcoming_branch_one_name || "",
@@ -1063,16 +865,6 @@ const useStoreHomeSubmit = () => {
               ...resData?.about_us?.upcoming_branch_one_address,
               [language]: data.about_page_upcoming_branch_one_address || "",
             }),
-
-            upcoming_branch_two_name: handleRemoveEmptyKey({
-              ...resData?.about_us?.upcoming_branch_two_name,
-              [language]: data.about_page_upcoming_branch_two_name || "",
-            }),
-            upcoming_branch_two_address: handleRemoveEmptyKey({
-              ...resData?.about_us?.upcoming_branch_two_address,
-              [language]: data.about_page_upcoming_branch_two_address || "",
-            }),
-
             upcoming_branch_one_quarter: handleRemoveEmptyKey({
               ...resData?.about_us?.upcoming_branch_one_quarter,
               [language]: data.about_page_upcoming_branch_one_quarter || "",
@@ -1086,6 +878,14 @@ const useStoreHomeSubmit = () => {
               [language]: data.about_page_upcoming_branch_one_emoji || "",
             }),
 
+            upcoming_branch_two_name: handleRemoveEmptyKey({
+              ...resData?.about_us?.upcoming_branch_two_name,
+              [language]: data.about_page_upcoming_branch_two_name || "",
+            }),
+            upcoming_branch_two_address: handleRemoveEmptyKey({
+              ...resData?.about_us?.upcoming_branch_two_address,
+              [language]: data.about_page_upcoming_branch_two_address || "",
+            }),
             upcoming_branch_two_quarter: handleRemoveEmptyKey({
               ...resData?.about_us?.upcoming_branch_two_quarter,
               [language]: data.about_page_upcoming_branch_two_quarter || "",
@@ -1098,6 +898,8 @@ const useStoreHomeSubmit = () => {
               ...resData?.about_us?.upcoming_branch_two_emoji,
               [language]: data.about_page_upcoming_branch_two_emoji || "",
             }),
+
+            // Trusted badges
             trusted_badge_one_pill: handleRemoveEmptyKey({
               ...resData?.about_us?.trusted_badge_one_pill,
               [language]: data.about_page_trusted_badge_one_pill || "",
@@ -1249,7 +1051,6 @@ const useStoreHomeSubmit = () => {
             // rights boxes 1-6
             ...( (() => {
               return Array.from({length:6}).reduce((acc,_,idx)=>{
-                const n = idx + 1;
                 acc[`right_${n}_name`] = handleRemoveEmptyKey({
                   ...resData?.privacy_policy?.[`right_${n}_name`],
                   [language]: data[`pp_right_${n}_name`] || "",
