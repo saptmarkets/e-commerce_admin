@@ -470,7 +470,11 @@ const useStoreHomeSubmit = () => {
             }),
             founder_one_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_one_name,
-              [language]: data.about_page_ourfounder_one_title || "",
+              [language]: data.about_page_founder_one_name || "",
+            }),
+            founder_one_position: handleRemoveEmptyKey({
+              ...resData?.about_us?.founder_one_position,
+              [language]: data.about_page_founder_one_position || "",
             }),
             founder_one_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_one_sub,
@@ -480,6 +484,10 @@ const useStoreHomeSubmit = () => {
               ...resData?.about_us?.founder_two_name,
               [language]: data.about_page_founder_two_name || "",
             }),
+            founder_two_position: handleRemoveEmptyKey({
+              ...resData?.about_us?.founder_two_position,
+              [language]: data.about_page_founder_two_position || "",
+            }),
             founder_two_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_two_sub,
               [language]: data.about_page_founder_two_position || "",
@@ -487,6 +495,10 @@ const useStoreHomeSubmit = () => {
             founder_three_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_three_name,
               [language]: data.about_page_founder_three_name || "",
+            }),
+            founder_three_position: handleRemoveEmptyKey({
+              ...resData?.about_us?.founder_three_position,
+              [language]: data.about_page_founder_three_position || "",
             }),
             founder_three_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_three_sub,
@@ -496,6 +508,10 @@ const useStoreHomeSubmit = () => {
               ...resData?.about_us?.founder_four_name,
               [language]: data.about_page_founder_four_name || "",
             }),
+            founder_four_position: handleRemoveEmptyKey({
+              ...resData?.about_us?.founder_four_position,
+              [language]: data.about_page_founder_four_position || "",
+            }),
             founder_four_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_four_sub,
               [language]: data.about_page_founder_four_position || "",
@@ -504,6 +520,10 @@ const useStoreHomeSubmit = () => {
               ...resData?.about_us?.founder_five_name,
               [language]: data.about_page_founder_five_name || "",
             }),
+            founder_five_position: handleRemoveEmptyKey({
+              ...resData?.about_us?.founder_five_position,
+              [language]: data.about_page_founder_five_position || "",
+            }),
             founder_five_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_five_sub,
               [language]: data.about_page_founder_five_position || "",
@@ -511,6 +531,10 @@ const useStoreHomeSubmit = () => {
             founder_six_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_six_name,
               [language]: data.about_page_founder_six_name || "",
+            }),
+            founder_six_position: handleRemoveEmptyKey({
+              ...resData?.about_us?.founder_six_position,
+              [language]: data.about_page_founder_six_position || "",
             }),
             founder_six_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_six_sub,
