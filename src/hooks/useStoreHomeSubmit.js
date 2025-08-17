@@ -166,20 +166,35 @@ const useStoreHomeSubmit = () => {
   });
 
   const handleRemoveEmptyKey = (obj) => {
-    for (const key in obj) {
-      if (typeof obj[key] === 'string' && obj[key].trim() === "") {
-        delete obj[key];
-      } else if (obj[key] === null || obj[key] === undefined) {
-        delete obj[key];
+    // Safety check: if obj is undefined, null, or not an object, return an empty object
+    if (!obj || typeof obj !== 'object' || Array.isArray(obj)) {
+      return {};
+    }
+    
+    // Create a new object to avoid mutating the original
+    const newObj = { ...obj };
+    
+    for (const key in newObj) {
+      if (typeof newObj[key] === 'string' && newObj[key].trim() === "") {
+        delete newObj[key];
+      } else if (newObj[key] === null || newObj[key] === undefined) {
+        delete newObj[key];
       }
     }
-    // console.log("obj", obj);
-    return obj;
+    
+    return newObj;
   };
 
   const onSubmit = async (data) => {
     console.log('=== ONSUBMIT FUNCTION CALLED ===');
     console.log('Form data:', data);
+    
+    // Safety check: ensure resData is properly initialized
+    if (!resData || typeof resData !== 'object') {
+      console.error('resData is not properly initialized:', resData);
+      notifyError('Configuration data not loaded. Please refresh the page and try again.');
+      return;
+    }
     
     // Temporarily disable demo mode check for debugging
     // if (handleDisableForDemo()) {
@@ -203,56 +218,56 @@ const useStoreHomeSubmit = () => {
             privacy_policy_status: privacyPolicyMenuLink,
             faq_status: faqMenuLink,
             help_text: handleRemoveEmptyKey({
-              ...resData?.navbar?.help_text,
+              ...(resData?.navbar?.help_text || {}),
               [language]: data.help_text || "",
             }),
             categories: handleRemoveEmptyKey({
-              ...resData?.navbar?.categories,
+              ...(resData?.navbar?.categories || {}),
               [language]: data.categories || "",
             }),
             about_us: handleRemoveEmptyKey({
-              ...resData?.navbar?.about_us,
+              ...(resData?.navbar?.about_us || {}),
               [language]: data.about_us || "",
             }),
             contact_us: handleRemoveEmptyKey({
-              ...resData?.navbar?.contact_us,
+              ...(resData?.navbar?.contact_us || {}),
               [language]: data.contact_us || "",
             }),
             offers: handleRemoveEmptyKey({
-              ...resData?.navbar?.offers,
+              ...(resData?.navbar?.offers || {}),
               [language]: data.offers || "",
             }),
             faq: handleRemoveEmptyKey({
-              ...resData?.navbar?.faq,
+              ...(resData?.navbar?.faq || {}),
               [language]: data.faq || "",
             }),
             privacy_policy: handleRemoveEmptyKey({
-              ...resData?.navbar?.privacy_policy,
+              ...(resData?.navbar?.privacy_policy || {}),
               [language]: data.privacy_policy || "",
             }),
             term_and_condition: handleRemoveEmptyKey({
-              ...resData?.navbar?.term_and_condition,
+              ...(resData?.navbar?.term_and_condition || {}),
               [language]: data.term_and_condition || "",
             }),
 
             pages: handleRemoveEmptyKey({
-              ...resData?.navbar?.pages,
+              ...(resData?.navbar?.pages || {}),
               [language]: data.pages || "",
             }),
             my_account: handleRemoveEmptyKey({
-              ...resData?.navbar?.my_account,
+              ...(resData?.navbar?.my_account || {}),
               [language]: data.my_account || "",
             }),
             login: handleRemoveEmptyKey({
-              ...resData?.navbar?.login,
+              ...(resData?.navbar?.login || {}),
               [language]: data.login || "",
             }),
             logout: handleRemoveEmptyKey({
-              ...resData?.navbar?.logout,
+              ...(resData?.navbar?.logout || {}),
               [language]: data.logout || "",
             }),
             checkout: handleRemoveEmptyKey({
-              ...resData?.navbar?.checkout,
+              ...(resData?.navbar?.checkout || {}),
               [language]: data.checkout || "",
             }),
             phone: data.phone_number,
