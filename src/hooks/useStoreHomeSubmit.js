@@ -186,8 +186,81 @@ const useStoreHomeSubmit = () => {
     return newObj;
   };
 
+  // CRITICAL FUNCTION: Validate and preserve form data before submission
+  const validateAndPreserveFormData = (data) => {
+    console.log('🔍 Validating form data before submission...');
+    
+    const validationResults = {
+      teamMembers: [],
+      coreValues: [],
+      hasErrors: false,
+      errors: []
+    };
+    
+    // Validate all 12 team members
+    for (let i = 1; i <= 12; i++) {
+      const memberNum = i === 1 ? 'one' : i === 2 ? 'two' : i === 3 ? 'three' : i === 4 ? 'four' : 
+                       i === 5 ? 'five' : i === 6 ? 'six' : i === 7 ? 'seven' : i === 8 ? 'eight' : 
+                       i === 9 ? 'nine' : i === 10 ? 'ten' : i === 11 ? 'eleven' : 'twelve';
+      
+      const nameField = `about_page_founder_${memberNum}_name`;
+      const positionField = `about_page_founder_${memberNum}_position`;
+      
+      const name = data[nameField] || "";
+      const position = data[positionField] || "";
+      
+      if (name.trim() !== "" || position.trim() !== "") {
+        validationResults.teamMembers.push({
+          member: i,
+          name: name.trim(),
+          position: position.trim(),
+          hasData: name.trim() !== "" && position.trim() !== ""
+        });
+        
+        if (name.trim() === "" || position.trim() === "") {
+          validationResults.hasErrors = true;
+          validationResults.errors.push(`Team Member ${i}: Missing ${name.trim() === "" ? 'name' : 'position'}`);
+        }
+      }
+    }
+    
+    // Validate core values
+    for (let i = 1; i <= 4; i++) {
+      const valueNum = i === 1 ? 'one' : i === 2 ? 'two' : i === 3 ? 'three' : 'four';
+      const titleField = `about_page_value_${valueNum}_title`;
+      const descField = `about_page_value_${valueNum}_description`;
+      
+      const title = data[titleField] || "";
+      const description = data[descField] || "";
+      
+      if (title.trim() !== "" || description.trim() !== "") {
+        validationResults.coreValues.push({
+          value: i,
+          title: title.trim(),
+          description: description.trim(),
+          hasData: title.trim() !== "" && description.trim() !== ""
+        });
+        
+        if (title.trim() === "" || description.trim() === "") {
+          validationResults.hasErrors = true;
+          validationResults.errors.push(`Core Value ${i}: Missing ${title.trim() === "" ? 'title' : 'description'}`);
+        }
+      }
+    }
+    
+    console.log('📊 Form validation results:', validationResults);
+    return validationResults;
+  };
+
   const onSubmit = async (data) => {
     console.log('=== ONSUBMIT FUNCTION CALLED ===');
+    
+    // CRITICAL: Validate form data before processing
+    const validationResults = validateAndPreserveFormData(data);
+    if (validationResults.hasErrors) {
+      console.warn('⚠️ Form validation warnings:', validationResults.errors);
+      // Continue with submission but log warnings
+    }
     console.log('Form data:', data);
     
     // Safety check: ensure resData is properly initialized
@@ -726,9 +799,10 @@ const useStoreHomeSubmit = () => {
               ...resData?.about_us?.founder_one_position,
               [language]: data.about_page_founder_one_position || "",
             }),
+            // CRITICAL FIX: founder_one_sub should map to position field, not sub field
             founder_one_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_one_sub,
-              [language]: data.about_page_founder_one_position || "", // This should be position, not sub
+              [language]: data.about_page_founder_one_position || "",
             }),
             founder_two_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_two_name,
@@ -740,7 +814,7 @@ const useStoreHomeSubmit = () => {
             }),
             founder_two_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_two_sub,
-              [language]: data.about_page_founder_two_position || "", // This should be position, not sub
+              [language]: data.about_page_founder_two_position || "",
             }),
             founder_three_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_three_name,
@@ -752,7 +826,7 @@ const useStoreHomeSubmit = () => {
             }),
             founder_three_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_three_sub,
-              [language]: data.about_page_founder_three_position || "", // This should be position, not sub
+              [language]: data.about_page_founder_three_position || "",
             }),
             founder_four_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_four_name,
@@ -764,7 +838,7 @@ const useStoreHomeSubmit = () => {
             }),
             founder_four_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_four_sub,
-              [language]: data.about_page_founder_four_position || "", // This should be position, not sub
+              [language]: data.about_page_founder_four_position || "",
             }),
             founder_five_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_five_name,
@@ -776,7 +850,7 @@ const useStoreHomeSubmit = () => {
             }),
             founder_five_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_five_sub,
-              [language]: data.about_page_founder_five_position || "", // This should be position, not sub
+              [language]: data.about_page_founder_five_position || "",
             }),
             founder_six_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_six_name,
@@ -788,7 +862,7 @@ const useStoreHomeSubmit = () => {
             }),
             founder_six_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_six_sub,
-              [language]: data.about_page_founder_six_position || "", // This should be position, not sub
+              [language]: data.about_page_founder_six_position || "",
             }),
             founder_seven_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_seven_name,
@@ -800,7 +874,7 @@ const useStoreHomeSubmit = () => {
             }),
             founder_seven_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_seven_sub,
-              [language]: data.about_page_founder_seven_position || "", // This should be position, not sub
+              [language]: data.about_page_founder_seven_position || "",
             }),
             founder_eight_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_eight_name,
@@ -812,7 +886,7 @@ const useStoreHomeSubmit = () => {
             }),
             founder_eight_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_eight_sub,
-              [language]: data.about_page_founder_eight_position || "", // This should be position, not sub
+              [language]: data.about_page_founder_eight_position || "",
             }),
             founder_nine_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_nine_name,
@@ -824,7 +898,7 @@ const useStoreHomeSubmit = () => {
             }),
             founder_nine_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_nine_sub,
-              [language]: data.about_page_founder_nine_position || "", // This should be position, not sub
+              [language]: data.about_page_founder_nine_position || "",
             }),
             founder_ten_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_ten_name,
@@ -836,7 +910,7 @@ const useStoreHomeSubmit = () => {
             }),
             founder_ten_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_ten_sub,
-              [language]: data.about_page_founder_ten_position || "", // This should be position, not sub
+              [language]: data.about_page_founder_ten_position || "",
             }),
             founder_eleven_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_eleven_name,
@@ -848,7 +922,7 @@ const useStoreHomeSubmit = () => {
             }),
             founder_eleven_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_eleven_sub,
-              [language]: data.about_page_founder_eleven_position || "", // This should be position, not sub
+              [language]: data.about_page_founder_eleven_position || "",
             }),
             founder_twelve_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_twelve_name,
@@ -860,7 +934,7 @@ const useStoreHomeSubmit = () => {
             }),
             founder_twelve_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_twelve_sub,
-              [language]: data.about_page_founder_twelve_position || "", // This should be position, not sub
+              [language]: data.about_page_founder_twelve_position || "",
             }),
 
             // Branches
@@ -1929,13 +2003,27 @@ const useStoreHomeSubmit = () => {
         },
       };
       
-      // Debug logging for final data
-      console.log('🔍 Final Data Debug:');
-      console.log('  - Core Values in final data:');
-      console.log('    * value_one_title:', storeCustomizationSettingData.setting.about_us?.value_one_title);
-      console.log('    * value_two_title:', storeCustomizationSettingData.setting.about_us?.value_two_title);
-      console.log('    * value_three_title:', storeCustomizationSettingData.setting.about_us?.value_three_title);
-      console.log('    * value_four_title:', storeCustomizationSettingData.setting.about_us?.value_four_title);
+      // CRITICAL DEBUG: Log comprehensive data before submission
+      console.log('🔍 FINAL DATA VALIDATION BEFORE SUBMISSION:');
+      console.log('  - Language:', language);
+      console.log('  - Team Members Found:', validationResults.teamMembers.length);
+      console.log('  - Core Values Found:', validationResults.coreValues.length);
+      
+      // Log team member data
+      validationResults.teamMembers.forEach(member => {
+        console.log(`    👥 Team Member ${member.member}: "${member.name}" - "${member.position}"`);
+      });
+      
+      // Log core values data
+      validationResults.coreValues.forEach(value => {
+        console.log(`    💎 Core Value ${value.value}: "${value.title}" - "${value.description}"`);
+      });
+      
+      // Log final data structure
+      console.log('  - Final Data Structure:');
+      console.log('    * Team Members:', Object.keys(storeCustomizationSettingData.setting.about_us).filter(key => key.includes('founder_')));
+      console.log('    * Core Values:', Object.keys(storeCustomizationSettingData.setting.about_us).filter(key => key.includes('value_')));
+      console.log('    * Branches:', Object.keys(storeCustomizationSettingData.setting.about_us).filter(key => key.includes('branch_')));
 
       // console.log(
       //   "storeCustomizationSettingData submit",
@@ -3472,15 +3560,36 @@ const useStoreHomeSubmit = () => {
   const handleSelectLanguage = (lang) => {
     console.log("🔄 Language switching from", language, "to", lang);
     
-    // CRITICAL FIX: Store current form data before switching languages
-    const currentFormData = {
-      about_page_title: document.querySelector('[name="about_page_title"]')?.value || "",
-      about_page_founder_one_name: document.querySelector('[name="about_page_founder_one_name"]')?.value || "",
-      about_page_founder_one_position: document.querySelector('[name="about_page_founder_one_position"]')?.value || "",
-      about_page_founder_two_name: document.querySelector('[name="about_page_founder_two_name"]')?.value || "",
-      about_page_founder_two_position: document.querySelector('[name="about_page_founder_two_position"]')?.value || "",
-      // Add more fields as needed
-    };
+    // CRITICAL FIX: Store ALL current form data before switching languages
+    const currentFormData = {};
+    
+    // Store all team member data (12 members)
+    for (let i = 1; i <= 12; i++) {
+      const memberNum = i === 1 ? 'one' : i === 2 ? 'two' : i === 3 ? 'three' : i === 4 ? 'four' : 
+                       i === 5 ? 'five' : i === 6 ? 'six' : i === 7 ? 'seven' : i === 8 ? 'eight' : 
+                       i === 9 ? 'nine' : i === 10 ? 'ten' : i === 11 ? 'eleven' : 'twelve';
+      
+      const nameField = `about_page_founder_${memberNum}_name`;
+      const positionField = `about_page_founder_${memberNum}_position`;
+      
+      currentFormData[nameField] = document.querySelector(`[name="${nameField}"]`)?.value || "";
+      currentFormData[positionField] = document.querySelector(`[name="${positionField}"]`)?.value || "";
+    }
+    
+    // Store core values data
+    currentFormData.about_page_values_title = document.querySelector('[name="about_page_values_title"]')?.value || "";
+    currentFormData.about_page_values_description = document.querySelector('[name="about_page_values_description"]')?.value || "";
+    
+    for (let i = 1; i <= 4; i++) {
+      const valueNum = i === 1 ? 'one' : i === 2 ? 'two' : i === 3 ? 'three' : 'four';
+      currentFormData[`about_page_value_${valueNum}_title`] = document.querySelector(`[name="about_page_value_${valueNum}_title"]`)?.value || "";
+      currentFormData[`about_page_value_${valueNum}_description`] = document.querySelector(`[name="about_page_value_${valueNum}_description"]`)?.value || "";
+    }
+    
+    // Store other important fields
+    currentFormData.about_page_title = document.querySelector('[name="about_page_title"]')?.value || "";
+    currentFormData.about_page_team_title = document.querySelector('[name="about_page_team_title"]')?.value || "";
+    currentFormData.about_page_team_description = document.querySelector('[name="about_page_team_description"]')?.value || "";
     
     console.log("💾 Preserving current form data:", currentFormData);
     
@@ -3493,16 +3602,17 @@ const useStoreHomeSubmit = () => {
       console.log("✅ Form fields updated for language:", lang);
     }
     
-    // CRITICAL FIX: Restore form data after language switch to prevent data loss
+    // CRITICAL FIX: Restore ALL form data after language switch to prevent data loss
     setTimeout(() => {
-      console.log("🔄 Restoring form data after language switch...");
+      console.log("🔄 Restoring comprehensive form data after language switch...");
       Object.keys(currentFormData).forEach(fieldName => {
-        if (currentFormData[fieldName]) {
+        if (currentFormData[fieldName] && currentFormData[fieldName].trim() !== "") {
           setValue(fieldName, currentFormData[fieldName]);
           console.log("✅ Restored", fieldName, "=", currentFormData[fieldName]);
         }
       });
-    }, 100);
+      console.log("✅ All form data restored successfully");
+    }, 150);
   };
 
   // Function to update form fields for a specific language
