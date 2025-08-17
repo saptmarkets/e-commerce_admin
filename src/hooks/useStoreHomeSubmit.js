@@ -174,12 +174,13 @@ const useStoreHomeSubmit = () => {
     // Create a new object to avoid mutating the original
     const newObj = { ...obj };
     
+    // Don't remove keys that have empty string values - this causes data loss
+    // Only remove null/undefined values, preserve empty strings for form fields
     for (const key in newObj) {
-      if (typeof newObj[key] === 'string' && newObj[key].trim() === "") {
-        delete newObj[key];
-      } else if (newObj[key] === null || newObj[key] === undefined) {
+      if (newObj[key] === null || newObj[key] === undefined) {
         delete newObj[key];
       }
+      // Keep empty strings - they represent form fields that haven't been filled yet
     }
     
     return newObj;
@@ -205,6 +206,23 @@ const useStoreHomeSubmit = () => {
     try {
       console.log('Setting isSubmitting to true...');
       setIsSubmitting(true);
+      
+      // Debug logging for form data
+      console.log('🔍 Form Data Debug:');
+      console.log('  - Core Values:');
+      console.log('    * value_one_title:', data.about_page_value_one_title);
+      console.log('    * value_one_description:', data.about_page_value_one_description);
+      console.log('    * value_two_title:', data.about_page_value_two_title);
+      console.log('    * value_two_description:', data.about_page_value_two_description);
+      console.log('    * value_three_title:', data.about_page_value_three_title);
+      console.log('    * value_three_description:', data.about_page_value_three_description);
+      console.log('    * value_four_title:', data.about_page_value_four_title);
+      console.log('    * value_four_description:', data.about_page_value_four_description);
+      console.log('  - Current resData values:');
+      console.log('    * value_one_title:', resData?.about_us?.value_one_title);
+      console.log('    * value_two_title:', resData?.about_us?.value_two_title);
+      console.log('    * value_three_title:', resData?.about_us?.value_three_title);
+      console.log('    * value_four_title:', resData?.about_us?.value_four_title);
 
       const storeCustomizationSettingData = {
         name: "storeCustomizationSetting",
@@ -540,6 +558,7 @@ const useStoreHomeSubmit = () => {
               ...resData?.about_us?.founder_six_sub,
               [language]: data.about_page_founder_six_position || "",
             }),
+            
             // Core Values Section
             values_title: handleRemoveEmptyKey({
               ...resData?.about_us?.values_title,
@@ -1914,6 +1933,14 @@ const useStoreHomeSubmit = () => {
           },
         },
       };
+      
+      // Debug logging for final data
+      console.log('🔍 Final Data Debug:');
+      console.log('  - Core Values in final data:');
+      console.log('    * value_one_title:', storeCustomizationSettingData.setting.about_us?.value_one_title);
+      console.log('    * value_two_title:', storeCustomizationSettingData.setting.about_us?.value_two_title);
+      console.log('    * value_three_title:', storeCustomizationSettingData.setting.about_us?.value_three_title);
+      console.log('    * value_four_title:', storeCustomizationSettingData.setting.about_us?.value_four_title);
 
       // console.log(
       //   "storeCustomizationSettingData submit",
