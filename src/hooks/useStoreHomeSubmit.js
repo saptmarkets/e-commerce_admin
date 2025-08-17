@@ -871,6 +871,186 @@ const useStoreHomeSubmit = () => {
               [language]: data.about_page_branch_two_directions || "",
             }),
 
+            // Branch 3
+            branch_three_name: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_three_name,
+              [language]: data.about_page_branch_three_name || "",
+            }),
+            branch_three_address: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_three_address,
+              [language]: data.about_page_branch_three_address || "",
+            }),
+            branch_three_phone: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_three_phone,
+              [language]: data.about_page_branch_three_phone || "",
+            }),
+            branch_three_hours: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_three_hours,
+              [language]: data.about_page_branch_three_hours || "",
+            }),
+            branch_three_subtitle: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_three_subtitle,
+              [language]: data.about_page_branch_three_subtitle || "",
+            }),
+            branch_three_services: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_three_services,
+              [language]: data.about_page_branch_three_services || "",
+            }),
+            branch_three_directions: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_three_directions,
+              [language]: data.about_page_branch_three_directions || "",
+            }),
+
+            // Branch 4
+            branch_four_name: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_four_name,
+              [language]: data.about_page_branch_four_name || "",
+            }),
+            branch_four_address: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_four_address,
+              [language]: data.about_page_branch_four_address || "",
+            }),
+            branch_four_phone: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_four_phone,
+              [language]: data.about_page_branch_four_phone || "",
+            }),
+            branch_four_hours: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_four_hours,
+              [language]: data.about_page_branch_four_hours || "",
+            }),
+            branch_four_subtitle: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_four_subtitle,
+              [language]: data.about_page_branch_four_subtitle || "",
+            }),
+            branch_four_services: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_four_services,
+              [language]: data.about_page_branch_four_services || "",
+            }),
+            branch_four_directions: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_four_directions,
+              [language]: data.about_page_branch_four_directions || "",
+            }),
+
+            // Branch 5
+            branch_five_name: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_five_name,
+              [language]: data.about_page_branch_five_name || "",
+            }),
+            branch_five_address: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_five_address,
+              [language]: data.about_page_branch_five_address || "",
+            }),
+            branch_five_phone: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_five_phone,
+              [language]: data.about_page_branch_five_phone || "",
+            }),
+            branch_five_hours: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_five_hours,
+              [language]: data.about_page_branch_five_hours || "",
+            }),
+            branch_five_subtitle: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_five_subtitle,
+              [language]: data.about_page_branch_five_subtitle || "",
+            }),
+            branch_five_services: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_five_services,
+              [language]: data.about_page_branch_five_services || "",
+            }),
+            branch_five_directions: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_five_directions,
+              [language]: data.about_page_branch_five_directions || "",
+            }),
+
+            // Branch 6
+            branch_six_name: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_six_name,
+              [language]: data.about_page_branch_six_name || "",
+            }),
+            branch_six_address: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_six_address,
+              [language]: data.about_page_branch_six_address || "",
+            }),
+            branch_six_phone: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_six_phone,
+              [language]: data.about_page_branch_six_phone || "",
+            }),
+            branch_six_hours: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_six_hours,
+              [language]: data.about_page_branch_six_hours || "",
+            }),
+            branch_six_subtitle: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_six_subtitle,
+              [language]: data.about_page_branch_six_subtitle || "",
+            }),
+            branch_six_services: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_six_services,
+              [language]: data.about_page_branch_six_services || "",
+            }),
+            branch_six_directions: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_six_directions,
+              [language]: data.about_page_branch_six_directions || "",
+            }),
+
+            // Branch 7
+            branch_seven_name: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_seven_name,
+              [language]: data.about_page_branch_seven_name || "",
+            }),
+            branch_seven_address: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_seven_address,
+              [language]: data.about_page_branch_seven_address || "",
+            }),
+            branch_seven_phone: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_seven_phone,
+              [language]: data.about_page_branch_seven_phone || "",
+            }),
+            branch_seven_hours: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_seven_hours,
+              [language]: data.about_page_branch_seven_hours || "",
+            }),
+            branch_seven_subtitle: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_seven_subtitle,
+              [language]: data.about_page_branch_seven_subtitle || "",
+            }),
+            branch_seven_services: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_seven_services,
+              [language]: data.about_page_branch_seven_services || "",
+            }),
+            branch_seven_directions: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_seven_directions,
+              [language]: data.about_page_branch_seven_directions || "",
+            }),
+
+            // Branch 8
+            branch_eight_name: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_eight_name,
+              [language]: data.about_page_branch_eight_name || "",
+            }),
+            branch_eight_address: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_eight_address,
+              [language]: data.about_page_branch_eight_address || "",
+            }),
+            branch_eight_phone: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_eight_phone,
+              [language]: data.about_page_branch_eight_phone || "",
+            }),
+            branch_eight_hours: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_eight_hours,
+              [language]: data.about_page_branch_eight_hours || "",
+            }),
+            branch_eight_subtitle: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_eight_subtitle,
+              [language]: data.about_page_branch_eight_subtitle || "",
+            }),
+            branch_eight_services: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_eight_services,
+              [language]: data.about_page_branch_eight_services || "",
+            }),
+            branch_eight_directions: handleRemoveEmptyKey({
+              ...resData?.about_us?.branch_eight_directions,
+              [language]: data.about_page_branch_eight_directions || "",
+            }),
+
             // Upcoming branches
             upcoming_branch_one_name: handleRemoveEmptyKey({
               ...resData?.about_us?.upcoming_branch_one_name,
