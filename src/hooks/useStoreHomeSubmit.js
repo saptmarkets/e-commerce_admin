@@ -1699,8 +1699,13 @@ const useStoreHomeSubmit = () => {
         console.log('Setting isSubmitting to false...');
         setIsSubmitting(false);
 
-        console.log('About to reload page...');
-        window.location.reload();
+        // Refresh data from API instead of reloading page
+        console.log('Refreshing data from API...');
+        const refreshedData = await SettingServices.getStoreCustomizationSetting();
+        if (refreshedData) {
+          setResData(refreshedData);
+          console.log('Data refreshed successfully');
+        }
         console.log('About to show success notification...');
         notifySuccess(res.message);
       } else {
@@ -1720,8 +1725,14 @@ const useStoreHomeSubmit = () => {
         console.log('Setting isSubmitting to false...');
         setIsSubmitting(false);
 
-        console.log('About to reload page...');
-        window.location.reload();
+        // Refresh data from API instead of reloading page
+        console.log('Refreshing data from API...');
+        const refreshedData = await SettingServices.getStoreCustomizationSetting();
+        if (refreshedData) {
+          setResData(refreshedData);
+          setIsSave(false); // Now we have data, so set to update mode
+          console.log('Data refreshed successfully, switched to update mode');
+        }
         console.log('About to show success notification...');
         notifySuccess(res.message);
       }
