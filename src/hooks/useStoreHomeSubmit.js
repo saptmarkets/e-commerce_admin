@@ -254,6 +254,7 @@ const useStoreHomeSubmit = () => {
 
   const onSubmit = async (data) => {
     console.log('=== ONSUBMIT FUNCTION CALLED ===');
+    console.log('🌐 Current language:', language);
     
     // CRITICAL: Validate form data before processing
     const validationResults = validateAndPreserveFormData(data);
@@ -261,7 +262,99 @@ const useStoreHomeSubmit = () => {
       console.warn('⚠️ Form validation warnings:', validationResults.errors);
       // Continue with submission but log warnings
     }
-    console.log('Form data:', data);
+    
+    // CRITICAL FIX: Collect ALL form data regardless of current language
+    console.log('🔍 Collecting comprehensive form data...');
+    
+    // Get the current form values for ALL languages to preserve data
+    const comprehensiveFormData = { ...data };
+    
+    // CRITICAL: If we're in Arabic mode, we need to preserve English data
+    // If we're in English mode, we need to preserve Arabic data
+    if (language === 'ar' && resData?.about_us) {
+      console.log('🔄 Arabic mode detected - preserving English data...');
+      
+      // Preserve English team member data
+      for (let i = 1; i <= 12; i++) {
+        const memberNum = i === 1 ? 'one' : i === 2 ? 'two' : i === 3 ? 'three' : i === 4 ? 'four' : 
+                         i === 5 ? 'five' : i === 6 ? 'six' : i === 7 ? 'seven' : i === 8 ? 'eight' : 
+                         i === 9 ? 'nine' : i === 10 ? 'ten' : i === 11 ? 'eleven' : 'twelve';
+        
+        const nameField = `about_page_founder_${memberNum}_name`;
+        const positionField = `about_page_founder_${memberNum}_position`;
+        
+        // If Arabic field is empty but English exists, preserve English
+        if ((!data[nameField] || data[nameField].trim() === '') && resData.about_us[`founder_${memberNum}_name`]?.en) {
+          comprehensiveFormData[nameField] = resData.about_us[`founder_${memberNum}_name`].en;
+          console.log(`✅ Preserved English name for member ${i}:`, resData.about_us[`founder_${memberNum}_name`].en);
+        }
+        
+        if ((!data[positionField] || data[positionField].trim() === '') && resData.about_us[`founder_${memberNum}_sub`]?.en) {
+          comprehensiveFormData[positionField] = resData.about_us[`founder_${memberNum}_sub`].en;
+          console.log(`✅ Preserved English position for member ${i}:`, resData.about_us[`founder_${memberNum}_sub`].en);
+        }
+      }
+      
+      // Preserve English core values data
+      for (let i = 1; i <= 4; i++) {
+        const valueNum = i === 1 ? 'one' : i === 2 ? 'two' : i === 3 ? 'three' : 'four';
+        const titleField = `about_page_value_${valueNum}_title`;
+        const descField = `about_page_value_${valueNum}_description`;
+        
+        if ((!data[titleField] || data[titleField].trim() === '') && resData.about_us[`value_${valueNum}_title`]?.en) {
+          comprehensiveFormData[titleField] = resData.about_us[`value_${valueNum}_title`].en;
+          console.log(`✅ Preserved English title for value ${i}:`, resData.about_us[`value_${valueNum}_title`].en);
+        }
+        
+        if ((!data[descField] || data[descField].trim() === '') && resData.about_us[`value_${valueNum}_description`]?.en) {
+          comprehensiveFormData[descField] = resData.about_us[`value_${valueNum}_description`].en;
+          console.log(`✅ Preserved English description for value ${i}:`, resData.about_us[`value_${valueNum}_description`].en);
+        }
+      }
+    } else if (language === 'en' && resData?.about_us) {
+      console.log('🔄 English mode detected - preserving Arabic data...');
+      
+      // Preserve Arabic team member data
+      for (let i = 1; i <= 12; i++) {
+        const memberNum = i === 1 ? 'one' : i === 2 ? 'two' : i === 3 ? 'three' : i === 4 ? 'four' : 
+                         i === 5 ? 'five' : i === 6 ? 'six' : i === 7 ? 'seven' : i === 8 ? 'eight' : 
+                         i === 9 ? 'nine' : i === 10 ? 'ten' : i === 11 ? 'eleven' : 'twelve';
+        
+        const nameField = `about_page_founder_${memberNum}_name`;
+        const positionField = `about_page_founder_${memberNum}_position`;
+        
+        // If English field is empty but Arabic exists, preserve Arabic
+        if ((!data[nameField] || data[nameField].trim() === '') && resData.about_us[`founder_${memberNum}_name`]?.ar) {
+          comprehensiveFormData[nameField] = resData.about_us[`founder_${memberNum}_name`].ar;
+          console.log(`✅ Preserved Arabic name for member ${i}:`, resData.about_us[`founder_${memberNum}_name`].ar);
+        }
+        
+        if ((!data[positionField] || data[positionField].trim() === '') && resData.about_us[`founder_${memberNum}_sub`]?.ar) {
+          comprehensiveFormData[positionField] = resData.about_us[`founder_${memberNum}_sub`].ar;
+          console.log(`✅ Preserved Arabic position for member ${i}:`, resData.about_us[`founder_${memberNum}_sub`].ar);
+        }
+      }
+      
+      // Preserve Arabic core values data
+      for (let i = 1; i <= 4; i++) {
+        const valueNum = i === 1 ? 'one' : i === 2 ? 'two' : i === 3 ? 'three' : 'four';
+        const titleField = `about_page_value_${valueNum}_title`;
+        const descField = `about_page_value_${valueNum}_description`;
+        
+        if ((!data[titleField] || data[titleField].trim() === '') && resData.about_us[`value_${valueNum}_title`]?.ar) {
+          comprehensiveFormData[titleField] = resData.about_us[`value_${valueNum}_title`].ar;
+          console.log(`✅ Preserved Arabic title for value ${i}:`, resData.about_us[`value_${valueNum}_title`].ar);
+        }
+        
+        if ((!data[descField] || data[descField].trim() === '') && resData.about_us[`value_${valueNum}_description`]?.ar) {
+          comprehensiveFormData[titleField] = resData.about_us[`value_${valueNum}_description`].ar;
+          console.log(`✅ Preserved Arabic description for value ${i}:`, resData.about_us[`value_${valueNum}_description`].ar);
+        }
+      }
+    }
+    
+    console.log('📊 Comprehensive form data collected:', comprehensiveFormData);
+    console.log('Form data:', comprehensiveFormData);
     
     // Safety check: ensure resData is properly initialized
     if (!resData || typeof resData !== 'object') {
@@ -280,17 +373,21 @@ const useStoreHomeSubmit = () => {
       console.log('Setting isSubmitting to true...');
       setIsSubmitting(true);
       
-      // Debug logging for form data
-      console.log('🔍 Form Data Debug:');
+      // CRITICAL: Use comprehensive form data instead of raw data
+      const finalFormData = comprehensiveFormData;
+      console.log('🎯 Using comprehensive form data for processing');
+      
+      // Debug logging for comprehensive form data
+      console.log('🔍 Comprehensive Form Data Debug:');
       console.log('  - Core Values:');
-      console.log('    * value_one_title:', data.about_page_value_one_title);
-      console.log('    * value_one_description:', data.about_page_value_one_description);
-      console.log('    * value_two_title:', data.about_page_value_two_title);
-      console.log('    * value_two_description:', data.about_page_value_two_description);
-      console.log('    * value_three_title:', data.about_page_value_three_title);
-      console.log('    * value_three_description:', data.about_page_value_three_description);
-      console.log('    * value_four_title:', data.about_page_value_four_title);
-      console.log('    * value_four_description:', data.about_page_value_four_description);
+      console.log('    * value_one_title:', finalFormData.about_page_value_one_title);
+      console.log('    * value_one_description:', finalFormData.about_page_value_one_description);
+      console.log('    * value_two_title:', finalFormData.about_page_value_two_title);
+      console.log('    * value_two_description:', finalFormData.about_page_value_two_description);
+      console.log('    * value_three_title:', finalFormData.about_page_value_three_title);
+      console.log('    * value_three_description:', finalFormData.about_page_value_three_description);
+      console.log('    * value_four_title:', finalFormData.about_page_value_four_title);
+      console.log('    * value_four_description:', finalFormData.about_page_value_four_description);
       console.log('  - Current resData values:');
       console.log('    * value_one_title:', resData?.about_us?.value_one_title);
       console.log('    * value_two_title:', resData?.about_us?.value_two_title);
@@ -487,34 +584,34 @@ const useStoreHomeSubmit = () => {
             founder_twelve_img: ourFounderTwelveImage,
             title: handleRemoveEmptyKey({
               ...resData?.about_us?.title,
-              [language]: data.about_page_title || "",
+              [language]: finalFormData.about_page_title || "",
             }),
 
             hero_description: handleRemoveEmptyKey({
               ...resData?.about_us?.hero_description,
-              [language]: data.about_page_hero_description || "",
+              [language]: finalFormData.about_page_hero_description || "",
             }),
 
             top_section_title: handleRemoveEmptyKey({
               ...resData?.about_us?.top_section_title,
-              [language]: data.about_page_top_section_title || "",
+              [language]: finalFormData.about_page_top_section_title || "",
             }),
 
             top_section_description: handleRemoveEmptyKey({
               ...resData?.about_us?.top_section_description,
-              [language]: data.about_page_top_section_description || "",
+              [language]: finalFormData.about_page_top_section_description || "",
             }),
 
             top_section_image: aboutTopContentRightImage,
 
             top_title: handleRemoveEmptyKey({
               ...resData?.about_us?.top_title,
-              [language]: data.about_page_Top_title || "",
+              [language]: finalFormData.about_page_Top_title || "",
             }),
 
             top_description: handleRemoveEmptyKey({
               ...resData?.about_us?.top_description,
-              [language]: data.about_us_top_description || "",
+              [language]: finalFormData.about_us_top_description || "",
             }),
 
             card_one_title: handleRemoveEmptyKey({
@@ -553,125 +650,125 @@ const useStoreHomeSubmit = () => {
             }),
             founder_title: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_title,
-              [language]: data.about_page_ourfounder_title || "",
+              [language]: finalFormData.about_page_ourfounder_title || "",
             }),
             founder_description: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_description,
-              [language]: data.about_us_ourfounder_description || "",
+              [language]: finalFormData.about_us_ourfounder_description || "",
             }),
             founder_one_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_one_name,
-              [language]: data.about_page_founder_one_name || "",
+              [language]: finalFormData.about_page_founder_one_name || "",
             }),
             founder_one_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_one_position,
-              [language]: data.about_page_founder_one_position || "",
+              [language]: finalFormData.about_page_founder_one_position || "",
             }),
             founder_one_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_one_sub,
-              [language]: data.about_page_founder_one_position || "",
+              [language]: finalFormData.about_page_founder_one_position || "",
             }),
             founder_two_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_two_name,
-              [language]: data.about_page_founder_two_name || "",
+              [language]: finalFormData.about_page_founder_two_name || "",
             }),
             founder_two_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_two_position,
-              [language]: data.about_page_founder_two_position || "",
+              [language]: finalFormData.about_page_founder_two_position || "",
             }),
             founder_two_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_two_sub,
-              [language]: data.about_page_founder_two_position || "",
+              [language]: finalFormData.about_page_founder_two_position || "",
             }),
             founder_three_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_three_name,
-              [language]: data.about_page_founder_three_name || "",
+              [language]: finalFormData.about_page_founder_three_name || "",
             }),
             founder_three_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_three_position,
-              [language]: data.about_page_founder_three_position || "",
+              [language]: finalFormData.about_page_founder_three_position || "",
             }),
             founder_three_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_three_sub,
-              [language]: data.about_page_founder_three_position || "",
+              [language]: finalFormData.about_page_founder_three_position || "",
             }),
             founder_four_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_four_name,
-              [language]: data.about_page_founder_four_name || "",
+              [language]: finalFormData.about_page_founder_four_name || "",
             }),
             founder_four_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_four_position,
-              [language]: data.about_page_founder_four_position || "",
+              [language]: finalFormData.about_page_founder_four_position || "",
             }),
             founder_four_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_four_sub,
-              [language]: data.about_page_founder_four_position || "",
+              [language]: finalFormData.about_page_founder_four_position || "",
             }),
             founder_five_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_five_name,
-              [language]: data.about_page_founder_five_name || "",
+              [language]: finalFormData.about_page_founder_five_name || "",
             }),
             founder_five_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_five_position,
-              [language]: data.about_page_founder_five_position || "",
+              [language]: finalFormData.about_page_founder_five_position || "",
             }),
             founder_five_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_five_sub,
-              [language]: data.about_page_founder_five_position || "",
+              [language]: finalFormData.about_page_founder_five_position || "",
             }),
             founder_six_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_six_name,
-              [language]: data.about_page_founder_six_name || "",
+              [language]: finalFormData.about_page_founder_six_name || "",
             }),
             founder_six_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_six_position,
-              [language]: data.about_page_founder_six_position || "",
+              [language]: finalFormData.about_page_founder_six_position || "",
             }),
             founder_six_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_six_sub,
-              [language]: data.about_page_founder_six_position || "",
+              [language]: finalFormData.about_page_founder_six_position || "",
             }),
             
             // Core Values Section
             values_title: handleRemoveEmptyKey({
               ...resData?.about_us?.values_title,
-              [language]: data.about_page_values_title || "",
+              [language]: finalFormData.about_page_values_title || "",
             }),
             values_description: handleRemoveEmptyKey({
               ...resData?.about_us?.values_description,
-              [language]: data.about_page_values_description || "",
+              [language]: finalFormData.about_page_values_description || "",
             }),
             value_one_title: handleRemoveEmptyKey({
               ...resData?.about_us?.value_one_title,
-              [language]: data.about_page_value_one_title || "",
+              [language]: finalFormData.about_page_value_one_title || "",
             }),
             value_one_description: handleRemoveEmptyKey({
               ...resData?.about_us?.value_one_description,
-              [language]: data.about_page_value_one_description || "",
+              [language]: finalFormData.about_page_value_one_description || "",
             }),
             value_two_title: handleRemoveEmptyKey({
               ...resData?.about_us?.value_two_title,
-              [language]: data.about_page_value_two_title || "",
+              [language]: finalFormData.about_page_value_two_title || "",
             }),
             value_two_description: handleRemoveEmptyKey({
               ...resData?.about_us?.value_two_description,
-              [language]: data.about_page_value_two_description || "",
+              [language]: finalFormData.about_page_value_two_description || "",
             }),
             value_three_title: handleRemoveEmptyKey({
               ...resData?.about_us?.value_three_title,
-              [language]: data.about_page_value_three_title || "",
+              [language]: finalFormData.about_page_value_three_title || "",
             }),
             value_three_description: handleRemoveEmptyKey({
               ...resData?.about_us?.value_three_description,
-              [language]: data.about_page_value_three_description || "",
+              [language]: finalFormData.about_page_value_three_description || "",
             }),
             value_four_title: handleRemoveEmptyKey({
               ...resData?.about_us?.value_four_title,
-              [language]: data.about_page_value_four_title || "",
+              [language]: finalFormData.about_page_value_four_title || "",
             }),
             value_four_description: handleRemoveEmptyKey({
               ...resData?.about_us?.value_four_description,
-              [language]: data.about_page_value_four_description || "",
+              [language]: finalFormData.about_page_value_four_description || "",
             }),
             // Growing Stronger Communities Section
             community_title: handleRemoveEmptyKey({
@@ -731,12 +828,12 @@ const useStoreHomeSubmit = () => {
             // Team Section
             team_title: handleRemoveEmptyKey({
               ...resData?.about_us?.team_title,
-              [language]: data.about_page_team_title || "",
+              [language]: finalFormData.about_page_team_title || "",
             }),
 
             team_description: handleRemoveEmptyKey({
               ...resData?.about_us?.team_description,
-              [language]: data.about_page_team_description || "",
+              [language]: finalFormData.about_page_team_description || "",
             }),
 
             leadership_title: handleRemoveEmptyKey({
@@ -752,42 +849,42 @@ const useStoreHomeSubmit = () => {
             // Core Values
             value_one_title: handleRemoveEmptyKey({
               ...resData?.about_us?.value_one_title,
-              [language]: data.about_page_value_one_title || "",
+              [language]: finalFormData.about_page_value_one_title || "",
             }),
 
             value_one_description: handleRemoveEmptyKey({
               ...resData?.about_us?.value_one_description,
-              [language]: data.about_page_value_one_description || "",
+              [language]: finalFormData.about_page_value_one_description || "",
             }),
 
             value_two_title: handleRemoveEmptyKey({
               ...resData?.about_us?.value_two_title,
-              [language]: data.about_page_value_two_title || "",
+              [language]: finalFormData.about_page_value_two_title || "",
             }),
 
             value_two_description: handleRemoveEmptyKey({
               ...resData?.about_us?.value_two_description,
-              [language]: data.about_page_value_two_description || "",
+              [language]: finalFormData.about_page_value_two_description || "",
             }),
 
             value_three_title: handleRemoveEmptyKey({
               ...resData?.about_us?.value_three_title,
-              [language]: data.about_page_value_three_title || "",
+              [language]: finalFormData.about_page_value_three_title || "",
             }),
 
             value_three_description: handleRemoveEmptyKey({
               ...resData?.about_us?.value_three_description,
-              [language]: data.about_page_value_three_description || "",
+              [language]: finalFormData.about_page_value_three_description || "",
             }),
 
             value_four_title: handleRemoveEmptyKey({
               ...resData?.about_us?.value_four_title,
-              [language]: data.about_page_value_four_title || "",
+              [language]: finalFormData.about_page_value_four_title || "",
             }),
 
             value_four_description: handleRemoveEmptyKey({
               ...resData?.about_us?.value_four_description,
-              [language]: data.about_page_value_four_description || "",
+              [language]: finalFormData.about_page_value_four_description || "",
             }),
 
             // Team Members (12 members) - FIXED FIELD MAPPING
@@ -806,135 +903,135 @@ const useStoreHomeSubmit = () => {
             }),
             founder_two_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_two_name,
-              [language]: data.about_page_founder_two_name || "",
+              [language]: finalFormData.about_page_founder_two_name || "",
             }),
             founder_two_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_two_position,
-              [language]: data.about_page_founder_two_position || "",
+              [language]: finalFormData.about_page_founder_two_position || "",
             }),
             founder_two_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_two_sub,
-              [language]: data.about_page_founder_two_position || "",
+              [language]: finalFormData.about_page_founder_two_position || "",
             }),
             founder_three_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_three_name,
-              [language]: data.about_page_founder_three_name || "",
+              [language]: finalFormData.about_page_founder_three_name || "",
             }),
             founder_three_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_three_position,
-              [language]: data.about_page_founder_three_position || "",
+              [language]: finalFormData.about_page_founder_three_position || "",
             }),
             founder_three_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_three_sub,
-              [language]: data.about_page_founder_three_position || "",
+              [language]: finalFormData.about_page_founder_three_position || "",
             }),
             founder_four_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_four_name,
-              [language]: data.about_page_founder_four_name || "",
+              [language]: finalFormData.about_page_founder_four_name || "",
             }),
             founder_four_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_four_position,
-              [language]: data.about_page_founder_four_position || "",
+              [language]: finalFormData.about_page_founder_four_position || "",
             }),
             founder_four_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_four_sub,
-              [language]: data.about_page_founder_four_position || "",
+              [language]: finalFormData.about_page_founder_four_position || "",
             }),
             founder_five_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_five_name,
-              [language]: data.about_page_founder_five_name || "",
+              [language]: finalFormData.about_page_founder_five_name || "",
             }),
             founder_five_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_five_position,
-              [language]: data.about_page_founder_five_position || "",
+              [language]: finalFormData.about_page_founder_five_position || "",
             }),
             founder_five_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_five_sub,
-              [language]: data.about_page_founder_five_position || "",
+              [language]: finalFormData.about_page_founder_five_position || "",
             }),
             founder_six_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_six_name,
-              [language]: data.about_page_founder_six_name || "",
+              [language]: finalFormData.about_page_founder_six_name || "",
             }),
             founder_six_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_six_position,
-              [language]: data.about_page_founder_six_position || "",
+              [language]: finalFormData.about_page_founder_six_position || "",
             }),
             founder_six_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_six_sub,
-              [language]: data.about_page_founder_six_position || "",
+              [language]: finalFormData.about_page_founder_six_position || "",
             }),
             founder_seven_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_seven_name,
-              [language]: data.about_page_founder_seven_name || "",
+              [language]: finalFormData.about_page_founder_seven_name || "",
             }),
             founder_seven_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_seven_position,
-              [language]: data.about_page_founder_seven_position || "",
+              [language]: finalFormData.about_page_founder_seven_position || "",
             }),
             founder_seven_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_seven_sub,
-              [language]: data.about_page_founder_seven_position || "",
+              [language]: finalFormData.about_page_founder_seven_position || "",
             }),
             founder_eight_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_eight_name,
-              [language]: data.about_page_founder_eight_name || "",
+              [language]: finalFormData.about_page_founder_eight_name || "",
             }),
             founder_eight_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_eight_position,
-              [language]: data.about_page_founder_eight_position || "",
+              [language]: finalFormData.about_page_founder_eight_position || "",
             }),
             founder_eight_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_eight_sub,
-              [language]: data.about_page_founder_eight_position || "",
+              [language]: finalFormData.about_page_founder_eight_position || "",
             }),
             founder_nine_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_nine_name,
-              [language]: data.about_page_founder_nine_name || "",
+              [language]: finalFormData.about_page_founder_nine_name || "",
             }),
             founder_nine_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_nine_position,
-              [language]: data.about_page_founder_nine_position || "",
+              [language]: finalFormData.about_page_founder_nine_position || "",
             }),
             founder_nine_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_nine_sub,
-              [language]: data.about_page_founder_nine_position || "",
+              [language]: finalFormData.about_page_founder_nine_position || "",
             }),
             founder_ten_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_ten_name,
-              [language]: data.about_page_founder_ten_name || "",
+              [language]: finalFormData.about_page_founder_ten_name || "",
             }),
             founder_ten_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_ten_position,
-              [language]: data.about_page_founder_ten_position || "",
+              [language]: finalFormData.about_page_founder_ten_position || "",
             }),
             founder_ten_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_ten_sub,
-              [language]: data.about_page_founder_ten_position || "",
+              [language]: finalFormData.about_page_founder_ten_position || "",
             }),
             founder_eleven_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_eleven_name,
-              [language]: data.about_page_founder_eleven_name || "",
+              [language]: finalFormData.about_page_founder_eleven_name || "",
             }),
             founder_eleven_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_eleven_position,
-              [language]: data.about_page_founder_eleven_position || "",
+              [language]: finalFormData.about_page_founder_eleven_position || "",
             }),
             founder_eleven_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_eleven_sub,
-              [language]: data.about_page_founder_eleven_position || "",
+              [language]: finalFormData.about_page_founder_eleven_position || "",
             }),
             founder_twelve_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_twelve_name,
-              [language]: data.about_page_founder_twelve_name || "",
+              [language]: finalFormData.about_page_founder_twelve_name || "",
             }),
             founder_twelve_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_twelve_position,
-              [language]: data.about_page_founder_twelve_position || "",
+              [language]: finalFormData.about_page_founder_twelve_position || "",
             }),
             founder_twelve_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_twelve_sub,
-              [language]: data.about_page_founder_twelve_position || "",
+              [language]: finalFormData.about_page_founder_twelve_position || "",
             }),
 
             // Branches
