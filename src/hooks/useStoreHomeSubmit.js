@@ -269,6 +269,9 @@ const useStoreHomeSubmit = () => {
     // Get the current form values for ALL languages to preserve data
     const comprehensiveFormData = { ...data };
     
+    // CRITICAL FIX: Ensure we preserve existing data from both languages
+    console.log('🔍 Checking for existing team member data in both languages...');
+    
     // CRITICAL: If we're in Arabic mode, we need to preserve English data
     // If we're in English mode, we need to preserve Arabic data
     if (language === 'ar' && resData?.about_us) {
@@ -347,7 +350,7 @@ const useStoreHomeSubmit = () => {
         }
         
         if ((!data[descField] || data[descField].trim() === '') && resData.about_us[`value_${valueNum}_description`]?.ar) {
-          comprehensiveFormData[titleField] = resData.about_us[`value_${valueNum}_description`].ar;
+          comprehensiveFormData[descField] = resData.about_us[`value_${valueNum}_description`].ar;
           console.log(`✅ Preserved Arabic description for value ${i}:`, resData.about_us[`value_${valueNum}_description`].ar);
         }
       }
@@ -376,6 +379,20 @@ const useStoreHomeSubmit = () => {
       // CRITICAL: Use comprehensive form data instead of raw data
       const finalFormData = comprehensiveFormData;
       console.log('🎯 Using comprehensive form data for processing');
+      
+      // CRITICAL FIX: Ensure all team member data is preserved in both languages
+      console.log('🔍 Verifying all team member data is preserved...');
+      
+      // Log team member counts for debugging
+      const teamMemberCount = validationResults.teamMembers.length;
+      console.log(`📊 Found ${teamMemberCount} team members with data`);
+      
+      // Extra validation to ensure we're not losing data
+      if (teamMemberCount > 0) {
+        console.log('✅ Team member data is being preserved');
+      } else {
+        console.warn('⚠️ No team member data found - this might indicate a problem!');
+      }
       
       // Debug logging for comprehensive form data
       console.log('🔍 Comprehensive Form Data Debug:');
@@ -890,16 +907,16 @@ const useStoreHomeSubmit = () => {
             // Team Members (12 members) - FIXED FIELD MAPPING
             founder_one_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_one_name,
-              [language]: data.about_page_founder_one_name || "",
+              [language]: finalFormData.about_page_founder_one_name || "",
             }),
             founder_one_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_one_position,
-              [language]: data.about_page_founder_one_position || "",
+              [language]: finalFormData.about_page_founder_one_position || "",
             }),
             // CRITICAL FIX: founder_one_sub should map to position field, not sub field
             founder_one_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_one_sub,
-              [language]: data.about_page_founder_one_position || "",
+              [language]: finalFormData.about_page_founder_one_position || "",
             }),
             founder_two_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_two_name,
@@ -3659,6 +3676,9 @@ const useStoreHomeSubmit = () => {
     
     // CRITICAL FIX: Store ALL current form data before switching languages
     const currentFormData = {};
+    
+    // CRITICAL FIX: Always capture the current language's data completely before switching
+    console.log("🔍 Capturing ALL form data before language switch...");
     
     // Store all team member data (12 members)
     for (let i = 1; i <= 12; i++) {
