@@ -21,6 +21,60 @@ import SelectLanguageTwo from "@/components/form/selectOption/SelectLanguageTwo"
 import { useState, useContext } from "react";
 import { SidebarContext } from "@/context/SidebarContext";
 
+// Bilingual Input Component for EN/AR side-by-side fields
+const BilingualInput = ({ 
+  register, 
+  errors, 
+  baseName, 
+  label, 
+  type = "text", 
+  placeholderEn, 
+  placeholderAr,
+  isTextArea = false 
+}) => {
+  const InputComponent = isTextArea ? TextAreaCom : InputAreaTwo;
+  
+  return (
+    <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+        {label}
+      </label>
+      <div className="sm:col-span-4 space-y-3">
+        {/* English Input */}
+        <div>
+          <div className="text-xs font-medium text-blue-600 dark:text-blue-400 mb-1">
+            English
+          </div>
+          <InputComponent
+            register={register}
+            label={`${label} (English)`}
+            name={`${baseName}_en`}
+            type={type}
+            placeholder={placeholderEn}
+          />
+          <Error errorName={errors[`${baseName}_en`]} />
+        </div>
+        
+        {/* Arabic Input */}
+        <div>
+          <div className="text-xs font-medium text-green-600 dark:text-green-400 mb-1">
+            العربية (Arabic)
+          </div>
+          <InputComponent
+            register={register}
+            label={`${label} (Arabic)`}
+            name={`${baseName}_ar`}
+            type={type}
+            placeholder={placeholderAr}
+            className="text-right"
+          />
+          <Error errorName={errors[`${baseName}_ar`]} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const AboutUs = ({
   isSave,
   register,
@@ -166,18 +220,16 @@ const AboutUs = ({
             {t("AboutUs")}
           </div>
 
-          {/* Language Selector */}
-          <div className="flex justify-between items-center mb-4">
-            <div className="text-sm text-gray-600 dark:text-gray-400">
-              Current Language: <span className="font-semibold">{selectedLanguage.toUpperCase()}</span>
-            </div>
+          {/* Bilingual Note */}
+          <div className="bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 rounded-lg p-4 mb-6">
             <div className="flex items-center space-x-2">
-              <span className="text-sm text-gray-600 dark:text-gray-400">Edit Language:</span>
-              <SelectLanguageTwo 
-                handleSelectLanguage={handleLanguageChange}
-                register={() => ({})}
-              />
+              <div className="text-blue-600 dark:text-blue-400 font-medium">
+                📝 Bilingual Form
+              </div>
             </div>
+            <p className="text-sm text-blue-600 dark:text-blue-300 mt-1">
+              All fields now support both English and Arabic side-by-side. Fill in both languages for complete coverage.
+            </p>
           </div>
 
           <hr className="md:mb-12 mb-3" />
@@ -225,37 +277,25 @@ const AboutUs = ({
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                  {t("PageTitle")}
-                </label>
-                <div className="sm:col-span-4">
-                  <InputAreaTwo
-                    register={register}
-                    label="Page Title"
-                    name="about_page_title"
-                    type="text"
-                    placeholder={t("PageTitle")}
-                  />
-                  <Error errorName={errors.about_page_title} />
-                </div>
-              </div>
+              <BilingualInput
+                register={register}
+                errors={errors}
+                baseName="about_page_title"
+                label="Page Title"
+                placeholderEn="About Us"
+                placeholderAr="من نحن"
+              />
 
               {/* Hero Description */}
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                  {t("HeroDescription")}
-                </label>
-                <div className="sm:col-span-4">
-                  <TextAreaCom
-                    register={register}
-                    label="Hero Description"
-                    name="about_page_hero_description"
-                    placeholder="Learn more about SAPT Markets and our story..."
-                  />
-                  <Error errorName={errors.about_page_hero_description} />
-                </div>
-              </div>
+              <BilingualInput
+                register={register}
+                errors={errors}
+                baseName="about_page_hero_description"
+                label="Hero Description"
+                placeholderEn="Learn more about SAPT Markets and our story..."
+                placeholderAr="تعرف على المزيد حول أسواق سابت وقصتنا..."
+                isTextArea={true}
+              />
             </div>
 
             {/* Top Content Section */}
@@ -978,36 +1018,22 @@ const AboutUs = ({
                         />
                       </div>
                     </div>
-                    <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                        Member 1 Name
-                      </label>
-                      <div className="sm:col-span-4">
-                        <InputAreaTwo
-                          register={register}
-                          label="Member 1 Name"
-                          name="about_page_founder_one_name"
-                          type="text"
-                          placeholder="Team Member 1 Name"
-                        />
-                        <Error errorName={errors.about_page_founder_one_name} />
-                      </div>
-                    </div>
-                    <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                        Member 1 Position
-                      </label>
-                      <div className="sm:col-span-4">
-                        <InputAreaTwo
-                          register={register}
-                          label="Member 1 Position"
-                          name="about_page_founder_one_position"
-                          type="text"
-                          placeholder="Team Member 1 Position"
-                        />
-                        <Error errorName={errors.about_page_founder_one_position} />
-                      </div>
-                    </div>
+                    <BilingualInput
+                      register={register}
+                      errors={errors}
+                      baseName="about_page_founder_one_name"
+                      label="Member 1 Name"
+                      placeholderEn="Ahmed Al-Muhaysini"
+                      placeholderAr="أحمد المحيسني"
+                    />
+                    <BilingualInput
+                      register={register}
+                      errors={errors}
+                      baseName="about_page_founder_one_position"
+                      label="Member 1 Position"
+                      placeholderEn="Founder & CEO"
+                      placeholderAr="المؤسس والرئيس التنفيذي"
+                    />
                   </TabPanel>
 
                   <TabPanel className="mt-10">
@@ -1736,35 +1762,23 @@ const AboutUs = ({
                     
                     return (
                       <TabPanel key={branchNum} className="mt-10">
-          <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-            <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                            Branch {branchNum} Name
-            </label>
-            <div className="sm:col-span-4">
-              <InputAreaTwo
-                register={register}
-                              label={`Branch ${branchNum} Name`}
-                              name={`about_page_branch_${branchWord}_name`}
-                type="text"
-                              placeholder={`SAPT Branch ${branchNum}`}
-              />
-                            <Error errorName={errors[`about_page_branch_${branchWord}_name`]} />
-            </div>
-          </div>
-          <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-            <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                            Branch {branchNum} Address
-            </label>
-            <div className="sm:col-span-4">
-              <TextAreaCom
-                register={register}
-                              label={`Branch ${branchNum} Address`}
-                              name={`about_page_branch_${branchWord}_address`}
-                              placeholder="Address, City, District"
-                            />
-                            <Error errorName={errors[`about_page_branch_${branchWord}_address`]} />
-            </div>
-          </div>
+          <BilingualInput
+            register={register}
+            errors={errors}
+            baseName={`about_page_branch_${branchWord}_name`}
+            label={`Branch ${branchNum} Name`}
+            placeholderEn={`SAPT Markets Branch ${branchNum}`}
+            placeholderAr={`فرع أسواق سابت ${branchNum}`}
+          />
+          <BilingualInput
+            register={register}
+            errors={errors}
+            baseName={`about_page_branch_${branchWord}_address`}
+            label={`Branch ${branchNum} Address`}
+            placeholderEn="123 Main Street, Buraidah, Al-Qassim"
+            placeholderAr="شارع الملك عبد العزيز، بريدة، القصيم"
+            isTextArea={true}
+          />
           <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
             <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                             Branch {branchNum} Phone

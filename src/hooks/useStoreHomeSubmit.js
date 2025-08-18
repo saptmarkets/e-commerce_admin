@@ -606,7 +606,8 @@ const useStoreHomeSubmit = () => {
             founder_twelve_img: ourFounderTwelveImage,
             title: handleRemoveEmptyKey({
               ...resData?.about_us?.title,
-              [language]: finalFormData.about_page_title || "",
+              en: finalFormData.about_page_title_en || "",
+              ar: finalFormData.about_page_title_ar || "",
             }),
 
             hero_description: handleRemoveEmptyKey({
@@ -1082,14 +1083,16 @@ const useStoreHomeSubmit = () => {
               [language]: data.about_page_upcoming_branches_title || "",
             }),
 
-            // Individual Branch Data
+            // Individual Branch Data - Bilingual
             branch_one_name: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_one_name,
-              [language]: data.about_page_branch_one_name || "",
+              en: finalFormData.about_page_branch_one_name_en || "",
+              ar: finalFormData.about_page_branch_one_name_ar || "",
             }),
             branch_one_address: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_one_address,
-              [language]: data.about_page_branch_one_address || "",
+              en: finalFormData.about_page_branch_one_address_en || "",
+              ar: finalFormData.about_page_branch_one_address_ar || "",
             }),
             branch_one_phone: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_one_phone,
@@ -2815,7 +2818,8 @@ const useStoreHomeSubmit = () => {
           setOurFounderFiveImage(res?.about_us?.founder_five_img);
           setOurFounderSixImage(res?.about_us?.founder_six_img);
           console.log("Setting about_page_title:", res?.about_us?.title);
-          setValue("about_page_title", res?.about_us?.title?.[language || "en"] || "");
+          setValue("about_page_title_en", res?.about_us?.title?.en || "");
+          setValue("about_page_title_ar", res?.about_us?.title?.ar || "");
           console.log("Setting about_page_top_section_title:", res?.about_us?.top_section_title);
           setValue(
             "about_page_top_section_title",
@@ -3442,14 +3446,22 @@ const useStoreHomeSubmit = () => {
             res?.about_us?.value_four_description ? res?.about_us?.value_four_description[language || "en"] : ""
           );
 
-          // Team Members
+          // Team Members - Bilingual Fields
           setValue(
-            "about_page_founder_one_name",
-            res?.about_us?.founder_one_name ? res?.about_us?.founder_one_name[language || "en"] : ""
+            "about_page_founder_one_name_en",
+            res?.about_us?.founder_one_name?.en || ""
           );
           setValue(
-            "about_page_founder_one_position",
-            res?.about_us?.founder_one_position ? res?.about_us?.founder_one_position[language || "en"] : ""
+            "about_page_founder_one_name_ar",
+            res?.about_us?.founder_one_name?.ar || ""
+          );
+          setValue(
+            "about_page_founder_one_position_en",
+            res?.about_us?.founder_one_position?.en || ""
+          );
+          setValue(
+            "about_page_founder_one_position_ar",
+            res?.about_us?.founder_one_position?.ar || ""
           );
           setValue(
             "about_page_founder_two_name",
@@ -3562,16 +3574,24 @@ const useStoreHomeSubmit = () => {
             res?.about_us?.upcoming_branches_title ? res?.about_us?.upcoming_branches_title[language || "en"] : ""
           );
 
-          // Branch Data
+          // Branch Data - Bilingual
           const branchWords = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight'];
           branchWords.forEach((branchWord) => {
             setValue(
-              `about_page_branch_${branchWord}_name`,
-              res?.about_us?.[`branch_${branchWord}_name`] ? res?.about_us?.[`branch_${branchWord}_name`][language || "en"] : ""
+              `about_page_branch_${branchWord}_name_en`,
+              res?.about_us?.[`branch_${branchWord}_name`]?.en || ""
             );
             setValue(
-              `about_page_branch_${branchWord}_address`,
-              res?.about_us?.[`branch_${branchWord}_address`] ? res?.about_us?.[`branch_${branchWord}_address`][language || "en"] : ""
+              `about_page_branch_${branchWord}_name_ar`,
+              res?.about_us?.[`branch_${branchWord}_name`]?.ar || ""
+            );
+            setValue(
+              `about_page_branch_${branchWord}_address_en`,
+              res?.about_us?.[`branch_${branchWord}_address`]?.en || ""
+            );
+            setValue(
+              `about_page_branch_${branchWord}_address_ar`,
+              res?.about_us?.[`branch_${branchWord}_address`]?.ar || ""
             );
             setValue(
               `about_page_branch_${branchWord}_phone`,
