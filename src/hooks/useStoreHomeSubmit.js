@@ -174,6 +174,66 @@ const useStoreHomeSubmit = () => {
       about_page_trusted_badge_two_pill_ar: "",
       about_page_trusted_badge_two_text_en: "",
       about_page_trusted_badge_two_text_ar: "",
+      // Founder One - Bilingual
+      about_page_founder_one_name_en: "",
+      about_page_founder_one_name_ar: "",
+      about_page_founder_one_position_en: "",
+      about_page_founder_one_position_ar: "",
+      // Founder Two - Bilingual
+      about_page_founder_two_name_en: "",
+      about_page_founder_two_name_ar: "",
+      about_page_founder_two_position_en: "",
+      about_page_founder_two_position_ar: "",
+      // Founder Three - Bilingual
+      about_page_founder_three_name_en: "",
+      about_page_founder_three_name_ar: "",
+      about_page_founder_three_position_en: "",
+      about_page_founder_three_position_ar: "",
+      // Founder Four - Bilingual
+      about_page_founder_four_name_en: "",
+      about_page_founder_four_name_ar: "",
+      about_page_founder_four_position_en: "",
+      about_page_founder_four_position_ar: "",
+      // Founder Five - Bilingual
+      about_page_founder_five_name_en: "",
+      about_page_founder_five_name_ar: "",
+      about_page_founder_five_position_en: "",
+      about_page_founder_five_position_ar: "",
+      // Founder Six - Bilingual
+      about_page_founder_six_name_en: "",
+      about_page_founder_six_name_ar: "",
+      about_page_founder_six_position_en: "",
+      about_page_founder_six_position_ar: "",
+      // Founder Seven - Bilingual
+      about_page_founder_seven_name_en: "",
+      about_page_founder_seven_name_ar: "",
+      about_page_founder_seven_position_en: "",
+      about_page_founder_seven_position_ar: "",
+      // Founder Eight - Bilingual
+      about_page_founder_eight_name_en: "",
+      about_page_founder_eight_name_ar: "",
+      about_page_founder_eight_position_en: "",
+      about_page_founder_eight_position_ar: "",
+      // Founder Nine - Bilingual
+      about_page_founder_nine_name_en: "",
+      about_page_founder_nine_name_ar: "",
+      about_page_founder_nine_position_en: "",
+      about_page_founder_nine_position_ar: "",
+      // Founder Ten - Bilingual
+      about_page_founder_ten_name_en: "",
+      about_page_founder_ten_name_ar: "",
+      about_page_founder_ten_position_en: "",
+      about_page_founder_ten_position_ar: "",
+      // Founder Eleven - Bilingual
+      about_page_founder_eleven_name_en: "",
+      about_page_founder_eleven_name_ar: "",
+      about_page_founder_eleven_position_en: "",
+      about_page_founder_eleven_position_ar: "",
+      // Founder Twelve - Bilingual
+      about_page_founder_twelve_name_en: "",
+      about_page_founder_twelve_name_ar: "",
+      about_page_founder_twelve_position_en: "",
+      about_page_founder_twelve_position_ar: "",
     },
   });
 
@@ -467,51 +527,63 @@ const useStoreHomeSubmit = () => {
             }),
             founder_one_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_one_name,
-              [language]: data.about_page_founder_one_name || "",
+              en: data.about_page_founder_one_name_en || "",
+              ar: data.about_page_founder_one_name_ar || "",
             }),
-            founder_one_sub: handleRemoveEmptyKey({
-              ...resData?.about_us?.founder_one_sub,
-              [language]: data.about_page_founder_one_position || "",
+            founder_one_position: handleRemoveEmptyKey({
+              ...resData?.about_us?.founder_one_position,
+              en: data.about_page_founder_one_position_en || "",
+              ar: data.about_page_founder_one_position_ar || "",
             }),
             founder_two_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_two_name,
-              [language]: data.about_page_founder_two_name || "",
+              en: data.about_page_founder_two_name_en || "",
+              ar: data.about_page_founder_two_name_ar || "",
             }),
-            founder_two_sub: handleRemoveEmptyKey({
-              ...resData?.about_us?.founder_two_sub,
-              [language]: data.about_page_founder_two_position || "",
+            founder_two_position: handleRemoveEmptyKey({
+              ...resData?.about_us?.founder_two_position,
+              en: data.about_page_founder_two_position_en || "",
+              ar: data.about_page_founder_two_position_ar || "",
             }),
             founder_three_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_three_name,
-              [language]: data.about_page_founder_three_name || "",
+              en: data.about_page_founder_three_name_en || "",
+              ar: data.about_page_founder_three_name_ar || "",
             }),
-            founder_three_sub: handleRemoveEmptyKey({
-              ...resData?.about_us?.founder_three_sub,
-              [language]: data.about_page_founder_three_position || "",
+            founder_three_position: handleRemoveEmptyKey({
+              ...resData?.about_us?.founder_three_position,
+              en: data.about_page_founder_three_position_en || "",
+              ar: data.about_page_founder_three_position_ar || "",
             }),
             founder_four_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_four_name,
-              [language]: data.about_page_founder_four_name || "",
+              en: data.about_page_founder_four_name_en || "",
+              ar: data.about_page_founder_four_name_ar || "",
             }),
-            founder_four_sub: handleRemoveEmptyKey({
-              ...resData?.about_us?.founder_four_sub,
-              [language]: data.about_page_founder_four_position || "",
+            founder_four_position: handleRemoveEmptyKey({
+              ...resData?.about_us?.founder_four_position,
+              en: data.about_page_founder_four_position_en || "",
+              ar: data.about_page_founder_four_position_ar || "",
             }),
             founder_five_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_five_name,
-              [language]: data.about_page_founder_five_name || "",
+              en: data.about_page_founder_five_name_en || "",
+              ar: data.about_page_founder_five_name_ar || "",
             }),
-            founder_five_sub: handleRemoveEmptyKey({
-              ...resData?.about_us?.founder_five_sub,
-              [language]: data.about_page_founder_five_position || "",
+            founder_five_position: handleRemoveEmptyKey({
+              ...resData?.about_us?.founder_five_position,
+              en: data.about_page_founder_five_position_en || "",
+              ar: data.about_page_founder_five_position_ar || "",
             }),
             founder_six_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_six_name,
-              [language]: data.about_page_founder_six_name || "",
+              en: data.about_page_founder_six_name_en || "",
+              ar: data.about_page_founder_six_name_ar || "",
             }),
-            founder_six_sub: handleRemoveEmptyKey({
-              ...resData?.about_us?.founder_six_sub,
-              [language]: data.about_page_founder_six_position || "",
+            founder_six_position: handleRemoveEmptyKey({
+              ...resData?.about_us?.founder_six_position,
+              en: data.about_page_founder_six_position_en || "",
+              ar: data.about_page_founder_six_position_ar || "",
             }),
             // Core Values Section
             values_title: handleRemoveEmptyKey({
@@ -745,80 +817,68 @@ const useStoreHomeSubmit = () => {
 
             founder_seven_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_seven_name,
-              [language]: data.about_page_founder_seven_name || "",
-            }),
-            founder_seven_sub: handleRemoveEmptyKey({
-              ...resData?.about_us?.founder_seven_sub,
-              [language]: data.about_page_founder_seven_position || "",
+              en: data.about_page_founder_seven_name_en || "",
+              ar: data.about_page_founder_seven_name_ar || "",
             }),
             founder_seven_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_seven_position,
-              [language]: data.about_page_founder_seven_position || "",
+              en: data.about_page_founder_seven_position_en || "",
+              ar: data.about_page_founder_seven_position_ar || "",
             }),
 
             founder_eight_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_eight_name,
-              [language]: data.about_page_founder_eight_name || "",
-            }),
-            founder_eight_sub: handleRemoveEmptyKey({
-              ...resData?.about_us?.founder_eight_sub,
-              [language]: data.about_page_founder_eight_position || "",
+              en: data.about_page_founder_eight_name_en || "",
+              ar: data.about_page_founder_eight_name_ar || "",
             }),
             founder_eight_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_eight_position,
-              [language]: data.about_page_founder_eight_position || "",
+              en: data.about_page_founder_eight_position_en || "",
+              ar: data.about_page_founder_eight_position_ar || "",
             }),
 
             founder_nine_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_nine_name,
-              [language]: data.about_page_founder_nine_name || "",
-            }),
-            founder_nine_sub: handleRemoveEmptyKey({
-              ...resData?.about_us?.founder_nine_sub,
-              [language]: data.about_page_founder_nine_position || "",
+              en: data.about_page_founder_nine_name_en || "",
+              ar: data.about_page_founder_nine_name_ar || "",
             }),
             founder_nine_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_nine_position,
-              [language]: data.about_page_founder_nine_position || "",
+              en: data.about_page_founder_nine_position_en || "",
+              ar: data.about_page_founder_nine_position_ar || "",
             }),
 
             founder_ten_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_ten_name,
-              [language]: data.about_page_founder_ten_name || "",
-            }),
-            founder_ten_sub: handleRemoveEmptyKey({
-              ...resData?.about_us?.founder_ten_sub,
-              [language]: data.about_page_founder_ten_position || "",
+              en: data.about_page_founder_ten_name_en || "",
+              ar: data.about_page_founder_ten_name_ar || "",
             }),
             founder_ten_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_ten_position,
-              [language]: data.about_page_founder_ten_position || "",
+              en: data.about_page_founder_ten_position_en || "",
+              ar: data.about_page_founder_ten_position_ar || "",
             }),
 
             founder_eleven_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_eleven_name,
-              [language]: data.about_page_founder_eleven_name || "",
-            }),
-            founder_eleven_sub: handleRemoveEmptyKey({
-              ...resData?.about_us?.founder_eleven_sub,
-              [language]: data.about_page_founder_eleven_position || "",
+              en: data.about_page_founder_eleven_name_en || "",
+              ar: data.about_page_founder_eleven_name_ar || "",
             }),
             founder_eleven_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_eleven_position,
-              [language]: data.about_page_founder_eleven_position || "",
+              en: data.about_page_founder_eleven_position_en || "",
+              ar: data.about_page_founder_eleven_position_ar || "",
             }),
 
             founder_twelve_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_twelve_name,
-              [language]: data.about_page_founder_twelve_name || "",
-            }),
-            founder_twelve_sub: handleRemoveEmptyKey({
-              ...resData?.about_us?.founder_twelve_sub,
-              [language]: data.about_page_founder_twelve_position || "",
+              en: data.about_page_founder_twelve_name_en || "",
+              ar: data.about_page_founder_twelve_name_ar || "",
             }),
             founder_twelve_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_twelve_position,
-              [language]: data.about_page_founder_twelve_position || "",
+              en: data.about_page_founder_twelve_position_en || "",
+              ar: data.about_page_founder_twelve_position_ar || "",
             }),
 
             // Branches
@@ -2622,95 +2682,193 @@ const useStoreHomeSubmit = () => {
             "about_page_founder_one_position_ar",
             res?.about_us?.founder_one_position?.ar || ""
           );
+          // Founder Two - Bilingual
           setValue(
-            "about_page_founder_two_name",
-            res?.about_us?.founder_two_name[language || "en"]
+            "about_page_founder_two_name_en",
+            res?.about_us?.founder_two_name?.en || ""
           );
           setValue(
-            "about_page_founder_two_position",
-            res?.about_us?.founder_two_sub[language || "en"]
+            "about_page_founder_two_name_ar",
+            res?.about_us?.founder_two_name?.ar || ""
           );
           setValue(
-            "about_page_founder_three_name",
-            res?.about_us?.founder_three_name[language || "en"]
+            "about_page_founder_two_position_en",
+            res?.about_us?.founder_two_position?.en || ""
           );
           setValue(
-            "about_page_founder_three_position",
-            res?.about_us?.founder_three_sub[language || "en"]
+            "about_page_founder_two_position_ar",
+            res?.about_us?.founder_two_position?.ar || ""
+          );
+          // Founder Three - Bilingual
+          setValue(
+            "about_page_founder_three_name_en",
+            res?.about_us?.founder_three_name?.en || ""
           );
           setValue(
-            "about_page_founder_four_name",
-            res?.about_us?.founder_four_name[language || "en"]
+            "about_page_founder_three_name_ar",
+            res?.about_us?.founder_three_name?.ar || ""
           );
           setValue(
-            "about_page_founder_four_position",
-            res?.about_us?.founder_four_sub[language || "en"]
+            "about_page_founder_three_position_en",
+            res?.about_us?.founder_three_position?.en || ""
           );
           setValue(
-            "about_page_founder_five_name",
-            res?.about_us?.founder_five_name[language || "en"]
+            "about_page_founder_three_position_ar",
+            res?.about_us?.founder_three_position?.ar || ""
+          );
+          // Founder Four - Bilingual
+          setValue(
+            "about_page_founder_four_name_en",
+            res?.about_us?.founder_four_name?.en || ""
           );
           setValue(
-            "about_page_founder_five_position",
-            res?.about_us?.founder_five_sub[language || "en"]
+            "about_page_founder_four_name_ar",
+            res?.about_us?.founder_four_name?.ar || ""
           );
           setValue(
-            "about_page_founder_six_name",
-            res?.about_us?.founder_six_name[language || "en"]
+            "about_page_founder_four_position_en",
+            res?.about_us?.founder_four_position?.en || ""
           );
           setValue(
-            "about_page_founder_six_position",
-            res?.about_us?.founder_six_sub[language || "en"]
+            "about_page_founder_four_position_ar",
+            res?.about_us?.founder_four_position?.ar || ""
+          );
+          // Founder Five - Bilingual
+          setValue(
+            "about_page_founder_five_name_en",
+            res?.about_us?.founder_five_name?.en || ""
+          );
+          setValue(
+            "about_page_founder_five_name_ar",
+            res?.about_us?.founder_five_name?.ar || ""
+          );
+          setValue(
+            "about_page_founder_five_position_en",
+            res?.about_us?.founder_five_position?.en || ""
+          );
+          setValue(
+            "about_page_founder_five_position_ar",
+            res?.about_us?.founder_five_position?.ar || ""
+          );
+          // Founder Six - Bilingual
+          setValue(
+            "about_page_founder_six_name_en",
+            res?.about_us?.founder_six_name?.en || ""
+          );
+          setValue(
+            "about_page_founder_six_name_ar",
+            res?.about_us?.founder_six_name?.ar || ""
+          );
+          setValue(
+            "about_page_founder_six_position_en",
+            res?.about_us?.founder_six_position?.en || ""
+          );
+          setValue(
+            "about_page_founder_six_position_ar",
+            res?.about_us?.founder_six_position?.ar || ""
           );
 
-          // Add missing founder fields
+          // Founder Seven - Bilingual
           setValue(
-            "about_page_founder_seven_name",
-            res?.about_us?.founder_seven_name[language || "en"]
+            "about_page_founder_seven_name_en",
+            res?.about_us?.founder_seven_name?.en || ""
           );
           setValue(
-            "about_page_founder_seven_position",
-            res?.about_us?.founder_seven_sub[language || "en"]
+            "about_page_founder_seven_name_ar",
+            res?.about_us?.founder_seven_name?.ar || ""
           );
           setValue(
-            "about_page_founder_eight_name",
-            res?.about_us?.founder_eight_name[language || "en"]
+            "about_page_founder_seven_position_en",
+            res?.about_us?.founder_seven_position?.en || ""
           );
           setValue(
-            "about_page_founder_eight_position",
-            res?.about_us?.founder_eight_sub[language || "en"]
+            "about_page_founder_seven_position_ar",
+            res?.about_us?.founder_seven_position?.ar || ""
+          );
+          // Founder Eight - Bilingual
+          setValue(
+            "about_page_founder_eight_name_en",
+            res?.about_us?.founder_eight_name?.en || ""
           );
           setValue(
-            "about_page_founder_nine_name",
-            res?.about_us?.founder_nine_name[language || "en"]
+            "about_page_founder_eight_name_ar",
+            res?.about_us?.founder_eight_name?.ar || ""
           );
           setValue(
-            "about_page_founder_nine_position",
-            res?.about_us?.founder_nine_sub[language || "en"]
+            "about_page_founder_eight_position_en",
+            res?.about_us?.founder_eight_position?.en || ""
           );
           setValue(
-            "about_page_founder_ten_name",
-            res?.about_us?.founder_ten_name[language || "en"]
+            "about_page_founder_eight_position_ar",
+            res?.about_us?.founder_eight_position?.ar || ""
+          );
+          // Founder Nine - Bilingual
+          setValue(
+            "about_page_founder_nine_name_en",
+            res?.about_us?.founder_nine_name?.en || ""
           );
           setValue(
-            "about_page_founder_ten_position",
-            res?.about_us?.founder_ten_sub[language || "en"]
+            "about_page_founder_nine_name_ar",
+            res?.about_us?.founder_nine_name?.ar || ""
           );
           setValue(
-            "about_page_founder_eleven_name",
-            res?.about_us?.founder_eleven_name[language || "en"]
+            "about_page_founder_nine_position_en",
+            res?.about_us?.founder_nine_position?.en || ""
           );
           setValue(
-            "about_page_founder_eleven_position",
-            res?.about_us?.founder_eleven_sub[language || "en"]
+            "about_page_founder_nine_position_ar",
+            res?.about_us?.founder_nine_position?.ar || ""
+          );
+          // Founder Ten - Bilingual
+          setValue(
+            "about_page_founder_ten_name_en",
+            res?.about_us?.founder_ten_name?.en || ""
           );
           setValue(
-            "about_page_founder_twelve_name",
-            res?.about_us?.founder_twelve_name[language || "en"]
+            "about_page_founder_ten_name_ar",
+            res?.about_us?.founder_ten_name?.ar || ""
           );
           setValue(
-            "about_page_founder_twelve_position",
-            res?.about_us?.founder_twelve_sub[language || "en"]
+            "about_page_founder_ten_position_en",
+            res?.about_us?.founder_ten_position?.en || ""
+          );
+          setValue(
+            "about_page_founder_ten_position_ar",
+            res?.about_us?.founder_ten_position?.ar || ""
+          );
+          // Founder Eleven - Bilingual
+          setValue(
+            "about_page_founder_eleven_name_en",
+            res?.about_us?.founder_eleven_name?.en || ""
+          );
+          setValue(
+            "about_page_founder_eleven_name_ar",
+            res?.about_us?.founder_eleven_name?.ar || ""
+          );
+          setValue(
+            "about_page_founder_eleven_position_en",
+            res?.about_us?.founder_eleven_position?.en || ""
+          );
+          setValue(
+            "about_page_founder_eleven_position_ar",
+            res?.about_us?.founder_eleven_position?.ar || ""
+          );
+          // Founder Twelve - Bilingual
+          setValue(
+            "about_page_founder_twelve_name_en",
+            res?.about_us?.founder_twelve_name?.en || ""
+          );
+          setValue(
+            "about_page_founder_twelve_name_ar",
+            res?.about_us?.founder_twelve_name?.ar || ""
+          );
+          setValue(
+            "about_page_founder_twelve_position_en",
+            res?.about_us?.founder_twelve_position?.en || ""
+          );
+          setValue(
+            "about_page_founder_twelve_position_ar",
+            res?.about_us?.founder_twelve_position?.ar || ""
           );
 
           // Add other missing fields
@@ -3751,3 +3909,4 @@ const useStoreHomeSubmit = () => {
 };
 
 export default useStoreHomeSubmit;
+
