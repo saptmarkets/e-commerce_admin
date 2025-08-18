@@ -155,35 +155,55 @@ const AboutUs = ({
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+              {/* Page Title - Bilingual */}
+              <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
+                <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                   {t("PageTitle")}
                 </label>
-                <div className="sm:col-span-4">
+                <div className="md:col-span-4">
                   <InputAreaTwo
-                register={register}
-                label="Page Title"
-                    name="about_page_title"
+                    register={register}
+                    label="Page Title (English)"
+                    name="about_page_title_en"
                     type="text"
                     placeholder={t("PageTitle")}
-              />
-                  <Error errorName={errors.about_page_title} />
+                  />
+                  <Error errorName={errors.about_page_title_en} />
+                </div>
+                <div className="md:col-span-4">
+                  <InputAreaTwo
+                    register={register}
+                    label="عنوان الصفحة (العربية)"
+                    name="about_page_title_ar"
+                    type="text"
+                    placeholder="أدخل العنوان بالعربية"
+                  />
+                  <Error errorName={errors.about_page_title_ar} />
                 </div>
               </div>
 
-              {/* Hero Description */}
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+              {/* Hero Description - Bilingual */}
+              <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
+                <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                   {t("HeroDescription")}
                 </label>
-                <div className="sm:col-span-4">
+                <div className="md:col-span-4">
                   <TextAreaCom
-                register={register}
-                label="Hero Description"
-                    name="about_page_hero_description"
+                    register={register}
+                    label="Hero Description (English)"
+                    name="about_page_hero_description_en"
                     placeholder="Learn more about SAPT Markets and our story..."
-              />
-                  <Error errorName={errors.about_page_hero_description} />
+                  />
+                  <Error errorName={errors.about_page_hero_description_en} />
+                </div>
+                <div className="md:col-span-4">
+                  <TextAreaCom
+                    register={register}
+                    label="وصف البطل (العربية)"
+                    name="about_page_hero_description_ar"
+                    placeholder="تعرف على المزيد عن أسواق سابت وقصتنا..."
+                  />
+                  <Error errorName={errors.about_page_hero_description_ar} />
                 </div>
               </div>
             </div>
@@ -217,88 +237,156 @@ const AboutUs = ({
                 opacity: !aboutTopContentLeft ? "0" : "1",
               }}
             >
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+              {/* Top Section Title - Bilingual */}
+              <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
+                <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                   Top Section Title
                 </label>
-                <div className="sm:col-span-4">
+                <div className="md:col-span-4">
                   <InputAreaTwo
                     register={register}
-                    label="Top Section Title"
-                    name="about_page_top_section_title"
+                    label="Top Section Title (English)"
+                    name="about_page_top_section_title_en"
                     type="text"
                     placeholder="A Trusted Name in Qassim Retail"
                   />
-                  <Error errorName={errors.about_page_top_section_title} />
+                  <Error errorName={errors.about_page_top_section_title_en} />
+                </div>
+                <div className="md:col-span-4">
+                  <InputAreaTwo
+                    register={register}
+                    label="عنوان القسم العلوي (العربية)"
+                    name="about_page_top_section_title_ar"
+                    type="text"
+                    placeholder="اسم موثوق في تجارة القصيم"
+                  />
+                  <Error errorName={errors.about_page_top_section_title_ar} />
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+              {/* Top Section Description - Bilingual */}
+              <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
+                <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                   Top Section Description
                 </label>
-                <div className="sm:col-span-4">
+                <div className="md:col-span-4">
                   <TextAreaCom
                     register={register}
-                    label="Top Section Description"
-                    name="about_page_top_section_description"
+                    label="Top Section Description (English)"
+                    name="about_page_top_section_description_en"
                     placeholder="At SAPT Markets, we've built our reputation on providing quality products..."
                   />
-                  <Error errorName={errors.about_page_top_section_description} />
+                  <Error errorName={errors.about_page_top_section_description_en} />
+                </div>
+                <div className="md:col-span-4">
+                  <TextAreaCom
+                    register={register}
+                    label="وصف القسم العلوي (العربية)"
+                    name="about_page_top_section_description_ar"
+                    placeholder="في أسواق سابت، بنينا سمعتنا على تقديم منتجات عالية الجودة..."
+                  />
+                  <Error errorName={errors.about_page_top_section_description_ar} />
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-6 mb-6 mt-8">
-                {/* Badge Line 1 */}
-                <div>
-                  <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">
-                    Trusted Badge 1 Pill (e.g., Since 1989)
+              {/* Trusted Badges - Bilingual */}
+              <div className="mb-6 mt-8">
+                {/* Badge 1 */}
+                <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+                  <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                    Trusted Badge 1 Pill
                   </label>
-                  <InputAreaTwo
-                    register={register}
-                    label="Badge 1 Pill"
-                    name="about_page_trusted_badge_one_pill"
-                    type="text"
-                    placeholder="Since 1989"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">
-                    Trusted Badge 1 Text (e.g., From Family Business)
-                  </label>
-                  <InputAreaTwo
-                    register={register}
-                    label="Badge 1 Text"
-                    name="about_page_trusted_badge_one_text"
-                    type="text"
-                    placeholder="From Family Business"
-                  />
+                  <div className="md:col-span-4">
+                    <InputAreaTwo
+                      register={register}
+                      label="Badge 1 Pill (English)"
+                      name="about_page_trusted_badge_one_pill_en"
+                      type="text"
+                      placeholder="Since 1989"
+                    />
+                  </div>
+                  <div className="md:col-span-4">
+                    <InputAreaTwo
+                      register={register}
+                      label="شارة الثقة 1 (العربية)"
+                      name="about_page_trusted_badge_one_pill_ar"
+                      type="text"
+                      placeholder="منذ 1989"
+                    />
+                  </div>
                 </div>
 
-                {/* Badge Line 2 */}
-                <div>
-                  <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">
-                    Trusted Badge 2 Pill (e.g., 35+ Years)
+                <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+                  <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                    Trusted Badge 1 Text
                   </label>
-                  <InputAreaTwo
-                    register={register}
-                    label="Badge 2 Pill"
-                    name="about_page_trusted_badge_two_pill"
-                    type="text"
-                    placeholder="35+ Years"
-                  />
+                  <div className="md:col-span-4">
+                    <InputAreaTwo
+                      register={register}
+                      label="Badge 1 Text (English)"
+                      name="about_page_trusted_badge_one_text_en"
+                      type="text"
+                      placeholder="From Family Business"
+                    />
+                  </div>
+                  <div className="md:col-span-4">
+                    <InputAreaTwo
+                      register={register}
+                      label="نص الشارة 1 (العربية)"
+                      name="about_page_trusted_badge_one_text_ar"
+                      type="text"
+                      placeholder="من عمل عائلي"
+                    />
+                  </div>
                 </div>
-                <div>
-                  <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">
-                    Trusted Badge 2 Text (e.g., Serving the Community)
+
+                {/* Badge 2 */}
+                <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+                  <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                    Trusted Badge 2 Pill
                   </label>
-                  <InputAreaTwo
-                    register={register}
-                    label="Badge 2 Text"
-                    name="about_page_trusted_badge_two_text"
-                    type="text"
-                    placeholder="Serving the Community"
-                  />
+                  <div className="md:col-span-4">
+                    <InputAreaTwo
+                      register={register}
+                      label="Badge 2 Pill (English)"
+                      name="about_page_trusted_badge_two_pill_en"
+                      type="text"
+                      placeholder="35+ Years"
+                    />
+                  </div>
+                  <div className="md:col-span-4">
+                    <InputAreaTwo
+                      register={register}
+                      label="شارة الثقة 2 (العربية)"
+                      name="about_page_trusted_badge_two_pill_ar"
+                      type="text"
+                      placeholder="35+ سنة"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+                  <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                    Trusted Badge 2 Text
+                  </label>
+                  <div className="md:col-span-4">
+                    <InputAreaTwo
+                      register={register}
+                      label="Badge 2 Text (English)"
+                      name="about_page_trusted_badge_two_text_en"
+                      type="text"
+                      placeholder="Serving the Community"
+                    />
+                  </div>
+                  <div className="md:col-span-4">
+                    <InputAreaTwo
+                      register={register}
+                      label="نص الشارة 2 (العربية)"
+                      name="about_page_trusted_badge_two_text_ar"
+                      type="text"
+                      placeholder="خدمة المجتمع"
+                    />
+                  </div>
                 </div>
               </div>
 
