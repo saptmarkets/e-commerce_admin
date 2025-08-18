@@ -161,12 +161,12 @@ const AboutUs = ({
                 </label>
                 <div className="sm:col-span-4">
                   <InputAreaTwo
-                    register={register}
-                    label="Page Title"
+                register={register}
+                label="Page Title"
                     name="about_page_title"
                     type="text"
                     placeholder={t("PageTitle")}
-                  />
+              />
                   <Error errorName={errors.about_page_title} />
                 </div>
               </div>
@@ -178,11 +178,11 @@ const AboutUs = ({
                 </label>
                 <div className="sm:col-span-4">
                   <TextAreaCom
-                    register={register}
-                    label="Hero Description"
+                register={register}
+                label="Hero Description"
                     name="about_page_hero_description"
                     placeholder="Learn more about SAPT Markets and our story..."
-                  />
+              />
                   <Error errorName={errors.about_page_hero_description} />
                 </div>
               </div>
@@ -355,7 +355,6 @@ const AboutUs = ({
                 </label>
                 <div className="sm:col-span-4">
                   <TextAreaCom
-                    required={true}
                     register={register}
                     label="Card One Description"
                     name="about_page_card_one_description"
@@ -409,7 +408,6 @@ const AboutUs = ({
                 </label>
                 <div className="sm:col-span-4">
                   <TextAreaCom
-                    required={true}
                     register={register}
                     label="Card Two Description"
                     name="about_page_card_two_description"
@@ -619,8 +617,8 @@ const AboutUs = ({
                       </label>
                       <div className="sm:col-span-4">
                   <InputAreaTwo
-                    register={register}
-                    label="Leadership Title"
+                register={register}
+                label="Leadership Title"
                     name="about_page_leadership_title"
                     type="text"
                     placeholder="Leadership that Inspires"
@@ -635,26 +633,26 @@ const AboutUs = ({
                       </label>
                       <div className="sm:col-span-4">
                         <InputAreaTwo
-                          register={register}
-                    label="Leadership Subtitle"
+                register={register}
+                label="Leadership Subtitle"
                     name="about_page_leadership_subtitle"
                           type="text"
                     placeholder="Guided by Vision, Committed to Excellence"
-                        />
+              />
                   <Error errorName={errors.about_page_leadership_subtitle} />
                       </div>
                     </div>
 
               <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                   Values Title
-                      </label>
-                      <div className="sm:col-span-4">
-                        <InputAreaTwo
-                          register={register}
+                </label>
+                <div className="sm:col-span-4">
+                  <InputAreaTwo
+                    register={register}
                     label="Values Title"
                     name="about_page_values_title"
-                          type="text"
+                    type="text"
                     placeholder="Our Core Values"
                   />
                   <Error errorName={errors.about_page_values_title} />
@@ -673,8 +671,8 @@ const AboutUs = ({
                     placeholder="These fundamental principles guide every decision we make..."
                   />
                   <Error errorName={errors.about_page_values_description} />
-                      </div>
-                    </div>
+                </div>
+              </div>
             </div>
 
             {/* Core Values Section */}
@@ -724,8 +722,8 @@ const AboutUs = ({
                       </label>
                       <div className="sm:col-span-4">
                         <InputAreaTwo
-                          register={register}
-                          label="Value One Title"
+                       register={register}
+                       label="Value One Title"
                           name="about_page_value_one_title"
                           type="text"
                           placeholder="Quality First"
@@ -740,11 +738,11 @@ const AboutUs = ({
                       </label>
                       <div className="sm:col-span-4">
                         <TextAreaCom
-                          register={register}
-                          label="Value One Description"
+                       register={register}
+                       label="Value One Description"
                           name="about_page_value_one_description"
                           placeholder="We never compromise on the quality of our products..."
-                        />
+                     />
                         <Error errorName={errors.about_page_value_one_description} />
                       </div>
                     </div>
@@ -757,8 +755,8 @@ const AboutUs = ({
                       </label>
                       <div className="sm:col-span-4">
                         <InputAreaTwo
-                          register={register}
-                          label="Value Two Title"
+                      register={register}
+                      label="Value Two Title"
                           name="about_page_value_two_title"
                           type="text"
                           placeholder="Customer Care"
@@ -773,11 +771,11 @@ const AboutUs = ({
                       </label>
                       <div className="sm:col-span-4">
                         <TextAreaCom
-                          register={register}
-                          label="Value Two Description"
+                      register={register}
+                      label="Value Two Description"
                           name="about_page_value_two_description"
                           placeholder="Every customer is valued and deserves exceptional service..."
-                        />
+                    />
                         <Error errorName={errors.about_page_value_two_description} />
                       </div>
                     </div>
@@ -790,8 +788,8 @@ const AboutUs = ({
                       </label>
                       <div className="sm:col-span-4">
                         <InputAreaTwo
-                          register={register}
-                          label="Value Three Title"
+                       register={register}
+                       label="Value Three Title"
                           name="about_page_value_three_title"
                           type="text"
                           placeholder="Community Focus"
@@ -806,11 +804,11 @@ const AboutUs = ({
                       </label>
                       <div className="sm:col-span-4">
                         <TextAreaCom
-                          register={register}
-                          label="Value Three Description"
+                       register={register}
+                       label="Value Three Description"
                           name="about_page_value_three_description"
                           placeholder="We're not just a store; we're part of the Qassim community..."
-                        />
+                     />
                         <Error errorName={errors.about_page_value_three_description} />
                       </div>
                     </div>
@@ -823,8 +821,8 @@ const AboutUs = ({
                       </label>
                       <div className="sm:col-span-4">
                         <InputAreaTwo
-                          register={register}
-                          label="Value Four Title"
+                       register={register}
+                       label="Value Four Title"
                           name="about_page_value_four_title"
                           type="text"
                           placeholder="Innovation"
@@ -839,11 +837,11 @@ const AboutUs = ({
                       </label>
                       <div className="sm:col-span-4">
                         <TextAreaCom
-                          register={register}
-                          label="Value Four Description"
+                       register={register}
+                       label="Value Four Description"
                           name="about_page_value_four_description"
                           placeholder="We continuously evolve to meet changing customer needs..."
-                        />
+                     />
                         <Error errorName={errors.about_page_value_four_description} />
                       </div>
                     </div>
@@ -920,8 +918,8 @@ const AboutUs = ({
                       </label>
                       <div className="sm:col-span-4">
                         <InputAreaTwo
-                          register={register}
-                          label="Member 1 Name"
+                      register={register}
+                      label="Member 1 Name"
                           name="about_page_founder_one_name"
                           type="text"
                           placeholder="Team Member 1 Name"
@@ -935,12 +933,12 @@ const AboutUs = ({
                       </label>
                       <div className="sm:col-span-4">
                         <InputAreaTwo
-                          register={register}
-                          label="Member 1 Position"
+                      register={register}
+                      label="Member 1 Position"
                           name="about_page_founder_one_position"
                           type="text"
                           placeholder="Team Member 1 Position"
-                        />
+                    />
                         <Error errorName={errors.about_page_founder_one_position} />
                       </div>
                     </div>
@@ -966,8 +964,8 @@ const AboutUs = ({
                       </label>
                       <div className="sm:col-span-4">
                         <InputAreaTwo
-                          register={register}
-                          label="Member 2 Name"
+                      register={register}
+                      label="Member 2 Name"
                           name="about_page_founder_two_name"
                           type="text"
                           placeholder="Team Member 2 Name"
@@ -981,12 +979,12 @@ const AboutUs = ({
                       </label>
                       <div className="sm:col-span-4">
                         <InputAreaTwo
-                          register={register}
-                          label="Member 2 Position"
+                      register={register}
+                      label="Member 2 Position"
                           name="about_page_founder_two_position"
                           type="text"
                           placeholder="Team Member 2 Position"
-                        />
+                    />
                         <Error errorName={errors.about_page_founder_two_position} />
                       </div>
                     </div>
@@ -1012,14 +1010,14 @@ const AboutUs = ({
             </label>
             <div className="sm:col-span-4">
                   <InputAreaTwo
-                register={register}
-                          label="Member 3 Name"
+            register={register}
+            label="Member 3 Name"
                           name="about_page_founder_three_name"
                 type="text"
                           placeholder="Team Member 3 Name"
-              />
+          />
                         <Error errorName={errors.about_page_founder_three_name} />
-            </div>
+          </div>
           </div>
                     <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
                       <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
@@ -1027,12 +1025,12 @@ const AboutUs = ({
                   </label>
                       <div className="sm:col-span-4">
                   <InputAreaTwo
-                    register={register}
-                          label="Member 3 Position"
+            register={register}
+            label="Member 3 Position"
                           name="about_page_founder_three_position"
                     type="text"
                           placeholder="Team Member 3 Position"
-                  />
+          />
                         <Error errorName={errors.about_page_founder_three_position} />
                 </div>
                 </div>
@@ -1058,12 +1056,12 @@ const AboutUs = ({
                   </label>
                       <div className="sm:col-span-4">
                   <InputAreaTwo
-                    register={register}
-                          label="Member 4 Name"
+                      register={register}
+                      label="Member 4 Name"
                           name="about_page_founder_four_name"
                     type="text"
                           placeholder="Team Member 4 Name"
-                  />
+                    />
                         <Error errorName={errors.about_page_founder_four_name} />
                 </div>
                 </div>
@@ -1073,12 +1071,12 @@ const AboutUs = ({
                   </label>
             <div className="sm:col-span-4">
                   <InputAreaTwo
-                    register={register}
-                          label="Member 4 Position"
+              register={register}
+              label="Member 4 Position"
                           name="about_page_founder_four_position"
                     type="text"
                           placeholder="Team Member 4 Position"
-                  />
+            />
                         <Error errorName={errors.about_page_founder_four_position} />
                 </div>
           </div>
@@ -1104,12 +1102,12 @@ const AboutUs = ({
                   </label>
             <div className="sm:col-span-4">
                   <InputAreaTwo
-                    register={register}
-                          label="Member 5 Name"
+            register={register}
+            label="Member 5 Name"
                           name="about_page_founder_five_name"
                     type="text"
                           placeholder="Team Member 5 Name"
-                  />
+          />
                         <Error errorName={errors.about_page_founder_five_name} />
                 </div>
                     </div>
@@ -1119,12 +1117,12 @@ const AboutUs = ({
                   </label>
                       <div className="sm:col-span-4">
                   <InputAreaTwo
-                    register={register}
-                          label="Member 5 Position"
+            register={register}
+            label="Member 5 Position"
                           name="about_page_founder_five_position"
                     type="text"
                           placeholder="Team Member 5 Position"
-                  />
+          />
                         <Error errorName={errors.about_page_founder_five_position} />
                 </div>
               </div>
@@ -1150,12 +1148,12 @@ const AboutUs = ({
             </label>
             <div className="sm:col-span-4">
               <InputAreaTwo
-                register={register}
-                          label="Member 6 Name"
+              register={register}
+              label="Member 6 Name"
                           name="about_page_founder_six_name"
                 type="text"
                           placeholder="Team Member 6 Name"
-              />
+            />
                         <Error errorName={errors.about_page_founder_six_name} />
             </div>
           </div>
@@ -1165,12 +1163,12 @@ const AboutUs = ({
             </label>
             <div className="sm:col-span-4">
               <InputAreaTwo
-                register={register}
-                          label="Member 6 Position"
+              register={register}
+              label="Member 6 Position"
                           name="about_page_founder_six_position"
                 type="text"
                           placeholder="Team Member 6 Position"
-              />
+            />
                         <Error errorName={errors.about_page_founder_six_position} />
             </div>
           </div>
@@ -1196,12 +1194,12 @@ const AboutUs = ({
                   </label>
             <div className="sm:col-span-4">
                   <InputAreaTwo
-                    register={register}
-                          label="Member 7 Name"
+              register={register}
+              label="Member 7 Name"
                           name="about_page_founder_seven_name"
                     type="text"
                           placeholder="Team Member 7 Name"
-                  />
+            />
                         <Error errorName={errors.about_page_founder_seven_name} />
                 </div>
           </div>
@@ -1211,12 +1209,12 @@ const AboutUs = ({
                   </label>
             <div className="sm:col-span-4">
                   <InputAreaTwo
-                    register={register}
-                          label="Member 7 Position"
+              register={register}
+              label="Member 7 Position"
                           name="about_page_founder_seven_position"
                     type="text"
                           placeholder="Team Member 7 Position"
-                  />
+            />
                         <Error errorName={errors.about_page_founder_seven_position} />
                 </div>
               </div>
@@ -1242,12 +1240,12 @@ const AboutUs = ({
                   </label>
                       <div className="sm:col-span-4">
                   <InputAreaTwo
-                    register={register}
-                          label="Member 8 Name"
+              register={register}
+              label="Member 8 Name"
                           name="about_page_founder_eight_name"
                     type="text"
                           placeholder="Team Member 8 Name"
-                  />
+            />
                         <Error errorName={errors.about_page_founder_eight_name} />
                 </div>
               </div>
@@ -1257,12 +1255,12 @@ const AboutUs = ({
             </label>
             <div className="sm:col-span-4">
               <InputAreaTwo
-                register={register}
-                          label="Member 8 Position"
+              register={register}
+              label="Member 8 Position"
                           name="about_page_founder_eight_position"
                 type="text"
                           placeholder="Team Member 8 Position"
-              />
+            />
                         <Error errorName={errors.about_page_founder_eight_position} />
             </div>
           </div>
@@ -1288,12 +1286,12 @@ const AboutUs = ({
             </label>
             <div className="sm:col-span-4">
               <InputAreaTwo
-                register={register}
-                          label="Member 9 Name"
+              register={register}
+              label="Member 9 Name"
                           name="about_page_founder_nine_name"
                 type="text"
                           placeholder="Team Member 9 Name"
-              />
+            />
                         <Error errorName={errors.about_page_founder_nine_name} />
             </div>
           </div>
@@ -1303,12 +1301,12 @@ const AboutUs = ({
             </label>
             <div className="sm:col-span-4">
                   <InputAreaTwo
-                register={register}
-                          label="Member 9 Position"
+              register={register}
+              label="Member 9 Position"
                           name="about_page_founder_nine_position"
                     type="text"
                           placeholder="Team Member 9 Position"
-                  />
+            />
                         <Error errorName={errors.about_page_founder_nine_position} />
             </div>
           </div>
@@ -1334,12 +1332,12 @@ const AboutUs = ({
                   </label>
                       <div className="sm:col-span-4">
                   <InputAreaTwo
-                    register={register}
-                          label="Member 10 Name"
+              register={register}
+              label="Member 10 Name"
                           name="about_page_founder_ten_name"
                     type="text"
                           placeholder="Team Member 10 Name"
-                  />
+            />
                         <Error errorName={errors.about_page_founder_ten_name} />
                 </div>
                     </div>
@@ -1349,12 +1347,12 @@ const AboutUs = ({
                   </label>
                       <div className="sm:col-span-4">
                   <InputAreaTwo
-                    register={register}
-                          label="Member 10 Position"
+              register={register}
+              label="Member 10 Position"
                           name="about_page_founder_ten_position"
                     type="text"
                           placeholder="Team Member 10 Position"
-                  />
+            />
                         <Error errorName={errors.about_page_founder_ten_position} />
                 </div>
               </div>
@@ -1380,12 +1378,12 @@ const AboutUs = ({
                   </label>
                       <div className="sm:col-span-4">
                   <InputAreaTwo
-                    register={register}
-                          label="Member 11 Name"
+              register={register}
+              label="Member 11 Name"
                           name="about_page_founder_eleven_name"
                     type="text"
                           placeholder="Team Member 11 Name"
-                  />
+            />
                         <Error errorName={errors.about_page_founder_eleven_name} />
                 </div>
                 </div>
@@ -1395,12 +1393,12 @@ const AboutUs = ({
                   </label>
             <div className="sm:col-span-4">
                   <InputAreaTwo
-                    register={register}
-                          label="Member 11 Position"
+              register={register}
+              label="Member 11 Position"
                           name="about_page_founder_eleven_position"
                     type="text"
                           placeholder="Team Member 11 Position"
-                  />
+            />
                         <Error errorName={errors.about_page_founder_eleven_position} />
                 </div>
               </div>
@@ -1426,12 +1424,12 @@ const AboutUs = ({
                   </label>
             <div className="sm:col-span-4">
                   <InputAreaTwo
-                    register={register}
-                          label="Member 12 Name"
+              register={register}
+              label="Member 12 Name"
                           name="about_page_founder_twelve_name"
                     type="text"
                           placeholder="Team Member 12 Name"
-                  />
+            />
                         <Error errorName={errors.about_page_founder_twelve_name} />
                 </div>
           </div>
@@ -1441,12 +1439,12 @@ const AboutUs = ({
                   </label>
             <div className="sm:col-span-4">
                   <InputAreaTwo
-                    register={register}
-                          label="Member 12 Position"
+              register={register}
+              label="Member 12 Position"
                           name="about_page_founder_twelve_position"
                     type="text"
                           placeholder="Team Member 12 Position"
-                  />
+            />
                         <Error errorName={errors.about_page_founder_twelve_position} />
                 </div>
               </div>
@@ -1678,8 +1676,8 @@ const AboutUs = ({
             </label>
             <div className="sm:col-span-4">
               <InputAreaTwo
-                register={register}
-                              label={`Branch ${branchNum} Name`}
+            register={register}
+            label={`Branch ${branchNum} Name`}
                               name={`about_page_branch_${branchWord}_name`}
                 type="text"
                               placeholder={`SAPT Branch ${branchNum}`}
@@ -1693,8 +1691,8 @@ const AboutUs = ({
             </label>
             <div className="sm:col-span-4">
               <TextAreaCom
-                register={register}
-                              label={`Branch ${branchNum} Address`}
+            register={register}
+            label={`Branch ${branchNum} Address`}
                               name={`about_page_branch_${branchWord}_address`}
                               placeholder="Address, City, District"
                             />
@@ -1707,12 +1705,12 @@ const AboutUs = ({
             </label>
             <div className="sm:col-span-4">
               <InputAreaTwo
-                register={register}
-                              label={`Branch ${branchNum} Phone`}
+            register={register}
+            label={`Branch ${branchNum} Phone`}
                               name={`about_page_branch_${branchWord}_phone`}
                 type="text"
                               placeholder="+966 16 123 4567"
-              />
+          />
                             <Error errorName={errors[`about_page_branch_${branchWord}_phone`]} />
             </div>
           </div>
