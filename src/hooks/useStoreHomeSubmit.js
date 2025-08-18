@@ -2529,6 +2529,16 @@ const useStoreHomeSubmit = () => {
           founder_one_name: aboutUsRes?.founder_one_name,
           value_one_title: aboutUsRes?.value_one_title
         });
+        
+        // Log the raw response structure to see the exact data
+        console.log("🔍 AboutUs Raw Response Structure:", {
+          titleType: typeof aboutUsRes?.title,
+          titleValue: aboutUsRes?.title,
+          titleKeys: aboutUsRes?.title ? Object.keys(aboutUsRes.title) : 'N/A',
+          founderOneNameType: typeof aboutUsRes?.founder_one_name,
+          founderOneNameValue: aboutUsRes?.founder_one_name,
+          founderOneNameKeys: aboutUsRes?.founder_one_name ? Object.keys(aboutUsRes.founder_one_name) : 'N/A'
+        });
         console.log("🔍 About Us Collection Data:", {
           hasAboutUsData: !!aboutUsRes,
           aboutUsKeys: Object.keys(aboutUsRes || {}),
