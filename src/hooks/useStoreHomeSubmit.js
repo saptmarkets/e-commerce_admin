@@ -2256,7 +2256,7 @@ const useStoreHomeSubmit = () => {
 
         // Refresh data from API instead of reloading page
         console.log('Refreshing data from API...');
-        const refreshedData = await SettingServices.getStoreCustomizationSetting();
+        const refreshedData = await SettingServices.getAboutUs();
         if (refreshedData) {
           setResData(refreshedData);
           console.log('Data refreshed successfully');
@@ -2264,16 +2264,16 @@ const useStoreHomeSubmit = () => {
         console.log('About to show success notification...');
         notifySuccess(res.message);
       } else {
-        console.log('Creating new settings...');
-        console.log('About to call addStoreCustomizationSetting with data:', storeCustomizationSettingData);
-        const res = await SettingServices.addStoreCustomizationSetting(
+        console.log('Creating new AboutUs data...');
+        console.log('About to call updateAboutUs with data:', storeCustomizationSettingData);
+        const res = await SettingServices.updateAboutUs(
           storeCustomizationSettingData
         );
         console.log('Create API response:', res);
         console.log('Create successful, setting isUpdate to true...');
         // await socket.emit("notification", {
-        //   message: `storeCustomizationSetting setting updated`,
-        //   option: "storeCustomizationSetting",
+        //   message: `AboutUs setting added`,
+        //   option: "AboutUs",
         // });
 
         setIsUpdate(true);
@@ -2282,7 +2282,7 @@ const useStoreHomeSubmit = () => {
 
         // Refresh data from API instead of reloading page
         console.log('Refreshing data from API...');
-        const refreshedData = await SettingServices.getStoreCustomizationSetting();
+        const refreshedData = await SettingServices.getAboutUs();
         if (refreshedData) {
           setResData(refreshedData);
           setIsSave(false); // Now we have data, so set to update mode
