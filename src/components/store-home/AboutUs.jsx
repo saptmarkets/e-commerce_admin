@@ -751,66 +751,109 @@ const AboutUs = ({
                 opacity: !ourFounderSection ? "0" : "1",
               }}
             >
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+              {/* Team Title - Bilingual */}
+              <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
+                <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                   Team Title
                 </label>
-                <div className="sm:col-span-4">
+                <div className="md:col-span-4">
                   <InputAreaTwo
                     register={register}
-                    label="Team Title"
-                    name="about_page_team_title"
+                    label="Team Title (English)"
+                    name="about_page_team_title_en"
                     type="text"
                     placeholder="Meet the SAPT Family"
                   />
-                  <Error errorName={errors.about_page_team_title} />
+                  <Error errorName={errors.about_page_team_title_en} />
+                </div>
+                <div className="md:col-span-4">
+                  <InputAreaTwo
+                    register={register}
+                    label="عنوان الفريق (العربية)"
+                    name="about_page_team_title_ar"
+                    type="text"
+                    placeholder="تعرف على عائلة سابت"
+                  />
+                  <Error errorName={errors.about_page_team_title_ar} />
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+              {/* Team Description - Bilingual */}
+              <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
+                <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                   Team Description
                 </label>
-                <div className="sm:col-span-4">
+                <div className="md:col-span-4">
                   <TextAreaCom
                     register={register}
-                    label="Team Description"
-                    name="about_page_team_description"
+                    label="Team Description (English)"
+                    name="about_page_team_description_en"
                     placeholder="Our dedicated team members are the backbone of SAPT Markets..."
                   />
-                  <Error errorName={errors.about_page_team_description} />
+                  <Error errorName={errors.about_page_team_description_en} />
+                </div>
+                <div className="md:col-span-4">
+                  <TextAreaCom
+                    register={register}
+                    label="وصف الفريق (العربية)"
+                    name="about_page_team_description_ar"
+                    placeholder="أعضاء فريقنا المتفانين هم العمود الفقري لأسواق سابت..."
+                  />
+                  <Error errorName={errors.about_page_team_description_ar} />
                 </div>
               </div>
 
-                    <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                    {/* Leadership Title - Bilingual */}
+                    <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
+                      <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                   Leadership Title
                       </label>
-                      <div className="sm:col-span-4">
+                      <div className="md:col-span-4">
                   <InputAreaTwo
                 register={register}
-                label="Leadership Title"
-                    name="about_page_leadership_title"
+                label="Leadership Title (English)"
+                    name="about_page_leadership_title_en"
                     type="text"
                     placeholder="Leadership that Inspires"
                   />
-                  <Error errorName={errors.about_page_leadership_title} />
+                  <Error errorName={errors.about_page_leadership_title_en} />
+                      </div>
+                      <div className="md:col-span-4">
+                  <InputAreaTwo
+                register={register}
+                label="عنوان القيادة (العربية)"
+                    name="about_page_leadership_title_ar"
+                    type="text"
+                    placeholder="قيادة تلهم"
+                  />
+                  <Error errorName={errors.about_page_leadership_title_ar} />
                       </div>
                     </div>
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+              {/* Leadership Subtitle - Bilingual */}
+              <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
+                      <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                   Leadership Subtitle
                       </label>
-                      <div className="sm:col-span-4">
+                      <div className="md:col-span-4">
                         <InputAreaTwo
                 register={register}
-                label="Leadership Subtitle"
-                    name="about_page_leadership_subtitle"
+                label="Leadership Subtitle (English)"
+                    name="about_page_leadership_subtitle_en"
                           type="text"
                     placeholder="Guided by Vision, Committed to Excellence"
               />
-                  <Error errorName={errors.about_page_leadership_subtitle} />
+                  <Error errorName={errors.about_page_leadership_subtitle_en} />
+                      </div>
+                      <div className="md:col-span-4">
+                        <InputAreaTwo
+                register={register}
+                label="نص فرعي للقيادة (العربية)"
+                    name="about_page_leadership_subtitle_ar"
+                          type="text"
+                    placeholder="موجهون بالرؤية، ملتزمون بالتميز"
+              />
+                  <Error errorName={errors.about_page_leadership_subtitle_ar} />
                       </div>
                     </div>
 
@@ -908,133 +951,217 @@ const AboutUs = ({
                   </TabList>
 
                   <TabPanel className="mt-10">
-                    <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                    {/* Value One Title - Bilingual */}
+                    <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+                      <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                         Value One Title
                       </label>
-                      <div className="sm:col-span-4">
+                      <div className="md:col-span-4">
                         <InputAreaTwo
                        register={register}
-                       label="Value One Title"
-                          name="about_page_value_one_title"
+                       label="Value One Title (English)"
+                          name="about_page_value_one_title_en"
                           type="text"
                           placeholder="Quality First"
                         />
-                        <Error errorName={errors.about_page_value_one_title} />
+                        <Error errorName={errors.about_page_value_one_title_en} />
+                      </div>
+                      <div className="md:col-span-4">
+                        <InputAreaTwo
+                       register={register}
+                       label="عنوان القيمة الأولى (العربية)"
+                          name="about_page_value_one_title_ar"
+                          type="text"
+                          placeholder="الجودة أولاً"
+                        />
+                        <Error errorName={errors.about_page_value_one_title_ar} />
                       </div>
                     </div>
 
-                    <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                    {/* Value One Description - Bilingual */}
+                    <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+                      <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                         Value One Description
                       </label>
-                      <div className="sm:col-span-4">
+                      <div className="md:col-span-4">
                         <TextAreaCom
                        register={register}
-                       label="Value One Description"
-                          name="about_page_value_one_description"
+                       label="Value One Description (English)"
+                          name="about_page_value_one_description_en"
                           placeholder="We never compromise on the quality of our products..."
                      />
-                        <Error errorName={errors.about_page_value_one_description} />
+                        <Error errorName={errors.about_page_value_one_description_en} />
+                      </div>
+                      <div className="md:col-span-4">
+                        <TextAreaCom
+                       register={register}
+                       label="وصف القيمة الأولى (العربية)"
+                          name="about_page_value_one_description_ar"
+                          placeholder="نحن لا نتنازل أبدًا عن جودة منتجاتنا..."
+                     />
+                        <Error errorName={errors.about_page_value_one_description_ar} />
                       </div>
                     </div>
                   </TabPanel>
 
                   <TabPanel>
-                    <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                    {/* Value Two Title - Bilingual */}
+                    <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+                      <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                         Value Two Title
                       </label>
-                      <div className="sm:col-span-4">
+                      <div className="md:col-span-4">
                         <InputAreaTwo
                       register={register}
-                      label="Value Two Title"
-                          name="about_page_value_two_title"
+                      label="Value Two Title (English)"
+                          name="about_page_value_two_title_en"
                           type="text"
                           placeholder="Customer Care"
                         />
-                        <Error errorName={errors.about_page_value_two_title} />
+                        <Error errorName={errors.about_page_value_two_title_en} />
+                      </div>
+                      <div className="md:col-span-4">
+                        <InputAreaTwo
+                      register={register}
+                      label="عنوان القيمة الثانية (العربية)"
+                          name="about_page_value_two_title_ar"
+                          type="text"
+                          placeholder="رعاية العملاء"
+                        />
+                        <Error errorName={errors.about_page_value_two_title_ar} />
                       </div>
                     </div>
 
-                    <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                    {/* Value Two Description - Bilingual */}
+                    <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+                      <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                         Value Two Description
                       </label>
-                      <div className="sm:col-span-4">
+                      <div className="md:col-span-4">
                         <TextAreaCom
                       register={register}
-                      label="Value Two Description"
-                          name="about_page_value_two_description"
+                      label="Value Two Description (English)"
+                          name="about_page_value_two_description_en"
                           placeholder="Every customer is valued and deserves exceptional service..."
                     />
-                        <Error errorName={errors.about_page_value_two_description} />
+                        <Error errorName={errors.about_page_value_two_description_en} />
+                      </div>
+                      <div className="md:col-span-4">
+                        <TextAreaCom
+                      register={register}
+                      label="وصف القيمة الثانية (العربية)"
+                          name="about_page_value_two_description_ar"
+                          placeholder="كل عميل محترم ويستحق خدمة استثنائية..."
+                    />
+                        <Error errorName={errors.about_page_value_two_description_ar} />
                       </div>
                     </div>
                   </TabPanel>
 
                   <TabPanel>
-                    <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                    {/* Value Three Title - Bilingual */}
+                    <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+                      <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                         Value Three Title
                       </label>
-                      <div className="sm:col-span-4">
+                      <div className="md:col-span-4">
                         <InputAreaTwo
                        register={register}
-                       label="Value Three Title"
-                          name="about_page_value_three_title"
+                       label="Value Three Title (English)"
+                          name="about_page_value_three_title_en"
                           type="text"
                           placeholder="Community Focus"
                         />
-                        <Error errorName={errors.about_page_value_three_title} />
+                        <Error errorName={errors.about_page_value_three_title_en} />
+                      </div>
+                      <div className="md:col-span-4">
+                        <InputAreaTwo
+                       register={register}
+                       label="عنوان القيمة الثالثة (العربية)"
+                          name="about_page_value_three_title_ar"
+                          type="text"
+                          placeholder="التركيز على المجتمع"
+                        />
+                        <Error errorName={errors.about_page_value_three_title_ar} />
                       </div>
                     </div>
 
-                    <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                    {/* Value Three Description - Bilingual */}
+                    <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+                      <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                         Value Three Description
                       </label>
-                      <div className="sm:col-span-4">
+                      <div className="md:col-span-4">
                         <TextAreaCom
                        register={register}
-                       label="Value Three Description"
-                          name="about_page_value_three_description"
+                       label="Value Three Description (English)"
+                          name="about_page_value_three_description_en"
                           placeholder="We're not just a store; we're part of the Qassim community..."
                      />
-                        <Error errorName={errors.about_page_value_three_description} />
+                        <Error errorName={errors.about_page_value_three_description_en} />
+                      </div>
+                      <div className="md:col-span-4">
+                        <TextAreaCom
+                       register={register}
+                       label="وصف القيمة الثالثة (العربية)"
+                          name="about_page_value_three_description_ar"
+                          placeholder="نحن لسنا مجرد متجر؛ نحن جزء من مجتمع القصيم..."
+                     />
+                        <Error errorName={errors.about_page_value_three_description_ar} />
                       </div>
                     </div>
                   </TabPanel>
 
                   <TabPanel>
-                    <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                    {/* Value Four Title - Bilingual */}
+                    <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+                      <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                         Value Four Title
                       </label>
-                      <div className="sm:col-span-4">
+                      <div className="md:col-span-4">
                         <InputAreaTwo
                        register={register}
-                       label="Value Four Title"
-                          name="about_page_value_four_title"
+                       label="Value Four Title (English)"
+                          name="about_page_value_four_title_en"
                           type="text"
                           placeholder="Innovation"
                         />
-                        <Error errorName={errors.about_page_value_four_title} />
+                        <Error errorName={errors.about_page_value_four_title_en} />
+                      </div>
+                      <div className="md:col-span-4">
+                        <InputAreaTwo
+                       register={register}
+                       label="عنوان القيمة الرابعة (العربية)"
+                          name="about_page_value_four_title_ar"
+                          type="text"
+                          placeholder="الابتكار"
+                        />
+                        <Error errorName={errors.about_page_value_four_title_ar} />
                       </div>
                     </div>
 
-                    <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                    {/* Value Four Description - Bilingual */}
+                    <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+                      <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                         Value Four Description
                       </label>
-                      <div className="sm:col-span-4">
+                      <div className="md:col-span-4">
                         <TextAreaCom
                        register={register}
-                       label="Value Four Description"
-                          name="about_page_value_four_description"
+                       label="Value Four Description (English)"
+                          name="about_page_value_four_description_en"
                           placeholder="We continuously evolve to meet changing customer needs..."
                      />
-                        <Error errorName={errors.about_page_value_four_description} />
+                        <Error errorName={errors.about_page_value_four_description_en} />
+                      </div>
+                      <div className="md:col-span-4">
+                        <TextAreaCom
+                       register={register}
+                       label="وصف القيمة الرابعة (العربية)"
+                          name="about_page_value_four_description_ar"
+                          placeholder="نحن نتطور باستمرار لتلبية احتياجات العملاء المتغيرة..."
+                     />
+                        <Error errorName={errors.about_page_value_four_description_ar} />
                       </div>
                     </div>
                   </TabPanel>
@@ -1104,34 +1231,56 @@ const AboutUs = ({
                         />
                       </div>
                     </div>
-                    <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                    {/* Member 1 Name - Bilingual */}
+                    <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+                      <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                         Member 1 Name
                       </label>
-                      <div className="sm:col-span-4">
+                      <div className="md:col-span-4">
                         <InputAreaTwo
                       register={register}
-                      label="Member 1 Name"
-                          name="about_page_founder_one_name"
+                      label="Member 1 Name (English)"
+                          name="about_page_founder_one_name_en"
                           type="text"
                           placeholder="Team Member 1 Name"
                         />
-                        <Error errorName={errors.about_page_founder_one_name} />
+                        <Error errorName={errors.about_page_founder_one_name_en} />
                       </div>
-                    </div>
-                    <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                        Member 1 Position
-                      </label>
-                      <div className="sm:col-span-4">
+                      <div className="md:col-span-4">
                         <InputAreaTwo
                       register={register}
-                      label="Member 1 Position"
-                          name="about_page_founder_one_position"
+                      label="اسم العضو الأول (العربية)"
+                          name="about_page_founder_one_name_ar"
+                          type="text"
+                          placeholder="اسم عضو الفريق الأول"
+                        />
+                        <Error errorName={errors.about_page_founder_one_name_ar} />
+                      </div>
+                    </div>
+                    {/* Member 1 Position - Bilingual */}
+                    <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+                      <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                        Member 1 Position
+                      </label>
+                      <div className="md:col-span-4">
+                        <InputAreaTwo
+                      register={register}
+                      label="Member 1 Position (English)"
+                          name="about_page_founder_one_position_en"
                           type="text"
                           placeholder="Team Member 1 Position"
                     />
-                        <Error errorName={errors.about_page_founder_one_position} />
+                        <Error errorName={errors.about_page_founder_one_position_en} />
+                      </div>
+                      <div className="md:col-span-4">
+                        <InputAreaTwo
+                      register={register}
+                      label="منصب العضو الأول (العربية)"
+                          name="about_page_founder_one_position_ar"
+                          type="text"
+                          placeholder="منصب عضو الفريق الأول"
+                    />
+                        <Error errorName={errors.about_page_founder_one_position_ar} />
                       </div>
                     </div>
                   </TabPanel>
