@@ -39,20 +39,6 @@ const SettingServices = {
   updateStoreCustomizationSetting: async (body) => {
     return requests.put(`/setting/store/customization/update`, body);
   },
-
-  // NEW: About Us dedicated collection functions
-  getAboutUs: async () => {
-    return requests.get("/setting/store/customization/about-us");
-  },
-
-  updateAboutUs: async (body) => {
-    return requests.put("/setting/store/customization/about-us", body);
-  },
-
-  // NEW: Get all store customization data (merged from both collections)
-  getAllStoreCustomization: async () => {
-    return requests.get("/setting/store/customization/merged");
-  },
 };
 
 export default SettingServices;
