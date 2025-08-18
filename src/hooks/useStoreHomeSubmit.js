@@ -2878,31 +2878,31 @@ const useStoreHomeSubmit = () => {
 
           // about us
           console.log("🔍 Setting About Us form values...");
-          console.log("Header status:", res?.about_us?.header_status);
-          console.log("Title:", res?.about_us?.title);
-          console.log("Branches title:", res?.about_us?.branches_title);
+          console.log("Header status:", res?.header_status);
+          console.log("Title:", res?.title);
+          console.log("Branches title:", res?.branches_title);
 
-          setAboutPageHeader(res?.about_us?.header_status);
-          setAboutHeaderBg(res?.about_us?.header_bg);
-          setAboutTopContentLeft(res?.about_us?.content_left_status);
-          setAboutTopContentRight(res?.about_us?.content_right_status);
-          setAboutTopContentRightImage(res?.about_us?.top_section_image);
-          setAboutMiddleContentSection(res?.about_us?.content_middle_status);
-          setAboutMiddleContentImage(res?.about_us?.content_middle_Img);
-          setOurFounderSection(res?.about_us?.founder_status);
-          setOurFounderOneImage(res?.about_us?.founder_one_img);
-          setOurFounderTwoImage(res?.about_us?.founder_two_img);
-          setOurFounderThreeImage(res?.about_us?.founder_three_img);
-          setOurFounderFourImage(res?.about_us?.founder_four_img);
-          setOurFounderFiveImage(res?.about_us?.founder_five_img);
-          setOurFounderSixImage(res?.about_us?.founder_six_img);
-          console.log("Setting about_page_title:", res?.about_us?.title);
-          setValue("about_page_title_en", res?.about_us?.title?.en || "");
-          setValue("about_page_title_ar", res?.about_us?.title?.ar || "");
-          console.log("Setting about_page_top_section_title:", res?.about_us?.top_section_title);
+          setAboutPageHeader(res?.header_status);
+          setAboutHeaderBg(res?.header_bg);
+          setAboutTopContentLeft(res?.content_left_status);
+          setAboutTopContentRight(res?.content_right_status);
+          setAboutTopContentRightImage(res?.top_section_image);
+          setAboutMiddleContentSection(res?.content_middle_status);
+          setAboutMiddleContentImage(res?.content_middle_Img);
+          setOurFounderSection(res?.founder_status);
+          setOurFounderOneImage(res?.founder_one_img);
+          setOurFounderTwoImage(res?.founder_two_img);
+          setOurFounderThreeImage(res?.founder_three_img);
+          setOurFounderFourImage(res?.founder_four_img);
+          setOurFounderFiveImage(res?.founder_five_img);
+          setOurFounderSixImage(res?.founder_six_img);
+          console.log("Setting about_page_title:", res?.title);
+          setValue("about_page_title_en", res?.title?.en || "");
+          setValue("about_page_title_ar", res?.title?.ar || "");
+          console.log("Setting about_page_top_section_title:", res?.top_section_title);
           setValue(
             "about_page_top_section_title",
-            res?.about_us?.top_section_title?.[language || "en"] || ""
+            res?.top_section_title?.[language || "en"] || ""
           );
           setValue(
             "about_us_top_description",
@@ -4486,14 +4486,14 @@ const useStoreHomeSubmit = () => {
           });
 
           // Initialize section toggles based on data presence
-          if (res?.about_us?.values_title || res?.about_us?.value_one_title || res?.about_us?.value_two_title) {
+          if (res?.values_title || res?.value_one_title || res?.value_two_title) {
             setAboutCoreValues(true);
           }
           
           // Check for branches_status first, then fall back to data presence
-          if (res?.about_us?.branches_status !== undefined) {
-            setAboutBranches(res.about_us.branches_status);
-          } else if (res?.about_us?.branches_title || res?.about_us?.branch_one_name || res?.about_us?.upcoming_branches_title) {
+          if (res?.branches_status !== undefined) {
+            setAboutBranches(res.branches_status);
+          } else if (res?.branches_title || res?.branch_one_name || res?.upcoming_branches_title) {
             setAboutBranches(true);
           }
 
