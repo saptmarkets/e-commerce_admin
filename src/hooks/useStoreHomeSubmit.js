@@ -148,6 +148,7 @@ const useStoreHomeSubmit = () => {
     control,
     formState: { errors },
   } = useForm({
+    shouldUnregister: false,
     defaultValues: {
       about_page_upcoming_branch_one_name: "",
       about_page_upcoming_branch_one_address: "",
@@ -911,16 +912,19 @@ const useStoreHomeSubmit = () => {
             // Team Members (12 members) - FIXED FIELD MAPPING
             founder_one_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_one_name,
-              [language]: finalFormData.about_page_founder_one_name || "",
+              en: finalFormData.about_page_founder_one_name_en,
+              ar: finalFormData.about_page_founder_one_name_ar,
             }),
             founder_one_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_one_position,
-              [language]: finalFormData.about_page_founder_one_position || "",
+              en: finalFormData.about_page_founder_one_position_en,
+              ar: finalFormData.about_page_founder_one_position_ar,
             }),
             // CRITICAL FIX: founder_one_sub should map to position field, not sub field
             founder_one_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_one_sub,
-              [language]: finalFormData.about_page_founder_one_position || "",
+              en: finalFormData.about_page_founder_one_position_en,
+              ar: finalFormData.about_page_founder_one_position_ar,
             }),
             founder_two_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_two_name,
