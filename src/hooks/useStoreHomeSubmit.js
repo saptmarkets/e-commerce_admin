@@ -2237,18 +2237,186 @@ const useStoreHomeSubmit = () => {
       // setIsSubmitting(false);
       // return;
 
+      // Create separate payloads for different collections
+      const aboutUsPayload = {
+        title: aboutPageTitle,
+        hero_description: aboutPageDescription,
+        top_section_title: aboutPageTopSectionTitle,
+        top_section_description: aboutPageTopSectionDescription,
+        top_title: aboutPageTopTitle,
+        top_description: aboutPageTopDescription,
+        card_one_title: aboutPageCardOneTitle,
+        card_one_sub: aboutPageCardOneSub,
+        card_one_description: aboutPageCardOneDescription,
+        card_two_title: aboutPageCardTwoTitle,
+        card_two_sub: aboutPageCardTwoSub,
+        card_two_description: aboutPageCardTwoDescription,
+        middle_description_one: aboutPageMiddleDescriptionOne,
+        middle_description_two: aboutPageMiddleDescriptionTwo,
+        founder_title: aboutPageFounderTitle,
+        founder_description: aboutPageFounderDescription,
+        founder_one_name: aboutPageFounderOneName,
+        founder_one_position: aboutPageFounderOnePosition,
+        founder_one_sub: aboutPageFounderOneSub,
+        founder_two_name: aboutPageFounderTwoName,
+        founder_two_position: aboutPageFounderTwoPosition,
+        founder_two_sub: aboutPageFounderTwoSub,
+        founder_three_name: aboutPageFounderThreeName,
+        founder_three_position: aboutPageFounderThreePosition,
+        founder_three_sub: aboutPageFounderThreeSub,
+        founder_four_name: aboutPageFounderFourName,
+        founder_four_position: aboutPageFounderFourPosition,
+        founder_four_sub: aboutPageFounderFourSub,
+        founder_five_name: aboutPageFounderFiveName,
+        founder_five_position: aboutPageFounderFivePosition,
+        founder_five_sub: aboutPageFounderFiveSub,
+        founder_six_name: aboutPageFounderSixName,
+        founder_six_position: aboutPageFounderSixPosition,
+        founder_six_sub: aboutPageFounderSixSub,
+        founder_seven_name: aboutPageFounderSevenName,
+        founder_seven_position: aboutPageFounderSevenPosition,
+        founder_seven_sub: aboutPageFounderSevenSub,
+        founder_eight_name: aboutPageFounderEightName,
+        founder_eight_position: aboutPageFounderEightPosition,
+        founder_eight_sub: aboutPageFounderEightSub,
+        founder_nine_name: aboutPageFounderNineName,
+        founder_nine_position: aboutPageFounderNinePosition,
+        founder_nine_sub: aboutPageFounderNineSub,
+        founder_ten_name: aboutPageFounderTenName,
+        founder_ten_position: aboutPageFounderTenPosition,
+        founder_ten_sub: aboutPageFounderTenSub,
+        founder_eleven_name: aboutPageFounderElevenName,
+        founder_eleven_position: aboutPageFounderElevenPosition,
+        founder_eleven_sub: aboutPageFounderElevenSub,
+        founder_twelve_name: aboutPageFounderTwelveName,
+        founder_twelve_position: aboutPageFounderTwelvePosition,
+        founder_twelve_sub: aboutPageFounderTwelveSub,
+        values_title: aboutPageValuesTitle,
+        values_description: aboutPageValuesDescription,
+        value_one_title: aboutPageValueOneTitle,
+        value_one_description: aboutPageValueOneDescription,
+        value_two_title: aboutPageValueTwoTitle,
+        value_two_description: aboutPageValueTwoDescription,
+        value_three_title: aboutPageValueThreeTitle,
+        value_three_description: aboutPageValueThreeDescription,
+        value_four_title: aboutPageValueFourTitle,
+        value_four_description: aboutPageValueFourDescription,
+        community_title: aboutPageCommunityTitle,
+        community_description_one: aboutPageCommunityDescriptionOne,
+        community_description_two: aboutPageCommunityDescriptionTwo,
+        community_stat_one_number: aboutPageCommunityStatOneNumber,
+        community_stat_one_label: aboutPageCommunityStatOneLabel,
+        community_stat_two_number: aboutPageCommunityStatTwoNumber,
+        community_stat_two_label: aboutPageCommunityStatTwoLabel,
+        community_cta_title: aboutPageCommunityCtaTitle,
+        community_cta_description: aboutPageCommunityCtaDescription,
+        heritage_title: aboutPageHeritageTitle,
+        heritage_description_one: aboutPageHeritageDescriptionOne,
+        heritage_description_two: aboutPageHeritageDescriptionTwo,
+        team_title: aboutPageTeamTitle,
+        team_description: aboutPageTeamDescription,
+        leadership_title: aboutPageLeadershipTitle,
+        leadership_subtitle: aboutPageLeadershipSubtitle,
+        branches_title: aboutPageBranchesTitle,
+        branches_description: aboutPageBranchesDescription,
+        branches_cta_title: aboutPageBranchesCtaTitle,
+        branches_cta_description: aboutPageBranchesCtaDescription,
+        upcoming_branches_title: aboutPageUpcomingBranchesTitle,
+        branch_one_name: aboutPageBranchOneName,
+        branch_one_address: aboutPageBranchOneAddress,
+        branch_one_phone: aboutPageBranchOnePhone,
+        branch_one_hours: aboutPageBranchOneHours,
+        branch_one_subtitle: aboutPageBranchOneSubtitle,
+        branch_one_services: aboutPageBranchOneServices,
+        branch_one_directions: aboutPageBranchOneDirections,
+        branch_two_name: aboutPageBranchTwoName,
+        branch_two_address: aboutPageBranchTwoAddress,
+        branch_two_phone: aboutPageBranchTwoPhone,
+        branch_two_hours: aboutPageBranchTwoHours,
+        branch_two_subtitle: aboutPageBranchTwoSubtitle,
+        branch_two_services: aboutPageBranchTwoServices,
+        branch_two_directions: aboutPageBranchTwoDirections,
+        branch_three_name: aboutPageBranchThreeName,
+        branch_three_address: aboutPageBranchThreeAddress,
+        branch_three_phone: aboutPageBranchThreePhone,
+        branch_three_hours: aboutPageBranchThreeHours,
+        branch_three_subtitle: aboutPageBranchThreeSubtitle,
+        branch_three_services: aboutPageBranchThreeServices,
+        branch_three_directions: aboutPageBranchThreeDirections,
+        branch_four_name: aboutPageBranchFourName,
+        branch_four_address: aboutPageBranchFourAddress,
+        branch_four_phone: aboutPageBranchFourPhone,
+        branch_four_hours: aboutPageBranchFourHours,
+        branch_four_subtitle: aboutPageBranchFourSubtitle,
+        branch_four_services: aboutPageBranchFourServices,
+        branch_four_directions: aboutPageBranchFourDirections,
+        branch_five_name: aboutPageBranchFiveName,
+        branch_five_address: aboutPageBranchFiveAddress,
+        branch_five_phone: aboutPageBranchFivePhone,
+        branch_five_hours: aboutPageBranchFiveHours,
+        branch_five_subtitle: aboutPageBranchFiveSubtitle,
+        branch_five_services: aboutPageBranchFiveServices,
+        branch_five_directions: aboutPageBranchFiveDirections,
+        branch_six_name: aboutPageBranchSixName,
+        branch_six_address: aboutPageBranchSixAddress,
+        branch_six_phone: aboutPageBranchSixPhone,
+        branch_six_hours: aboutPageBranchSixHours,
+        branch_six_subtitle: aboutPageBranchSixSubtitle,
+        branch_six_services: aboutPageBranchSixServices,
+        branch_six_directions: aboutPageBranchSixDirections,
+        branch_seven_name: aboutPageBranchSevenName,
+        branch_seven_address: aboutPageBranchSevenAddress,
+        branch_seven_phone: aboutPageBranchSevenPhone,
+        branch_seven_hours: aboutPageBranchSevenHours,
+        branch_seven_subtitle: aboutPageBranchSevenSubtitle,
+        branch_seven_services: aboutPageBranchSevenServices,
+        branch_seven_directions: aboutPageBranchSevenDirections,
+        branch_eight_name: aboutPageBranchEightName,
+        branch_eight_address: aboutPageBranchEightAddress,
+        branch_eight_phone: aboutPageBranchEightPhone,
+        branch_eight_hours: aboutPageBranchEightHours,
+        branch_eight_subtitle: aboutPageBranchEightSubtitle,
+        branch_eight_services: aboutPageBranchEightServices,
+        branch_eight_directions: aboutPageBranchEightDirections,
+        upcoming_branch_one_name: aboutPageUpcomingBranchOneName,
+        upcoming_branch_one_address: aboutPageUpcomingBranchOneAddress,
+        upcoming_branch_one_quarter: aboutPageUpcomingBranchOneQuarter,
+        upcoming_branch_one_features: aboutPageUpcomingBranchOneFeatures,
+        upcoming_branch_one_emoji: aboutPageUpcomingBranchOneEmoji,
+        upcoming_branch_two_name: aboutPageUpcomingBranchTwoName,
+        upcoming_branch_two_address: aboutPageUpcomingBranchTwoAddress,
+        upcoming_branch_two_quarter: aboutPageUpcomingBranchTwoQuarter,
+        upcoming_branch_two_features: aboutPageUpcomingBranchTwoFeatures,
+        upcoming_branch_two_emoji: aboutPageUpcomingBranchTwoEmoji,
+        trusted_badge_one_pill: aboutPageTrustedBadgeOnePill,
+        trusted_badge_one_text: aboutPageTrustedBadgeOneText,
+        trusted_badge_two_pill: aboutPageTrustedBadgeTwoPill,
+        trusted_badge_two_text: aboutPageTrustedBadgeTwoText,
+        header_status: aboutPageHeader,
+        header_bg: aboutHeaderBg,
+        content_left_status: aboutContentLeft,
+        content_right_status: aboutContentRight,
+        top_section_image: aboutTopSectionImage,
+        content_middle_status: aboutContentMiddle,
+        content_middle_Img: aboutContentMiddleImg,
+        founder_status: aboutPageFounderSection,
+        founder_one_img: aboutFounderOneImg,
+        founder_two_img: aboutFoundedTwoImg,
+        founder_three_img: aboutFounderThreeImg,
+        founder_four_img: aboutFounderFourImg,
+        founder_five_img: aboutFounderFiveImg,
+        founder_six_img: aboutFounderSixImg,
+        branches_status: aboutBranches
+      };
+
+      console.log('🔍 AboutUs Payload being sent:', aboutUsPayload);
+
       if (!isSave) {
         console.log('Updating existing settings...');
-        console.log('About to call updateAboutUs with data:', storeCustomizationSettingData);
-        const res = await SettingServices.updateAboutUs(
-          storeCustomizationSettingData
-        );
+        console.log('About to call updateAboutUs with AboutUs data:', aboutUsPayload);
+        const res = await SettingServices.updateAboutUs(aboutUsPayload);
         console.log('Update API response:', res);
         console.log('Update successful, setting isUpdate to true...');
-        // await socket.emit("notification", {
-        //   message: `storeCustomizationSetting setting added`,
-        //   option: "storeCustomizationSetting",
-        // });
 
         setIsUpdate(true);
         console.log('Setting isSubmitting to false...');
@@ -2262,19 +2430,13 @@ const useStoreHomeSubmit = () => {
           console.log('Data refreshed successfully');
         }
         console.log('About to show success notification...');
-        notifySuccess(res.message);
+        notifySuccess(res.message || 'About Us updated successfully');
       } else {
         console.log('Creating new AboutUs data...');
-        console.log('About to call updateAboutUs with data:', storeCustomizationSettingData);
-        const res = await SettingServices.updateAboutUs(
-          storeCustomizationSettingData
-        );
+        console.log('About to call updateAboutUs with AboutUs data:', aboutUsPayload);
+        const res = await SettingServices.updateAboutUs(aboutUsPayload);
         console.log('Create API response:', res);
         console.log('Create successful, setting isUpdate to true...');
-        // await socket.emit("notification", {
-        //   message: `AboutUs setting added`,
-        //   option: "AboutUs",
-        // });
 
         setIsUpdate(true);
         console.log('Setting isSubmitting to false...');
@@ -2289,7 +2451,7 @@ const useStoreHomeSubmit = () => {
           console.log('Data refreshed successfully, switched to update mode');
         }
         console.log('About to show success notification...');
-        notifySuccess(res.message);
+        notifySuccess(res.message || 'About Us created successfully');
       }
     } catch (err) {
       console.error('=== ERROR IN ONSUBMIT ===');
@@ -2334,6 +2496,16 @@ const useStoreHomeSubmit = () => {
         console.log("🔍 AboutUs Response Keys:", Object.keys(aboutUsRes || {}));
         console.log("🔍 AboutUs Response Values:", Object.values(aboutUsRes || {}));
         console.log("🔍 AboutUs Response Length:", Object.keys(aboutUsRes || {}).length);
+        
+        // Log the actual field values to see what we're getting
+        console.log("🔍 AboutUs Field Values:", {
+          title: aboutUsRes?.title,
+          header_status: aboutUsRes?.header_status,
+          founder_status: aboutUsRes?.founder_status,
+          branches_status: aboutUsRes?.branches_status,
+          founder_one_name: aboutUsRes?.founder_one_name,
+          value_one_title: aboutUsRes?.value_one_title
+        });
         console.log("🔍 About Us Collection Data:", {
           hasAboutUsData: !!aboutUsRes,
           aboutUsKeys: Object.keys(aboutUsRes || {}),
@@ -2965,7 +3137,7 @@ const useStoreHomeSubmit = () => {
           );
           setValue(
             "about_us_top_description",
-            res?.about_us?.top_description[language || "en"]
+            aboutUsRes?.top_description?.[language || "en"] || ""
           );
           console.log("Setting about_page_card_one_title:", res?.about_us?.card_one_title);
           setValue(
@@ -3016,7 +3188,7 @@ const useStoreHomeSubmit = () => {
           );
           setValue(
             "about_page_founder_one_position",
-            aboutUsRes?.founder_one_sub?.[language || "en"] || ""
+            aboutUsRes?.founder_one_position?.[language || "en"] || ""
           );
           setValue(
             "about_page_founder_two_name",
