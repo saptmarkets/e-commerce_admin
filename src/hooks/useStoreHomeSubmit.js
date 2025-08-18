@@ -158,10 +158,22 @@ const useStoreHomeSubmit = () => {
       about_page_upcoming_branch_two_quarter: "",
       about_page_upcoming_branch_two_features: "",
       about_page_upcoming_branch_two_emoji: "",
-      about_page_trusted_badge_one_pill: "",
-      about_page_trusted_badge_one_text: "",
-      about_page_trusted_badge_two_pill: "",
-      about_page_trusted_badge_two_text: "",
+      about_page_title_en: "",
+      about_page_title_ar: "",
+      about_page_hero_description_en: "",
+      about_page_hero_description_ar: "",
+      about_page_top_section_title_en: "",
+      about_page_top_section_title_ar: "",
+      about_page_top_section_description_en: "",
+      about_page_top_section_description_ar: "",
+      about_page_trusted_badge_one_pill_en: "",
+      about_page_trusted_badge_one_pill_ar: "",
+      about_page_trusted_badge_one_text_en: "",
+      about_page_trusted_badge_one_text_ar: "",
+      about_page_trusted_badge_two_pill_en: "",
+      about_page_trusted_badge_two_pill_ar: "",
+      about_page_trusted_badge_two_text_en: "",
+      about_page_trusted_badge_two_text_ar: "",
     },
   });
 
@@ -371,22 +383,26 @@ const useStoreHomeSubmit = () => {
             founder_twelve_img: ourFounderTwelveImage,
             title: handleRemoveEmptyKey({
               ...resData?.about_us?.title,
-              [language]: data.about_page_title || "",
+              en: data.about_page_title_en || "",
+              ar: data.about_page_title_ar || "",
             }),
 
             hero_description: handleRemoveEmptyKey({
               ...resData?.about_us?.hero_description,
-              [language]: data.about_page_hero_description || "",
+              en: data.about_page_hero_description_en || "",
+              ar: data.about_page_hero_description_ar || "",
             }),
 
             top_section_title: handleRemoveEmptyKey({
               ...resData?.about_us?.top_section_title,
-              [language]: data.about_page_top_section_title || "",
+              en: data.about_page_top_section_title_en || "",
+              ar: data.about_page_top_section_title_ar || "",
             }),
 
             top_section_description: handleRemoveEmptyKey({
               ...resData?.about_us?.top_section_description,
-              [language]: data.about_page_top_section_description || "",
+              en: data.about_page_top_section_description_en || "",
+              ar: data.about_page_top_section_description_ar || "",
             }),
 
             top_section_image: aboutTopContentRightImage,
@@ -1090,19 +1106,23 @@ const useStoreHomeSubmit = () => {
             }),
             trusted_badge_one_pill: handleRemoveEmptyKey({
               ...resData?.about_us?.trusted_badge_one_pill,
-              [language]: data.about_page_trusted_badge_one_pill || "",
+              en: data.about_page_trusted_badge_one_pill_en || "",
+              ar: data.about_page_trusted_badge_one_pill_ar || "",
             }),
             trusted_badge_one_text: handleRemoveEmptyKey({
               ...resData?.about_us?.trusted_badge_one_text,
-              [language]: data.about_page_trusted_badge_one_text || "",
+              en: data.about_page_trusted_badge_one_text_en || "",
+              ar: data.about_page_trusted_badge_one_text_ar || "",
             }),
             trusted_badge_two_pill: handleRemoveEmptyKey({
               ...resData?.about_us?.trusted_badge_two_pill,
-              [language]: data.about_page_trusted_badge_two_pill || "",
+              en: data.about_page_trusted_badge_two_pill_en || "",
+              ar: data.about_page_trusted_badge_two_pill_ar || "",
             }),
             trusted_badge_two_text: handleRemoveEmptyKey({
               ...resData?.about_us?.trusted_badge_two_text,
-              [language]: data.about_page_trusted_badge_two_text || "",
+              en: data.about_page_trusted_badge_two_text_en || "",
+              ar: data.about_page_trusted_badge_two_text_ar || "",
             }),
           },
           contact_us: {
@@ -2475,19 +2495,32 @@ const useStoreHomeSubmit = () => {
           setOurFounderFourImage(res?.about_us?.founder_four_img);
           setOurFounderFiveImage(res?.about_us?.founder_five_img);
           setOurFounderSixImage(res?.about_us?.founder_six_img);
-          setValue("about_page_title", res?.about_us?.title[language || "en"]);
-          setValue(
-            "about_page_hero_description",
-            res?.about_us?.hero_description[language || "en"]
-          );
-          setValue(
-            "about_page_top_section_title",
-            res?.about_us?.top_section_title[language || "en"]
-          );
-          setValue(
-            "about_page_top_section_description",
-            res?.about_us?.top_section_description[language || "en"]
-          );
+                                  setValue("about_page_title_en", res?.about_us?.title?.en || "");
+                        setValue("about_page_title_ar", res?.about_us?.title?.ar || "");
+                                  setValue(
+                          "about_page_hero_description_en",
+                          res?.about_us?.hero_description?.en || ""
+                        );
+                        setValue(
+                          "about_page_hero_description_ar",
+                          res?.about_us?.hero_description?.ar || ""
+                        );
+                                  setValue(
+                          "about_page_top_section_title_en",
+                          res?.about_us?.top_section_title?.en || ""
+                        );
+                        setValue(
+                          "about_page_top_section_title_ar",
+                          res?.about_us?.top_section_title?.ar || ""
+                        );
+                                  setValue(
+                          "about_page_top_section_description_en",
+                          res?.about_us?.top_section_description?.en || ""
+                        );
+                        setValue(
+                          "about_page_top_section_description_ar",
+                          res?.about_us?.top_section_description?.ar || ""
+                        );
           setValue(
             "about_page_card_one_title",
             res?.about_us?.card_one_title[language || "en"]
@@ -2628,22 +2661,38 @@ const useStoreHomeSubmit = () => {
           );
 
           // Add other missing fields
-          setValue(
-            "about_page_trusted_badge_one_pill",
-            res?.about_us?.trusted_badge_one_pill[language || "en"]
-          );
-          setValue(
-            "about_page_trusted_badge_one_text",
-            res?.about_us?.trusted_badge_one_text[language || "en"]
-          );
-          setValue(
-            "about_page_trusted_badge_two_pill",
-            res?.about_us?.trusted_badge_two_pill[language || "en"]
-          );
-          setValue(
-            "about_page_trusted_badge_two_text",
-            res?.about_us?.trusted_badge_two_text[language || "en"]
-          );
+                                  setValue(
+                          "about_page_trusted_badge_one_pill_en",
+                          res?.about_us?.trusted_badge_one_pill?.en || ""
+                        );
+                        setValue(
+                          "about_page_trusted_badge_one_pill_ar",
+                          res?.about_us?.trusted_badge_one_pill?.ar || ""
+                        );
+                        setValue(
+                          "about_page_trusted_badge_one_text_en",
+                          res?.about_us?.trusted_badge_one_text?.en || ""
+                        );
+                        setValue(
+                          "about_page_trusted_badge_one_text_ar",
+                          res?.about_us?.trusted_badge_one_text?.ar || ""
+                        );
+                        setValue(
+                          "about_page_trusted_badge_two_pill_en",
+                          res?.about_us?.trusted_badge_two_pill?.en || ""
+                        );
+                        setValue(
+                          "about_page_trusted_badge_two_pill_ar",
+                          res?.about_us?.trusted_badge_two_pill?.ar || ""
+                        );
+                        setValue(
+                          "about_page_trusted_badge_two_text_en",
+                          res?.about_us?.trusted_badge_two_text?.en || ""
+                        );
+                        setValue(
+                          "about_page_trusted_badge_two_text_ar",
+                          res?.about_us?.trusted_badge_two_text?.ar || ""
+                        );
 
           // Add heritage section
           setValue(
