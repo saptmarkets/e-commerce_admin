@@ -2477,12 +2477,16 @@ const useStoreHomeSubmit = () => {
           setOurFounderSixImage(res?.about_us?.founder_six_img);
           setValue("about_page_title", res?.about_us?.title[language || "en"]);
           setValue(
-            "about_page_Top_title",
-            res?.about_us?.top_title[language || "en"]
+            "about_page_hero_description",
+            res?.about_us?.hero_description[language || "en"]
           );
           setValue(
-            "about_us_top_description",
-            res?.about_us?.top_description[language || "en"]
+            "about_page_top_section_title",
+            res?.about_us?.top_section_title[language || "en"]
+          );
+          setValue(
+            "about_page_top_section_description",
+            res?.about_us?.top_section_description[language || "en"]
           );
           setValue(
             "about_page_card_one_title",
@@ -2525,52 +2529,220 @@ const useStoreHomeSubmit = () => {
             res?.about_us?.founder_description[language || "en"]
           );
           setValue(
-            "about_page_ourfounder_one_title",
+            "about_page_founder_one_name",
             res?.about_us?.founder_one_name[language || "en"]
           );
           setValue(
-            "about_page_ourfounder_one_sub_title",
+            "about_page_founder_one_position",
             res?.about_us?.founder_one_sub[language || "en"]
           );
           setValue(
-            "about_page_ourfounder_two_title",
+            "about_page_founder_two_name",
             res?.about_us?.founder_two_name[language || "en"]
           );
           setValue(
-            "about_page_ourfounder_two_sub_title",
+            "about_page_founder_two_position",
             res?.about_us?.founder_two_sub[language || "en"]
           );
           setValue(
-            "about_page_ourfounder_three_title",
+            "about_page_founder_three_name",
             res?.about_us?.founder_three_name[language || "en"]
           );
           setValue(
-            "about_page_ourfounder_three_sub_title",
+            "about_page_founder_three_position",
             res?.about_us?.founder_three_sub[language || "en"]
           );
           setValue(
-            "about_page_ourfounder_four_title",
+            "about_page_founder_four_name",
             res?.about_us?.founder_four_name[language || "en"]
           );
           setValue(
-            "about_page_ourfounder_four_sub_title",
+            "about_page_founder_four_position",
             res?.about_us?.founder_four_sub[language || "en"]
           );
           setValue(
-            "about_page_ourfounder_five_title",
+            "about_page_founder_five_name",
             res?.about_us?.founder_five_name[language || "en"]
           );
           setValue(
-            "about_page_ourfounder_five_sub_title",
+            "about_page_founder_five_position",
             res?.about_us?.founder_five_sub[language || "en"]
           );
           setValue(
-            "about_page_ourfounder_six_title",
+            "about_page_founder_six_name",
             res?.about_us?.founder_six_name[language || "en"]
           );
           setValue(
-            "about_page_ourfounder_six_sub_title",
+            "about_page_founder_six_position",
             res?.about_us?.founder_six_sub[language || "en"]
+          );
+
+          // Add missing founder fields
+          setValue(
+            "about_page_founder_seven_name",
+            res?.about_us?.founder_seven_name[language || "en"]
+          );
+          setValue(
+            "about_page_founder_seven_position",
+            res?.about_us?.founder_seven_sub[language || "en"]
+          );
+          setValue(
+            "about_page_founder_eight_name",
+            res?.about_us?.founder_eight_name[language || "en"]
+          );
+          setValue(
+            "about_page_founder_eight_position",
+            res?.about_us?.founder_eight_sub[language || "en"]
+          );
+          setValue(
+            "about_page_founder_nine_name",
+            res?.about_us?.founder_nine_name[language || "en"]
+          );
+          setValue(
+            "about_page_founder_nine_position",
+            res?.about_us?.founder_nine_sub[language || "en"]
+          );
+          setValue(
+            "about_page_founder_ten_name",
+            res?.about_us?.founder_ten_name[language || "en"]
+          );
+          setValue(
+            "about_page_founder_ten_position",
+            res?.about_us?.founder_ten_sub[language || "en"]
+          );
+          setValue(
+            "about_page_founder_eleven_name",
+            res?.about_us?.founder_eleven_name[language || "en"]
+          );
+          setValue(
+            "about_page_founder_eleven_position",
+            res?.about_us?.founder_eleven_sub[language || "en"]
+          );
+          setValue(
+            "about_page_founder_twelve_name",
+            res?.about_us?.founder_twelve_name[language || "en"]
+          );
+          setValue(
+            "about_page_founder_twelve_position",
+            res?.about_us?.founder_twelve_sub[language || "en"]
+          );
+
+          // Add other missing fields
+          setValue(
+            "about_page_trusted_badge_one_pill",
+            res?.about_us?.trusted_badge_one_pill[language || "en"]
+          );
+          setValue(
+            "about_page_trusted_badge_one_text",
+            res?.about_us?.trusted_badge_one_text[language || "en"]
+          );
+          setValue(
+            "about_page_trusted_badge_two_pill",
+            res?.about_us?.trusted_badge_two_pill[language || "en"]
+          );
+          setValue(
+            "about_page_trusted_badge_two_text",
+            res?.about_us?.trusted_badge_two_text[language || "en"]
+          );
+
+          // Add heritage section
+          setValue(
+            "about_page_heritage_title",
+            res?.about_us?.heritage_title[language || "en"]
+          );
+          setValue(
+            "about_page_heritage_description_one",
+            res?.about_us?.heritage_description_one[language || "en"]
+          );
+          setValue(
+            "about_page_heritage_description_two",
+            res?.about_us?.heritage_description_two[language || "en"]
+          );
+
+          // Add team section
+          setValue(
+            "about_page_team_title",
+            res?.about_us?.team_title[language || "en"]
+          );
+          setValue(
+            "about_page_team_description",
+            res?.about_us?.team_description[language || "en"]
+          );
+          setValue(
+            "about_page_leadership_title",
+            res?.about_us?.leadership_title[language || "en"]
+          );
+          setValue(
+            "about_page_leadership_subtitle",
+            res?.about_us?.leadership_subtitle[language || "en"]
+          );
+
+          // Add values section
+          setValue(
+            "about_page_values_title",
+            res?.about_us?.values_title[language || "en"]
+          );
+          setValue(
+            "about_page_values_description",
+            res?.about_us?.values_description[language || "en"]
+          );
+
+          // Add individual values
+          setValue(
+            "about_page_value_one_title",
+            res?.about_us?.value_one_title[language || "en"]
+          );
+          setValue(
+            "about_page_value_one_description",
+            res?.about_us?.value_one_description[language || "en"]
+          );
+          setValue(
+            "about_page_value_two_title",
+            res?.about_us?.value_two_title[language || "en"]
+          );
+          setValue(
+            "about_page_value_two_description",
+            res?.about_us?.value_two_description[language || "en"]
+          );
+          setValue(
+            "about_page_value_three_title",
+            res?.about_us?.value_three_title[language || "en"]
+          );
+          setValue(
+            "about_page_value_three_description",
+            res?.about_us?.value_three_description[language || "en"]
+          );
+          setValue(
+            "about_page_value_four_title",
+            res?.about_us?.value_four_title[language || "en"]
+          );
+          setValue(
+            "about_page_value_four_description",
+            res?.about_us?.value_four_description[language || "en"]
+          );
+
+          // Add branches section
+          setValue(
+            "about_page_branches_title",
+            res?.about_us?.branches_title[language || "en"]
+          );
+          setValue(
+            "about_page_branches_description",
+            res?.about_us?.branches_description[language || "en"]
+          );
+          setValue(
+            "about_page_branches_cta_title",
+            res?.about_us?.branches_cta_title[language || "en"]
+          );
+          setValue(
+            "about_page_branches_cta_description",
+            res?.about_us?.branches_cta_description[language || "en"]
+          );
+
+          // Add upcoming branches
+          setValue(
+            "about_page_upcoming_branches_title",
+            res?.about_us?.upcoming_branches_title[language || "en"]
           );
 
           //contact us
