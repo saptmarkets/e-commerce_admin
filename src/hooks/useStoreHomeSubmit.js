@@ -175,13 +175,16 @@ const useStoreHomeSubmit = () => {
     // Create a new object to avoid mutating the original
     const newObj = { ...obj };
     
-    // Don't remove keys that have empty string values - this causes data loss
-    // Only remove null/undefined values, preserve empty strings for form fields
+    // Remove null, undefined, and empty-string values to avoid overwriting DB values with blanks
     for (const key in newObj) {
-      if (newObj[key] === null || newObj[key] === undefined) {
+      const value = newObj[key];
+      if (value === null || value === undefined) {
+        delete newObj[key];
+        continue;
+      }
+      if (typeof value === 'string' && value.trim() === '') {
         delete newObj[key];
       }
-      // Keep empty strings - they represent form fields that haven't been filled yet
     }
     
     return newObj;
@@ -275,7 +278,7 @@ const useStoreHomeSubmit = () => {
     
     // CRITICAL: If we're in Arabic mode, we need to preserve English data
     // If we're in English mode, we need to preserve Arabic data
-    if (language === 'ar' && resData?.about_us) {
+    if (false && language === 'ar' && resData?.about_us) {
       console.log('🔄 Arabic mode detected - preserving English data...');
       
       // Preserve English team member data
@@ -315,7 +318,7 @@ const useStoreHomeSubmit = () => {
           console.log(`✅ Preserved English description for value ${i}:`, resData.about_us[`value_${valueNum}_description`].en);
         }
       }
-    } else if (language === 'en' && resData?.about_us) {
+    } else if (false && language === 'en' && resData?.about_us) {
       console.log('🔄 English mode detected - preserving Arabic data...');
       
       // Preserve Arabic team member data
