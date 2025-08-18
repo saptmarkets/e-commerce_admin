@@ -1856,7 +1856,9 @@ const useStoreHomeSubmit = () => {
       // setIsSubmitting(false);
       // return;
 
+      console.log("🔍 Form submission - isSave value:", isSave);
       if (!isSave) {
+        console.log("🔄 Calling updateStoreCustomizationSetting...");
         const res = await SettingServices.updateStoreCustomizationSetting(
           storeCustomizationSettingData
         );
@@ -1871,6 +1873,7 @@ const useStoreHomeSubmit = () => {
         window.location.reload();
         notifySuccess(res.message);
       } else {
+        console.log("🆕 Calling addStoreCustomizationSetting...");
         const res = await SettingServices.addStoreCustomizationSetting(
           storeCustomizationSettingData
         );
@@ -1896,9 +1899,10 @@ const useStoreHomeSubmit = () => {
       try {
         const res = await SettingServices.getStoreCustomizationSetting();
 
-        // console.log("res", res);
+        console.log("🔍 getStoreCustomizationSetting response:", res);
 
         if (res) {
+          console.log("✅ Data loaded successfully, setting isSave to false");
           setIsSave(false);
           setResData(res);
 
