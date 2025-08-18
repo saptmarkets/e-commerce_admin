@@ -829,102 +829,66 @@ const AboutUs = ({
                   </TabPanel>
 
                   <TabPanel>
-                    <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                        Value Two Title
-                      </label>
-                      <div className="sm:col-span-4">
-                        <InputAreaTwo
-                          register={register}
-                          label="Value Two Title"
-                          name="about_page_value_two_title"
-                          type="text"
-                          placeholder="Customer Care"
-                        />
-                        <Error errorName={errors.about_page_value_two_title} />
-                      </div>
-                    </div>
+                    <BilingualInput
+                      register={register}
+                      errors={errors}
+                      baseName="about_page_value_two_title"
+                      label="Value Two Title"
+                      placeholderEn="Customer Care"
+                      placeholderAr="رعاية العملاء"
+                    />
 
-                    <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                        Value Two Description
-                      </label>
-                      <div className="sm:col-span-4">
-                        <TextAreaCom
-                          register={register}
-                          label="Value Two Description"
-                          name="about_page_value_two_description"
-                          placeholder="Every customer is valued and deserves exceptional service..."
-                        />
-                        <Error errorName={errors.about_page_value_two_description} />
-                      </div>
-                    </div>
+                    <BilingualInput
+                      register={register}
+                      errors={errors}
+                      baseName="about_page_value_two_description"
+                      label="Value Two Description"
+                      placeholderEn="Every customer is valued and deserves exceptional service..."
+                      placeholderAr="نقدّر كل عميل ونلتزم بخدمته بأفضل ما يمكن..."
+                      isTextArea={true}
+                    />
                   </TabPanel>
 
                   <TabPanel>
-                    <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                        Value Three Title
-                      </label>
-                      <div className="sm:col-span-4">
-                        <InputAreaTwo
-                          register={register}
-                          label="Value Three Title"
-                          name="about_page_value_three_title"
-                          type="text"
-                          placeholder="Community Focus"
-                        />
-                        <Error errorName={errors.about_page_value_three_title} />
-                      </div>
-                    </div>
+                                         <BilingualInput
+                       register={register}
+                       errors={errors}
+                       baseName="about_page_value_three_title"
+                       label="Value Three Title"
+                       placeholderEn="Community Focus"
+                       placeholderAr="التركيز على المجتمع"
+                     />
 
-                    <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                        Value Three Description
-                      </label>
-                      <div className="sm:col-span-4">
-                        <TextAreaCom
-                          register={register}
-                          label="Value Three Description"
-                          name="about_page_value_three_description"
-                          placeholder="We're not just a store; we're part of the Qassim community..."
-                        />
-                        <Error errorName={errors.about_page_value_three_description} />
-                      </div>
-                    </div>
+                     <BilingualInput
+                       register={register}
+                       errors={errors}
+                       baseName="about_page_value_three_description"
+                       label="Value Three Description"
+                       placeholderEn="We're not just a store; we're part of the Qassim community..."
+                       placeholderAr="نحن لسنا مجرد متجر؛ نحن جزء من مجتمع القصيم..."
+                       isTextArea={true}
+                     />
                   </TabPanel>
 
                   <TabPanel>
-                    <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                        Value Four Title
-                      </label>
-                      <div className="sm:col-span-4">
-                        <InputAreaTwo
-                          register={register}
-                          label="Value Four Title"
-                          name="about_page_value_four_title"
-                          type="text"
-                          placeholder="Innovation"
-                        />
-                        <Error errorName={errors.about_page_value_four_title} />
-                      </div>
-                    </div>
+                                         <BilingualInput
+                       register={register}
+                       errors={errors}
+                       baseName="about_page_value_four_title"
+                       label="Value Four Title"
+                       placeholderEn="Innovation"
+                       placeholderAr="الابتكار"
+                     />
 
-                    <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                        Value Four Description
-                      </label>
-                      <div className="sm:col-span-4">
-                        <TextAreaCom
-                          register={register}
-                          label="Value Four Description"
-                          name="about_page_value_four_description"
-                          placeholder="We continuously evolve to meet changing customer needs..."
-                        />
-                        <Error errorName={errors.about_page_value_four_description} />
-                      </div>
-                    </div>
+                     <BilingualInput
+                       register={register}
+                       errors={errors}
+                       baseName="about_page_value_four_description"
+                       label="Value Four Description"
+                       placeholderEn="We continuously evolve to meet changing customer needs..."
+                       placeholderAr="نواصل التطور لتلبية احتياجات العملاء المتغيرة..."
+                       isTextArea={true}
+                     />
                   </TabPanel>
                 </Tabs>
               </TabsComponent>
