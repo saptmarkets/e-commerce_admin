@@ -4671,45 +4671,112 @@ const useStoreHomeSubmit = () => {
     // Values section
     setValue("about_page_values_title", resData?.about_us?.values_title?.[lang] || "");
     setValue("about_page_values_description", resData?.about_us?.values_description?.[lang] || "");
-    setValue("about_page_value_one_title", resData?.about_us?.value_one_title?.[lang] || "");
-    setValue("about_page_value_one_description", resData?.about_us?.value_one_description?.[lang] || "");
-    setValue("about_page_value_two_title", resData?.about_us?.value_two_title?.[lang] || "");
-    setValue("about_page_value_two_description", resData?.about_us?.value_two_description?.[lang] || "");
-    setValue("about_page_value_three_title", resData?.about_us?.value_three_title?.[lang] || "");
-    setValue("about_page_value_three_description", resData?.about_us?.value_three_description?.[lang] || "");
-    setValue("about_page_value_four_title", resData?.about_us?.value_four_title?.[lang] || "");
-    setValue("about_page_value_four_description", resData?.about_us?.value_four_description?.[lang] || "");
+    setValue("about_page_value_one_title_en", resData?.about_us?.value_one_title?.en || "");
+    setValue("about_page_value_one_title_ar", resData?.about_us?.value_one_title?.ar || "");
+    setValue("about_page_value_one_description_en", resData?.about_us?.value_one_description?.en || "");
+    setValue("about_page_value_one_description_ar", resData?.about_us?.value_one_description?.ar || "");
+    setValue("about_page_value_two_title_en", resData?.about_us?.value_two_title?.en || "");
+    setValue("about_page_value_two_title_ar", resData?.about_us?.value_two_title?.ar || "");
+    setValue("about_page_value_two_description_en", resData?.about_us?.value_two_description?.en || "");
+    setValue("about_page_value_two_description_ar", resData?.about_us?.value_two_description?.ar || "");
+    setValue("about_page_value_three_title_en", resData?.about_us?.value_three_title?.en || "");
+    setValue("about_page_value_three_title_ar", resData?.about_us?.value_three_title?.ar || "");
+    setValue("about_page_value_three_description_en", resData?.about_us?.value_three_description?.en || "");
+    setValue("about_page_value_three_description_ar", resData?.about_us?.value_three_description?.ar || "");
+    setValue("about_page_value_four_title_en", resData?.about_us?.value_four_title?.en || "");
+    setValue("about_page_value_four_title_ar", resData?.about_us?.value_four_title?.ar || "");
+    setValue("about_page_value_four_description_en", resData?.about_us?.value_four_description?.en || "");
+    setValue("about_page_value_four_description_ar", resData?.about_us?.value_four_description?.ar || "");
     
     // Heritage section
     setValue("about_page_heritage_title", resData?.about_us?.heritage_title?.[lang] || "");
     setValue("about_page_heritage_description_one", resData?.about_us?.heritage_description_one?.[lang] || "");
     setValue("about_page_heritage_description_two", resData?.about_us?.heritage_description_two?.[lang] || "");
     
-    // Founder fields (1-12) - FIXED FIELD MAPPING
-    setValue("about_page_founder_one_name", resData?.about_us?.founder_one_name?.[lang] || "");
-    setValue("about_page_founder_one_position", resData?.about_us?.founder_one_sub?.[lang] || ""); // Using sub field for position
-    setValue("about_page_founder_two_name", resData?.about_us?.founder_two_name?.[lang] || "");
-    setValue("about_page_founder_two_position", resData?.about_us?.founder_two_sub?.[lang] || ""); // Using sub field for position
-    setValue("about_page_founder_three_name", resData?.about_us?.founder_three_name?.[lang] || "");
-    setValue("about_page_founder_three_position", resData?.about_us?.founder_three_sub?.[lang] || ""); // Using sub field for position
-    setValue("about_page_founder_four_name", resData?.about_us?.founder_four_name?.[lang] || "");
-    setValue("about_page_founder_four_position", resData?.about_us?.founder_four_sub?.[lang] || ""); // Using sub field for position
-    setValue("about_page_founder_five_name", resData?.about_us?.founder_five_name?.[lang] || "");
-    setValue("about_page_founder_five_position", resData?.about_us?.founder_five_sub?.[lang] || ""); // Using sub field for position
-    setValue("about_page_founder_six_name", resData?.about_us?.founder_six_name?.[lang] || "");
-    setValue("about_page_founder_six_position", resData?.about_us?.founder_six_sub?.[lang] || ""); // Using sub field for position
-    setValue("about_page_founder_seven_name", resData?.about_us?.founder_seven_name?.[lang] || "");
-    setValue("about_page_founder_seven_position", resData?.about_us?.founder_seven_sub?.[lang] || ""); // Using sub field for position
-    setValue("about_page_founder_eight_name", resData?.about_us?.founder_eight_name?.[lang] || "");
-    setValue("about_page_founder_eight_position", resData?.about_us?.founder_eight_sub?.[lang] || ""); // Using sub field for position
-    setValue("about_page_founder_nine_name", resData?.about_us?.founder_nine_name?.[lang] || "");
-    setValue("about_page_founder_nine_position", resData?.about_us?.founder_nine_sub?.[lang] || ""); // Using sub field for position
-    setValue("about_page_founder_ten_name", resData?.about_us?.founder_ten_name?.[lang] || "");
-    setValue("about_page_founder_ten_position", resData?.about_us?.founder_ten_sub?.[lang] || ""); // Using sub field for position
-    setValue("about_page_founder_eleven_name", resData?.about_us?.founder_eleven_name?.[lang] || "");
-    setValue("about_page_founder_eleven_position", resData?.about_us?.founder_eleven_sub?.[lang] || ""); // Using sub field for position
-    setValue("about_page_founder_twelve_name", resData?.about_us?.founder_twelve_name?.[lang] || "");
-    setValue("about_page_founder_twelve_position", resData?.about_us?.founder_twelve_sub?.[lang] || ""); // Using sub field for position
+    // Founder fields (1-12) - BILINGUAL FIELD MAPPING
+    setValue("about_page_founder_one_name_en", resData?.about_us?.founder_one_name?.en || "");
+    setValue("about_page_founder_one_name_ar", resData?.about_us?.founder_one_name?.ar || "");
+    setValue("about_page_founder_one_position_en", resData?.about_us?.founder_one_position?.en || "");
+    setValue("about_page_founder_one_position_ar", resData?.about_us?.founder_one_position?.ar || "");
+    setValue("about_page_founder_one_sub_en", resData?.about_us?.founder_one_sub?.en || "");
+    setValue("about_page_founder_one_sub_ar", resData?.about_us?.founder_one_sub?.ar || "");
+    
+    setValue("about_page_founder_two_name_en", resData?.about_us?.founder_two_name?.en || "");
+    setValue("about_page_founder_two_name_ar", resData?.about_us?.founder_two_name?.ar || "");
+    setValue("about_page_founder_two_position_en", resData?.about_us?.founder_two_position?.en || "");
+    setValue("about_page_founder_two_position_ar", resData?.about_us?.founder_two_position?.ar || "");
+    setValue("about_page_founder_two_sub_en", resData?.about_us?.founder_two_sub?.en || "");
+    setValue("about_page_founder_two_sub_ar", resData?.about_us?.founder_two_sub?.ar || "");
+    
+    setValue("about_page_founder_three_name_en", resData?.about_us?.founder_three_name?.en || "");
+    setValue("about_page_founder_three_name_ar", resData?.about_us?.founder_three_name?.ar || "");
+    setValue("about_page_founder_three_position_en", resData?.about_us?.founder_three_position?.en || "");
+    setValue("about_page_founder_three_position_ar", resData?.about_us?.founder_three_position?.ar || "");
+    setValue("about_page_founder_three_sub_en", resData?.about_us?.founder_three_sub?.en || "");
+    setValue("about_page_founder_three_sub_ar", resData?.about_us?.founder_three_sub?.ar || "");
+    
+    setValue("about_page_founder_four_name_en", resData?.about_us?.founder_four_name?.en || "");
+    setValue("about_page_founder_four_name_ar", resData?.about_us?.founder_four_name?.ar || "");
+    setValue("about_page_founder_four_position_en", resData?.about_us?.founder_four_position?.en || "");
+    setValue("about_page_founder_four_position_ar", resData?.about_us?.founder_four_position?.ar || "");
+    setValue("about_page_founder_four_sub_en", resData?.about_us?.founder_four_sub?.en || "");
+    setValue("about_page_founder_four_sub_ar", resData?.about_us?.founder_four_sub?.ar || "");
+    
+    setValue("about_page_founder_five_name_en", resData?.about_us?.founder_five_name?.en || "");
+    setValue("about_page_founder_five_name_ar", resData?.about_us?.founder_five_name?.ar || "");
+    setValue("about_page_founder_five_position_en", resData?.about_us?.founder_five_position?.en || "");
+    setValue("about_page_founder_five_position_ar", resData?.about_us?.founder_five_position?.ar || "");
+    setValue("about_page_founder_five_sub_en", resData?.about_us?.founder_five_sub?.en || "");
+    setValue("about_page_founder_five_sub_ar", resData?.about_us?.founder_five_sub?.ar || "");
+    
+    setValue("about_page_founder_six_name_en", resData?.about_us?.founder_six_name?.en || "");
+    setValue("about_page_founder_six_name_ar", resData?.about_us?.founder_six_name?.ar || "");
+    setValue("about_page_founder_six_position_en", resData?.about_us?.founder_six_position?.en || "");
+    setValue("about_page_founder_six_position_ar", resData?.about_us?.founder_six_position?.ar || "");
+    setValue("about_page_founder_six_sub_en", resData?.about_us?.founder_six_sub?.en || "");
+    setValue("about_page_founder_six_sub_ar", resData?.about_us?.founder_six_sub?.ar || "");
+    
+    setValue("about_page_founder_seven_name_en", resData?.about_us?.founder_seven_name?.en || "");
+    setValue("about_page_founder_seven_name_ar", resData?.about_us?.founder_seven_name?.ar || "");
+    setValue("about_page_founder_seven_position_en", resData?.about_us?.founder_seven_position?.en || "");
+    setValue("about_page_founder_seven_position_ar", resData?.about_us?.founder_seven_position?.ar || "");
+    setValue("about_page_founder_seven_sub_en", resData?.about_us?.founder_seven_sub?.en || "");
+    setValue("about_page_founder_seven_sub_ar", resData?.about_us?.founder_seven_sub?.ar || "");
+    
+    setValue("about_page_founder_eight_name_en", resData?.about_us?.founder_eight_name?.en || "");
+    setValue("about_page_founder_eight_name_ar", resData?.about_us?.founder_eight_name?.ar || "");
+    setValue("about_page_founder_eight_position_en", resData?.about_us?.founder_eight_position?.en || "");
+    setValue("about_page_founder_eight_position_ar", resData?.about_us?.founder_eight_position?.ar || "");
+    setValue("about_page_founder_eight_sub_en", resData?.about_us?.founder_eight_sub?.en || "");
+    setValue("about_page_founder_eight_sub_ar", resData?.about_us?.founder_eight_sub?.ar || "");
+    
+    setValue("about_page_founder_nine_name_en", resData?.about_us?.founder_nine_name?.en || "");
+    setValue("about_page_founder_nine_name_ar", resData?.about_us?.founder_nine_name?.ar || "");
+    setValue("about_page_founder_nine_position_en", resData?.about_us?.founder_nine_position?.en || "");
+    setValue("about_page_founder_nine_position_ar", resData?.about_us?.founder_nine_position?.ar || "");
+    setValue("about_page_founder_nine_sub_en", resData?.about_us?.founder_nine_sub?.en || "");
+    setValue("about_page_founder_nine_sub_ar", resData?.about_us?.founder_nine_sub?.ar || "");
+    
+    setValue("about_page_founder_ten_name_en", resData?.about_us?.founder_ten_name?.en || "");
+    setValue("about_page_founder_ten_name_ar", resData?.about_us?.founder_ten_name?.ar || "");
+    setValue("about_page_founder_ten_position_en", resData?.about_us?.founder_ten_position?.en || "");
+    setValue("about_page_founder_ten_position_ar", resData?.about_us?.founder_ten_position?.ar || "");
+    setValue("about_page_founder_ten_sub_en", resData?.about_us?.founder_ten_sub?.en || "");
+    setValue("about_page_founder_ten_sub_ar", resData?.about_us?.founder_ten_sub?.ar || "");
+    
+    setValue("about_page_founder_eleven_name_en", resData?.about_us?.founder_eleven_name?.en || "");
+    setValue("about_page_founder_eleven_name_ar", resData?.about_us?.founder_eleven_name?.ar || "");
+    setValue("about_page_founder_eleven_position_en", resData?.about_us?.founder_eleven_position?.en || "");
+    setValue("about_page_founder_eleven_position_ar", resData?.about_us?.founder_eleven_position?.ar || "");
+    setValue("about_page_founder_eleven_sub_en", resData?.about_us?.founder_eleven_sub?.en || "");
+    setValue("about_page_founder_eleven_sub_ar", resData?.about_us?.founder_eleven_sub?.ar || "");
+    
+    setValue("about_page_founder_twelve_name_en", resData?.about_us?.founder_twelve_name?.en || "");
+    setValue("about_page_founder_twelve_name_ar", resData?.about_us?.founder_twelve_name?.ar || "");
+    setValue("about_page_founder_twelve_position_en", resData?.about_us?.founder_twelve_position?.en || "");
+    setValue("about_page_founder_twelve_position_ar", resData?.about_us?.founder_twelve_position?.ar || "");
+    setValue("about_page_founder_twelve_sub_en", resData?.about_us?.founder_twelve_sub?.en || "");
+    setValue("about_page_founder_twelve_sub_ar", resData?.about_us?.founder_twelve_sub?.ar || "");
     
     // Trusted badges
     setValue("about_page_trusted_badge_one_pill", resData?.about_us?.trusted_badge_one_pill?.[lang] || "");
@@ -4724,36 +4791,64 @@ const useStoreHomeSubmit = () => {
     setValue("about_page_branches_cta_description", resData?.about_us?.branches_cta_description?.[lang] || "");
     setValue("about_page_upcoming_branches_title", resData?.about_us?.upcoming_branches_title?.[lang] || "");
     
-    // Branch data (1-8)
+    // Branch data (1-8) - BILINGUAL FIELD MAPPING
     const branchWords = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight'];
     branchWords.forEach((branchWord) => {
       setValue(
-        `about_page_branch_${branchWord}_name`,
-        resData?.about_us?.[`branch_${branchWord}_name`]?.[lang] || ""
+        `about_page_branch_${branchWord}_name_en`,
+        resData?.about_us?.[`branch_${branchWord}_name`]?.en || ""
       );
       setValue(
-        `about_page_branch_${branchWord}_address`,
-        resData?.about_us?.[`branch_${branchWord}_address`]?.[lang] || ""
+        `about_page_branch_${branchWord}_name_ar`,
+        resData?.about_us?.[`branch_${branchWord}_name`]?.ar || ""
       );
       setValue(
-        `about_page_branch_${branchWord}_phone`,
-        resData?.about_us?.[`branch_${branchWord}_phone`]?.[lang] || ""
+        `about_page_branch_${branchWord}_address_en`,
+        resData?.about_us?.[`branch_${branchWord}_address`]?.en || ""
       );
       setValue(
-        `about_page_branch_${branchWord}_hours`,
-        resData?.about_us?.[`branch_${branchWord}_hours`]?.[lang] || ""
+        `about_page_branch_${branchWord}_address_ar`,
+        resData?.about_us?.[`branch_${branchWord}_address`]?.ar || ""
       );
       setValue(
-        `about_page_branch_${branchWord}_subtitle`,
-        resData?.about_us?.[`branch_${branchWord}_subtitle`]?.[lang] || ""
+        `about_page_branch_${branchWord}_phone_en`,
+        resData?.about_us?.[`branch_${branchWord}_phone`]?.en || ""
       );
       setValue(
-        `about_page_branch_${branchWord}_services`,
-        resData?.about_us?.[`branch_${branchWord}_services`]?.[lang] || ""
+        `about_page_branch_${branchWord}_phone_ar`,
+        resData?.about_us?.[`branch_${branchWord}_phone`]?.ar || ""
       );
       setValue(
-        `about_page_branch_${branchWord}_directions`,
-        resData?.about_us?.[`branch_${branchWord}_directions`]?.[lang] || ""
+        `about_page_branch_${branchWord}_hours_en`,
+        resData?.about_us?.[`branch_${branchWord}_hours`]?.en || ""
+      );
+      setValue(
+        `about_page_branch_${branchWord}_hours_ar`,
+        resData?.about_us?.[`branch_${branchWord}_hours`]?.ar || ""
+      );
+      setValue(
+        `about_page_branch_${branchWord}_subtitle_en`,
+        resData?.about_us?.[`branch_${branchWord}_subtitle`]?.en || ""
+      );
+      setValue(
+        `about_page_branch_${branchWord}_subtitle_ar`,
+        resData?.about_us?.[`branch_${branchWord}_subtitle`]?.ar || ""
+      );
+      setValue(
+        `about_page_branch_${branchWord}_services_en`,
+        resData?.about_us?.[`branch_${branchWord}_services`]?.en || ""
+      );
+      setValue(
+        `about_page_branch_${branchWord}_services_ar`,
+        resData?.about_us?.[`branch_${branchWord}_services`]?.ar || ""
+      );
+      setValue(
+        `about_page_branch_${branchWord}_directions_en`,
+        resData?.about_us?.[`branch_${branchWord}_directions`]?.en || ""
+      );
+      setValue(
+        `about_page_branch_${branchWord}_directions_ar`,
+        resData?.about_us?.[`branch_${branchWord}_directions`]?.ar || ""
       );
     });
     
