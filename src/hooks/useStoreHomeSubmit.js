@@ -2308,8 +2308,8 @@ const useStoreHomeSubmit = () => {
   useEffect(() => {
     const getStoreCustomizationData = async () => {
       try {
-        // Fetch from new AboutUs collection instead of old settings
-        const res = await SettingServices.getAboutUs();
+        // Fetch from new merged endpoint that includes all store customization data
+        const res = await SettingServices.getAllStoreCustomization();
 
         console.log("🔍 Admin App - API Response:", {
           hasData: !!res,

@@ -48,6 +48,11 @@ const SettingServices = {
   updateAboutUs: async (body) => {
     return requests.put("/setting/store/customization/about-us", body);
   },
+
+  // NEW: Get all store customization data (merged from both collections)
+  getAllStoreCustomization: async () => {
+    return requests.get("/setting/store/customization/merged");
+  },
 };
 
 export default SettingServices;
