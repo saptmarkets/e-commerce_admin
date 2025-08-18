@@ -2321,11 +2321,24 @@ const useStoreHomeSubmit = () => {
 
         // Fetch About Us data separately from new collection
         const aboutUsRes = await SettingServices.getAboutUs();
+        console.log("🔍 AboutUs API Response Structure:", {
+          responseType: typeof aboutUsRes,
+          isArray: Array.isArray(aboutUsRes),
+          isNull: aboutUsRes === null,
+          isUndefined: aboutUsRes === undefined,
+          response: aboutUsRes
+        });
         console.log("🔍 About Us Collection Data:", {
           hasAboutUsData: !!aboutUsRes,
           aboutUsKeys: Object.keys(aboutUsRes || {}),
           hasContent: aboutUsRes?.title || aboutUsRes?.founder_one_name || aboutUsRes?.value_one_title,
-          rawData: aboutUsRes
+          rawData: aboutUsRes,
+          title: aboutUsRes?.title,
+          founder_one_name: aboutUsRes?.founder_one_name,
+          value_one_title: aboutUsRes?.value_one_title,
+          header_status: aboutUsRes?.header_status,
+          founder_status: aboutUsRes?.founder_status,
+          branches_status: aboutUsRes?.branches_status
         });
 
         if (res) {
