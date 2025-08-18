@@ -755,19 +755,23 @@ const useStoreHomeSubmit = () => {
             // Core Values Section
             values_title: handleRemoveEmptyKey({
               ...resData?.about_us?.values_title,
-              [language]: finalFormData.about_page_values_title || "",
+              en: finalFormData.about_page_values_title_en || "",
+              ar: finalFormData.about_page_values_title_ar || "",
             }),
             values_description: handleRemoveEmptyKey({
               ...resData?.about_us?.values_description,
-              [language]: finalFormData.about_page_values_description || "",
+              en: finalFormData.about_page_values_description_en || "",
+              ar: finalFormData.about_page_values_description_ar || "",
             }),
             value_one_title: handleRemoveEmptyKey({
               ...resData?.about_us?.value_one_title,
-              [language]: finalFormData.about_page_value_one_title || "",
+              en: finalFormData.about_page_value_one_title_en || "",
+              ar: finalFormData.about_page_value_one_title_ar || "",
             }),
             value_one_description: handleRemoveEmptyKey({
               ...resData?.about_us?.value_one_description,
-              [language]: finalFormData.about_page_value_one_description || "",
+              en: finalFormData.about_page_value_one_description_en || "",
+              ar: finalFormData.about_page_value_one_description_ar || "",
             }),
             value_two_title: handleRemoveEmptyKey({
               ...resData?.about_us?.value_two_title,
@@ -3404,12 +3408,20 @@ const useStoreHomeSubmit = () => {
             res?.about_us?.team_description ? res?.about_us?.team_description[language || "en"] : ""
           );
           setValue(
-            "about_page_leadership_title",
-            res?.about_us?.leadership_title ? res?.about_us?.leadership_title[language || "en"] : ""
+            "about_page_leadership_title_en",
+            res?.about_us?.leadership_title?.en || ""
           );
           setValue(
-            "about_page_leadership_subtitle",
-            res?.about_us?.leadership_subtitle ? res?.about_us?.leadership_subtitle[language || "en"] : ""
+            "about_page_leadership_title_ar",
+            res?.about_us?.leadership_title?.ar || ""
+          );
+          setValue(
+            "about_page_leadership_subtitle_en",
+            res?.about_us?.leadership_subtitle?.en || ""
+          );
+          setValue(
+            "about_page_leadership_subtitle_ar",
+            res?.about_us?.leadership_subtitle?.ar || ""
           );
 
           // Core Values
