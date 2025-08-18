@@ -5381,52 +5381,53 @@ const useStoreHomeSubmit = () => {
     console.log("✅ Preserving existing data while updating language:", lang);
     
     // Update About Us fields with proper BILINGUAL field mapping
-    setValue("about_page_title_en", resData?.about_us?.title?.en || "");
-    setValue("about_page_title_ar", resData?.about_us?.title?.ar || "");
-    setValue("about_page_hero_description_en", resData?.about_us?.hero_description?.en || "");
-    setValue("about_page_hero_description_ar", resData?.about_us?.hero_description?.ar || "");
-    setValue("about_page_top_section_title_en", resData?.about_us?.top_section_title?.en || "");
-    setValue("about_page_top_section_title_ar", resData?.about_us?.top_section_title?.ar || "");
-    setValue("about_page_top_section_description_en", resData?.about_us?.top_section_description?.en || "");
-    setValue("about_page_top_section_description_ar", resData?.about_us?.top_section_description?.ar || "");
-    setValue("about_page_top_title_en", resData?.about_us?.top_title?.en || "");
-    setValue("about_page_top_title_ar", resData?.about_us?.top_title?.ar || "");
-    setValue("about_page_top_description_en", resData?.about_us?.top_description?.en || "");
-    setValue("about_page_top_description_ar", resData?.about_us?.top_description?.ar || "");
-    setValue("about_page_card_one_title_en", resData?.about_us?.card_one_title?.en || "");
-    setValue("about_page_card_one_title_ar", resData?.about_us?.card_one_title?.ar || "");
-    setValue("about_page_card_one_subtitle_en", resData?.about_us?.card_one_sub?.en || "");
-    setValue("about_page_card_one_subtitle_ar", resData?.about_us?.card_one_sub?.ar || "");
-    setValue("about_page_card_one_description_en", resData?.about_us?.card_one_description?.en || "");
-    setValue("about_page_card_one_description_ar", resData?.about_us?.card_one_description?.ar || "");
-    setValue("about_page_card_two_title_en", resData?.about_us?.card_two_title?.en || "");
-    setValue("about_page_card_two_title_ar", resData?.about_us?.card_two_title?.ar || "");
-    setValue("about_page_card_two_subtitle_en", resData?.about_us?.card_two_sub?.en || "");
-    setValue("about_page_card_two_subtitle_ar", resData?.about_us?.card_two_sub?.ar || "");
-    setValue("about_page_card_two_description_en", resData?.about_us?.card_two_description?.en || "");
-    setValue("about_page_card_two_description_ar", resData?.about_us?.card_two_description?.ar || "");
-    setValue("about_us_middle_description_one_en", resData?.about_us?.middle_description_one?.en || "");
-    setValue("about_us_middle_description_one_ar", resData?.about_us?.middle_description_one?.ar || "");
-    setValue("about_us_middle_description_two_en", resData?.about_us?.middle_description_two?.en || "");
-    setValue("about_us_middle_description_two_ar", resData?.about_us?.middle_description_two?.ar || "");
+    // Note: Data is nested under data.setting.about_us in the database
+    setValue("about_page_title_en", resData?.data?.setting?.about_us?.title?.en || "");
+    setValue("about_page_title_ar", resData?.data?.setting?.about_us?.title?.ar || "");
+    setValue("about_page_hero_description_en", resData?.data?.setting?.about_us?.hero_description?.en || "");
+    setValue("about_page_hero_description_ar", resData?.data?.setting?.about_us?.hero_description?.ar || "");
+    setValue("about_page_top_section_title_en", resData?.data?.setting?.about_us?.top_section_title?.en || "");
+    setValue("about_page_top_section_title_ar", resData?.data?.setting?.about_us?.top_section_title?.ar || "");
+    setValue("about_page_top_section_description_en", resData?.data?.setting?.about_us?.top_section_description?.en || "");
+    setValue("about_page_top_section_description_ar", resData?.data?.setting?.about_us?.top_section_description?.ar || "");
+    setValue("about_page_top_title_en", resData?.data?.setting?.about_us?.top_title?.en || "");
+    setValue("about_page_top_title_ar", resData?.data?.setting?.about_us?.top_title?.ar || "");
+    setValue("about_page_top_description_en", resData?.data?.setting?.about_us?.top_description?.en || "");
+    setValue("about_page_top_description_ar", resData?.data?.setting?.about_us?.top_description?.ar || "");
+    setValue("about_page_card_one_title_en", resData?.data?.setting?.about_us?.card_one_title?.en || "");
+    setValue("about_page_card_one_title_ar", resData?.data?.setting?.about_us?.card_one_title?.ar || "");
+    setValue("about_page_card_one_subtitle_en", resData?.data?.setting?.about_us?.card_one_sub?.en || "");
+    setValue("about_page_card_one_subtitle_ar", resData?.data?.setting?.about_us?.card_one_sub?.ar || "");
+    setValue("about_page_card_one_description_en", resData?.data?.setting?.about_us?.card_one_description?.en || "");
+    setValue("about_page_card_one_description_ar", resData?.data?.setting?.about_us?.card_one_description?.ar || "");
+    setValue("about_page_card_two_title_en", resData?.data?.setting?.about_us?.card_two_title?.en || "");
+    setValue("about_page_card_two_title_ar", resData?.data?.setting?.about_us?.card_two_title?.ar || "");
+    setValue("about_page_card_two_subtitle_en", resData?.data?.setting?.about_us?.card_two_sub?.en || "");
+    setValue("about_page_card_two_subtitle_ar", resData?.data?.setting?.about_us?.card_two_sub?.ar || "");
+    setValue("about_page_card_two_description_en", resData?.data?.setting?.about_us?.card_two_description?.en || "");
+    setValue("about_page_card_two_description_ar", resData?.data?.setting?.about_us?.card_two_description?.ar || "");
+    setValue("about_us_middle_description_one_en", resData?.data?.setting?.about_us?.middle_description_one?.en || "");
+    setValue("about_us_middle_description_one_ar", resData?.data?.setting?.about_us?.middle_description_one?.ar || "");
+    setValue("about_us_middle_description_two_en", resData?.data?.setting?.about_us?.middle_description_two?.en || "");
+    setValue("about_us_middle_description_two_ar", resData?.data?.setting?.about_us?.middle_description_two?.ar || "");
     
     // Team section
-    setValue("about_page_team_title_en", resData?.about_us?.team_title?.en || "");
-    setValue("about_page_team_title_ar", resData?.about_us?.team_title?.ar || "");
-    setValue("about_page_team_description_en", resData?.about_us?.team_description?.en || "");
-    setValue("about_page_team_description_ar", resData?.about_us?.team_description?.ar || "");
+    setValue("about_page_team_title_en", resData?.data?.setting?.about_us?.team_title?.en || "");
+    setValue("about_page_team_title_ar", resData?.data?.setting?.about_us?.team_title?.ar || "");
+    setValue("about_page_team_description_en", resData?.data?.setting?.about_us?.team_description?.en || "");
+    setValue("about_page_team_description_ar", resData?.data?.setting?.about_us?.team_description?.ar || "");
     
     // Leadership section
-    setValue("about_page_leadership_title_en", resData?.about_us?.leadership_title?.en || "");
-    setValue("about_page_leadership_title_ar", resData?.about_us?.leadership_title?.ar || "");
-    setValue("about_page_leadership_subtitle_en", resData?.about_us?.leadership_subtitle?.en || "");
-    setValue("about_page_leadership_subtitle_ar", resData?.about_us?.leadership_subtitle?.ar || "");
+    setValue("about_page_leadership_title_en", resData?.data?.setting?.about_us?.leadership_title?.en || "");
+    setValue("about_page_leadership_title_ar", resData?.data?.setting?.about_us?.leadership_title?.ar || "");
+    setValue("about_page_leadership_subtitle_en", resData?.data?.setting?.about_us?.leadership_subtitle?.en || "");
+    setValue("about_page_leadership_subtitle_ar", resData?.data?.setting?.about_us?.leadership_subtitle?.ar || "");
     
     // Values section
-    setValue("about_page_values_title_en", resData?.about_us?.values_title?.en || "");
-    setValue("about_page_values_title_ar", resData?.about_us?.values_title?.ar || "");
-    setValue("about_page_values_description_en", resData?.about_us?.values_description?.en || "");
-    setValue("about_page_values_description_ar", resData?.about_us?.values_description?.ar || "");
+    setValue("about_page_values_title_en", resData?.data?.setting?.about_us?.values_title?.en || "");
+    setValue("about_page_values_title_ar", resData?.data?.setting?.about_us?.values_title?.ar || "");
+    setValue("about_page_values_description_en", resData?.data?.setting?.about_us?.values_description?.en || "");
+    setValue("about_page_values_description_ar", resData?.data?.setting?.about_us?.values_description?.ar || "");
     setValue("about_page_value_one_title_en", resData?.value_one_title?.en || "");
     setValue("about_page_value_one_title_ar", resData?.value_one_title?.ar || "");
     setValue("about_page_value_one_description_en", resData?.value_one_description?.en || "");
@@ -5445,20 +5446,20 @@ const useStoreHomeSubmit = () => {
     setValue("about_page_value_four_description_ar", resData?.value_four_description?.ar || "");
     
     // Heritage section
-    setValue("about_page_heritage_title_en", resData?.about_us?.heritage_title?.en || "");
-    setValue("about_page_heritage_title_ar", resData?.about_us?.heritage_title?.ar || "");
-    setValue("about_page_heritage_description_one_en", resData?.about_us?.heritage_description_one?.en || "");
-    setValue("about_page_heritage_description_one_ar", resData?.about_us?.heritage_description_one?.ar || "");
-    setValue("about_page_heritage_description_two_en", resData?.about_us?.heritage_description_two?.en || "");
-    setValue("about_page_heritage_description_two_ar", resData?.about_us?.heritage_description_two?.ar || "");
+    setValue("about_page_heritage_title_en", resData?.data?.setting?.about_us?.heritage_title?.en || "");
+    setValue("about_page_heritage_title_ar", resData?.data?.setting?.about_us?.heritage_title?.ar || "");
+    setValue("about_page_heritage_description_one_en", resData?.data?.setting?.about_us?.heritage_description_one?.en || "");
+    setValue("about_page_heritage_description_one_ar", resData?.data?.setting?.about_us?.heritage_description_one?.ar || "");
+    setValue("about_page_heritage_description_two_en", resData?.data?.setting?.about_us?.heritage_description_two?.en || "");
+    setValue("about_page_heritage_description_two_ar", resData?.data?.setting?.about_us?.heritage_description_two?.ar || "");
     
     // Founder fields (1-12) - BILINGUAL FIELD MAPPING
-    setValue("about_page_founder_one_name_en", resData?.founder_one_name?.en || "");
-    setValue("about_page_founder_one_name_ar", resData?.founder_one_name?.ar || "");
-    setValue("about_page_founder_one_position_en", resData?.founder_one_position?.en || "");
-    setValue("about_page_founder_one_position_ar", resData?.founder_one_position?.ar || "");
-    setValue("about_page_founder_one_sub_en", resData?.founder_one_sub?.en || "");
-    setValue("about_page_founder_one_sub_ar", resData?.founder_one_sub?.ar || "");
+    setValue("about_page_founder_one_name_en", resData?.data?.setting?.about_us?.founder_one_name?.en || "");
+    setValue("about_page_founder_one_name_ar", resData?.data?.setting?.about_us?.founder_one_name?.ar || "");
+    setValue("about_page_founder_one_position_en", resData?.data?.setting?.about_us?.founder_one_position?.en || "");
+    setValue("about_page_founder_one_position_ar", resData?.data?.setting?.about_us?.founder_one_position?.ar || "");
+    setValue("about_page_founder_one_sub_en", resData?.data?.setting?.about_us?.founder_one_sub?.en || "");
+    setValue("about_page_founder_one_sub_ar", resData?.data?.setting?.about_us?.founder_one_sub?.ar || "");
     
     setValue("about_page_founder_two_name_en", resData?.founder_two_name?.en || "");
     setValue("about_page_founder_two_name_ar", resData?.founder_two_name?.ar || "");
@@ -5539,26 +5540,26 @@ const useStoreHomeSubmit = () => {
     
     // Trusted badges
     // Trusted Badges - BILINGUAL FIELD MAPPING
-    setValue("about_page_trusted_badge_one_pill_en", resData?.about_us?.trusted_badge_one_pill?.en || "");
-    setValue("about_page_trusted_badge_one_pill_ar", resData?.about_us?.trusted_badge_one_pill?.ar || "");
-    setValue("about_page_trusted_badge_one_text_en", resData?.about_us?.trusted_badge_one_text?.en || "");
-    setValue("about_page_trusted_badge_one_text_ar", resData?.about_us?.trusted_badge_one_text?.ar || "");
-    setValue("about_page_trusted_badge_two_pill_en", resData?.about_us?.trusted_badge_two_pill?.en || "");
-    setValue("about_page_trusted_badge_two_pill_ar", resData?.about_us?.trusted_badge_two_pill?.ar || "");
-    setValue("about_page_trusted_badge_two_text_en", resData?.about_us?.trusted_badge_two_text?.en || "");
-    setValue("about_page_trusted_badge_two_text_ar", resData?.about_us?.trusted_badge_two_text?.ar || "");
+    setValue("about_page_trusted_badge_one_pill_en", resData?.data?.setting?.about_us?.trusted_badge_one_pill?.en || "");
+    setValue("about_page_trusted_badge_one_pill_ar", resData?.data?.setting?.about_us?.trusted_badge_one_pill?.ar || "");
+    setValue("about_page_trusted_badge_one_text_en", resData?.data?.setting?.about_us?.trusted_badge_one_text?.en || "");
+    setValue("about_page_trusted_badge_one_text_ar", resData?.data?.setting?.about_us?.trusted_badge_one_text?.ar || "");
+    setValue("about_page_trusted_badge_two_pill_en", resData?.data?.setting?.about_us?.trusted_badge_two_pill?.en || "");
+    setValue("about_page_trusted_badge_two_pill_ar", resData?.data?.setting?.about_us?.trusted_badge_two_pill?.ar || "");
+    setValue("about_page_trusted_badge_two_text_en", resData?.data?.setting?.about_us?.trusted_badge_two_text?.en || "");
+    setValue("about_page_trusted_badge_two_text_ar", resData?.data?.setting?.about_us?.trusted_badge_two_text?.ar || "");
     
     // Branch fields - BILINGUAL FIELD MAPPING
-    setValue("about_page_branches_title_en", resData?.about_us?.branches_title?.en || "");
-    setValue("about_page_branches_title_ar", resData?.about_us?.branches_title?.ar || "");
-    setValue("about_page_branches_description_en", resData?.about_us?.branches_description?.en || "");
-    setValue("about_page_branches_description_ar", resData?.about_us?.branches_description?.ar || "");
-    setValue("about_page_branches_cta_title_en", resData?.about_us?.branches_cta_title?.en || "");
-    setValue("about_page_branches_cta_title_ar", resData?.about_us?.branches_cta_title?.ar || "");
-    setValue("about_page_branches_cta_description_en", resData?.about_us?.branches_cta_description?.en || "");
-    setValue("about_page_branches_cta_description_ar", resData?.about_us?.branches_cta_description?.ar || "");
-    setValue("about_page_upcoming_branches_title_en", resData?.about_us?.upcoming_branches_title?.en || "");
-    setValue("about_page_upcoming_branches_title_ar", resData?.about_us?.upcoming_branches_title?.ar || "");
+    setValue("about_page_branches_title_en", resData?.data?.setting?.about_us?.branches_title?.en || "");
+    setValue("about_page_branches_title_ar", resData?.data?.setting?.about_us?.branches_title?.ar || "");
+    setValue("about_page_branches_description_en", resData?.data?.setting?.about_us?.branches_description?.en || "");
+    setValue("about_page_branches_description_ar", resData?.data?.setting?.about_us?.branches_description?.ar || "");
+    setValue("about_page_branches_cta_title_en", resData?.data?.setting?.about_us?.branches_cta_title?.en || "");
+    setValue("about_page_branches_cta_title_ar", resData?.data?.setting?.about_us?.branches_cta_title?.ar || "");
+    setValue("about_page_branches_cta_description_en", resData?.data?.setting?.about_us?.branches_cta_description?.en || "");
+    setValue("about_page_branches_cta_description_ar", resData?.data?.setting?.about_us?.branches_cta_description?.ar || "");
+    setValue("about_page_upcoming_branches_title_en", resData?.data?.setting?.about_us?.upcoming_branches_title?.en || "");
+    setValue("about_page_upcoming_branches_title_ar", resData?.data?.setting?.about_us?.upcoming_branches_title?.ar || "");
     
     // Branch data (1-8) - BILINGUAL FIELD MAPPING
     const branchWords = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight'];
@@ -5622,26 +5623,26 @@ const useStoreHomeSubmit = () => {
     });
     
     // Upcoming branches - BILINGUAL FIELD MAPPING
-    setValue("about_page_upcoming_branch_one_name_en", resData?.about_us?.upcoming_branch_one_name?.en || "");
-    setValue("about_page_upcoming_branch_one_name_ar", resData?.about_us?.upcoming_branch_one_name?.ar || "");
-    setValue("about_page_upcoming_branch_one_address_en", resData?.about_us?.upcoming_branch_one_address?.en || "");
-    setValue("about_page_upcoming_branch_one_address_ar", resData?.about_us?.upcoming_branch_one_address?.ar || "");
-    setValue("about_page_upcoming_branch_two_name_en", resData?.about_us?.upcoming_branch_two_name?.en || "");
-    setValue("about_page_upcoming_branch_two_name_ar", resData?.about_us?.upcoming_branch_two_name?.ar || "");
-    setValue("about_page_upcoming_branch_two_address_en", resData?.about_us?.upcoming_branch_two_address?.en || "");
-    setValue("about_page_upcoming_branch_two_address_ar", resData?.about_us?.upcoming_branch_two_address?.ar || "");
-    setValue("about_page_upcoming_branch_one_quarter_en", resData?.about_us?.upcoming_branch_one_quarter?.en || "");
-    setValue("about_page_upcoming_branch_one_quarter_ar", resData?.about_us?.upcoming_branch_one_quarter?.ar || "");
-    setValue("about_page_upcoming_branch_one_features_en", resData?.about_us?.upcoming_branch_one_features?.en || "");
-    setValue("about_page_upcoming_branch_one_features_ar", resData?.about_us?.upcoming_branch_one_features?.ar || "");
-    setValue("about_page_upcoming_branch_one_emoji_en", resData?.about_us?.upcoming_branch_one_emoji?.en || "");
-    setValue("about_page_upcoming_branch_one_emoji_ar", resData?.about_us?.upcoming_branch_one_emoji?.ar || "");
-    setValue("about_page_upcoming_branch_two_quarter_en", resData?.about_us?.upcoming_branch_two_quarter?.en || "");
-    setValue("about_page_upcoming_branch_two_quarter_ar", resData?.about_us?.upcoming_branch_two_quarter?.ar || "");
-    setValue("about_page_upcoming_branch_two_features_en", resData?.about_us?.upcoming_branch_two_features?.en || "");
-    setValue("about_page_upcoming_branch_two_features_ar", resData?.about_us?.upcoming_branch_two_features?.ar || "");
-    setValue("about_page_upcoming_branch_two_emoji_en", resData?.about_us?.upcoming_branch_two_emoji?.en || "");
-    setValue("about_page_upcoming_branch_two_emoji_ar", resData?.about_us?.upcoming_branch_two_emoji?.ar || "");
+    setValue("about_page_upcoming_branch_one_name_en", resData?.data?.setting?.about_us?.upcoming_branch_one_name?.en || "");
+    setValue("about_page_upcoming_branch_one_name_ar", resData?.data?.setting?.about_us?.upcoming_branch_one_name?.ar || "");
+    setValue("about_page_upcoming_branch_one_address_en", resData?.data?.setting?.about_us?.upcoming_branch_one_address?.en || "");
+    setValue("about_page_upcoming_branch_one_address_ar", resData?.data?.setting?.about_us?.upcoming_branch_one_address?.ar || "");
+    setValue("about_page_upcoming_branch_two_name_en", resData?.data?.setting?.about_us?.upcoming_branch_two_name?.en || "");
+    setValue("about_page_upcoming_branch_two_name_ar", resData?.data?.setting?.about_us?.upcoming_branch_two_name?.ar || "");
+    setValue("about_page_upcoming_branch_two_address_en", resData?.data?.setting?.about_us?.upcoming_branch_two_address?.en || "");
+    setValue("about_page_upcoming_branch_two_address_ar", resData?.data?.setting?.about_us?.upcoming_branch_two_address?.ar || "");
+    setValue("about_page_upcoming_branch_one_quarter_en", resData?.data?.setting?.about_us?.upcoming_branch_one_quarter?.en || "");
+    setValue("about_page_upcoming_branch_one_quarter_ar", resData?.data?.setting?.about_us?.upcoming_branch_one_quarter?.ar || "");
+    setValue("about_page_upcoming_branch_one_features_en", resData?.data?.setting?.about_us?.upcoming_branch_one_features?.en || "");
+    setValue("about_page_upcoming_branch_one_features_ar", resData?.data?.setting?.about_us?.upcoming_branch_one_features?.ar || "");
+    setValue("about_page_upcoming_branch_one_emoji_en", resData?.data?.setting?.about_us?.upcoming_branch_one_emoji?.en || "");
+    setValue("about_page_upcoming_branch_one_emoji_ar", resData?.data?.setting?.about_us?.upcoming_branch_one_emoji?.ar || "");
+    setValue("about_page_upcoming_branch_two_quarter_en", resData?.data?.setting?.about_us?.upcoming_branch_two_quarter?.en || "");
+    setValue("about_page_upcoming_branch_two_quarter_ar", resData?.data?.setting?.about_us?.upcoming_branch_two_quarter?.ar || "");
+    setValue("about_page_upcoming_branch_two_features_en", resData?.data?.setting?.about_us?.upcoming_branch_two_features?.en || "");
+    setValue("about_page_upcoming_branch_two_features_ar", resData?.data?.setting?.about_us?.upcoming_branch_two_features?.ar || "");
+    setValue("about_page_upcoming_branch_two_emoji_en", resData?.data?.setting?.about_us?.upcoming_branch_two_emoji?.en || "");
+    setValue("about_page_upcoming_branch_two_emoji_ar", resData?.data?.setting?.about_us?.upcoming_branch_two_emoji?.ar || "");
     
     console.log("✅ Language update completed for:", lang);
   };
