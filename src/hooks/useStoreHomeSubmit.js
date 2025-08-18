@@ -2308,11 +2308,21 @@ const useStoreHomeSubmit = () => {
   useEffect(() => {
     const getStoreCustomizationData = async () => {
       try {
-        // Fetch from new merged endpoint that includes all store customization data
-        const res = await SettingServices.getAllStoreCustomization();
+        // Fetch base store customization data (navbar, home, slider, etc.) from settings collection
+        const baseRes = await SettingServices.getStoreCustomizationSetting();
+        
+        // Fetch About Us data from new dedicated collection
+        const aboutUsRes = await SettingServices.getAboutUs();
+        
+        // Merge the data: base settings + about us data (about us takes precedence)
+        const res = {
+          ...baseRes,
+          ...aboutUsRes
+        };
 
         console.log("🔍 Admin App - API Response:", {
-          hasData: !!res,
+          hasBaseData: !!baseRes,
+          hasAboutUsData: !!aboutUsRes,
           dataKeys: Object.keys(res || {}),
           title: res?.title,
           branchesTitle: res?.branches_title,
