@@ -166,49 +166,6 @@ const AboutUs = ({
               <Button
                 type="submit"
                 className="h-10 px-6 "
-                onClick={(e) => {
-                  e.preventDefault(); // Prevent default form submission
-                  console.log('=== ABOUT US FORM DEBUG ===');
-                  console.log('Button clicked!');
-                  console.log('Form errors:', errors);
-                  console.log('isSubmitting:', isSubmitting);
-                  console.log('isSave:', isSave);
-                  
-                  // Try to submit the form programmatically
-                  console.log('Attempting programmatic form submission...');
-                  
-                  // Get the form element
-                  const form = e.target.closest('form');
-                  console.log('Form element:', form);
-                  
-                  if (form) {
-                    // Trigger form submission
-                    const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
-                    form.dispatchEvent(submitEvent);
-                    console.log('Form submit event dispatched');
-                  } else {
-                    console.log('No form element found');
-                  }
-                  
-                  // Fallback: Try direct onSubmit call
-                  setTimeout(() => {
-                    console.log('Trying direct onSubmit call as fallback...');
-                    try {
-                      // Get form data manually
-                      const formData = new FormData(form);
-                      const data = {};
-                      for (let [key, value] of formData.entries()) {
-                        data[key] = value;
-                      }
-                      console.log('Form data:', data);
-                      
-                      // Call onSubmit directly
-                      onSubmit(data);
-                    } catch (error) {
-                      console.error('Error in direct onSubmit call:', error);
-                    }
-                  }, 100);
-                }}
               >
                 {isSave ? t("SaveBtn") : t("UpdateBtn")}
               </Button>
