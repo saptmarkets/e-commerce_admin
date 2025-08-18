@@ -2328,6 +2328,12 @@ const useStoreHomeSubmit = () => {
           isUndefined: aboutUsRes === undefined,
           response: aboutUsRes
         });
+        
+        // Direct logging to see what's actually in the response
+        console.log("🔍 AboutUs Raw Response:", aboutUsRes);
+        console.log("🔍 AboutUs Response Keys:", Object.keys(aboutUsRes || {}));
+        console.log("🔍 AboutUs Response Values:", Object.values(aboutUsRes || {}));
+        console.log("🔍 AboutUs Response Length:", Object.keys(aboutUsRes || {}).length);
         console.log("🔍 About Us Collection Data:", {
           hasAboutUsData: !!aboutUsRes,
           aboutUsKeys: Object.keys(aboutUsRes || {}),
