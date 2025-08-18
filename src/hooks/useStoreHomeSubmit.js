@@ -2324,7 +2324,8 @@ const useStoreHomeSubmit = () => {
         console.log("🔍 About Us Collection Data:", {
           hasAboutUsData: !!aboutUsRes,
           aboutUsKeys: Object.keys(aboutUsRes || {}),
-          hasContent: aboutUsRes?.title || aboutUsRes?.founder_one_name || aboutUsRes?.value_one_title
+          hasContent: aboutUsRes?.title || aboutUsRes?.founder_one_name || aboutUsRes?.value_one_title,
+          rawData: aboutUsRes
         });
 
         if (res) {
@@ -2334,8 +2335,23 @@ const useStoreHomeSubmit = () => {
             aboutUsRes.founder_one_name || 
             aboutUsRes.value_one_title ||
             aboutUsRes.team_title ||
-            aboutUsRes.branches_title
+            aboutUsRes.branches_title ||
+            aboutUsRes.header_status !== undefined ||
+            aboutUsRes.founder_status !== undefined ||
+            aboutUsRes.branches_status !== undefined
           );
+          
+          console.log("🔍 Content check details:", {
+            title: aboutUsRes?.title,
+            founder_one_name: aboutUsRes?.founder_one_name,
+            value_one_title: aboutUsRes?.value_one_title,
+            team_title: aboutUsRes?.team_title,
+            branches_title: aboutUsRes?.branches_title,
+            header_status: aboutUsRes?.header_status,
+            founder_status: aboutUsRes?.founder_status,
+            branches_status: aboutUsRes?.branches_status,
+            finalResult: hasAboutUsContent
+          });
           
           if (hasAboutUsContent) {
             setIsSave(false);
