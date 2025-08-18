@@ -13,6 +13,7 @@ const AboutUs = () => {
   const {
     register,
     handleFormSubmit,
+    watch,
     loading,
     submitting,
     aboutUsData,
@@ -22,11 +23,25 @@ const AboutUs = () => {
 
   const [activeTab, setActiveTab] = useState("hero");
 
-  const handleSave = async (data) => {
+  const handleSave = async (e) => {
+    e.preventDefault(); // Prevent any parent form submission
     try {
-      await handleFormSubmit(data);
+      // Get all form values using React Hook Form's watch
+      const formData = watch();
+      
+      // Filter only the about_page fields
+      const aboutUsFormData = {};
+      Object.keys(formData).forEach(key => {
+        if (key.startsWith('about_page_') || key.startsWith('about_us_')) {
+          aboutUsFormData[key] = formData[key];
+        }
+      });
+      
+      console.log('🔍 AboutUs form data being submitted:', aboutUsFormData);
+      await handleFormSubmit(aboutUsFormData);
       toast.success(isUpdate ? "About Us updated successfully!" : "About Us saved successfully!");
     } catch (err) {
+      console.error('❌ Error saving About Us:', err);
       toast.error("Failed to save About Us data");
     }
   };
@@ -94,7 +109,8 @@ const AboutUs = () => {
 
         {/* Tab Content */}
         <div className="p-6">
-          <form onSubmit={handleFormSubmit}>
+          {/* Remove form wrapper to prevent automatic submission */}
+          <div className="space-y-6">
             {/* Hero Section */}
             {activeTab === "hero" && (
               <div className="space-y-6">
@@ -400,7 +416,8 @@ const AboutUs = () => {
             {/* Submit Button */}
             <div className="mt-8 pt-6 border-t border-gray-200">
               <button
-                type="submit"
+                type="button"
+                onClick={handleSave}
                 disabled={submitting}
                 className="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
@@ -417,7 +434,7 @@ const AboutUs = () => {
                 )}
               </button>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>
