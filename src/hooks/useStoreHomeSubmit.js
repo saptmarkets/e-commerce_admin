@@ -1,7 +1,7 @@
 import { EditorState, convertToRaw } from "draft-js";
 import { stateFromHTML } from "draft-js-import-html";
 import draftToHtml from "draftjs-to-html";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
 //internal import
@@ -26,6 +26,7 @@ const useStoreHomeSubmit = () => {
   const [couponList, setCouponList] = useState([]);
   const [couponList1, setCouponList1] = useState([]);
   const [language, setLanguage] = useState("en");
+  const unsavedFormByLangRef = useRef({ en: {}, ar: {} });
 
   const [isSave, setIsSave] = useState(true);
   const [printSlip, setPrintSlip] = useState(true);
@@ -3710,6 +3711,9 @@ const useStoreHomeSubmit = () => {
     
     console.log("💾 Preserving current form data:", currentFormData);
     
+    // Save current form data into per-language buffer before switching
+    unsavedFormByLangRef.current[language || 'en'] = { ...unsavedFormByLangRef.current[language || 'en'], ...currentFormData };
+    
     setLanguage(lang);
     
     // Update form fields with the new language data - CRITICAL FIX: Only update current language fields
@@ -3719,16 +3723,17 @@ const useStoreHomeSubmit = () => {
       console.log("✅ Form fields updated for language:", lang);
     }
     
-    // CRITICAL FIX: Restore ALL form data after language switch to prevent data loss
+    // CRITICAL FIX: Restore ONLY target language's unsaved data, not cross-language
     setTimeout(() => {
-      console.log("🔄 Restoring comprehensive form data after language switch...");
-      Object.keys(currentFormData).forEach(fieldName => {
-        if (currentFormData[fieldName] && currentFormData[fieldName].trim() !== "") {
-          setValue(fieldName, currentFormData[fieldName]);
-          console.log("✅ Restored", fieldName, "=", currentFormData[fieldName]);
+      console.log("🔄 Restoring per-language buffered form data for:", lang);
+      const buffered = unsavedFormByLangRef.current[lang || 'en'] || {};
+      Object.keys(buffered).forEach(fieldName => {
+        if (buffered[fieldName] && buffered[fieldName].trim() !== "") {
+          setValue(fieldName, buffered[fieldName]);
+          console.log("✅ Restored", fieldName, "=", buffered[fieldName]);
         }
       });
-      console.log("✅ All form data restored successfully");
+      console.log("✅ All buffered form data restored for:", lang);
     }, 150);
   };
 
@@ -3797,17 +3802,17 @@ const useStoreHomeSubmit = () => {
     setValue("about_page_founder_six_name", resData?.about_us?.founder_six_name?.[lang] || "");
     setValue("about_page_founder_six_position", resData?.about_us?.founder_six_sub?.[lang] || ""); // Using sub field for position
     setValue("about_page_founder_seven_name", resData?.about_us?.founder_seven_name?.[lang] || "");
-    setValue("about_page_founder_seven_position", resData?.about_us?.founder_seven_position?.[lang] || "");
+    setValue("about_page_founder_seven_position", resData?.about_us?.founder_seven_sub?.[lang] || ""); // Using sub field for position
     setValue("about_page_founder_eight_name", resData?.about_us?.founder_eight_name?.[lang] || "");
-    setValue("about_page_founder_eight_position", resData?.about_us?.founder_eight_position?.[lang] || "");
+    setValue("about_page_founder_eight_position", resData?.about_us?.founder_eight_sub?.[lang] || ""); // Using sub field for position
     setValue("about_page_founder_nine_name", resData?.about_us?.founder_nine_name?.[lang] || "");
-    setValue("about_page_founder_nine_position", resData?.about_us?.founder_nine_position?.[lang] || "");
+    setValue("about_page_founder_nine_position", resData?.about_us?.founder_nine_sub?.[lang] || ""); // Using sub field for position
     setValue("about_page_founder_ten_name", resData?.about_us?.founder_ten_name?.[lang] || "");
-    setValue("about_page_founder_ten_position", resData?.about_us?.founder_ten_position?.[lang] || "");
+    setValue("about_page_founder_ten_position", resData?.about_us?.founder_ten_sub?.[lang] || ""); // Using sub field for position
     setValue("about_page_founder_eleven_name", resData?.about_us?.founder_eleven_name?.[lang] || "");
-    setValue("about_page_founder_eleven_position", resData?.about_us?.founder_eleven_position?.[lang] || "");
+    setValue("about_page_founder_eleven_position", resData?.about_us?.founder_eleven_sub?.[lang] || ""); // Using sub field for position
     setValue("about_page_founder_twelve_name", resData?.about_us?.founder_twelve_name?.[lang] || "");
-    setValue("about_page_founder_twelve_position", resData?.about_us?.founder_twelve_position?.[lang] || "");
+    setValue("about_page_founder_twelve_position", resData?.about_us?.founder_twelve_sub?.[lang] || ""); // Using sub field for position
     
     // Trusted badges
     setValue("about_page_trusted_badge_one_pill", resData?.about_us?.trusted_badge_one_pill?.[lang] || "");
