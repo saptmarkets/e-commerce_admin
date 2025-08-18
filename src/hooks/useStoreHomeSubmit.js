@@ -2243,158 +2243,614 @@ const useStoreHomeSubmit = () => {
           en: finalFormData.about_page_title_en || "",
           ar: finalFormData.about_page_title_ar || ""
         },
-        hero_description: aboutPageDescription,
-        top_section_title: aboutPageTopSectionTitle,
-        top_section_description: aboutPageTopSectionDescription,
-        top_title: aboutPageTopTitle,
-        top_description: aboutPageTopDescription,
-        card_one_title: aboutPageCardOneTitle,
-        card_one_sub: aboutPageCardOneSub,
-        card_one_description: aboutPageCardOneDescription,
-        card_two_title: aboutPageCardTwoTitle,
-        card_two_sub: aboutPageCardTwoSub,
-        card_two_description: aboutPageCardTwoDescription,
-        middle_description_one: aboutPageMiddleDescriptionOne,
-        middle_description_two: aboutPageMiddleDescriptionTwo,
-        founder_title: aboutPageFounderTitle,
-        founder_description: aboutPageFounderDescription,
-        founder_one_name: aboutPageFounderOneName,
-        founder_one_position: aboutPageFounderOnePosition,
-        founder_one_sub: aboutPageFounderOneSub,
-        founder_two_name: aboutPageFounderTwoName,
-        founder_two_position: aboutPageFounderTwoPosition,
-        founder_two_sub: aboutPageFounderTwoSub,
-        founder_three_name: aboutPageFounderThreeName,
-        founder_three_position: aboutPageFounderThreePosition,
-        founder_three_sub: aboutPageFounderThreeSub,
-        founder_four_name: aboutPageFounderFourName,
-        founder_four_position: aboutPageFounderFourPosition,
-        founder_four_sub: aboutPageFounderFourSub,
-        founder_five_name: aboutPageFounderFiveName,
-        founder_five_position: aboutPageFounderFivePosition,
-        founder_five_sub: aboutPageFounderFiveSub,
-        founder_six_name: aboutPageFounderSixName,
-        founder_six_position: aboutPageFounderSixPosition,
-        founder_six_sub: aboutPageFounderSixSub,
-        founder_seven_name: aboutPageFounderSevenName,
-        founder_seven_position: aboutPageFounderSevenPosition,
-        founder_seven_sub: aboutPageFounderSevenSub,
-        founder_eight_name: aboutPageFounderEightName,
-        founder_eight_position: aboutPageFounderEightPosition,
-        founder_eight_sub: aboutPageFounderEightSub,
-        founder_nine_name: aboutPageFounderNineName,
-        founder_nine_position: aboutPageFounderNinePosition,
-        founder_nine_sub: aboutPageFounderNineSub,
-        founder_ten_name: aboutPageFounderTenName,
-        founder_ten_position: aboutPageFounderTenPosition,
-        founder_ten_sub: aboutPageFounderTenSub,
-        founder_eleven_name: aboutPageFounderElevenName,
-        founder_eleven_position: aboutPageFounderElevenPosition,
-        founder_eleven_sub: aboutPageFounderElevenSub,
-        founder_twelve_name: aboutPageFounderTwelveName,
-        founder_twelve_position: aboutPageFounderTwelvePosition,
-        founder_twelve_sub: aboutPageFounderTwelveSub,
-        values_title: aboutPageValuesTitle,
-        values_description: aboutPageValuesDescription,
-        value_one_title: aboutPageValueOneTitle,
-        value_one_description: aboutPageValueOneDescription,
-        value_two_title: aboutPageValueTwoTitle,
-        value_two_description: aboutPageValueTwoDescription,
-        value_three_title: aboutPageValueThreeTitle,
-        value_three_description: aboutPageValueThreeDescription,
-        value_four_title: aboutPageValueFourTitle,
-        value_four_description: aboutPageValueFourDescription,
-        community_title: aboutPageCommunityTitle,
-        community_description_one: aboutPageCommunityDescriptionOne,
-        community_description_two: aboutPageCommunityDescriptionTwo,
-        community_stat_one_number: aboutPageCommunityStatOneNumber,
-        community_stat_one_label: aboutPageCommunityStatOneLabel,
-        community_stat_two_number: aboutPageCommunityStatTwoNumber,
-        community_stat_two_label: aboutPageCommunityStatTwoLabel,
-        community_cta_title: aboutPageCommunityCtaTitle,
-        community_cta_description: aboutPageCommunityCtaDescription,
-        heritage_title: aboutPageHeritageTitle,
-        heritage_description_one: aboutPageHeritageDescriptionOne,
-        heritage_description_two: aboutPageHeritageDescriptionTwo,
-        team_title: aboutPageTeamTitle,
-        team_description: aboutPageTeamDescription,
-        leadership_title: aboutPageLeadershipTitle,
-        leadership_subtitle: aboutPageLeadershipSubtitle,
-        branches_title: aboutPageBranchesTitle,
-        branches_description: aboutPageBranchesDescription,
-        branches_cta_title: aboutPageBranchesCtaTitle,
-        branches_cta_description: aboutPageBranchesCtaDescription,
-        upcoming_branches_title: aboutPageUpcomingBranchesTitle,
-        branch_one_name: aboutPageBranchOneName,
-        branch_one_address: aboutPageBranchOneAddress,
-        branch_one_phone: aboutPageBranchOnePhone,
-        branch_one_hours: aboutPageBranchOneHours,
-        branch_one_subtitle: aboutPageBranchOneSubtitle,
-        branch_one_services: aboutPageBranchOneServices,
-        branch_one_directions: aboutPageBranchOneDirections,
-        branch_two_name: aboutPageBranchTwoName,
-        branch_two_address: aboutPageBranchTwoAddress,
-        branch_two_phone: aboutPageBranchTwoPhone,
-        branch_two_hours: aboutPageBranchTwoHours,
-        branch_two_subtitle: aboutPageBranchTwoSubtitle,
-        branch_two_services: aboutPageBranchTwoServices,
-        branch_two_directions: aboutPageBranchTwoDirections,
-        branch_three_name: aboutPageBranchThreeName,
-        branch_three_address: aboutPageBranchThreeAddress,
-        branch_three_phone: aboutPageBranchThreePhone,
-        branch_three_hours: aboutPageBranchThreeHours,
-        branch_three_subtitle: aboutPageBranchThreeSubtitle,
-        branch_three_services: aboutPageBranchThreeServices,
-        branch_three_directions: aboutPageBranchThreeDirections,
-        branch_four_name: aboutPageBranchFourName,
-        branch_four_address: aboutPageBranchFourAddress,
-        branch_four_phone: aboutPageBranchFourPhone,
-        branch_four_hours: aboutPageBranchFourHours,
-        branch_four_subtitle: aboutPageBranchFourSubtitle,
-        branch_four_services: aboutPageBranchFourServices,
-        branch_four_directions: aboutPageBranchFourDirections,
-        branch_five_name: aboutPageBranchFiveName,
-        branch_five_address: aboutPageBranchFiveAddress,
-        branch_five_phone: aboutPageBranchFivePhone,
-        branch_five_hours: aboutPageBranchFiveHours,
-        branch_five_subtitle: aboutPageBranchFiveSubtitle,
-        branch_five_services: aboutPageBranchFiveServices,
-        branch_five_directions: aboutPageBranchFiveDirections,
-        branch_six_name: aboutPageBranchSixName,
-        branch_six_address: aboutPageBranchSixAddress,
-        branch_six_phone: aboutPageBranchSixPhone,
-        branch_six_hours: aboutPageBranchSixHours,
-        branch_six_subtitle: aboutPageBranchSixSubtitle,
-        branch_six_services: aboutPageBranchSixServices,
-        branch_six_directions: aboutPageBranchSixDirections,
-        branch_seven_name: aboutPageBranchSevenName,
-        branch_seven_address: aboutPageBranchSevenAddress,
-        branch_seven_phone: aboutPageBranchSevenPhone,
-        branch_seven_hours: aboutPageBranchSevenHours,
-        branch_seven_subtitle: aboutPageBranchSevenSubtitle,
-        branch_seven_services: aboutPageBranchSevenServices,
-        branch_seven_directions: aboutPageBranchSevenDirections,
-        branch_eight_name: aboutPageBranchEightName,
-        branch_eight_address: aboutPageBranchEightAddress,
-        branch_eight_phone: aboutPageBranchEightPhone,
-        branch_eight_hours: aboutPageBranchEightHours,
-        branch_eight_subtitle: aboutPageBranchEightSubtitle,
-        branch_eight_services: aboutPageBranchEightServices,
-        branch_eight_directions: aboutPageBranchEightDirections,
-        upcoming_branch_one_name: aboutPageUpcomingBranchOneName,
-        upcoming_branch_one_address: aboutPageUpcomingBranchOneAddress,
-        upcoming_branch_one_quarter: aboutPageUpcomingBranchOneQuarter,
-        upcoming_branch_one_features: aboutPageUpcomingBranchOneFeatures,
-        upcoming_branch_one_emoji: aboutPageUpcomingBranchOneEmoji,
-        upcoming_branch_two_name: aboutPageUpcomingBranchTwoName,
-        upcoming_branch_two_address: aboutPageUpcomingBranchTwoAddress,
-        upcoming_branch_two_quarter: aboutPageUpcomingBranchTwoQuarter,
-        upcoming_branch_two_features: aboutPageUpcomingBranchTwoFeatures,
-        upcoming_branch_two_emoji: aboutPageUpcomingBranchTwoEmoji,
-        trusted_badge_one_pill: aboutPageTrustedBadgeOnePill,
-        trusted_badge_one_text: aboutPageTrustedBadgeOneText,
-        trusted_badge_two_pill: aboutPageTrustedBadgeTwoPill,
-        trusted_badge_two_text: aboutPageTrustedBadgeTwoText,
+        hero_description: {
+          en: finalFormData.about_page_hero_description_en || "",
+          ar: finalFormData.about_page_hero_description_ar || ""
+        },
+        top_section_title: {
+          en: finalFormData.about_page_top_section_title_en || "",
+          ar: finalFormData.about_page_top_section_title_ar || ""
+        },
+        top_section_description: {
+          en: finalFormData.about_page_top_section_description_en || "",
+          ar: finalFormData.about_page_top_section_description_ar || ""
+        },
+        top_title: {
+          en: finalFormData.about_page_top_title_en || "",
+          ar: finalFormData.about_page_top_title_ar || ""
+        },
+        top_description: {
+          en: finalFormData.about_page_top_description_en || "",
+          ar: finalFormData.about_page_top_description_ar || ""
+        },
+        card_one_title: {
+          en: finalFormData.about_page_card_one_title_en || "",
+          ar: finalFormData.about_page_card_one_title_ar || ""
+        },
+        card_one_sub: {
+          en: finalFormData.about_page_card_one_subtitle_en || "",
+          ar: finalFormData.about_page_card_one_subtitle_ar || ""
+        },
+        card_one_description: {
+          en: finalFormData.about_page_card_one_description_en || "",
+          ar: finalFormData.about_page_card_one_description_ar || ""
+        },
+        card_two_title: {
+          en: finalFormData.about_page_card_two_title_en || "",
+          ar: finalFormData.about_page_card_two_title_ar || ""
+        },
+        card_two_sub: {
+          en: finalFormData.about_page_card_two_subtitle_en || "",
+          ar: finalFormData.about_page_card_two_subtitle_ar || ""
+        },
+        card_two_description: {
+          en: finalFormData.about_page_card_two_description_en || "",
+          ar: finalFormData.about_page_card_two_description_ar || ""
+        },
+        middle_description_one: {
+          en: finalFormData.about_us_middle_description_one_en || "",
+          ar: finalFormData.about_us_middle_description_one_ar || ""
+        },
+        middle_description_two: {
+          en: finalFormData.about_us_middle_description_two_en || "",
+          ar: finalFormData.about_us_middle_description_two_ar || ""
+        },
+        founder_title: {
+          en: finalFormData.about_page_founder_title_en || "",
+          ar: finalFormData.about_page_founder_title_ar || ""
+        },
+        founder_description: {
+          en: finalFormData.about_page_founder_description_en || "",
+          ar: finalFormData.about_page_founder_description_ar || ""
+        },
+        founder_one_name: {
+          en: finalFormData.about_page_founder_one_name_en || "",
+          ar: finalFormData.about_page_founder_one_name_ar || ""
+        },
+        founder_one_position: {
+          en: finalFormData.about_page_founder_one_position_en || "",
+          ar: finalFormData.about_page_founder_one_position_ar || ""
+        },
+        founder_one_sub: {
+          en: finalFormData.about_page_founder_one_sub_en || "",
+          ar: finalFormData.about_page_founder_one_sub_ar || ""
+        },
+        founder_two_name: {
+          en: finalFormData.about_page_founder_two_name_en || "",
+          ar: finalFormData.about_page_founder_two_name_ar || ""
+        },
+        founder_two_position: {
+          en: finalFormData.about_page_founder_two_position_en || "",
+          ar: finalFormData.about_page_founder_two_position_ar || ""
+        },
+        founder_two_sub: {
+          en: finalFormData.about_page_founder_two_sub_en || "",
+          ar: finalFormData.about_page_founder_two_sub_ar || ""
+        },
+        founder_three_name: {
+          en: finalFormData.about_page_founder_three_name_en || "",
+          ar: finalFormData.about_page_founder_three_name_ar || ""
+        },
+        founder_three_position: {
+          en: finalFormData.about_page_founder_three_position_en || "",
+          ar: finalFormData.about_page_founder_three_position_ar || ""
+        },
+        founder_three_sub: {
+          en: finalFormData.about_page_founder_three_sub_en || "",
+          ar: finalFormData.about_page_founder_three_sub_ar || ""
+        },
+        founder_four_name: {
+          en: finalFormData.about_page_founder_four_name_en || "",
+          ar: finalFormData.about_page_founder_four_name_ar || ""
+        },
+        founder_four_position: {
+          en: finalFormData.about_page_founder_four_position_en || "",
+          ar: finalFormData.about_page_founder_four_position_ar || ""
+        },
+        founder_four_sub: {
+          en: finalFormData.about_page_founder_four_sub_en || "",
+          ar: finalFormData.about_page_founder_four_sub_ar || ""
+        },
+        founder_five_name: {
+          en: finalFormData.about_page_founder_five_name_en || "",
+          ar: finalFormData.about_page_founder_five_name_ar || ""
+        },
+        founder_five_position: {
+          en: finalFormData.about_page_founder_five_position_en || "",
+          ar: finalFormData.about_page_founder_five_position_ar || ""
+        },
+        founder_five_sub: {
+          en: finalFormData.about_page_founder_five_sub_en || "",
+          ar: finalFormData.about_page_founder_five_sub_ar || ""
+        },
+        founder_six_name: {
+          en: finalFormData.about_page_founder_six_name_en || "",
+          ar: finalFormData.about_page_founder_six_name_ar || ""
+        },
+        founder_six_position: {
+          en: finalFormData.about_page_founder_six_position_en || "",
+          ar: finalFormData.about_page_founder_six_position_ar || ""
+        },
+        founder_six_sub: {
+          en: finalFormData.about_page_founder_six_sub_en || "",
+          ar: finalFormData.about_page_founder_six_sub_ar || ""
+        },
+        founder_seven_name: {
+          en: finalFormData.about_page_founder_seven_name_en || "",
+          ar: finalFormData.about_page_founder_seven_name_ar || ""
+        },
+        founder_seven_position: {
+          en: finalFormData.about_page_founder_seven_position_en || "",
+          ar: finalFormData.about_page_founder_seven_position_ar || ""
+        },
+        founder_seven_sub: {
+          en: finalFormData.about_page_founder_seven_sub_en || "",
+          ar: finalFormData.about_page_founder_seven_sub_ar || ""
+        },
+        founder_eight_name: {
+          en: finalFormData.about_page_founder_eight_name_en || "",
+          ar: finalFormData.about_page_founder_eight_name_ar || ""
+        },
+        founder_eight_position: {
+          en: finalFormData.about_page_founder_eight_position_en || "",
+          ar: finalFormData.about_page_founder_eight_position_ar || ""
+        },
+        founder_eight_sub: {
+          en: finalFormData.about_page_founder_eight_sub_en || "",
+          ar: finalFormData.about_page_founder_eight_sub_ar || ""
+        },
+        founder_nine_name: {
+          en: finalFormData.about_page_founder_nine_name_en || "",
+          ar: finalFormData.about_page_founder_nine_name_ar || ""
+        },
+        founder_nine_position: {
+          en: finalFormData.about_page_founder_nine_position_en || "",
+          ar: finalFormData.about_page_founder_nine_position_ar || ""
+        },
+        founder_nine_sub: {
+          en: finalFormData.about_page_founder_nine_sub_en || "",
+          ar: finalFormData.about_page_founder_nine_sub_ar || ""
+        },
+        founder_ten_name: {
+          en: finalFormData.about_page_founder_ten_name_en || "",
+          ar: finalFormData.about_page_founder_ten_name_ar || ""
+        },
+        founder_ten_position: {
+          en: finalFormData.about_page_founder_ten_position_en || "",
+          ar: finalFormData.about_page_founder_ten_position_ar || ""
+        },
+        founder_ten_sub: {
+          en: finalFormData.about_page_founder_ten_sub_en || "",
+          ar: finalFormData.about_page_founder_ten_sub_ar || ""
+        },
+        founder_eleven_name: {
+          en: finalFormData.about_page_founder_eleven_name_en || "",
+          ar: finalFormData.about_page_founder_eleven_name_ar || ""
+        },
+        founder_eleven_position: {
+          en: finalFormData.about_page_founder_eleven_position_en || "",
+          ar: finalFormData.about_page_founder_eleven_position_ar || ""
+        },
+        founder_eleven_sub: {
+          en: finalFormData.about_page_founder_eleven_sub_en || "",
+          ar: finalFormData.about_page_founder_eleven_sub_ar || ""
+        },
+        founder_twelve_name: {
+          en: finalFormData.about_page_founder_twelve_name_en || "",
+          ar: finalFormData.about_page_founder_twelve_name_ar || ""
+        },
+        founder_twelve_position: {
+          en: finalFormData.about_page_founder_twelve_position_en || "",
+          ar: finalFormData.about_page_founder_twelve_position_ar || ""
+        },
+        founder_twelve_sub: {
+          en: finalFormData.about_page_founder_twelve_sub_en || "",
+          ar: finalFormData.about_page_founder_twelve_sub_ar || ""
+        },
+        values_title: {
+          en: finalFormData.about_page_values_title_en || "",
+          ar: finalFormData.about_page_values_title_ar || ""
+        },
+        values_description: {
+          en: finalFormData.about_page_values_description_en || "",
+          ar: finalFormData.about_page_values_description_ar || ""
+        },
+        value_one_title: {
+          en: finalFormData.about_page_value_one_title_en || "",
+          ar: finalFormData.about_page_value_one_title_ar || ""
+        },
+        value_one_description: {
+          en: finalFormData.about_page_value_one_description_en || "",
+          ar: finalFormData.about_page_value_one_description_ar || ""
+        },
+        value_two_title: {
+          en: finalFormData.about_page_value_two_title_en || "",
+          ar: finalFormData.about_page_value_two_title_ar || ""
+        },
+        value_two_description: {
+          en: finalFormData.about_page_value_two_description_en || "",
+          ar: finalFormData.about_page_value_two_description_ar || ""
+        },
+        value_three_title: {
+          en: finalFormData.about_page_value_three_title_en || "",
+          ar: finalFormData.about_page_value_three_title_ar || ""
+        },
+        value_three_description: {
+          en: finalFormData.about_page_value_three_description_en || "",
+          ar: finalFormData.about_page_value_three_description_ar || ""
+        },
+        value_four_title: {
+          en: finalFormData.about_page_value_four_title_en || "",
+          ar: finalFormData.about_page_value_four_title_ar || ""
+        },
+        value_four_description: {
+          en: finalFormData.about_page_value_four_description_en || "",
+          ar: finalFormData.about_page_value_four_description_ar || ""
+        },
+        community_title: {
+          en: finalFormData.about_page_community_title_en || "",
+          ar: finalFormData.about_page_community_title_ar || ""
+        },
+        community_description_one: {
+          en: finalFormData.about_page_community_description_one_en || "",
+          ar: finalFormData.about_page_community_description_one_ar || ""
+        },
+        community_description_two: {
+          en: finalFormData.about_page_community_description_two_en || "",
+          ar: finalFormData.about_page_community_description_two_ar || ""
+        },
+        community_stat_one_number: {
+          en: finalFormData.about_page_community_stat_one_number_en || "",
+          ar: finalFormData.about_page_community_stat_one_number_ar || ""
+        },
+        community_stat_one_label: {
+          en: finalFormData.about_page_community_stat_one_label_en || "",
+          ar: finalFormData.about_page_community_stat_one_label_ar || ""
+        },
+        community_stat_two_number: {
+          en: finalFormData.about_page_community_stat_two_number_en || "",
+          ar: finalFormData.about_page_community_stat_two_number_ar || ""
+        },
+        community_stat_two_label: {
+          en: finalFormData.about_page_community_stat_two_label_en || "",
+          ar: finalFormData.about_page_community_stat_two_label_ar || ""
+        },
+        community_cta_title: {
+          en: finalFormData.about_page_community_cta_title_en || "",
+          ar: finalFormData.about_page_community_cta_title_ar || ""
+        },
+        community_cta_description: {
+          en: finalFormData.about_page_community_cta_description_en || "",
+          ar: finalFormData.about_page_community_cta_description_ar || ""
+        },
+        heritage_title: {
+          en: finalFormData.about_page_heritage_title_en || "",
+          ar: finalFormData.about_page_heritage_title_ar || ""
+        },
+        heritage_description_one: {
+          en: finalFormData.about_page_heritage_description_one_en || "",
+          ar: finalFormData.about_page_heritage_description_one_ar || ""
+        },
+        heritage_description_two: {
+          en: finalFormData.about_page_heritage_description_two_en || "",
+          ar: finalFormData.about_page_heritage_description_two_ar || ""
+        },
+        team_title: {
+          en: finalFormData.about_page_team_title_en || "",
+          ar: finalFormData.about_page_team_title_ar || ""
+        },
+        team_description: {
+          en: finalFormData.about_page_team_description_en || "",
+          ar: finalFormData.about_page_team_description_ar || ""
+        },
+        leadership_title: {
+          en: finalFormData.about_page_leadership_title_en || "",
+          ar: finalFormData.about_page_leadership_title_ar || ""
+        },
+        leadership_subtitle: {
+          en: finalFormData.about_page_leadership_subtitle_en || "",
+          ar: finalFormData.about_page_leadership_subtitle_ar || ""
+        },
+        branches_title: {
+          en: finalFormData.about_page_branches_title_en || "",
+          ar: finalFormData.about_page_branches_title_ar || ""
+        },
+        branches_description: {
+          en: finalFormData.about_page_branches_description_en || "",
+          ar: finalFormData.about_page_branches_description_ar || ""
+        },
+        branches_cta_title: {
+          en: finalFormData.about_page_branches_cta_title_en || "",
+          ar: finalFormData.about_page_branches_cta_title_ar || ""
+        },
+        branches_cta_description: {
+          en: finalFormData.about_page_branches_cta_description_en || "",
+          ar: finalFormData.about_page_branches_cta_description_ar || ""
+        },
+        upcoming_branches_title: {
+          en: finalFormData.about_page_upcoming_branches_title_en || "",
+          ar: finalFormData.about_page_upcoming_branches_title_ar || ""
+        },
+        branch_one_name: {
+          en: finalFormData.about_page_branch_one_name_en || "",
+          ar: finalFormData.about_page_branch_one_name_ar || ""
+        },
+        branch_one_address: {
+          en: finalFormData.about_page_branch_one_address_en || "",
+          ar: finalFormData.about_page_branch_one_address_ar || ""
+        },
+        branch_one_phone: {
+          en: finalFormData.about_page_branch_one_phone_en || "",
+          ar: finalFormData.about_page_branch_one_phone_ar || ""
+        },
+        branch_one_hours: {
+          en: finalFormData.about_page_branch_one_hours_en || "",
+          ar: finalFormData.about_page_branch_one_hours_ar || ""
+        },
+        branch_one_subtitle: {
+          en: finalFormData.about_page_branch_one_subtitle_en || "",
+          ar: finalFormData.about_page_branch_one_subtitle_ar || ""
+        },
+        branch_one_services: {
+          en: finalFormData.about_page_branch_one_services_en || "",
+          ar: finalFormData.about_page_branch_one_services_ar || ""
+        },
+        branch_one_directions: {
+          en: finalFormData.about_page_branch_one_directions_en || "",
+          ar: finalFormData.about_page_branch_one_directions_ar || ""
+        },
+        branch_two_name: {
+          en: finalFormData.about_page_branch_two_name_en || "",
+          ar: finalFormData.about_page_branch_two_name_ar || ""
+        },
+        branch_two_address: {
+          en: finalFormData.about_page_branch_two_address_en || "",
+          ar: finalFormData.about_page_branch_two_address_ar || ""
+        },
+        branch_two_phone: {
+          en: finalFormData.about_page_branch_two_phone_en || "",
+          ar: finalFormData.about_page_branch_two_phone_ar || ""
+        },
+        branch_two_hours: {
+          en: finalFormData.about_page_branch_two_hours_en || "",
+          ar: finalFormData.about_page_branch_two_hours_ar || ""
+        },
+        branch_two_subtitle: {
+          en: finalFormData.about_page_branch_two_subtitle_en || "",
+          ar: finalFormData.about_page_branch_two_subtitle_ar || ""
+        },
+        branch_two_services: {
+          en: finalFormData.about_page_branch_two_services_en || "",
+          ar: finalFormData.about_page_branch_two_services_ar || ""
+        },
+        branch_two_directions: {
+          en: finalFormData.about_page_branch_two_directions_en || "",
+          ar: finalFormData.about_page_branch_two_directions_ar || ""
+        },
+        branch_three_name: {
+          en: finalFormData.about_page_branch_three_name_en || "",
+          ar: finalFormData.about_page_branch_three_name_ar || ""
+        },
+        branch_three_address: {
+          en: finalFormData.about_page_branch_three_address_en || "",
+          ar: finalFormData.about_page_branch_three_address_ar || ""
+        },
+        branch_three_phone: {
+          en: finalFormData.about_page_branch_three_phone_en || "",
+          ar: finalFormData.about_page_branch_three_phone_ar || ""
+        },
+        branch_three_hours: {
+          en: finalFormData.about_page_branch_three_hours_en || "",
+          ar: finalFormData.about_page_branch_three_hours_ar || ""
+        },
+        branch_three_subtitle: {
+          en: finalFormData.about_page_branch_three_subtitle_en || "",
+          ar: finalFormData.about_page_branch_three_subtitle_ar || ""
+        },
+        branch_three_services: {
+          en: finalFormData.about_page_branch_three_services_en || "",
+          ar: finalFormData.about_page_branch_three_services_ar || ""
+        },
+        branch_three_directions: {
+          en: finalFormData.about_page_branch_three_directions_en || "",
+          ar: finalFormData.about_page_branch_three_directions_ar || ""
+        },
+        branch_four_name: {
+          en: finalFormData.about_page_branch_four_name_en || "",
+          ar: finalFormData.about_page_branch_four_name_ar || ""
+        },
+        branch_four_address: {
+          en: finalFormData.about_page_branch_four_address_en || "",
+          ar: finalFormData.about_page_branch_four_address_ar || ""
+        },
+        branch_four_phone: {
+          en: finalFormData.about_page_branch_four_phone_en || "",
+          ar: finalFormData.about_page_branch_four_phone_ar || ""
+        },
+        branch_four_hours: {
+          en: finalFormData.about_page_branch_four_hours_en || "",
+          ar: finalFormData.about_page_branch_four_hours_ar || ""
+        },
+        branch_four_subtitle: {
+          en: finalFormData.about_page_branch_four_subtitle_en || "",
+          ar: finalFormData.about_page_branch_four_subtitle_ar || ""
+        },
+        branch_four_services: {
+          en: finalFormData.about_page_branch_four_services_en || "",
+          ar: finalFormData.about_page_branch_four_services_ar || ""
+        },
+        branch_four_directions: {
+          en: finalFormData.about_page_branch_four_directions_en || "",
+          ar: finalFormData.about_page_branch_four_directions_ar || ""
+        },
+        branch_five_name: {
+          en: finalFormData.about_page_branch_five_name_en || "",
+          ar: finalFormData.about_page_branch_five_name_ar || ""
+        },
+        branch_five_address: {
+          en: finalFormData.about_page_branch_five_address_en || "",
+          ar: finalFormData.about_page_branch_five_address_ar || ""
+        },
+        branch_five_phone: {
+          en: finalFormData.about_page_branch_five_phone_en || "",
+          ar: finalFormData.about_page_branch_five_phone_ar || ""
+        },
+        branch_five_hours: {
+          en: finalFormData.about_page_branch_five_hours_en || "",
+          ar: finalFormData.about_page_branch_five_hours_ar || ""
+        },
+        branch_five_subtitle: {
+          en: finalFormData.about_page_branch_five_subtitle_en || "",
+          ar: finalFormData.about_page_branch_five_subtitle_ar || ""
+        },
+        branch_five_services: {
+          en: finalFormData.about_page_branch_five_services_en || "",
+          ar: finalFormData.about_page_branch_five_services_ar || ""
+        },
+        branch_five_directions: {
+          en: finalFormData.about_page_branch_five_directions_en || "",
+          ar: finalFormData.about_page_branch_five_directions_ar || ""
+        },
+        branch_six_name: {
+          en: finalFormData.about_page_branch_six_name_en || "",
+          ar: finalFormData.about_page_branch_six_name_ar || ""
+        },
+        branch_six_address: {
+          en: finalFormData.about_page_branch_six_address_en || "",
+          ar: finalFormData.about_page_branch_six_address_ar || ""
+        },
+        branch_six_phone: {
+          en: finalFormData.about_page_branch_six_phone_en || "",
+          ar: finalFormData.about_page_branch_six_phone_ar || ""
+        },
+        branch_six_hours: {
+          en: finalFormData.about_page_branch_six_hours_en || "",
+          ar: finalFormData.about_page_branch_six_hours_ar || ""
+        },
+        branch_six_subtitle: {
+          en: finalFormData.about_page_branch_six_subtitle_en || "",
+          ar: finalFormData.about_page_branch_six_subtitle_ar || ""
+        },
+        branch_six_services: {
+          en: finalFormData.about_page_branch_six_services_en || "",
+          ar: finalFormData.about_page_branch_six_services_ar || ""
+        },
+        branch_six_directions: {
+          en: finalFormData.about_page_branch_six_directions_en || "",
+          ar: finalFormData.about_page_branch_six_directions_ar || ""
+        },
+        branch_seven_name: {
+          en: finalFormData.about_page_branch_seven_name_en || "",
+          ar: finalFormData.about_page_branch_seven_name_ar || ""
+        },
+        branch_seven_address: {
+          en: finalFormData.about_page_branch_seven_address_en || "",
+          ar: finalFormData.about_page_branch_seven_address_ar || ""
+        },
+        branch_seven_phone: {
+          en: finalFormData.about_page_branch_seven_phone_en || "",
+          ar: finalFormData.about_page_branch_seven_phone_ar || ""
+        },
+        branch_seven_hours: {
+          en: finalFormData.about_page_branch_seven_hours_en || "",
+          ar: finalFormData.about_page_branch_seven_hours_ar || ""
+        },
+        branch_seven_subtitle: {
+          en: finalFormData.about_page_branch_seven_subtitle_en || "",
+          ar: finalFormData.about_page_branch_seven_subtitle_ar || ""
+        },
+        branch_seven_services: {
+          en: finalFormData.about_page_branch_seven_services_en || "",
+          ar: finalFormData.about_page_branch_seven_services_ar || ""
+        },
+        branch_seven_directions: {
+          en: finalFormData.about_page_branch_seven_directions_en || "",
+          ar: finalFormData.about_page_branch_seven_directions_ar || ""
+        },
+        branch_eight_name: {
+          en: finalFormData.about_page_branch_eight_name_en || "",
+          ar: finalFormData.about_page_branch_eight_name_ar || ""
+        },
+        branch_eight_address: {
+          en: finalFormData.about_page_branch_eight_address_en || "",
+          ar: finalFormData.about_page_branch_eight_address_ar || ""
+        },
+        branch_eight_phone: {
+          en: finalFormData.about_page_branch_eight_phone_en || "",
+          ar: finalFormData.about_page_branch_eight_phone_ar || ""
+        },
+        branch_eight_hours: {
+          en: finalFormData.about_page_branch_eight_hours_en || "",
+          ar: finalFormData.about_page_branch_eight_hours_ar || ""
+        },
+        branch_eight_subtitle: {
+          en: finalFormData.about_page_branch_eight_subtitle_en || "",
+          ar: finalFormData.about_page_branch_eight_subtitle_ar || ""
+        },
+        branch_eight_services: {
+          en: finalFormData.about_page_branch_eight_services_en || "",
+          ar: finalFormData.about_page_branch_eight_services_ar || ""
+        },
+        branch_eight_directions: {
+          en: finalFormData.about_page_branch_eight_directions_en || "",
+          ar: finalFormData.about_page_branch_eight_directions_ar || ""
+        },
+        upcoming_branch_one_name: {
+          en: finalFormData.about_page_upcoming_branch_one_name_en || "",
+          ar: finalFormData.about_page_upcoming_branch_one_name_ar || ""
+        },
+        upcoming_branch_one_address: {
+          en: finalFormData.about_page_upcoming_branch_one_address_en || "",
+          ar: finalFormData.about_page_upcoming_branch_one_address_ar || ""
+        },
+        upcoming_branch_one_quarter: {
+          en: finalFormData.about_page_upcoming_branch_one_quarter_en || "",
+          ar: finalFormData.about_page_upcoming_branch_one_quarter_ar || ""
+        },
+        upcoming_branch_one_features: {
+          en: finalFormData.about_page_upcoming_branch_one_features_en || "",
+          ar: finalFormData.about_page_upcoming_branch_one_features_ar || ""
+        },
+        upcoming_branch_one_emoji: {
+          en: finalFormData.about_page_upcoming_branch_one_emoji_en || "",
+          ar: finalFormData.about_page_upcoming_branch_one_emoji_ar || ""
+        },
+        upcoming_branch_two_name: {
+          en: finalFormData.about_page_upcoming_branch_two_name_en || "",
+          ar: finalFormData.about_page_upcoming_branch_two_name_ar || ""
+        },
+        upcoming_branch_two_address: {
+          en: finalFormData.about_page_upcoming_branch_two_address_en || "",
+          ar: finalFormData.about_page_upcoming_branch_two_address_ar || ""
+        },
+        upcoming_branch_two_quarter: {
+          en: finalFormData.about_page_upcoming_branch_two_quarter_en || "",
+          ar: finalFormData.about_page_upcoming_branch_two_quarter_ar || ""
+        },
+        upcoming_branch_two_features: {
+          en: finalFormData.about_page_upcoming_branch_two_features_en || "",
+          ar: finalFormData.about_page_upcoming_branch_two_features_ar || ""
+        },
+        upcoming_branch_two_emoji: {
+          en: finalFormData.about_page_upcoming_branch_two_emoji_en || "",
+          ar: finalFormData.about_page_upcoming_branch_two_emoji_ar || ""
+        },
+        trusted_badge_one_pill: {
+          en: finalFormData.about_page_trusted_badge_one_pill_en || "",
+          ar: finalFormData.about_page_trusted_badge_one_pill_ar || ""
+        },
+        trusted_badge_one_text: {
+          en: finalFormData.about_page_trusted_badge_one_text_en || "",
+          ar: finalFormData.about_page_trusted_badge_one_text_ar || ""
+        },
+        trusted_badge_two_pill: {
+          en: finalFormData.about_page_trusted_badge_two_pill_en || "",
+          ar: finalFormData.about_page_trusted_badge_two_pill_ar || ""
+        },
+        trusted_badge_two_text: {
+          en: finalFormData.about_page_trusted_badge_two_text_en || "",
+          ar: finalFormData.about_page_trusted_badge_two_text_ar || ""
+        },
         header_status: aboutPageHeader,
         header_bg: aboutHeaderBg,
         content_left_status: aboutContentLeft,
