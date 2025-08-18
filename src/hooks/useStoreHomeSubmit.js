@@ -2308,25 +2308,22 @@ const useStoreHomeSubmit = () => {
   useEffect(() => {
     const getStoreCustomizationData = async () => {
       try {
-        // Fetch base store customization data (navbar, home, slider, etc.) from settings collection
-        const baseRes = await SettingServices.getStoreCustomizationSetting();
-        
-        // Fetch About Us data from new dedicated collection
-        const aboutUsRes = await SettingServices.getAboutUs();
-        
-        // Merge the data: base settings + about us data (about us takes precedence)
-        const res = {
-          ...baseRes,
-          ...aboutUsRes
-        };
+        // Fetch all store customization data from settings collection (navbar, home, slider, etc.)
+        const res = await SettingServices.getStoreCustomizationSetting();
 
         console.log("🔍 Admin App - API Response:", {
-          hasBaseData: !!baseRes,
-          hasAboutUsData: !!aboutUsRes,
+          hasData: !!res,
           dataKeys: Object.keys(res || {}),
-          title: res?.title,
-          branchesTitle: res?.branches_title,
-          teamTitle: res?.team_title
+          title: res?.about_us?.title,
+          branchesTitle: res?.about_us?.branches_title,
+          teamTitle: res?.about_us?.team_title
+        });
+
+        // Fetch About Us data separately from new collection
+        const aboutUsRes = await SettingServices.getAboutUs();
+        console.log("🔍 About Us Collection Data:", {
+          hasAboutUsData: !!aboutUsRes,
+          aboutUsKeys: Object.keys(aboutUsRes || {})
         });
 
         if (res) {
@@ -2886,33 +2883,34 @@ const useStoreHomeSubmit = () => {
             res?.slug?.card_description_seven[language || "en"]
           );
 
-          // about us
-          console.log("🔍 Setting About Us form values...");
-          console.log("Header status:", res?.header_status);
-          console.log("Title:", res?.title);
-          console.log("Branches title:", res?.branches_title);
+          // about us - ALL data comes from new AboutUs collection
+          console.log("🔍 Setting About Us form values from new collection...");
+          console.log("Header status:", aboutUsRes?.header_status);
+          console.log("Title:", aboutUsRes?.title);
+          console.log("Branches title:", aboutUsRes?.branches_title);
 
-          setAboutPageHeader(res?.header_status);
-          setAboutHeaderBg(res?.header_bg);
-          setAboutTopContentLeft(res?.content_left_status);
-          setAboutTopContentRight(res?.content_right_status);
-          setAboutTopContentRightImage(res?.top_section_image);
-          setAboutMiddleContentSection(res?.content_middle_status);
-          setAboutMiddleContentImage(res?.content_middle_Img);
-          setOurFounderSection(res?.founder_status);
-          setOurFounderOneImage(res?.founder_one_img);
-          setOurFounderTwoImage(res?.founder_two_img);
-          setOurFounderThreeImage(res?.founder_three_img);
-          setOurFounderFourImage(res?.founder_four_img);
-          setOurFounderFiveImage(res?.founder_five_img);
-          setOurFounderSixImage(res?.founder_six_img);
-          console.log("Setting about_page_title:", res?.title);
-          setValue("about_page_title_en", res?.title?.en || "");
-          setValue("about_page_title_ar", res?.title?.ar || "");
-          console.log("Setting about_page_top_section_title:", res?.top_section_title);
+          // Boolean toggles come from new AboutUs collection
+          setAboutPageHeader(aboutUsRes?.header_status);
+          setAboutHeaderBg(aboutUsRes?.header_bg);
+          setAboutTopContentLeft(aboutUsRes?.content_left_status);
+          setAboutTopContentRight(aboutUsRes?.content_right_status);
+          setAboutTopContentRightImage(aboutUsRes?.top_section_image);
+          setAboutMiddleContentSection(aboutUsRes?.content_middle_status);
+          setAboutMiddleContentImage(aboutUsRes?.content_middle_Img);
+          setOurFounderSection(aboutUsRes?.founder_status);
+          setOurFounderOneImage(aboutUsRes?.founder_one_img);
+          setOurFounderTwoImage(aboutUsRes?.founder_two_img);
+          setOurFounderThreeImage(aboutUsRes?.founder_three_img);
+          setOurFounderFourImage(aboutUsRes?.founder_four_img);
+          setOurFounderFiveImage(aboutUsRes?.founder_five_img);
+          setOurFounderSixImage(aboutUsRes?.founder_six_img);
+          console.log("Setting about_page_title:", aboutUsRes?.title);
+          setValue("about_page_title_en", aboutUsRes?.title?.en || "");
+          setValue("about_page_title_ar", aboutUsRes?.title?.ar || "");
+          console.log("Setting about_page_top_section_title:", aboutUsRes?.top_section_title);
           setValue(
             "about_page_top_section_title",
-            res?.top_section_title?.[language || "en"] || ""
+            aboutUsRes?.top_section_title?.[language || "en"] || ""
           );
           setValue(
             "about_us_top_description",
@@ -2921,103 +2919,103 @@ const useStoreHomeSubmit = () => {
           console.log("Setting about_page_card_one_title:", res?.about_us?.card_one_title);
           setValue(
             "about_page_card_one_title",
-            res?.about_us?.card_one_title?.[language || "en"] || ""
+            aboutUsRes?.card_one_title?.[language || "en"] || ""
           );
           setValue(
             "about_page_card_one_subtitle",
-            res?.about_us?.card_one_sub?.[language || "en"] || ""
+            aboutUsRes?.card_one_sub?.[language || "en"] || ""
           );
           setValue(
             "about_page_card_one_description",
-            res?.about_us?.card_one_description?.[language || "en"] || ""
+            aboutUsRes?.card_one_description?.[language || "en"] || ""
           );
-          console.log("Setting about_page_card_two_title:", res?.about_us?.card_two_title);
+          console.log("Setting about_page_card_two_title:", aboutUsRes?.card_two_title);
           setValue(
             "about_page_card_two_title",
-            res?.about_us?.card_two_title?.[language || "en"] || ""
+            aboutUsRes?.card_two_title?.[language || "en"] || ""
           );
           setValue(
             "about_page_card_two_subtitle",
-            res?.about_us?.card_two_sub?.[language || "en"] || ""
+            aboutUsRes?.card_two_sub?.[language || "en"] || ""
           );
-          console.log("Setting about_page_card_two_description:", res?.about_us?.card_two_description);
+          console.log("Setting about_page_card_two_description:", aboutUsRes?.card_two_description);
           setValue(
             "about_page_card_two_description",
-            res?.about_us?.card_two_description?.[language || "en"] || ""
+            aboutUsRes?.card_two_description?.[language || "en"] || ""
           );
           setValue(
             "about_us_middle_description_one",
-            res?.about_us?.middle_description_one?.[language || "en"] || ""
+            aboutUsRes?.middle_description_one?.[language || "en"] || ""
           );
           setValue(
             "about_us_middle_description_two",
-            res?.about_us?.middle_description_two?.[language || "en"] || ""
+            aboutUsRes?.middle_description_two?.[language || "en"] || ""
           );
           setValue(
             "about_page_team_title",
-            res?.about_us?.team_title?.[language || "en"] || ""
+            aboutUsRes?.team_title?.[language || "en"] || ""
           );
           setValue(
             "about_page_team_description",
-            res?.about_us?.team_description?.[language || "en"] || ""
+            aboutUsRes?.team_description?.[language || "en"] || ""
           );
           setValue(
             "about_page_founder_one_name",
-            res?.about_us?.founder_one_name?.[language || "en"] || ""
+            aboutUsRes?.founder_one_name?.[language || "en"] || ""
           );
           setValue(
             "about_page_founder_one_position",
-            res?.about_us?.founder_one_sub?.[language || "en"] || ""
+            aboutUsRes?.founder_one_sub?.[language || "en"] || ""
           );
           setValue(
             "about_page_founder_two_name",
-            res?.about_us?.founder_two_name?.[language || "en"] || ""
+            aboutUsRes?.founder_two_name?.[language || "en"] || ""
           );
           setValue(
             "about_page_founder_two_position",
-            res?.about_us?.founder_two_position?.[language || "en"] || ""
+            aboutUsRes?.founder_two_position?.[language || "en"] || ""
           );
           setValue(
             "about_page_founder_three_name",
-            res?.about_us?.founder_three_name?.[language || "en"] || ""
+            aboutUsRes?.founder_three_name?.[language || "en"] || ""
           );
           setValue(
             "about_page_founder_three_position",
-            res?.about_us?.founder_three_position?.[language || "en"] || ""
+            aboutUsRes?.founder_three_position?.[language || "en"] || ""
           );
           setValue(
             "about_page_founder_four_name",
-            res?.about_us?.founder_four_name?.[language || "en"] || ""
+            aboutUsRes?.founder_four_name?.[language || "en"] || ""
           );
           setValue(
             "about_page_founder_four_position",
-            res?.about_us?.founder_four_position?.[language || "en"] || ""
+            aboutUsRes?.founder_four_position?.[language || "en"] || ""
           );
           setValue(
             "about_page_founder_five_name",
-            res?.about_us?.founder_five_name?.[language || "en"] || ""
+            aboutUsRes?.founder_five_name?.[language || "en"] || ""
           );
           setValue(
             "about_page_founder_five_position",
-            res?.about_us?.founder_five_position?.[language || "en"] || ""
+            aboutUsRes?.founder_five_position?.[language || "en"] || ""
           );
           setValue(
             "about_page_founder_six_name",
-            res?.about_us?.founder_six_name?.[language || "en"] || ""
+            aboutUsRes?.founder_six_name?.[language || "en"] || ""
           );
           setValue(
             "about_page_founder_six_position",
-            res?.about_us?.founder_six_position?.[language || "en"] || ""
+            aboutUsRes?.founder_six_position?.[language || "en"] || ""
           );
 
           // Additional founder fields (7-12)
           setValue(
             "about_page_founder_seven_name",
-            res?.about_us?.founder_seven_name?.[language || "en"] || ""
+            aboutUsRes?.founder_seven_name?.[language || "en"] || ""
           );
           setValue(
             "about_page_founder_seven_position",
-            res?.about_us?.founder_seven_position?.[language || "en"] || ""
+            aboutUsRes?.founder_seven_position?.[language || "en"] || ""
           );
           setValue(
             "about_page_founder_eight_name",
@@ -4495,76 +4493,76 @@ const useStoreHomeSubmit = () => {
             );
           });
 
-          // Initialize section toggles based on data presence
-          if (res?.values_title || res?.value_one_title || res?.value_two_title) {
+          // Initialize section toggles based on data presence from new collection
+          if (aboutUsRes?.values_title || aboutUsRes?.value_one_title || aboutUsRes?.value_two_title) {
             setAboutCoreValues(true);
           }
           
           // Check for branches_status first, then fall back to data presence
-          if (res?.branches_status !== undefined) {
-            setAboutBranches(res.branches_status);
-          } else if (res?.branches_title || res?.branch_one_name || res?.upcoming_branches_title) {
+          if (aboutUsRes?.branches_status !== undefined) {
+            setAboutBranches(aboutUsRes.branches_status);
+          } else if (aboutUsRes?.branches_title || aboutUsRes?.branch_one_name || aboutUsRes?.upcoming_branches_title) {
             setAboutBranches(true);
           }
 
           // Upcoming Branches (static two)
           setValue(
             "about_page_upcoming_branch_one_name",
-            res?.about_us?.upcoming_branch_one_name ? res?.about_us?.upcoming_branch_one_name[language || "en"] : ""
+            aboutUsRes?.upcoming_branch_one_name ? aboutUsRes?.upcoming_branch_one_name[language || "en"] : ""
           );
           setValue(
             "about_page_upcoming_branch_one_address",
-            res?.about_us?.upcoming_branch_one_address ? res?.about_us?.upcoming_branch_one_address[language || "en"] : ""
+            aboutUsRes?.upcoming_branch_one_address ? aboutUsRes?.upcoming_branch_one_address[language || "en"] : ""
           );
           setValue(
             "about_page_upcoming_branch_two_name",
-            res?.about_us?.upcoming_branch_two_name ? res?.about_us?.upcoming_branch_two_name[language || "en"] : ""
+            aboutUsRes?.upcoming_branch_two_name ? aboutUsRes?.upcoming_branch_two_name[language || "en"] : ""
           );
           setValue(
             "about_page_upcoming_branch_two_address",
-            res?.about_us?.upcoming_branch_two_address ? res?.about_us?.upcoming_branch_two_address[language || "en"] : ""
+            aboutUsRes?.upcoming_branch_two_address ? aboutUsRes?.upcoming_branch_two_address[language || "en"] : ""
           );
 
           setValue(
             "about_page_upcoming_branch_one_quarter",
-            res?.about_us?.upcoming_branch_one_quarter ? res?.about_us?.upcoming_branch_one_quarter[language || "en"] : ""
+            aboutUsRes?.upcoming_branch_one_quarter ? aboutUsRes?.upcoming_branch_one_quarter[language || "en"] : ""
           );
           setValue(
             "about_page_upcoming_branch_one_features",
-            res?.about_us?.upcoming_branch_one_features ? res?.about_us?.upcoming_branch_one_features[language || "en"] : ""
+            aboutUsRes?.upcoming_branch_one_features ? aboutUsRes?.upcoming_branch_one_features[language || "en"] : ""
           );
           setValue(
             "about_page_upcoming_branch_one_emoji",
-            res?.about_us?.upcoming_branch_one_emoji ? res?.about_us?.upcoming_branch_one_emoji[language || "en"] : ""
+            aboutUsRes?.upcoming_branch_one_emoji ? aboutUsRes?.upcoming_branch_one_emoji[language || "en"] : ""
           );
 
           setValue(
             "about_page_upcoming_branch_two_quarter",
-            res?.about_us?.upcoming_branch_two_quarter ? res?.about_us?.upcoming_branch_two_quarter[language || "en"] : ""
+            aboutUsRes?.upcoming_branch_two_quarter ? aboutUsRes?.upcoming_branch_two_quarter[language || "en"] : ""
           );
           setValue(
             "about_page_upcoming_branch_two_features",
-            res?.about_us?.upcoming_branch_two_features ? res?.about_us?.upcoming_branch_two_features[language || "en"] : ""
+            aboutUsRes?.upcoming_branch_two_features ? aboutUsRes?.upcoming_branch_two_features[language || "en"] : ""
           );
           setValue(
             "about_page_upcoming_branch_two_emoji",
-            res?.about_us?.upcoming_branch_two_emoji ? res?.about_us?.upcoming_branch_two_emoji[language || "en"] : ""
+            aboutUsRes?.upcoming_branch_two_emoji ? aboutUsRes?.upcoming_branch_two_emoji[language || "en"] : ""
           );
           setValue(
             "about_page_trusted_badge_one_pill",
-            res?.about_us?.trusted_badge_one_pill ? res?.about_us?.trusted_badge_one_pill[language || "en"] : ""
+            aboutUsRes?.trusted_badge_one_pill ? aboutUsRes?.trusted_badge_one_pill[language || "en"] : ""
           );
           setValue(
             "about_page_trusted_badge_one_text",
-            res?.about_us?.trusted_badge_one_text ? res?.about_us?.trusted_badge_one_text[language || "en"] : ""
+            aboutUsRes?.trusted_badge_one_text ? aboutUsRes?.trusted_badge_one_text[language || "en"] : ""
           );
           setValue(
             "about_page_trusted_badge_two_pill",
-            res?.about_us?.trusted_badge_two_pill ? res?.about_us?.trusted_badge_two_pill[language || "en"] : ""
+            aboutUsRes?.trusted_badge_two_pill ? aboutUsRes?.trusted_badge_two_pill[language || "en"] : ""
           );
           setValue(
             "about_page_trusted_badge_two_text",
-            res?.about_us?.trusted_badge_two_text ? res?.about_us?.trusted_badge_two_text[language || "en"] : ""
+            aboutUsRes?.trusted_badge_two_text ? aboutUsRes?.trusted_badge_two_text[language || "en"] : ""
           );
         }
       } catch (err) {
