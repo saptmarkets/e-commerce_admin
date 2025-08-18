@@ -419,29 +419,35 @@ const useStoreHomeSubmit = () => {
 
             card_one_title: handleRemoveEmptyKey({
               ...resData?.about_us?.card_one_title,
-              [language]: data.about_page_card_one_title || "",
+              en: data.about_page_card_one_title_en || "",
+              ar: data.about_page_card_one_title_ar || "",
             }),
 
             card_one_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.card_one_sub,
-              [language]: data.about_page_card_one_subtitle || "",
+              en: data.about_page_card_one_subtitle_en || "",
+              ar: data.about_page_card_one_subtitle_ar || "",
             }),
 
             card_one_description: handleRemoveEmptyKey({
               ...resData?.about_us?.card_one_description,
-              [language]: data.about_page_card_one_description || "",
+              en: data.about_page_card_one_description_en || "",
+              ar: data.about_page_card_one_description_ar || "",
             }),
             card_two_title: handleRemoveEmptyKey({
               ...resData?.about_us?.card_two_title,
-              [language]: data.about_page_card_two_title || "",
+              en: data.about_page_card_two_title_en || "",
+              ar: data.about_page_card_two_title_ar || "",
             }),
             card_two_sub: handleRemoveEmptyKey({
               ...resData?.about_us?.card_two_sub,
-              [language]: data.about_page_card_two_subtitle || "",
+              en: data.about_page_card_two_subtitle_en || "",
+              ar: data.about_page_card_two_subtitle_ar || "",
             }),
             card_two_description: handleRemoveEmptyKey({
               ...resData?.about_us?.card_two_description,
-              [language]: data.about_page_card_two_description || "",
+              en: data.about_page_card_two_description_en || "",
+              ar: data.about_page_card_two_description_ar || "",
             }),
             middle_description_one: handleRemoveEmptyKey({
               ...resData?.about_us?.middle_description_one,
@@ -510,11 +516,13 @@ const useStoreHomeSubmit = () => {
             // Core Values Section
             values_title: handleRemoveEmptyKey({
               ...resData?.about_us?.values_title,
-              [language]: data.about_page_values_title || "",
+              en: data.about_page_values_title_en || "",
+              ar: data.about_page_values_title_ar || "",
             }),
             values_description: handleRemoveEmptyKey({
               ...resData?.about_us?.values_description,
-              [language]: data.about_page_values_description || "",
+              en: data.about_page_values_description_en || "",
+              ar: data.about_page_values_description_ar || "",
             }),
             value_one_title: handleRemoveEmptyKey({
               ...resData?.about_us?.value_one_title,
@@ -588,17 +596,20 @@ const useStoreHomeSubmit = () => {
             // Heritage Section
             heritage_title: handleRemoveEmptyKey({
               ...resData?.about_us?.heritage_title,
-              [language]: data.about_page_heritage_title || "",
+              en: data.about_page_heritage_title_en || "",
+              ar: data.about_page_heritage_title_ar || "",
             }),
 
             heritage_description_one: handleRemoveEmptyKey({
               ...resData?.about_us?.heritage_description_one,
-              [language]: data.about_page_heritage_description_one || "",
+              en: data.about_page_heritage_description_one_en || "",
+              ar: data.about_page_heritage_description_one_ar || "",
             }),
 
             heritage_description_two: handleRemoveEmptyKey({
               ...resData?.about_us?.heritage_description_two,
-              [language]: data.about_page_heritage_description_two || "",
+              en: data.about_page_heritage_description_two_en || "",
+              ar: data.about_page_heritage_description_two_ar || "",
             }),
 
             heritage_image: aboutMiddleContentImage,
@@ -2521,29 +2532,56 @@ const useStoreHomeSubmit = () => {
                           "about_page_top_section_description_ar",
                           res?.about_us?.top_section_description?.ar || ""
                         );
+          // Card One - Bilingual
           setValue(
-            "about_page_card_one_title",
-            res?.about_us?.card_one_title[language || "en"]
+            "about_page_card_one_title_en",
+            res?.about_us?.card_one_title?.en || ""
           );
           setValue(
-            "about_page_card_one_subtitle",
-            res?.about_us?.card_one_sub[language || "en"]
+            "about_page_card_one_title_ar",
+            res?.about_us?.card_one_title?.ar || ""
           );
           setValue(
-            "about_page_card_one_description",
-            res?.about_us?.card_one_description[language || "en"]
+            "about_page_card_one_subtitle_en",
+            res?.about_us?.card_one_sub?.en || ""
           );
           setValue(
-            "about_page_card_two_title",
-            res?.about_us?.card_two_title[language || "en"]
+            "about_page_card_one_subtitle_ar",
+            res?.about_us?.card_one_sub?.ar || ""
           );
           setValue(
-            "about_page_card_two_subtitle",
-            res?.about_us?.card_two_sub[language || "en"]
+            "about_page_card_one_description_en",
+            res?.about_us?.card_one_description?.en || ""
           );
           setValue(
-            "about_page_card_two_description",
-            res?.about_us?.card_two_description[language || "en"]
+            "about_page_card_one_description_ar",
+            res?.about_us?.card_one_description?.ar || ""
+          );
+          
+          // Card Two - Bilingual
+          setValue(
+            "about_page_card_two_title_en",
+            res?.about_us?.card_two_title?.en || ""
+          );
+          setValue(
+            "about_page_card_two_title_ar",
+            res?.about_us?.card_two_title?.ar || ""
+          );
+          setValue(
+            "about_page_card_two_subtitle_en",
+            res?.about_us?.card_two_sub?.en || ""
+          );
+          setValue(
+            "about_page_card_two_subtitle_ar",
+            res?.about_us?.card_two_sub?.ar || ""
+          );
+          setValue(
+            "about_page_card_two_description_en",
+            res?.about_us?.card_two_description?.en || ""
+          );
+          setValue(
+            "about_page_card_two_description_ar",
+            res?.about_us?.card_two_description?.ar || ""
           );
           setValue(
             "about_us_middle_description_one",
@@ -2694,18 +2732,30 @@ const useStoreHomeSubmit = () => {
                           res?.about_us?.trusted_badge_two_text?.ar || ""
                         );
 
-          // Add heritage section
+          // Add heritage section - Bilingual
           setValue(
-            "about_page_heritage_title",
-            res?.about_us?.heritage_title[language || "en"]
+            "about_page_heritage_title_en",
+            res?.about_us?.heritage_title?.en || ""
           );
           setValue(
-            "about_page_heritage_description_one",
-            res?.about_us?.heritage_description_one[language || "en"]
+            "about_page_heritage_title_ar",
+            res?.about_us?.heritage_title?.ar || ""
           );
           setValue(
-            "about_page_heritage_description_two",
-            res?.about_us?.heritage_description_two[language || "en"]
+            "about_page_heritage_description_one_en",
+            res?.about_us?.heritage_description_one?.en || ""
+          );
+          setValue(
+            "about_page_heritage_description_one_ar",
+            res?.about_us?.heritage_description_one?.ar || ""
+          );
+          setValue(
+            "about_page_heritage_description_two_en",
+            res?.about_us?.heritage_description_two?.en || ""
+          );
+          setValue(
+            "about_page_heritage_description_two_ar",
+            res?.about_us?.heritage_description_two?.ar || ""
           );
 
           // Add team section
@@ -2726,14 +2776,22 @@ const useStoreHomeSubmit = () => {
             res?.about_us?.leadership_subtitle[language || "en"]
           );
 
-          // Add values section
+          // Add values section - Bilingual
           setValue(
-            "about_page_values_title",
-            res?.about_us?.values_title[language || "en"]
+            "about_page_values_title_en",
+            res?.about_us?.values_title?.en || ""
           );
           setValue(
-            "about_page_values_description",
-            res?.about_us?.values_description[language || "en"]
+            "about_page_values_title_ar",
+            res?.about_us?.values_title?.ar || ""
+          );
+          setValue(
+            "about_page_values_description_en",
+            res?.about_us?.values_description?.en || ""
+          );
+          setValue(
+            "about_page_values_description_ar",
+            res?.about_us?.values_description?.ar || ""
           );
 
           // Add individual values
