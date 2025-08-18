@@ -2323,11 +2323,27 @@ const useStoreHomeSubmit = () => {
         const aboutUsRes = await SettingServices.getAboutUs();
         console.log("🔍 About Us Collection Data:", {
           hasAboutUsData: !!aboutUsRes,
-          aboutUsKeys: Object.keys(aboutUsRes || {})
+          aboutUsKeys: Object.keys(aboutUsRes || {}),
+          hasContent: aboutUsRes?.title || aboutUsRes?.founder_one_name || aboutUsRes?.value_one_title
         });
 
         if (res) {
-          setIsSave(false);
+          // Only set to update mode if we have actual About Us content data
+          const hasAboutUsContent = aboutUsRes && (
+            aboutUsRes.title || 
+            aboutUsRes.founder_one_name || 
+            aboutUsRes.value_one_title ||
+            aboutUsRes.team_title ||
+            aboutUsRes.branches_title
+          );
+          
+          if (hasAboutUsContent) {
+            setIsSave(false);
+            console.log("🔍 About Us has content - switching to UPDATE mode");
+          } else {
+            setIsSave(true);
+            console.log("🔍 About Us has no content - staying in SAVE mode");
+          }
           setResData(res);
 
           //navbar
