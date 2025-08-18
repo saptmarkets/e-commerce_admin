@@ -617,22 +617,26 @@ const useStoreHomeSubmit = () => {
             // Team Section
             team_title: handleRemoveEmptyKey({
               ...resData?.about_us?.team_title,
-              [language]: data.about_page_team_title || "",
+              en: data.about_page_team_title_en || "",
+              ar: data.about_page_team_title_ar || "",
             }),
 
             team_description: handleRemoveEmptyKey({
               ...resData?.about_us?.team_description,
-              [language]: data.about_page_team_description || "",
+              en: data.about_page_team_description_en || "",
+              ar: data.about_page_team_description_ar || "",
             }),
 
             leadership_title: handleRemoveEmptyKey({
               ...resData?.about_us?.leadership_title,
-              [language]: data.about_page_leadership_title || "",
+              en: data.about_page_leadership_title_en || "",
+              ar: data.about_page_leadership_title_ar || "",
             }),
 
             leadership_subtitle: handleRemoveEmptyKey({
               ...resData?.about_us?.leadership_subtitle,
-              [language]: data.about_page_leadership_subtitle || "",
+              en: data.about_page_leadership_subtitle_en || "",
+              ar: data.about_page_leadership_subtitle_ar || "",
             }),
 
             // Core Values
@@ -679,12 +683,14 @@ const useStoreHomeSubmit = () => {
             // Team Members (12 members)
             founder_one_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_one_name,
-              [language]: data.about_page_founder_one_name || "",
+              en: data.about_page_founder_one_name_en || "",
+              ar: data.about_page_founder_one_name_ar || "",
             }),
 
             founder_one_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_one_position,
-              [language]: data.about_page_founder_one_position || "",
+              en: data.about_page_founder_one_position_en || "",
+              ar: data.about_page_founder_one_position_ar || "",
             }),
 
             founder_two_name: handleRemoveEmptyKey({
@@ -2758,22 +2764,38 @@ const useStoreHomeSubmit = () => {
             res?.about_us?.heritage_description_two?.ar || ""
           );
 
-          // Add team section
+          // Add team section - Bilingual
           setValue(
-            "about_page_team_title",
-            res?.about_us?.team_title[language || "en"]
+            "about_page_team_title_en",
+            res?.about_us?.team_title?.en || ""
           );
           setValue(
-            "about_page_team_description",
-            res?.about_us?.team_description[language || "en"]
+            "about_page_team_title_ar",
+            res?.about_us?.team_title?.ar || ""
           );
           setValue(
-            "about_page_leadership_title",
-            res?.about_us?.leadership_title[language || "en"]
+            "about_page_team_description_en",
+            res?.about_us?.team_description?.en || ""
           );
           setValue(
-            "about_page_leadership_subtitle",
-            res?.about_us?.leadership_subtitle[language || "en"]
+            "about_page_team_description_ar",
+            res?.about_us?.team_description?.ar || ""
+          );
+          setValue(
+            "about_page_leadership_title_en",
+            res?.about_us?.leadership_title?.en || ""
+          );
+          setValue(
+            "about_page_leadership_title_ar",
+            res?.about_us?.leadership_title?.ar || ""
+          );
+          setValue(
+            "about_page_leadership_subtitle_en",
+            res?.about_us?.leadership_subtitle?.en || ""
+          );
+          setValue(
+            "about_page_leadership_subtitle_ar",
+            res?.about_us?.leadership_subtitle?.ar || ""
           );
 
           // Add values section - Bilingual
@@ -2795,37 +2817,70 @@ const useStoreHomeSubmit = () => {
           );
 
           // Add individual values
+          // Add individual values - Bilingual
           setValue(
-            "about_page_value_one_title",
-            res?.about_us?.value_one_title[language || "en"]
+            "about_page_value_one_title_en",
+            res?.about_us?.value_one_title?.en || ""
           );
           setValue(
-            "about_page_value_one_description",
-            res?.about_us?.value_one_description[language || "en"]
+            "about_page_value_one_title_ar",
+            res?.about_us?.value_one_title?.ar || ""
           );
           setValue(
-            "about_page_value_two_title",
-            res?.about_us?.value_two_title[language || "en"]
+            "about_page_value_one_description_en",
+            res?.about_us?.value_one_description?.en || ""
           );
           setValue(
-            "about_page_value_two_description",
-            res?.about_us?.value_two_description[language || "en"]
+            "about_page_value_one_description_ar",
+            res?.about_us?.value_one_description?.ar || ""
           );
           setValue(
-            "about_page_value_three_title",
-            res?.about_us?.value_three_title[language || "en"]
+            "about_page_value_two_title_en",
+            res?.about_us?.value_two_title?.en || ""
           );
           setValue(
-            "about_page_value_three_description",
-            res?.about_us?.value_three_description[language || "en"]
+            "about_page_value_two_title_ar",
+            res?.about_us?.value_two_title?.ar || ""
           );
           setValue(
-            "about_page_value_four_title",
-            res?.about_us?.value_four_title[language || "en"]
+            "about_page_value_two_description_en",
+            res?.about_us?.value_two_description?.en || ""
           );
           setValue(
-            "about_page_value_four_description",
-            res?.about_us?.value_four_description[language || "en"]
+            "about_page_value_two_description_ar",
+            res?.about_us?.value_two_description?.ar || ""
+          );
+          setValue(
+            "about_page_value_three_title_en",
+            res?.about_us?.value_three_title?.en || ""
+          );
+          setValue(
+            "about_page_value_three_title_ar",
+            res?.about_us?.value_three_title?.ar || ""
+          );
+          setValue(
+            "about_page_value_three_description_en",
+            res?.about_us?.value_three_description?.en || ""
+          );
+          setValue(
+            "about_page_value_three_description_ar",
+            res?.about_us?.value_three_description?.ar || ""
+          );
+          setValue(
+            "about_page_value_four_title_en",
+            res?.about_us?.value_four_title?.en || ""
+          );
+          setValue(
+            "about_page_value_four_title_ar",
+            res?.about_us?.value_four_title?.ar || ""
+          );
+          setValue(
+            "about_page_value_four_description_en",
+            res?.about_us?.value_four_description?.en || ""
+          );
+          setValue(
+            "about_page_value_four_description_ar",
+            res?.about_us?.value_four_description?.ar || ""
           );
 
           // Add branches section
