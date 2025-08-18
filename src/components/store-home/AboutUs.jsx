@@ -39,36 +39,39 @@ const BilingualInput = ({
       <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
         {label}
       </label>
-      <div className="sm:col-span-4 space-y-3">
-        {/* English Input */}
-        <div>
-          <div className="text-xs font-medium text-blue-600 dark:text-blue-400 mb-1">
-            English
+      <div className="sm:col-span-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {/* English Input */}
+          <div>
+            <div className="text-xs font-medium text-blue-600 dark:text-blue-400 mb-1">
+              English
+            </div>
+            <InputComponent
+              register={register}
+              label={`${label} (English)`}
+              name={`${baseName}_en`}
+              type={type}
+              placeholder={placeholderEn}
+            />
+            <Error errorName={errors[`${baseName}_en`]} />
           </div>
-          <InputComponent
-            register={register}
-            label={`${label} (English)`}
-            name={`${baseName}_en`}
-            type={type}
-            placeholder={placeholderEn}
-          />
-          <Error errorName={errors[`${baseName}_en`]} />
-        </div>
-        
-        {/* Arabic Input */}
-        <div>
-          <div className="text-xs font-medium text-green-600 dark:text-green-400 mb-1">
-            العربية (Arabic)
+          
+          {/* Arabic Input */}
+          <div>
+            <div className="text-xs font-medium text-green-600 dark:text-green-400 mb-1">
+              العربية (Arabic)
+            </div>
+            <InputComponent
+              register={register}
+              label={`${label} (Arabic)`}
+              name={`${baseName}_ar`}
+              type={type}
+              placeholder={placeholderAr}
+              className="text-right"
+              dir="rtl"
+            />
+            <Error errorName={errors[`${baseName}_ar`]} />
           </div>
-          <InputComponent
-            register={register}
-            label={`${label} (Arabic)`}
-            name={`${baseName}_ar`}
-            type={type}
-            placeholder={placeholderAr}
-            className="text-right"
-          />
-          <Error errorName={errors[`${baseName}_ar`]} />
         </div>
       </div>
     </div>
