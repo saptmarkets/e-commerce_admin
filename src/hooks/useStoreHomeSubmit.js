@@ -2410,12 +2410,23 @@ const useStoreHomeSubmit = () => {
       };
 
       console.log('🔍 AboutUs Payload being sent:', aboutUsPayload);
+      console.log('🔍 AboutUs Payload Type:', typeof aboutUsPayload);
+      console.log('🔍 AboutUs Payload Keys:', Object.keys(aboutUsPayload || {}));
+      console.log('🔍 AboutUs Payload Sample Values:', {
+        title: aboutUsPayload?.title,
+        header_status: aboutUsPayload?.header_status,
+        founder_status: aboutUsPayload?.founder_status,
+        branches_status: aboutUsPayload?.branches_status
+      });
 
       if (!isSave) {
         console.log('Updating existing settings...');
         console.log('About to call updateAboutUs with AboutUs data:', aboutUsPayload);
         const res = await SettingServices.updateAboutUs(aboutUsPayload);
-        console.log('Update API response:', res);
+        console.log('🔍 Update API Response:', res);
+        console.log('🔍 Update API Response Type:', typeof res);
+        console.log('🔍 Update API Response Keys:', Object.keys(res || {}));
+        console.log('🔍 Update API Response Message:', res?.message);
         console.log('Update successful, setting isUpdate to true...');
 
         setIsUpdate(true);
@@ -2425,9 +2436,21 @@ const useStoreHomeSubmit = () => {
         // Refresh data from API instead of reloading page
         console.log('Refreshing data from API...');
         const refreshedData = await SettingServices.getAboutUs();
+        console.log('🔍 Refreshed Data Response:', refreshedData);
+        console.log('🔍 Refreshed Data Type:', typeof refreshedData);
+        console.log('🔍 Refreshed Data Keys:', Object.keys(refreshedData || {}));
+        console.log('🔍 Refreshed Data Sample Values:', {
+          title: refreshedData?.title,
+          header_status: refreshedData?.header_status,
+          founder_status: refreshedData?.founder_status,
+          branches_status: refreshedData?.branches_status
+        });
+        
         if (refreshedData) {
           setResData(refreshedData);
-          console.log('Data refreshed successfully');
+          console.log('Data refreshed successfully and set to state');
+        } else {
+          console.log('❌ No refreshed data received');
         }
         console.log('About to show success notification...');
         notifySuccess(res.message || 'About Us updated successfully');
