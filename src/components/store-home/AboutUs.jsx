@@ -1182,31 +1182,27 @@ const AboutUs = ({
             <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                         Member 7 Name
                   </label>
-            <div className="sm:col-span-4">
-                  <InputAreaTwo
-                    register={register}
-                          label="Member 7 Name"
-                          name="about_page_founder_seven_name"
-                    type="text"
-                          placeholder="Team Member 7 Name"
-                  />
-                        <Error errorName={errors.about_page_founder_seven_name} />
-                </div>
+            <BilingualInput
+              register={register}
+              errors={errors}
+              baseName="about_page_founder_seven_name"
+              label="Member 7 Name"
+              placeholderEn="Member 7 Name"
+              placeholderAr="اسم العضو 7"
+            />
           </div>
           <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
             <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                         Member 7 Position
                   </label>
-            <div className="sm:col-span-4">
-                  <InputAreaTwo
-                    register={register}
-                          label="Member 7 Position"
-                          name="about_page_founder_seven_position"
-                    type="text"
-                          placeholder="Team Member 7 Position"
-                  />
-                        <Error errorName={errors.about_page_founder_seven_position} />
-                </div>
+            <BilingualInput
+              register={register}
+              errors={errors}
+              baseName="about_page_founder_seven_position"
+              label="Member 7 Position"
+              placeholderEn="Member 7 Position"
+              placeholderAr="منصب العضو 7"
+            />
               </div>
                   </TabPanel>
 
@@ -1228,31 +1224,27 @@ const AboutUs = ({
                       <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                         Member 8 Name
                   </label>
-                      <div className="sm:col-span-4">
-                  <InputAreaTwo
-                    register={register}
-                          label="Member 8 Name"
-                          name="about_page_founder_eight_name"
-                    type="text"
-                          placeholder="Team Member 8 Name"
-                  />
-                        <Error errorName={errors.about_page_founder_eight_name} />
-                </div>
+                      <BilingualInput
+              register={register}
+              errors={errors}
+              baseName="about_page_founder_eight_name"
+              label="Member 8 Name"
+              placeholderEn="Member 8 Name"
+              placeholderAr="اسم العضو 8"
+            />
               </div>
           <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
             <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                         Member 8 Position
             </label>
-            <div className="sm:col-span-4">
-              <InputAreaTwo
-                register={register}
-                          label="Member 8 Position"
-                          name="about_page_founder_eight_position"
-                type="text"
-                          placeholder="Team Member 8 Position"
-              />
-                        <Error errorName={errors.about_page_founder_eight_position} />
-            </div>
+                        <BilingualInput
+              register={register}
+              errors={errors}
+              baseName="about_page_founder_eight_position"
+              label="Member 8 Position"
+              placeholderEn="Member 8 Position"
+              placeholderAr="منصب العضو 8"
+            />
           </div>
                   </TabPanel>
 
