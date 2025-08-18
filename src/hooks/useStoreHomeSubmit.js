@@ -2239,7 +2239,10 @@ const useStoreHomeSubmit = () => {
 
       // Create separate payloads for different collections
       const aboutUsPayload = {
-        title: aboutPageTitle,
+        title: {
+          en: finalFormData.about_page_title_en || "",
+          ar: finalFormData.about_page_title_ar || ""
+        },
         hero_description: aboutPageDescription,
         top_section_title: aboutPageTopSectionTitle,
         top_section_description: aboutPageTopSectionDescription,
@@ -2519,6 +2522,19 @@ const useStoreHomeSubmit = () => {
         console.log("🔍 AboutUs Response Keys:", Object.keys(aboutUsRes || {}));
         console.log("🔍 AboutUs Response Values:", Object.values(aboutUsRes || {}));
         console.log("🔍 AboutUs Response Length:", Object.keys(aboutUsRes || {}).length);
+        
+        // Log specific field values to see what we're actually getting
+        console.log("🔍 AboutUs Specific Field Values:", {
+          title: aboutUsRes?.title,
+          titleType: typeof aboutUsRes?.title,
+          titleKeys: aboutUsRes?.title ? Object.keys(aboutUsRes.title) : 'N/A',
+          founder_one_name: aboutUsRes?.founder_one_name,
+          founder_one_nameType: typeof aboutUsRes?.founder_one_name,
+          founder_one_nameKeys: aboutUsRes?.founder_one_name ? Object.keys(aboutUsRes.founder_one_name) : 'N/A',
+          value_one_title: aboutUsRes?.value_one_title,
+          value_one_titleType: typeof aboutUsRes?.value_one_title,
+          value_one_titleKeys: aboutUsRes?.value_one_title ? Object.keys(aboutUsRes.value_one_title) : 'N/A'
+        });
         
         // Log the actual field values to see what we're getting
         console.log("🔍 AboutUs Field Values:", {
