@@ -1299,34 +1299,56 @@ const AboutUs = ({
                         />
                       </div>
                     </div>
-                    <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                    {/* Member 2 Name - Bilingual */}
+                    <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+                      <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                         Member 2 Name
                       </label>
-                      <div className="sm:col-span-4">
+                      <div className="md:col-span-4">
                         <InputAreaTwo
                       register={register}
-                      label="Member 2 Name"
-                          name="about_page_founder_two_name"
+                      label="Member 2 Name (English)"
+                          name="about_page_founder_two_name_en"
                           type="text"
                           placeholder="Team Member 2 Name"
                         />
-                        <Error errorName={errors.about_page_founder_two_name} />
+                        <Error errorName={errors.about_page_founder_two_name_en} />
                       </div>
-                    </div>
-                    <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                        Member 2 Position
-                      </label>
-                      <div className="sm:col-span-4">
+                      <div className="md:col-span-4">
                         <InputAreaTwo
                       register={register}
-                      label="Member 2 Position"
-                          name="about_page_founder_two_position"
+                      label="اسم العضو الثاني (العربية)"
+                          name="about_page_founder_two_name_ar"
+                          type="text"
+                          placeholder="اسم عضو الفريق الثاني"
+                        />
+                        <Error errorName={errors.about_page_founder_two_name_ar} />
+                      </div>
+                    </div>
+                    {/* Member 2 Position - Bilingual */}
+                    <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+                      <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                        Member 2 Position
+                      </label>
+                      <div className="md:col-span-4">
+                        <InputAreaTwo
+                      register={register}
+                      label="Member 2 Position (English)"
+                          name="about_page_founder_two_position_en"
                           type="text"
                           placeholder="Team Member 2 Position"
                     />
-                        <Error errorName={errors.about_page_founder_two_position} />
+                        <Error errorName={errors.about_page_founder_two_position_en} />
+                      </div>
+                      <div className="md:col-span-4">
+                        <InputAreaTwo
+                      register={register}
+                      label="منصب العضو الثاني (العربية)"
+                          name="about_page_founder_two_position_ar"
+                          type="text"
+                          placeholder="منصب عضو الفريق الثاني"
+                    />
+                        <Error errorName={errors.about_page_founder_two_position_ar} />
                       </div>
                     </div>
                   </TabPanel>
@@ -1345,34 +1367,56 @@ const AboutUs = ({
                         />
             </div>
           </div>
-          <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-            <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+          {/* Member 3 Name - Bilingual */}
+          <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+            <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                         Member 3 Name
             </label>
-            <div className="sm:col-span-4">
+            <div className="md:col-span-4">
                   <InputAreaTwo
             register={register}
-            label="Member 3 Name"
-                          name="about_page_founder_three_name"
+            label="Member 3 Name (English)"
+                          name="about_page_founder_three_name_en"
                 type="text"
                           placeholder="Team Member 3 Name"
           />
-                        <Error errorName={errors.about_page_founder_three_name} />
+                        <Error errorName={errors.about_page_founder_three_name_en} />
           </div>
-          </div>
-                    <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                        Member 3 Position
-                  </label>
-                      <div className="sm:col-span-4">
+          <div className="md:col-span-4">
                   <InputAreaTwo
             register={register}
-            label="Member 3 Position"
-                          name="about_page_founder_three_position"
+            label="اسم العضو الثالث (العربية)"
+                          name="about_page_founder_three_name_ar"
+                type="text"
+                          placeholder="اسم عضو الفريق الثالث"
+          />
+                        <Error errorName={errors.about_page_founder_three_name_ar} />
+          </div>
+          </div>
+                    {/* Member 3 Position - Bilingual */}
+                    <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+                      <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                        Member 3 Position
+                  </label>
+                      <div className="md:col-span-4">
+                  <InputAreaTwo
+            register={register}
+            label="Member 3 Position (English)"
+                          name="about_page_founder_three_position_en"
                     type="text"
                           placeholder="Team Member 3 Position"
           />
-                        <Error errorName={errors.about_page_founder_three_position} />
+                        <Error errorName={errors.about_page_founder_three_position_en} />
+                </div>
+                <div className="md:col-span-4">
+                  <InputAreaTwo
+            register={register}
+            label="منصب العضو الثالث (العربية)"
+                          name="about_page_founder_three_position_ar"
+                    type="text"
+                          placeholder="منصب عضو الفريق الثالث"
+          />
+                        <Error errorName={errors.about_page_founder_three_position_ar} />
                 </div>
                 </div>
                   </TabPanel>
