@@ -404,109 +404,161 @@ const AboutUs = ({
                 </div>
               </div>
 
-              {/* Card One */}
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+              {/* Card One - Bilingual */}
+              <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
+                <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                   Card One Title
                 </label>
-                <div className="sm:col-span-4">
+                <div className="md:col-span-4">
                   <InputAreaTwo
                     register={register}
-                    label="Card One Title"
-                    name="about_page_card_one_title"
+                    label="Card One Title (English)"
+                    name="about_page_card_one_title_en"
                     type="text"
                     placeholder="Everyday Essentials"
                   />
-                  <Error errorName={errors.about_page_card_one_title} />
+                  <Error errorName={errors.about_page_card_one_title_en} />
+                </div>
+                <div className="md:col-span-4">
+                  <InputAreaTwo
+                    register={register}
+                    label="عنوان البطاقة الأولى (العربية)"
+                    name="about_page_card_one_title_ar"
+                    type="text"
+                    placeholder="الضروريات اليومية"
+                  />
+                  <Error errorName={errors.about_page_card_one_title_ar} />
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+              <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+                <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                   Card One Subtitle
                 </label>
-                <div className="sm:col-span-4">
+                <div className="md:col-span-4">
                   <InputAreaTwo
                     register={register}
-                    label="Card One Subtitle"
-                    name="about_page_card_one_subtitle"
+                    label="Card One Subtitle (English)"
+                    name="about_page_card_one_subtitle_en"
                     type="text"
                     placeholder="From Pantry to Home"
                   />
-                  <Error errorName={errors.about_page_card_one_subtitle} />
+                  <Error errorName={errors.about_page_card_one_subtitle_en} />
+                </div>
+                <div className="md:col-span-4">
+                  <InputAreaTwo
+                    register={register}
+                    label="نص فرعي للبطاقة الأولى (العربية)"
+                    name="about_page_card_one_subtitle_ar"
+                    type="text"
+                    placeholder="من المخزن إلى المنزل"
+                  />
+                  <Error errorName={errors.about_page_card_one_subtitle_ar} />
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+              <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+                <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                   Card One Description
                 </label>
-                <div className="sm:col-span-4">
+                <div className="md:col-span-4">
                   <TextAreaCom
                     register={register}
-                    label="Card One Description"
-                    name="about_page_card_one_description"
+                    label="Card One Description (English)"
+                    name="about_page_card_one_description_en"
                     type="text"
                     placeholder="We offer a comprehensive range of household necessities..."
                   />
-                  <Error
-                    errorName={
-                      (errors.name = "about_page_card_one_description")
-                    }
+                  <Error errorName={errors.about_page_card_one_description_en} />
+                </div>
+                <div className="md:col-span-4">
+                  <TextAreaCom
+                    register={register}
+                    label="وصف البطاقة الأولى (العربية)"
+                    name="about_page_card_one_description_ar"
+                    type="text"
+                    placeholder="نقدم مجموعة شاملة من ضروريات المنزل..."
                   />
+                  <Error errorName={errors.about_page_card_one_description_ar} />
                 </div>
               </div>
 
-              {/* Card Two */}
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+              {/* Card Two - Bilingual */}
+              <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
+                <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                   Card Two Title
                 </label>
-                <div className="sm:col-span-4">
+                <div className="md:col-span-4">
                   <InputAreaTwo
                     register={register}
-                    label="Card Two Title"
-                    name="about_page_card_two_title"
+                    label="Card Two Title (English)"
+                    name="about_page_card_two_title_en"
                     type="text"
                     placeholder="Weekly Offers"
                   />
-                  <Error errorName={errors.about_page_card_two_title} />
+                  <Error errorName={errors.about_page_card_two_title_en} />
+                </div>
+                <div className="md:col-span-4">
+                  <InputAreaTwo
+                    register={register}
+                    label="عنوان البطاقة الثانية (العربية)"
+                    name="about_page_card_two_title_ar"
+                    type="text"
+                    placeholder="العروض الأسبوعية"
+                  />
+                  <Error errorName={errors.about_page_card_two_title_ar} />
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+              <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+                <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                   Card Two Subtitle
                 </label>
-                <div className="sm:col-span-4">
+                <div className="md:col-span-4">
                   <InputAreaTwo
                     register={register}
-                    label="Card Two Subtitle"
-                    name="about_page_card_two_subtitle"
+                    label="Card Two Subtitle (English)"
+                    name="about_page_card_two_subtitle_en"
                     type="text"
                     placeholder="Save More, Shop Smart"
                   />
-                  <Error errorName={errors.about_page_card_two_subtitle} />
+                  <Error errorName={errors.about_page_card_two_subtitle_en} />
+                </div>
+                <div className="md:col-span-4">
+                  <InputAreaTwo
+                    register={register}
+                    label="نص فرعي للبطاقة الثانية (العربية)"
+                    name="about_page_card_two_subtitle_ar"
+                    type="text"
+                    placeholder="وفر أكثر، تسوق بذكاء"
+                  />
+                  <Error errorName={errors.about_page_card_two_subtitle_ar} />
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+              <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+                <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                   Card Two Description
                 </label>
-                <div className="sm:col-span-4">
+                <div className="md:col-span-4">
                   <TextAreaCom
                     register={register}
-                    label="Card Two Description"
-                    name="about_page_card_two_description"
+                    label="Card Two Description (English)"
+                    name="about_page_card_two_description_en"
                     type="text"
                     placeholder="Our regular promotional offers help families save money..."
                   />
-                  <Error
-                    errorName={
-                      (errors.name = "about_page_card_two_description")
-                    }
+                  <Error errorName={errors.about_page_card_two_description_en} />
+                </div>
+                <div className="md:col-span-4">
+                  <TextAreaCom
+                    register={register}
+                    label="وصف البطاقة الثانية (العربية)"
+                    name="about_page_card_two_description_ar"
+                    type="text"
+                    placeholder="عروضنا الترويجية المنتظمة تساعد العائلات على توفير المال..."
                   />
+                  <Error errorName={errors.about_page_card_two_description_ar} />
                 </div>
               </div>
             </div>
@@ -579,49 +631,80 @@ const AboutUs = ({
                 opacity: !aboutMiddleContentSection ? "0" : "1",
               }}
             >
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+              {/* Heritage Title - Bilingual */}
+              <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+                <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                   Heritage Title
                 </label>
-                <div className="sm:col-span-4">
+                <div className="md:col-span-4">
                   <InputAreaTwo
                     register={register}
-                    label="Heritage Title"
-                    name="about_page_heritage_title"
+                    label="Heritage Title (English)"
+                    name="about_page_heritage_title_en"
                     type="text"
                     placeholder="Our Heritage & Vision"
                   />
-                  <Error errorName={errors.about_page_heritage_title} />
+                  <Error errorName={errors.about_page_heritage_title_en} />
+                </div>
+                <div className="md:col-span-4">
+                  <InputAreaTwo
+                    register={register}
+                    label="عنوان التراث (العربية)"
+                    name="about_page_heritage_title_ar"
+                    type="text"
+                    placeholder="تراثنا ورؤيتنا"
+                  />
+                  <Error errorName={errors.about_page_heritage_title_ar} />
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+              {/* Heritage Description One - Bilingual */}
+              <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+                <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                   Heritage Description One
                 </label>
-                <div className="sm:col-span-4">
+                <div className="md:col-span-4">
                   <TextAreaCom
                     register={register}
-                    label="Heritage Description One"
-                    name="about_page_heritage_description_one"
+                    label="Heritage Description One (English)"
+                    name="about_page_heritage_description_one_en"
                     placeholder="SAPT Markets is proudly part of the Al-Muhaysini Holding family..."
                   />
-                  <Error errorName={errors.about_page_heritage_description_one} />
+                  <Error errorName={errors.about_page_heritage_description_one_en} />
+                </div>
+                <div className="md:col-span-4">
+                  <TextAreaCom
+                    register={register}
+                    label="وصف التراث الأول (العربية)"
+                    name="about_page_heritage_description_one_ar"
+                    placeholder="أسواق سابت هي جزء فخور من عائلة آل محيسن القابضة..."
+                  />
+                  <Error errorName={errors.about_page_heritage_description_one_ar} />
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+              {/* Heritage Description Two - Bilingual */}
+              <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+                <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                   Heritage Description Two
                 </label>
-                <div className="sm:col-span-4">
+                <div className="md:col-span-4">
                   <TextAreaCom
                     register={register}
-                    label="Heritage Description Two"
-                    name="about_page_heritage_description_two"
+                    label="Heritage Description Two (English)"
+                    name="about_page_heritage_description_two_en"
                     placeholder="Today, SAPT operates multiple locations throughout Buraidah..."
                   />
-                  <Error errorName={errors.about_page_heritage_description_two} />
+                  <Error errorName={errors.about_page_heritage_description_two_en} />
+                </div>
+                <div className="md:col-span-4">
+                  <TextAreaCom
+                    register={register}
+                    label="وصف التراث الثاني (العربية)"
+                    name="about_page_heritage_description_two_ar"
+                    placeholder="اليوم، تعمل أسواق سابت في مواقع متعددة في جميع أنحاء بريدة..."
+                  />
+                  <Error errorName={errors.about_page_heritage_description_two_ar} />
                 </div>
               </div>
 
@@ -731,34 +814,55 @@ const AboutUs = ({
                       </div>
                     </div>
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+              {/* Values Title - Bilingual */}
+              <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
+                <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                   Values Title
                 </label>
-                <div className="sm:col-span-4">
+                <div className="md:col-span-4">
                   <InputAreaTwo
                     register={register}
-                    label="Values Title"
-                    name="about_page_values_title"
+                    label="Values Title (English)"
+                    name="about_page_values_title_en"
                     type="text"
                     placeholder="Our Core Values"
                   />
-                  <Error errorName={errors.about_page_values_title} />
+                  <Error errorName={errors.about_page_values_title_en} />
+                </div>
+                <div className="md:col-span-4">
+                  <InputAreaTwo
+                    register={register}
+                    label="عنوان القيم (العربية)"
+                    name="about_page_values_title_ar"
+                    type="text"
+                    placeholder="قيمنا الأساسية"
+                  />
+                  <Error errorName={errors.about_page_values_title_ar} />
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+              {/* Values Description - Bilingual */}
+              <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
+                <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                   Values Description
                 </label>
-                <div className="sm:col-span-4">
+                <div className="md:col-span-4">
                   <TextAreaCom
                     register={register}
-                    label="Values Description"
-                    name="about_page_values_description"
+                    label="Values Description (English)"
+                    name="about_page_values_description_en"
                     placeholder="These fundamental principles guide every decision we make..."
                   />
-                  <Error errorName={errors.about_page_values_description} />
+                  <Error errorName={errors.about_page_values_description_en} />
+                </div>
+                <div className="md:col-span-4">
+                  <TextAreaCom
+                    register={register}
+                    label="وصف القيم (العربية)"
+                    name="about_page_values_description_ar"
+                    placeholder="هذه المبادئ الأساسية توجه كل قرار نتخذه..."
+                  />
+                  <Error errorName={errors.about_page_values_description_ar} />
                 </div>
               </div>
             </div>
