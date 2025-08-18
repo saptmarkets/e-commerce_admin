@@ -327,87 +327,67 @@ const AboutUs = ({
                 opacity: !aboutTopContentLeft ? "0" : "1",
               }}
             >
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                  Top Section Title
-                </label>
-                <div className="sm:col-span-4">
-                  <InputAreaTwo
-                    register={register}
-                    label="Top Section Title"
-                    name="about_page_top_section_title"
-                    type="text"
-                    placeholder="A Trusted Name in Qassim Retail"
-                  />
-                  <Error errorName={errors.about_page_top_section_title} />
-                </div>
-              </div>
+              <BilingualInput
+                register={register}
+                errors={errors}
+                baseName="about_page_top_section_title"
+                label="Top Section Title"
+                placeholderEn="A Trusted Name in Qassim Retail"
+                placeholderAr="اسم موثوق في تجارة القصيم"
+              />
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                  Top Section Description
-                </label>
-                <div className="sm:col-span-4">
-                  <TextAreaCom
-                    register={register}
-                    label="Top Section Description"
-                    name="about_page_top_section_description"
-                    placeholder="At SAPT Markets, we've built our reputation on providing quality products..."
-                  />
-                  <Error errorName={errors.about_page_top_section_description} />
-                </div>
-              </div>
+              <BilingualInput
+                register={register}
+                errors={errors}
+                baseName="about_page_top_section_description"
+                label="Top Section Description"
+                placeholderEn="At SAPT Markets, we've built our reputation on providing quality products..."
+                placeholderAr="في أسواق سابت، بنينا سمعتنا على تقديم منتجات ذات جودة..."
+                isTextArea={true}
+              />
 
               <div className="grid md:grid-cols-2 gap-6 mb-6 mt-8">
                 {/* Badge Line 1 */}
-                <div>
-                  <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">
-                    Trusted Badge 1 Pill (e.g., Since 1989)
-                  </label>
-                  <InputAreaTwo
+                <div className="md:col-span-1 col-span-2">
+                  <BilingualInput
                     register={register}
+                    errors={errors}
+                    baseName="about_page_trusted_badge_one_pill"
                     label="Badge 1 Pill"
-                    name="about_page_trusted_badge_one_pill"
-                    type="text"
-                    placeholder="Since 1989"
+                    placeholderEn="Since 1989"
+                    placeholderAr="منذ 1989"
                   />
                 </div>
-                <div>
-                  <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">
-                    Trusted Badge 1 Text (e.g., From Family Business)
-                  </label>
-                  <InputAreaTwo
+                <div className="md:col-span-1 col-span-2">
+                  <BilingualInput
                     register={register}
+                    errors={errors}
+                    baseName="about_page_trusted_badge_one_text"
                     label="Badge 1 Text"
-                    name="about_page_trusted_badge_one_text"
-                    type="text"
-                    placeholder="From Family Business"
+                    placeholderEn="From Family Business"
+                    placeholderAr="منذ شركة عائلية"
                   />
                 </div>
 
                 {/* Badge Line 2 */}
-                <div>
-                  <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">
-                    Trusted Badge 2 Pill (e.g., 35+ Years)
-                  </label>
-                  <InputAreaTwo
+                <div className="md:col-span-1 col-span-2">
+                  <BilingualInput
                     register={register}
+                    errors={errors}
+                    baseName="about_page_trusted_badge_two_pill"
                     label="Badge 2 Pill"
-                    name="about_page_trusted_badge_two_pill"
-                    type="text"
-                    placeholder="35+ Years"
+                    placeholderEn="35+ Years"
+                    placeholderAr="أكثر من 35 عامًا"
                   />
                 </div>
-                <div>
-                  <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">
-                    Trusted Badge 2 Text (e.g., Serving the Community)
-                  </label>
-                  <InputAreaTwo
+                <div className="md:col-span-1 col-span-2">
+                  <BilingualInput
                     register={register}
+                    errors={errors}
+                    baseName="about_page_trusted_badge_two_text"
                     label="Badge 2 Text"
-                    name="about_page_trusted_badge_two_text"
-                    type="text"
-                    placeholder="Serving the Community"
+                    placeholderEn="Serving the Community"
+                    placeholderAr="خدمة المجتمع"
                   />
                 </div>
               </div>
@@ -427,106 +407,62 @@ const AboutUs = ({
               </div>
 
               {/* Card One */}
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                  Card One Title
-                </label>
-                <div className="sm:col-span-4">
-                  <InputAreaTwo
-                    register={register}
-                    label="Card One Title"
-                    name="about_page_card_one_title"
-                    type="text"
-                    placeholder="Everyday Essentials"
-                  />
-                  <Error errorName={errors.about_page_card_one_title} />
-                </div>
-              </div>
+              <BilingualInput
+                register={register}
+                errors={errors}
+                baseName="about_page_card_one_title"
+                label="Card One Title"
+                placeholderEn="Everyday Essentials"
+                placeholderAr="الضروريات اليومية"
+              />
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                  Card One Subtitle
-                </label>
-                <div className="sm:col-span-4">
-                  <InputAreaTwo
-                    register={register}
-                    label="Card One Subtitle"
-                    name="about_page_card_one_subtitle"
-                    type="text"
-                    placeholder="From Pantry to Home"
-                  />
-                  <Error errorName={errors.about_page_card_one_subtitle} />
-                </div>
-              </div>
+              <BilingualInput
+                register={register}
+                errors={errors}
+                baseName="about_page_card_one_subtitle"
+                label="Card One Subtitle"
+                placeholderEn="From Pantry to Home"
+                placeholderAr="من المؤن إلى المنزل"
+              />
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                  Card One Description
-                </label>
-                <div className="sm:col-span-4">
-                  <TextAreaCom
-                    register={register}
-                    label="Card One Description"
-                    name="about_page_card_one_description"
-                    type="text"
-                    placeholder="We offer a comprehensive range of household necessities..."
-                  />
-                  <Error
-                    errorName={errors.about_page_card_one_description}
-                  />
-                </div>
-              </div>
+              <BilingualInput
+                register={register}
+                errors={errors}
+                baseName="about_page_card_one_description"
+                label="Card One Description"
+                placeholderEn="We offer a comprehensive range of household necessities..."
+                placeholderAr="نقدم مجموعة شاملة من الضروريات المنزلية..."
+                isTextArea={true}
+              />
 
               {/* Card Two */}
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                  Card Two Title
-                </label>
-                <div className="sm:col-span-4">
-                  <InputAreaTwo
-                    register={register}
-                    label="Card Two Title"
-                    name="about_page_card_two_title"
-                    type="text"
-                    placeholder="Weekly Offers"
-                  />
-                  <Error errorName={errors.about_page_card_two_title} />
-                </div>
-              </div>
+              <BilingualInput
+                register={register}
+                errors={errors}
+                baseName="about_page_card_two_title"
+                label="Card Two Title"
+                placeholderEn="Weekly Offers"
+                placeholderAr="عروض أسبوعية"
+              />
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                  Card Two Subtitle
-                </label>
-                <div className="sm:col-span-4">
-                  <InputAreaTwo
-                    register={register}
-                    label="Card Two Subtitle"
-                    name="about_page_card_two_subtitle"
-                    type="text"
-                    placeholder="Save More, Shop Smart"
-                  />
-                  <Error errorName={errors.about_page_card_two_subtitle} />
-                </div>
-              </div>
+              <BilingualInput
+                register={register}
+                errors={errors}
+                baseName="about_page_card_two_subtitle"
+                label="Card Two Subtitle"
+                placeholderEn="Save More, Shop Smart"
+                placeholderAr="ادخر أكثر، تسوق بذكاء"
+              />
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                  Card Two Description
-                </label>
-                <div className="sm:col-span-4">
-                  <TextAreaCom
-                    register={register}
-                    label="Card Two Description"
-                    name="about_page_card_two_description"
-                    type="text"
-                    placeholder="Our regular promotional offers help families save money..."
-                  />
-                  <Error
-                    errorName={errors.about_page_card_two_description}
-                  />
-                </div>
-              </div>
+              <BilingualInput
+                register={register}
+                errors={errors}
+                baseName="about_page_card_two_description"
+                label="Card Two Description"
+                placeholderEn="Our regular promotional offers help families save money..."
+                placeholderAr="عروضنا الترويجية المنتظمة تساعد العائلات على التوفير..."
+                isTextArea={true}
+              />
             </div>
 
             <div className="inline-flex md:text-base text-sm mb-3 md:mt-5 text-gray-500 dark:text-gray-400 ">
@@ -597,51 +533,34 @@ const AboutUs = ({
                 opacity: !aboutMiddleContentSection ? "0" : "1",
               }}
             >
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                  Heritage Title
-                </label>
-                <div className="sm:col-span-4">
-                  <InputAreaTwo
-                    register={register}
-                    label="Heritage Title"
-                    name="about_page_heritage_title"
-                    type="text"
-                    placeholder="Our Heritage & Vision"
-                  />
-                  <Error errorName={errors.about_page_heritage_title} />
-                </div>
-              </div>
+              <BilingualInput
+                register={register}
+                errors={errors}
+                baseName="about_page_heritage_title"
+                label="Heritage Title"
+                placeholderEn="Our Heritage & Vision"
+                placeholderAr="تراثنا ورؤيتنا"
+              />
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                  Heritage Description One
-                </label>
-                <div className="sm:col-span-4">
-                  <TextAreaCom
-                    register={register}
-                    label="Heritage Description One"
-                    name="about_page_heritage_description_one"
-                    placeholder="SAPT Markets is proudly part of the Al-Muhaysini Holding family..."
-                  />
-                  <Error errorName={errors.about_page_heritage_description_one} />
-                </div>
-              </div>
+              <BilingualInput
+                register={register}
+                errors={errors}
+                baseName="about_page_heritage_description_one"
+                label="Heritage Description One"
+                placeholderEn="SAPT Markets is proudly part of the Al-Muhaysini Holding family..."
+                placeholderAr="أسواق سابت جزء من عائلة المهيسني القابضة..."
+                isTextArea={true}
+              />
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                  Heritage Description Two
-                </label>
-                <div className="sm:col-span-4">
-                  <TextAreaCom
-                    register={register}
-                    label="Heritage Description Two"
-                    name="about_page_heritage_description_two"
-                    placeholder="Today, SAPT operates multiple locations throughout Buraidah..."
-                  />
-                  <Error errorName={errors.about_page_heritage_description_two} />
-                </div>
-              </div>
+              <BilingualInput
+                register={register}
+                errors={errors}
+                baseName="about_page_heritage_description_two"
+                label="Heritage Description Two"
+                placeholderEn="Today, SAPT operates multiple locations throughout Buraidah..."
+                placeholderAr="اليوم، تعمل أسواق سابت في مواقع متعددة في بريدة..."
+                isTextArea={true}
+              />
 
               <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
                 <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
@@ -686,36 +605,24 @@ const AboutUs = ({
                 opacity: !ourFounderSection ? "0" : "1",
               }}
             >
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                  Team Title
-                </label>
-                <div className="sm:col-span-4">
-                  <InputAreaTwo
-                    register={register}
-                    label="Team Title"
-                    name="about_page_team_title"
-                    type="text"
-                    placeholder="Meet the SAPT Family"
-                  />
-                  <Error errorName={errors.about_page_team_title} />
-                </div>
-              </div>
+              <BilingualInput
+                register={register}
+                errors={errors}
+                baseName="about_page_team_title"
+                label="Team Title"
+                placeholderEn="Meet the SAPT Family"
+                placeholderAr="تعرف على عائلة سابت"
+              />
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                  Team Description
-                </label>
-                <div className="sm:col-span-4">
-                  <TextAreaCom
-                    register={register}
-                    label="Team Description"
-                    name="about_page_team_description"
-                    placeholder="Our dedicated team members are the backbone of SAPT Markets..."
-                  />
-                  <Error errorName={errors.about_page_team_description} />
-                </div>
-              </div>
+              <BilingualInput
+                register={register}
+                errors={errors}
+                baseName="about_page_team_description"
+                label="Team Description"
+                placeholderEn="Our dedicated team members are the backbone of SAPT Markets..."
+                placeholderAr="أعضاء فريقنا المخلصون هم العمود الفقري لأسواق سابت..."
+                isTextArea={true}
+              />
 
                     <BilingualInput
                 register={register}
@@ -735,36 +642,24 @@ const AboutUs = ({
                 placeholderAr="مدفوعون برؤية، ملتزمون بالتميز"
               />
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                  Values Title
-                </label>
-                <div className="sm:col-span-4">
-                  <InputAreaTwo
-                    register={register}
-                    label="Values Title"
-                    name="about_page_values_title"
-                    type="text"
-                    placeholder="Our Core Values"
-                  />
-                  <Error errorName={errors.about_page_values_title} />
-                </div>
-              </div>
+              <BilingualInput
+                register={register}
+                errors={errors}
+                baseName="about_page_values_title"
+                label="Values Title"
+                placeholderEn="Our Core Values"
+                placeholderAr="قيمنا الأساسية"
+              />
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                  Values Description
-                </label>
-                <div className="sm:col-span-4">
-                  <TextAreaCom
-                    register={register}
-                    label="Values Description"
-                    name="about_page_values_description"
-                    placeholder="These fundamental principles guide every decision we make..."
-                  />
-                  <Error errorName={errors.about_page_values_description} />
-                </div>
-              </div>
+              <BilingualInput
+                register={register}
+                errors={errors}
+                baseName="about_page_values_description"
+                label="Values Description"
+                placeholderEn="These fundamental principles guide every decision we make..."
+                placeholderAr="هذه المبادئ الأساسية توجه كل قرار نتخذه..."
+                isTextArea={true}
+              />
             </div>
 
             {/* Core Values Section */}
@@ -1447,83 +1342,52 @@ const AboutUs = ({
                 opacity: !aboutBranches ? "0" : "1",
               }}
             >
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-            <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                  Branches Title
-                  </label>
-            <div className="sm:col-span-4">
-                  <InputAreaTwo
-                    register={register}
-                    label="Branches Title"
-                    name="about_page_branches_title"
-                    type="text"
-                    placeholder="Our Locations"
-                  />
-                  <Error errorName={errors.about_page_branches_title} />
-                </div>
-          </div>
-
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-            <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                  Branches Description
-                  </label>
-            <div className="sm:col-span-4">
-              <TextAreaCom
-                    register={register}
-                    label="Branches Description"
-                    name="about_page_branches_description"
-                    placeholder="Visit any of our convenient locations throughout Buraidah..."
-                  />
-                  <Error errorName={errors.about_page_branches_description} />
-            </div>
-          </div>
-
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-            <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-              Branches CTA Title
-            </label>
-            <div className="sm:col-span-4">
-              <InputAreaTwo
+              <BilingualInput
                 register={register}
+                errors={errors}
+                baseName="about_page_branches_title"
+                label="Branches Title"
+                placeholderEn="Our Locations"
+                placeholderAr="مواقعنا"
+              />
+
+              <BilingualInput
+                register={register}
+                errors={errors}
+                baseName="about_page_branches_description"
+                label="Branches Description"
+                placeholderEn="Visit any of our convenient locations throughout Buraidah..."
+                placeholderAr="قم بزيارة أي من مواقعنا المريحة في بريدة..."
+                isTextArea={true}
+              />
+
+              <BilingualInput
+                register={register}
+                errors={errors}
+                baseName="about_page_branches_cta_title"
                 label="Branches CTA Title"
-                name="about_page_branches_cta_title"
-                type="text"
-                placeholder="Can't Find Us?"
+                placeholderEn="Can't Find Us?"
+                placeholderAr="لا يمكنك العثور علينا؟"
               />
-              <Error errorName={errors.about_page_branches_cta_title} />
-            </div>
-          </div>
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-            <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-              Branches CTA Description
-            </label>
-            <div className="sm:col-span-4">
-              <TextAreaCom
+              <BilingualInput
                 register={register}
+                errors={errors}
+                baseName="about_page_branches_cta_description"
                 label="Branches CTA Description"
-                name="about_page_branches_cta_description"
-                    placeholder="We're expanding! New locations opening soon."
+                placeholderEn="We're expanding! New locations opening soon."
+                placeholderAr="نحن نتوسع! سيتم افتتاح مواقع جديدة قريبًا."
+                isTextArea={true}
               />
-              <Error errorName={errors.about_page_branches_cta_description} />
-            </div>
-          </div>
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-            <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                  Upcoming Branches Title
-            </label>
-            <div className="sm:col-span-4">
-                  <InputAreaTwo
+              <BilingualInput
                 register={register}
-                    label="Upcoming Branches Title"
-                    name="about_page_upcoming_branches_title"
-                    type="text"
-                    placeholder="Coming Soon to New Areas"
-                  />
-                  <Error errorName={errors.about_page_upcoming_branches_title} />
-            </div>
-          </div>
+                errors={errors}
+                baseName="about_page_upcoming_branches_title"
+                label="Upcoming Branches Title"
+                placeholderEn="Coming Soon to New Areas"
+                placeholderAr="قريبًا في مناطق جديدة"
+              />
 
               {/* Upcoming Branches (Static Two) */}
               <div className="inline-flex md:text-base text-sm mb-3 mt-8 text-gray-500 dark:text-gray-400">
@@ -1537,12 +1401,13 @@ const AboutUs = ({
                       Branch {num} Name
             </label>
             <div className="sm:col-span-4">
-              <InputAreaTwo
+              <BilingualInput
                 register={register}
-                        label={`Upcoming Branch ${num} Name`}
-                        name={`about_page_upcoming_branch_${num === 1 ? 'one' : 'two'}_name`}
-                type="text"
-                        placeholder={`SAPT Upcoming Branch ${num}`}
+                errors={errors}
+                baseName={`about_page_upcoming_branch_${num === 1 ? 'one' : 'two'}_name`}
+                label={`Upcoming Branch ${num} Name`}
+                placeholderEn={`SAPT Upcoming Branch ${num}`}
+                placeholderAr={`فرع أسواق سابت القادم ${num}`}
               />
             </div>
           </div>
@@ -1552,12 +1417,15 @@ const AboutUs = ({
                       Address / Details
             </label>
             <div className="sm:col-span-4">
-              <TextAreaCom
+              <BilingualInput
                 register={register}
-                        label={`Upcoming Branch ${num} Address`}
-                        name={`about_page_upcoming_branch_${num === 1 ? 'one' : 'two'}_address`}
-                        placeholder="District, City"
-                      />
+                errors={errors}
+                baseName={`about_page_upcoming_branch_${num === 1 ? 'one' : 'two'}_address`}
+                label={`Upcoming Branch ${num} Address`}
+                placeholderEn="District, City"
+                placeholderAr="الحي، المدينة"
+                isTextArea={true}
+              />
             </div>
           </div>
 
