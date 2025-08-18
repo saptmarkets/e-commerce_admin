@@ -1435,34 +1435,56 @@ const AboutUs = ({
                         />
                 </div>
               </div>
-                    <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                    {/* Member 4 Name - Bilingual */}
+                    <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+                      <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                         Member 4 Name
                   </label>
-                      <div className="sm:col-span-4">
+                      <div className="md:col-span-4">
                   <InputAreaTwo
                       register={register}
-                      label="Member 4 Name"
-                          name="about_page_founder_four_name"
+                      label="Member 4 Name (English)"
+                          name="about_page_founder_four_name_en"
                     type="text"
                           placeholder="Team Member 4 Name"
                     />
-                        <Error errorName={errors.about_page_founder_four_name} />
+                        <Error errorName={errors.about_page_founder_four_name_en} />
+                </div>
+                <div className="md:col-span-4">
+                  <InputAreaTwo
+                      register={register}
+                      label="اسم العضو الرابع (العربية)"
+                          name="about_page_founder_four_name_ar"
+                    type="text"
+                          placeholder="اسم عضو الفريق الرابع"
+                    />
+                        <Error errorName={errors.about_page_founder_four_name_ar} />
                 </div>
                 </div>
-          <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-            <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+          {/* Member 4 Position - Bilingual */}
+          <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+            <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                         Member 4 Position
                   </label>
-            <div className="sm:col-span-4">
+            <div className="md:col-span-4">
                   <InputAreaTwo
               register={register}
-              label="Member 4 Position"
-                          name="about_page_founder_four_position"
+              label="Member 4 Position (English)"
+                          name="about_page_founder_four_position_en"
                     type="text"
                           placeholder="Team Member 4 Position"
             />
-                        <Error errorName={errors.about_page_founder_four_position} />
+                        <Error errorName={errors.about_page_founder_four_position_en} />
+                </div>
+                <div className="md:col-span-4">
+                  <InputAreaTwo
+              register={register}
+              label="منصب العضو الرابع (العربية)"
+                          name="about_page_founder_four_position_ar"
+                    type="text"
+                          placeholder="منصب عضو الفريق الرابع"
+            />
+                        <Error errorName={errors.about_page_founder_four_position_ar} />
                 </div>
           </div>
                   </TabPanel>
@@ -1489,7 +1511,7 @@ const AboutUs = ({
                   <InputAreaTwo
             register={register}
             label="Member 5 Name"
-                          name="about_page_founder_five_name"
+                          name="about_page_founder_five_name_en"
                     type="text"
                           placeholder="Team Member 5 Name"
           />
@@ -1504,7 +1526,7 @@ const AboutUs = ({
                   <InputAreaTwo
             register={register}
             label="Member 5 Position"
-                          name="about_page_founder_five_position"
+                          name="about_page_founder_five_position_en"
                     type="text"
                           placeholder="Team Member 5 Position"
           />
@@ -1535,7 +1557,7 @@ const AboutUs = ({
               <InputAreaTwo
               register={register}
               label="Member 6 Name"
-                          name="about_page_founder_six_name"
+                          name="about_page_founder_six_name_en"
                 type="text"
                           placeholder="Team Member 6 Name"
             />
@@ -1550,7 +1572,7 @@ const AboutUs = ({
               <InputAreaTwo
               register={register}
               label="Member 6 Position"
-                          name="about_page_founder_six_position"
+                          name="about_page_founder_six_position_en"
                 type="text"
                           placeholder="Team Member 6 Position"
             />
@@ -1581,7 +1603,7 @@ const AboutUs = ({
                   <InputAreaTwo
               register={register}
               label="Member 7 Name"
-                          name="about_page_founder_seven_name"
+                          name="about_page_founder_seven_name_en"
                     type="text"
                           placeholder="Team Member 7 Name"
             />
@@ -1596,7 +1618,7 @@ const AboutUs = ({
                   <InputAreaTwo
               register={register}
               label="Member 7 Position"
-                          name="about_page_founder_seven_position"
+                          name="about_page_founder_seven_position_en"
                     type="text"
                           placeholder="Team Member 7 Position"
             />
@@ -1627,7 +1649,7 @@ const AboutUs = ({
                   <InputAreaTwo
               register={register}
               label="Member 8 Name"
-                          name="about_page_founder_eight_name"
+                          name="about_page_founder_eight_name_en"
                     type="text"
                           placeholder="Team Member 8 Name"
             />
@@ -1642,7 +1664,7 @@ const AboutUs = ({
               <InputAreaTwo
               register={register}
               label="Member 8 Position"
-                          name="about_page_founder_eight_position"
+                          name="about_page_founder_eight_position_en"
                 type="text"
                           placeholder="Team Member 8 Position"
             />
@@ -1673,7 +1695,7 @@ const AboutUs = ({
               <InputAreaTwo
               register={register}
               label="Member 9 Name"
-                          name="about_page_founder_nine_name"
+                          name="about_page_founder_nine_name_en"
                 type="text"
                           placeholder="Team Member 9 Name"
             />
@@ -1688,7 +1710,7 @@ const AboutUs = ({
                   <InputAreaTwo
               register={register}
               label="Member 9 Position"
-                          name="about_page_founder_nine_position"
+                          name="about_page_founder_nine_position_en"
                     type="text"
                           placeholder="Team Member 9 Position"
             />
@@ -1719,7 +1741,7 @@ const AboutUs = ({
                   <InputAreaTwo
               register={register}
               label="Member 10 Name"
-                          name="about_page_founder_ten_name"
+                          name="about_page_founder_ten_name_en"
                     type="text"
                           placeholder="Team Member 10 Name"
             />
@@ -1734,7 +1756,7 @@ const AboutUs = ({
                   <InputAreaTwo
               register={register}
               label="Member 10 Position"
-                          name="about_page_founder_ten_position"
+                          name="about_page_founder_ten_position_en"
                     type="text"
                           placeholder="Team Member 10 Position"
             />
@@ -1765,7 +1787,7 @@ const AboutUs = ({
                   <InputAreaTwo
               register={register}
               label="Member 11 Name"
-                          name="about_page_founder_eleven_name"
+                          name="about_page_founder_eleven_name_en"
                     type="text"
                           placeholder="Team Member 11 Name"
             />
@@ -1780,7 +1802,7 @@ const AboutUs = ({
                   <InputAreaTwo
               register={register}
               label="Member 11 Position"
-                          name="about_page_founder_eleven_position"
+                          name="about_page_founder_eleven_position_en"
                     type="text"
                           placeholder="Team Member 11 Position"
             />
@@ -1811,7 +1833,7 @@ const AboutUs = ({
                   <InputAreaTwo
               register={register}
               label="Member 12 Name"
-                          name="about_page_founder_twelve_name"
+                          name="about_page_founder_twelve_name_en"
                     type="text"
                           placeholder="Team Member 12 Name"
             />
@@ -1826,7 +1848,7 @@ const AboutUs = ({
                   <InputAreaTwo
               register={register}
               label="Member 12 Position"
-                          name="about_page_founder_twelve_position"
+                          name="about_page_founder_twelve_position_en"
                     type="text"
                           placeholder="Team Member 12 Position"
             />
