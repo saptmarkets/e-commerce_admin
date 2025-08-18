@@ -717,48 +717,34 @@ const AboutUs = ({
                 </div>
               </div>
 
-                    <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                  Leadership Title
-                      </label>
-                      <div className="sm:col-span-4">
+                    <BilingualInput
+                register={register}
+                errors={errors}
+                baseName="about_page_leadership_title"
+                label="Leadership Title"
+                placeholderEn="Leadership that Inspires"
+                placeholderAr="قيادة ملهمة"
+              />
+
+              <BilingualInput
+                register={register}
+                errors={errors}
+                baseName="about_page_leadership_subtitle"
+                label="Leadership Subtitle"
+                placeholderEn="Guided by Vision, Committed to Excellence"
+                placeholderAr="مدفوعون برؤية، ملتزمون بالتميز"
+              />
+
+              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
+                <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                  Values Title
+                </label>
+                <div className="sm:col-span-4">
                   <InputAreaTwo
                     register={register}
-                    label="Leadership Title"
-                    name="about_page_leadership_title"
-                    type="text"
-                    placeholder="Leadership that Inspires"
-                  />
-                  <Error errorName={errors.about_page_leadership_title} />
-                      </div>
-                    </div>
-
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                  Leadership Subtitle
-                      </label>
-                      <div className="sm:col-span-4">
-                        <InputAreaTwo
-                          register={register}
-                    label="Leadership Subtitle"
-                    name="about_page_leadership_subtitle"
-                          type="text"
-                    placeholder="Guided by Vision, Committed to Excellence"
-                        />
-                  <Error errorName={errors.about_page_leadership_subtitle} />
-                      </div>
-                    </div>
-
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                  Values Title
-                      </label>
-                      <div className="sm:col-span-4">
-                        <InputAreaTwo
-                          register={register}
                     label="Values Title"
                     name="about_page_values_title"
-                          type="text"
+                    type="text"
                     placeholder="Our Core Values"
                   />
                   <Error errorName={errors.about_page_values_title} />
@@ -777,8 +763,8 @@ const AboutUs = ({
                     placeholder="These fundamental principles guide every decision we make..."
                   />
                   <Error errorName={errors.about_page_values_description} />
-                      </div>
-                    </div>
+                </div>
+              </div>
             </div>
 
             {/* Core Values Section */}
@@ -822,36 +808,24 @@ const AboutUs = ({
                   </TabList>
 
                   <TabPanel className="mt-10">
-                    <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                        Value One Title
-                      </label>
-                      <div className="sm:col-span-4">
-                        <InputAreaTwo
-                          register={register}
-                          label="Value One Title"
-                          name="about_page_value_one_title"
-                          type="text"
-                          placeholder="Quality First"
-                        />
-                        <Error errorName={errors.about_page_value_one_title} />
-                      </div>
-                    </div>
+                                         <BilingualInput
+                       register={register}
+                       errors={errors}
+                       baseName="about_page_value_one_title"
+                       label="Value One Title"
+                       placeholderEn="Quality First"
+                       placeholderAr="الجودة أولاً"
+                     />
 
-                    <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-                      <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                        Value One Description
-                      </label>
-                      <div className="sm:col-span-4">
-                        <TextAreaCom
-                          register={register}
-                          label="Value One Description"
-                          name="about_page_value_one_description"
-                          placeholder="We never compromise on the quality of our products..."
-                        />
-                        <Error errorName={errors.about_page_value_one_description} />
-                      </div>
-                    </div>
+                     <BilingualInput
+                       register={register}
+                       errors={errors}
+                       baseName="about_page_value_one_description"
+                       label="Value One Description"
+                       placeholderEn="We never compromise on the quality of our products..."
+                       placeholderAr="لا نساوم على جودة منتجاتنا..."
+                       isTextArea={true}
+                     />
                   </TabPanel>
 
                   <TabPanel>
