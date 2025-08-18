@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import SettingServices from "../services/SettingServices";
 
@@ -8,6 +8,8 @@ const useAboutUs = () => {
   const [aboutUsData, setAboutUsData] = useState(null);
   const [isUpdate, setIsUpdate] = useState(false);
   const [error, setError] = useState(null);
+  const [isInitialized, setIsInitialized] = useState(false);
+  const isInitialMount = useRef(true);
 
   const {
     register,
@@ -28,13 +30,29 @@ const useAboutUs = () => {
       const response = await SettingServices.getAboutUs();
       console.log("🔍 About Us API Response:", response);
       
-      if (response && response.data) {
-        setAboutUsData(response.data);
-        populateFormFields(response.data);
-        setIsUpdate(true);
-        console.log("✅ About Us data loaded successfully");
+      if (response && response.data && Object.keys(response.data).length > 0) {
+        // Check if we have actual content, not just empty objects
+        const hasContent = Object.values(response.data).some(value => {
+          if (typeof value === 'object' && value !== null) {
+            return Object.values(value).some(subValue => 
+              subValue && typeof subValue === 'string' && subValue.trim() !== ''
+            );
+          }
+          return value && value !== '';
+        });
+        
+        if (hasContent) {
+          console.log("✅ Found existing About Us data with content");
+          setAboutUsData(response.data);
+          populateFormFields(response.data);
+          setIsUpdate(true);
+        } else {
+          console.log("⚠️ Found About Us data but it's empty, not overwriting");
+          setAboutUsData({});
+          setIsUpdate(false);
+        }
       } else {
-        console.log("⚠️ No About Us data found, creating new structure");
+        console.log("⚠️ No About Us data found, not creating empty structure");
         setAboutUsData({});
         setIsUpdate(false);
       }
@@ -43,169 +61,352 @@ const useAboutUs = () => {
       setError("Failed to load About Us data");
     } finally {
       setLoading(false);
+      setIsInitialized(true);
     }
   };
 
-  // Populate form fields with fetched data
+  // Populate form fields with fetched data - only if data exists
   const populateFormFields = (data) => {
     console.log("🔍 Populating form fields with data:", data);
     
+    // Only populate if we have actual data
+    if (!data || Object.keys(data).length === 0) {
+      console.log("⚠️ No data to populate, skipping");
+      return;
+    }
+    
     // Hero Section
-    setValue("about_page_title_en", data?.title?.en || "");
-    setValue("about_page_title_ar", data?.title?.ar || "");
-    setValue("about_page_hero_description_en", data?.hero_description?.en || "");
-    setValue("about_page_hero_description_ar", data?.hero_description?.ar || "");
+    if (data.title?.en || data.title?.ar) {
+      setValue("about_page_title_en", data.title.en || "");
+      setValue("about_page_title_ar", data.title.ar || "");
+    }
+    
+    if (data.hero_description?.en || data.hero_description?.ar) {
+      setValue("about_page_hero_description_en", data.hero_description.en || "");
+      setValue("about_page_hero_description_ar", data.hero_description.ar || "");
+    }
 
     // Top Section
-    setValue("about_page_top_section_title_en", data?.top_section_title?.en || "");
-    setValue("about_page_top_section_title_ar", data?.top_section_title?.ar || "");
-    setValue("about_page_top_section_description_en", data?.top_section_description?.en || "");
-    setValue("about_page_top_section_description_ar", data?.top_section_description?.ar || "");
-    setValue("about_page_top_title_en", data?.top_title?.en || "");
-    setValue("about_page_top_title_ar", data?.top_title?.ar || "");
-    setValue("about_page_top_description_en", data?.top_description?.en || "");
-    setValue("about_page_top_description_ar", data?.top_description?.ar || "");
+    if (data.top_section_title?.en || data.top_section_title?.ar) {
+      setValue("about_page_top_section_title_en", data.top_section_title.en || "");
+      setValue("about_page_top_section_title_ar", data.top_section_title.ar || "");
+    }
+    
+    if (data.top_section_description?.en || data.top_section_description?.ar) {
+      setValue("about_page_top_section_description_en", data.top_section_description.en || "");
+      setValue("about_page_top_section_description_ar", data.top_section_description.ar || "");
+    }
+    
+    if (data.top_title?.en || data.top_title?.ar) {
+      setValue("about_page_top_title_en", data.top_title.en || "");
+      setValue("about_page_top_title_ar", data.top_title.ar || "");
+    }
+    
+    if (data.top_description?.en || data.top_description?.ar) {
+      setValue("about_page_top_description_en", data.top_description.en || "");
+      setValue("about_page_top_description_ar", data.top_description.ar || "");
+    }
 
     // Cards Section
-    setValue("about_page_card_one_title_en", data?.card_one_title?.en || "");
-    setValue("about_page_card_one_title_ar", data?.card_one_title?.ar || "");
-    setValue("about_page_card_one_subtitle_en", data?.card_one_sub?.en || "");
-    setValue("about_page_card_one_subtitle_ar", data?.card_one_sub?.ar || "");
-    setValue("about_page_card_one_description_en", data?.card_one_description?.en || "");
-    setValue("about_page_card_one_description_ar", data?.card_one_description?.ar || "");
-    setValue("about_page_card_two_title_en", data?.card_two_title?.en || "");
-    setValue("about_page_card_two_title_ar", data?.card_two_title?.ar || "");
-    setValue("about_page_card_two_subtitle_en", data?.card_two_sub?.en || "");
-    setValue("about_page_card_two_subtitle_ar", data?.card_two_sub?.ar || "");
-    setValue("about_page_card_two_description_en", data?.card_two_description?.en || "");
-    setValue("about_page_card_two_description_ar", data?.card_two_description?.ar || "");
+    if (data.card_one_title?.en || data.card_one_title?.ar) {
+      setValue("about_page_card_one_title_en", data.card_one_title.en || "");
+      setValue("about_page_card_one_title_ar", data.card_one_title.ar || "");
+    }
+    
+    if (data.card_one_sub?.en || data.card_one_sub?.ar) {
+      setValue("about_page_card_one_subtitle_en", data.card_one_sub.en || "");
+      setValue("about_page_card_one_subtitle_ar", data.card_one_sub.ar || "");
+    }
+    
+    if (data.card_one_description?.en || data.card_one_description?.ar) {
+      setValue("about_page_card_one_description_en", data.card_one_description.en || "");
+      setValue("about_page_card_one_description_ar", data.card_one_description.ar || "");
+    }
+    
+    if (data.card_two_title?.en || data.card_two_title?.ar) {
+      setValue("about_page_card_two_title_en", data.card_two_title.en || "");
+      setValue("about_page_card_two_title_ar", data.card_two_title.ar || "");
+    }
+    
+    if (data.card_two_sub?.en || data.card_two_sub?.ar) {
+      setValue("about_page_card_two_subtitle_en", data.card_two_sub.en || "");
+      setValue("about_page_card_two_subtitle_ar", data.card_two_sub.ar || "");
+    }
+    
+    if (data.card_two_description?.en || data.card_two_description?.ar) {
+      setValue("about_page_card_two_description_en", data.card_two_description.en || "");
+      setValue("about_page_card_two_description_ar", data.card_two_description.ar || "");
+    }
 
     // Middle Content
-    setValue("about_us_middle_description_one_en", data?.middle_description_one?.en || "");
-    setValue("about_us_middle_description_one_ar", data?.middle_description_one?.ar || "");
-    setValue("about_us_middle_description_two_en", data?.middle_description_two?.en || "");
-    setValue("about_us_middle_description_two_ar", data?.middle_description_two?.ar || "");
+    if (data.middle_description_one?.en || data.middle_description_one?.ar) {
+      setValue("about_us_middle_description_one_en", data.middle_description_one.en || "");
+      setValue("about_us_middle_description_one_ar", data.middle_description_one.ar || "");
+    }
+    
+    if (data.middle_description_two?.en || data.middle_description_two?.ar) {
+      setValue("about_us_middle_description_two_en", data.middle_description_two.en || "");
+      setValue("about_us_middle_description_two_ar", data.middle_description_two.ar || "");
+    }
 
     // Team Section
-    setValue("about_page_team_title_en", data?.team_title?.en || "");
-    setValue("about_page_team_title_ar", data?.team_title?.ar || "");
-    setValue("about_page_team_description_en", data?.team_description?.en || "");
-    setValue("about_page_team_description_ar", data?.team_description?.ar || "");
+    if (data.team_title?.en || data.team_title?.ar) {
+      setValue("about_page_team_title_en", data.team_title.en || "");
+      setValue("about_page_team_title_ar", data.team_title.ar || "");
+    }
+    
+    if (data.team_description?.en || data.team_description?.ar) {
+      setValue("about_page_team_description_en", data.team_description.en || "");
+      setValue("about_page_team_description_ar", data.team_description.ar || "");
+    }
 
     // Leadership Section
-    setValue("about_page_leadership_title_en", data?.leadership_title?.en || "");
-    setValue("about_page_leadership_title_ar", data?.leadership_title?.ar || "");
-    setValue("about_page_leadership_subtitle_en", data?.leadership_subtitle?.en || "");
-    setValue("about_page_leadership_subtitle_ar", data?.leadership_subtitle?.ar || "");
+    if (data.leadership_title?.en || data.leadership_title?.ar) {
+      setValue("about_page_leadership_title_en", data.leadership_title.en || "");
+      setValue("about_page_leadership_title_ar", data.leadership_title.ar || "");
+    }
+    
+    if (data.leadership_subtitle?.en || data.leadership_subtitle?.ar) {
+      setValue("about_page_leadership_subtitle_en", data.leadership_subtitle.en || "");
+      setValue("about_page_leadership_subtitle_ar", data.leadership_subtitle.ar || "");
+    }
 
     // Values Section
-    setValue("about_page_values_title_en", data?.values_title?.en || "");
-    setValue("about_page_values_title_ar", data?.values_title?.ar || "");
-    setValue("about_page_values_description_en", data?.values_description?.en || "");
-    setValue("about_page_values_description_ar", data?.values_description?.ar || "");
-    setValue("about_page_value_one_title_en", data?.value_one_title?.en || "");
-    setValue("about_page_value_one_title_ar", data?.value_one_title?.ar || "");
-    setValue("about_page_value_one_description_en", data?.value_one_description?.en || "");
-    setValue("about_page_value_one_description_ar", data?.value_one_description?.ar || "");
-    setValue("about_page_value_two_title_en", data?.value_two_title?.en || "");
-    setValue("about_page_value_two_title_ar", data?.value_two_title?.ar || "");
-    setValue("about_page_value_two_description_en", data?.value_two_description?.en || "");
-    setValue("about_page_value_two_description_ar", data?.value_two_description?.ar || "");
-    setValue("about_page_value_three_title_en", data?.value_three_title?.en || "");
-    setValue("about_page_value_three_title_ar", data?.value_three_title?.ar || "");
-    setValue("about_page_value_three_description_en", data?.value_three_description?.en || "");
-    setValue("about_page_value_three_description_ar", data?.value_three_description?.ar || "");
-    setValue("about_page_value_four_title_en", data?.value_four_title?.en || "");
-    setValue("about_page_value_four_title_ar", data?.value_four_title?.ar || "");
-    setValue("about_page_value_four_description_en", data?.value_four_description?.en || "");
-    setValue("about_page_value_four_description_ar", data?.value_four_description?.ar || "");
+    if (data.values_title?.en || data.values_title?.ar) {
+      setValue("about_page_values_title_en", data.values_title.en || "");
+      setValue("about_page_values_title_ar", data.values_title.ar || "");
+    }
+    
+    if (data.values_description?.en || data.values_description?.ar) {
+      setValue("about_page_values_description_en", data.values_description.en || "");
+      setValue("about_page_values_description_ar", data.values_description.ar || "");
+    }
+    
+    if (data.value_one_title?.en || data.value_one_title?.ar) {
+      setValue("about_page_value_one_title_en", data.value_one_title.en || "");
+      setValue("about_page_value_one_title_ar", data.value_one_title.ar || "");
+    }
+    
+    if (data.value_one_description?.en || data.value_one_description?.ar) {
+      setValue("about_page_value_one_description_en", data.value_one_description.en || "");
+      setValue("about_page_value_one_description_ar", data.value_one_description.ar || "");
+    }
+    
+    if (data.value_two_title?.en || data.value_two_title?.ar) {
+      setValue("about_page_value_two_title_en", data.value_two_title.en || "");
+      setValue("about_page_value_two_title_ar", data.value_two_title.ar || "");
+    }
+    
+    if (data.value_two_description?.en || data.value_two_description?.ar) {
+      setValue("about_page_value_two_description_en", data.value_two_description.en || "");
+      setValue("about_page_value_two_description_ar", data.value_two_description.ar || "");
+    }
+    
+    if (data.value_three_title?.en || data.value_three_title?.ar) {
+      setValue("about_page_value_three_title_en", data.value_three_title.en || "");
+      setValue("about_page_value_three_title_ar", data.value_three_title.ar || "");
+    }
+    
+    if (data.value_three_description?.en || data.value_three_description?.ar) {
+      setValue("about_page_value_three_description_en", data.value_three_description.en || "");
+      setValue("about_page_value_three_description_ar", data.value_three_description.ar || "");
+    }
+    
+    if (data.value_four_title?.en || data.value_four_title?.ar) {
+      setValue("about_page_value_four_title_en", data.value_four_title.en || "");
+      setValue("about_page_value_four_title_ar", data.value_four_title.ar || "");
+    }
+    
+    if (data.value_four_description?.en || data.value_four_description?.ar) {
+      setValue("about_page_value_four_description_en", data.value_four_description.en || "");
+      setValue("about_page_value_four_description_ar", data.value_four_description.ar || "");
+    }
 
     // Heritage Section
-    setValue("about_page_heritage_title_en", data?.heritage_title?.en || "");
-    setValue("about_page_heritage_title_ar", data?.heritage_title?.ar || "");
-    setValue("about_page_heritage_description_one_en", data?.heritage_description_one?.en || "");
-    setValue("about_page_heritage_description_one_ar", data?.heritage_description_one?.ar || "");
-    setValue("about_page_heritage_description_two_en", data?.heritage_description_two?.en || "");
-    setValue("about_page_heritage_description_two_ar", data?.heritage_description_two?.ar || "");
+    if (data.heritage_title?.en || data.heritage_title?.ar) {
+      setValue("about_page_heritage_title_en", data.heritage_title.en || "");
+      setValue("about_page_heritage_title_ar", data.heritage_title.ar || "");
+    }
+    
+    if (data.heritage_description_one?.en || data.heritage_description_one?.ar) {
+      setValue("about_page_heritage_description_one_en", data.heritage_description_one.en || "");
+      setValue("about_page_heritage_description_one_ar", data.heritage_description_one.ar || "");
+    }
+    
+    if (data.heritage_description_two?.en || data.heritage_description_two?.ar) {
+      setValue("about_page_heritage_description_two_en", data.heritage_description_two.en || "");
+      setValue("about_page_heritage_description_two_ar", data.heritage_description_two.ar || "");
+    }
 
     // Community Section
-    setValue("about_page_community_title_en", data?.community_title?.en || "");
-    setValue("about_page_community_title_ar", data?.community_title?.ar || "");
-    setValue("about_page_community_description_one_en", data?.community_description_one?.en || "");
-    setValue("about_page_community_description_one_ar", data?.community_description_one?.ar || "");
-    setValue("about_page_community_description_two_en", data?.community_description_two?.en || "");
-    setValue("about_page_community_description_two_ar", data?.community_description_two?.ar || "");
-    setValue("about_page_community_stat_one_number_en", data?.community_stat_one_number?.en || "");
-    setValue("about_page_community_stat_one_number_ar", data?.community_stat_one_number?.ar || "");
-    setValue("about_page_community_stat_one_label_en", data?.community_stat_one_label?.en || "");
-    setValue("about_page_community_stat_one_label_ar", data?.community_stat_one_label?.ar || "");
-    setValue("about_page_community_stat_two_number_en", data?.community_stat_two_number?.en || "");
-    setValue("about_page_community_stat_two_number_ar", data?.community_stat_two_number?.ar || "");
-    setValue("about_page_community_stat_two_label_en", data?.community_stat_two_label?.en || "");
-    setValue("about_page_community_stat_two_label_ar", data?.community_stat_two_label?.ar || "");
-    setValue("about_page_community_cta_title_en", data?.community_cta_title?.en || "");
-    setValue("about_page_community_cta_title_ar", data?.community_cta_title?.ar || "");
-    setValue("about_page_community_cta_description_en", data?.community_cta_description?.en || "");
-    setValue("about_page_community_cta_description_ar", data?.community_cta_description?.ar || "");
+    if (data.community_title?.en || data.community_title?.ar) {
+      setValue("about_page_community_title_en", data.community_title.en || "");
+      setValue("about_page_community_title_ar", data.community_title.ar || "");
+    }
+    
+    if (data.community_description_one?.en || data.community_description_one?.ar) {
+      setValue("about_page_community_description_one_en", data.community_description_one.en || "");
+      setValue("about_page_community_description_one_ar", data.community_description_one.ar || "");
+    }
+    
+    if (data.community_description_two?.en || data.community_description_two?.ar) {
+      setValue("about_page_community_description_two_en", data.community_description_two.en || "");
+      setValue("about_page_community_description_two_ar", data.community_description_two.ar || "");
+    }
+    
+    if (data.community_stat_one_number?.en || data.community_stat_one_number?.ar) {
+      setValue("about_page_community_stat_one_number_en", data.community_stat_one_number.en || "");
+      setValue("about_page_community_stat_one_number_ar", data.community_stat_one_number.ar || "");
+    }
+    
+    if (data.community_stat_one_label?.en || data.community_stat_one_label?.ar) {
+      setValue("about_page_community_stat_one_label_en", data.community_stat_one_label.en || "");
+      setValue("about_page_community_stat_one_label_ar", data.community_stat_one_label.ar || "");
+    }
+    
+    if (data.community_stat_two_number?.en || data.community_stat_two_number?.ar) {
+      setValue("about_page_community_stat_two_number_en", data.community_stat_two_number.en || "");
+      setValue("about_page_community_stat_two_number_ar", data.community_stat_two_number.ar || "");
+    }
+    
+    if (data.community_stat_two_label?.en || data.community_stat_two_label?.ar) {
+      setValue("about_page_community_stat_two_label_en", data.community_stat_two_label.en || "");
+      setValue("about_page_community_stat_two_label_ar", data.community_stat_two_label.ar || "");
+    }
+    
+    if (data.community_cta_title?.en || data.community_cta_title?.ar) {
+      setValue("about_page_community_cta_title_en", data.community_cta_title.en || "");
+      setValue("about_page_community_cta_title_ar", data.community_cta_title.ar || "");
+    }
+    
+    if (data.community_cta_description?.en || data.community_cta_description?.ar) {
+      setValue("about_page_community_cta_description_en", data.community_cta_description.en || "");
+      setValue("about_page_community_cta_description_ar", data.community_cta_description.ar || "");
+    }
 
-    // Founder Fields (1-12)
+    // Founder Fields (1-12) - only populate if data exists
     for (let i = 1; i <= 12; i++) {
       const num = i === 1 ? "one" : i === 2 ? "two" : i === 3 ? "three" : i === 4 ? "four" : 
                   i === 5 ? "five" : i === 6 ? "six" : i === 7 ? "seven" : i === 8 ? "eight" : 
                   i === 9 ? "nine" : i === 10 ? "ten" : i === 11 ? "eleven" : "twelve";
       
-      setValue(`about_page_founder_${num}_name_en`, data?.[`founder_${num}_name`]?.en || "");
-      setValue(`about_page_founder_${num}_name_ar`, data?.[`founder_${num}_name`]?.ar || "");
-      setValue(`about_page_founder_${num}_position_en`, data?.[`founder_${num}_position`]?.en || "");
-      setValue(`about_page_founder_${num}_position_ar`, data?.[`founder_${num}_position`]?.ar || "");
-      setValue(`about_page_founder_${num}_subtitle_en`, data?.[`founder_${num}_sub`]?.en || "");
-      setValue(`about_page_founder_${num}_subtitle_ar`, data?.[`founder_${num}_sub`]?.ar || "");
+      const founderName = data[`founder_${num}_name`];
+      const founderPosition = data[`founder_${num}_position`];
+      const founderSub = data[`founder_${num}_sub`];
+      
+      if (founderName?.en || founderName?.ar) {
+        setValue(`about_page_founder_${num}_name_en`, founderName.en || "");
+        setValue(`about_page_founder_${num}_name_ar`, founderName.ar || "");
+      }
+      
+      if (founderPosition?.en || founderPosition?.ar) {
+        setValue(`about_page_founder_${num}_position_en`, founderPosition.en || "");
+        setValue(`about_page_founder_${num}_position_ar`, founderPosition.ar || "");
+      }
+      
+      if (founderSub?.en || founderSub?.ar) {
+        setValue(`about_page_founder_${num}_subtitle_en`, founderSub.en || "");
+        setValue(`about_page_founder_${num}_subtitle_ar`, founderSub.ar || "");
+      }
     }
 
     // Trusted Badges
-    setValue("about_page_trusted_badge_one_pill_en", data?.trusted_badge_one_pill?.en || "");
-    setValue("about_page_trusted_badge_one_pill_ar", data?.trusted_badge_one_pill?.ar || "");
-    setValue("about_page_trusted_badge_one_text_en", data?.trusted_badge_one_text?.en || "");
-    setValue("about_page_trusted_badge_one_text_ar", data?.trusted_badge_one_text?.ar || "");
-    setValue("about_page_trusted_badge_two_pill_en", data?.trusted_badge_two_pill?.en || "");
-    setValue("about_page_trusted_badge_two_pill_ar", data?.trusted_badge_two_pill?.ar || "");
-    setValue("about_page_trusted_badge_two_text_en", data?.trusted_badge_two_text?.en || "");
-    setValue("about_page_trusted_badge_two_text_ar", data?.trusted_badge_two_text?.ar || "");
+    if (data.trusted_badge_one_pill?.en || data.trusted_badge_one_pill?.ar) {
+      setValue("about_page_trusted_badge_one_pill_en", data.trusted_badge_one_pill.en || "");
+      setValue("about_page_trusted_badge_one_pill_ar", data.trusted_badge_one_pill.ar || "");
+    }
+    
+    if (data.trusted_badge_one_text?.en || data.trusted_badge_one_text?.ar) {
+      setValue("about_page_trusted_badge_one_text_en", data.trusted_badge_one_text.en || "");
+      setValue("about_page_trusted_badge_one_text_ar", data.trusted_badge_one_text.ar || "");
+    }
+    
+    if (data.trusted_badge_two_pill?.en || data.trusted_badge_two_pill?.ar) {
+      setValue("about_page_trusted_badge_two_pill_en", data.trusted_badge_two_pill.en || "");
+      setValue("about_page_trusted_badge_two_pill_ar", data.trusted_badge_two_pill.ar || "");
+    }
+    
+    if (data.trusted_badge_two_text?.en || data.trusted_badge_two_text?.ar) {
+      setValue("about_page_trusted_badge_two_text_en", data.trusted_badge_two_text.en || "");
+      setValue("about_page_trusted_badge_two_text_ar", data.trusted_badge_two_text.ar || "");
+    }
 
     // Branches Section
-    setValue("about_page_branches_title_en", data?.branches_title?.en || "");
-    setValue("about_page_branches_title_ar", data?.branches_title?.ar || "");
-    setValue("about_page_branches_description_en", data?.branches_description?.en || "");
-    setValue("about_page_branches_description_ar", data?.branches_description?.ar || "");
-    setValue("about_page_branches_cta_title_en", data?.branches_cta_title?.en || "");
-    setValue("about_page_branches_cta_title_ar", data?.branches_cta_title?.ar || "");
-    setValue("about_page_branches_cta_description_en", data?.branches_cta_description?.en || "");
-    setValue("about_page_branches_cta_description_ar", data?.branches_cta_description?.ar || "");
-    setValue("about_page_upcoming_branches_title_en", data?.upcoming_branches_title?.en || "");
-    setValue("about_page_upcoming_branches_title_ar", data?.upcoming_branches_title?.ar || "");
+    if (data.branches_title?.en || data.branches_title?.ar) {
+      setValue("about_page_branches_title_en", data.branches_title.en || "");
+      setValue("about_page_branches_title_ar", data.branches_title.ar || "");
+    }
+    
+    if (data.branches_description?.en || data.branches_description?.ar) {
+      setValue("about_page_branches_description_en", data.branches_description.en || "");
+      setValue("about_page_branches_description_ar", data.branches_description.ar || "");
+    }
+    
+    if (data.branches_cta_title?.en || data.branches_cta_title?.ar) {
+      setValue("about_page_branches_cta_title_en", data.branches_cta_title.en || "");
+      setValue("about_page_branches_cta_title_ar", data.branches_cta_title.ar || "");
+    }
+    
+    if (data.branches_cta_description?.en || data.branches_cta_description?.ar) {
+      setValue("about_page_branches_cta_description_en", data.branches_cta_description.en || "");
+      setValue("about_page_branches_cta_description_ar", data.branches_cta_description.ar || "");
+    }
+    
+    if (data.upcoming_branches_title?.en || data.upcoming_branches_title?.ar) {
+      setValue("about_page_upcoming_branches_title_en", data.upcoming_branches_title.en || "");
+      setValue("about_page_upcoming_branches_title_ar", data.upcoming_branches_title.ar || "");
+    }
 
     // Upcoming Branches
-    setValue("about_page_upcoming_branch_one_name_en", data?.upcoming_branch_one_name?.en || "");
-    setValue("about_page_upcoming_branch_one_name_ar", data?.upcoming_branch_one_name?.ar || "");
-    setValue("about_page_upcoming_branch_one_address_en", data?.upcoming_branch_one_address?.en || "");
-    setValue("about_page_upcoming_branch_one_address_ar", data?.upcoming_branch_one_address?.ar || "");
-    setValue("about_page_upcoming_branch_one_quarter_en", data?.upcoming_branch_one_quarter?.en || "");
-    setValue("about_page_upcoming_branch_one_quarter_ar", data?.upcoming_branch_one_quarter?.ar || "");
-    setValue("about_page_upcoming_branch_one_features_en", data?.upcoming_branch_one_features?.en || "");
-    setValue("about_page_upcoming_branch_one_features_ar", data?.upcoming_branch_one_features?.ar || "");
-    setValue("about_page_upcoming_branch_one_emoji_en", data?.upcoming_branch_one_emoji?.en || "");
-    setValue("about_page_upcoming_branch_one_emoji_ar", data?.upcoming_branch_one_emoji?.ar || "");
+    if (data.upcoming_branch_one_name?.en || data.upcoming_branch_one_name?.ar) {
+      setValue("about_page_upcoming_branch_one_name_en", data.upcoming_branch_one_name.en || "");
+      setValue("about_page_upcoming_branch_one_name_ar", data.upcoming_branch_one_name.ar || "");
+    }
+    
+    if (data.upcoming_branch_one_address?.en || data.upcoming_branch_one_address?.ar) {
+      setValue("about_page_upcoming_branch_one_address_en", data.upcoming_branch_one_address.en || "");
+      setValue("about_page_upcoming_branch_one_address_ar", data.upcoming_branch_one_address.ar || "");
+    }
+    
+    if (data.upcoming_branch_one_quarter?.en || data.upcoming_branch_one_quarter?.ar) {
+      setValue("about_page_upcoming_branch_one_quarter_en", data.upcoming_branch_one_quarter.en || "");
+      setValue("about_page_upcoming_branch_one_quarter_ar", data.upcoming_branch_one_quarter.ar || "");
+    }
+    
+    if (data.upcoming_branch_one_features?.en || data.upcoming_branch_one_features?.ar) {
+      setValue("about_page_upcoming_branch_one_features_en", data.upcoming_branch_one_features.en || "");
+      setValue("about_page_upcoming_branch_one_features_ar", data.upcoming_branch_one_features.ar || "");
+    }
+    
+    if (data.upcoming_branch_one_emoji?.en || data.upcoming_branch_one_emoji?.ar) {
+      setValue("about_page_upcoming_branch_one_emoji_en", data.upcoming_branch_one_emoji.en || "");
+      setValue("about_page_upcoming_branch_one_emoji_ar", data.upcoming_branch_one_emoji.ar || "");
+    }
 
-    setValue("about_page_upcoming_branch_two_name_en", data?.upcoming_branch_two_name?.en || "");
-    setValue("about_page_upcoming_branch_two_name_ar", data?.upcoming_branch_two_name?.ar || "");
-    setValue("about_page_upcoming_branch_two_address_en", data?.upcoming_branch_one_address?.en || "");
-    setValue("about_page_upcoming_branch_two_address_ar", data?.upcoming_branch_one_address?.ar || "");
-    setValue("about_page_upcoming_branch_two_quarter_en", data?.upcoming_branch_two_quarter?.en || "");
-    setValue("about_page_upcoming_branch_two_quarter_ar", data?.upcoming_branch_two_quarter?.ar || "");
-    setValue("about_page_upcoming_branch_two_features_en", data?.upcoming_branch_two_features?.en || "");
-    setValue("about_page_upcoming_branch_two_features_ar", data?.upcoming_branch_two_features?.ar || "");
-    setValue("about_page_upcoming_branch_two_emoji_en", data?.upcoming_branch_two_emoji?.en || "");
-    setValue("about_page_upcoming_branch_two_emoji_ar", data?.upcoming_branch_two_emoji?.ar || "");
+    if (data.upcoming_branch_two_name?.en || data.upcoming_branch_two_name?.ar) {
+      setValue("about_page_upcoming_branch_two_name_en", data.upcoming_branch_two_name.en || "");
+      setValue("about_page_upcoming_branch_two_name_ar", data.upcoming_branch_two_name.ar || "");
+    }
+    
+    if (data.upcoming_branch_two_address?.en || data.upcoming_branch_two_address?.ar) {
+      setValue("about_page_upcoming_branch_two_address_en", data.upcoming_branch_two_address.en || "");
+      setValue("about_page_upcoming_branch_two_address_ar", data.upcoming_branch_two_address.ar || "");
+    }
+    
+    if (data.upcoming_branch_two_quarter?.en || data.upcoming_branch_two_quarter?.ar) {
+      setValue("about_page_upcoming_branch_two_quarter_en", data.upcoming_branch_two_quarter.en || "");
+      setValue("about_page_upcoming_branch_two_quarter_ar", data.upcoming_branch_two_quarter.ar || "");
+    }
+    
+    if (data.upcoming_branch_two_features?.en || data.upcoming_branch_two_features?.ar) {
+      setValue("about_page_upcoming_branch_two_features_en", data.upcoming_branch_two_features.en || "");
+      setValue("about_page_upcoming_branch_two_features_ar", data.upcoming_branch_two_features.ar || "");
+    }
+    
+    if (data.upcoming_branch_two_emoji?.en || data.upcoming_branch_two_emoji?.ar) {
+      setValue("about_page_upcoming_branch_two_emoji_en", data.upcoming_branch_two_emoji.en || "");
+      setValue("about_page_upcoming_branch_two_emoji_ar", data.upcoming_branch_two_emoji.ar || "");
+    }
 
     console.log("✅ Form fields populated successfully");
   };
