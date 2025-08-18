@@ -2605,13 +2605,22 @@ const useStoreHomeSubmit = () => {
             "about_us_ourfounder_description",
             res?.about_us?.founder_description[language || "en"]
           );
+          // Founder One - Bilingual
           setValue(
-            "about_page_founder_one_name",
-            res?.about_us?.founder_one_name[language || "en"]
+            "about_page_founder_one_name_en",
+            res?.about_us?.founder_one_name?.en || ""
           );
           setValue(
-            "about_page_founder_one_position",
-            res?.about_us?.founder_one_sub[language || "en"]
+            "about_page_founder_one_name_ar",
+            res?.about_us?.founder_one_name?.ar || ""
+          );
+          setValue(
+            "about_page_founder_one_position_en",
+            res?.about_us?.founder_one_position?.en || ""
+          );
+          setValue(
+            "about_page_founder_one_position_ar",
+            res?.about_us?.founder_one_position?.ar || ""
           );
           setValue(
             "about_page_founder_two_name",
