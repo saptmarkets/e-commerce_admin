@@ -161,11 +161,11 @@ const ContactUs = ({
                 <InputAreaTwo
                   register={register}
                   label="Title"
-                  name="email_box_title"
+                  name="contact_page_email_box_title"
                   type="text"
                   placeholder={t("EboxTitle")}
                 />
-                <Error errorName={errors.email_box_title} />
+                <Error errorName={errors.contact_page_email_box_title} />
               </div>
             </div>
 
@@ -177,11 +177,11 @@ const ContactUs = ({
                 <InputAreaTwo
                   register={register}
                   label="Title"
-                  name="email_box_email"
+                  name="contact_page_email_box_email"
                   type="text"
                   placeholder={t("EboxEmail")}
                 />
-                <Error errorName={errors.email_box_email} />
+                <Error errorName={errors.contact_page_email_box_email} />
               </div>
             </div>
             <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
@@ -192,11 +192,11 @@ const ContactUs = ({
                 <InputAreaTwo
                   register={register}
                   label="Title"
-                  name="email_box_text"
+                  name="contact_page_email_box_text"
                   type="text"
                   placeholder={t("Eboxtext")}
                 />
-                <Error errorName={errors.email_box_text} />
+                <Error errorName={errors.contact_page_email_box_text} />
               </div>
             </div>
           </div>
@@ -237,11 +237,11 @@ const ContactUs = ({
                 <InputAreaTwo
                   register={register}
                   label="Title"
-                  name="callUs_box_title"
+                  name="contact_page_callUs_box_title"
                   type="text"
                   placeholder={t("CallusboxTitle")}
                 />
-                <Error errorName={errors.callUs_box_title} />
+                <Error errorName={errors.contact_page_callUs_box_title} />
               </div>
             </div>
 
@@ -253,11 +253,11 @@ const ContactUs = ({
                 <InputAreaTwo
                   register={register}
                   label="Phone"
-                  name="callUs_box_phone"
+                  name="contact_page_callUs_box_phone"
                   type="text"
                   placeholder={t("CallUsboxPhone")}
                 />
-                <Error errorName={errors.callUs_box_phone} />
+                <Error errorName={errors.contact_page_callUs_box_phone} />
               </div>
             </div>
             <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
@@ -268,11 +268,11 @@ const ContactUs = ({
                 <InputAreaTwo
                   register={register}
                   label="Title"
-                  name="callUs_box_text"
+                  name="contact_page_callUs_box_text"
                   type="text"
                   placeholder={t("CallUsboxText")}
                 />
-                <Error errorName={errors.callUs_box_text} />
+                <Error errorName={errors.contact_page_callUs_box_title} />
               </div>
             </div>
           </div>
@@ -313,11 +313,11 @@ const ContactUs = ({
                 <InputAreaTwo
                   register={register}
                   label="Title"
-                  name="address_box_title"
+                  name="contact_page_address_box_title"
                   type="text"
                   placeholder={t("AddressboxTitle")}
                 />
-                <Error errorName={errors.address_box_title} />
+                <Error errorName={errors.contact_page_address_box_title} />
               </div>
             </div>
 
@@ -329,11 +329,43 @@ const ContactUs = ({
                 <InputAreaTwo
                   register={register}
                   label="Title"
-                  name="address_box_address_one"
+                  name="contact_page_address_box_address_one"
                   type="text"
                   placeholder={t("AddressboxAddressOne")}
                 />
-                <Error errorName={errors.address_box_address_one} />
+                <Error errorName={errors.contact_page_address_box_address_one} />
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+              <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                {t("AddressboxAddressTwo")}
+              </label>
+              <div className="sm:col-span-4">
+                <InputAreaTwo
+                  register={register}
+                  label="Title"
+                  name="contact_page_address_box_address_two"
+                  type="text"
+                  placeholder={t("AddressboxAddressTwo")}
+                />
+                <Error errorName={errors.contact_page_address_box_address_two} />
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+              <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                {t("AddressboxAddressThree")}
+              </label>
+              <div className="sm:col-span-4">
+                <InputAreaTwo
+                  register={register}
+                  label="Title"
+                  name="contact_page_address_box_address_three"
+                  type="text"
+                  placeholder={t("AddressboxAddressThree")}
+                />
+                <Error errorName={errors.contact_page_address_box_address_three} />
               </div>
             </div>
           </div>
@@ -417,27 +449,27 @@ const ContactUs = ({
                 <InputAreaTwo
                   register={register}
                   label="Title"
-                  name="contact_form_title"
+                  name="contact_page_form_title"
                   type="text"
                   placeholder={t("ContactFormTitle")}
                 />
-                <Error errorName={errors.contact_form_title} />
+                <Error errorName={errors.contact_page_form_title} />
               </div>
             </div>
 
             <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-              <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+              <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-400 md:mb-1">
                 {t("ContactFormDescription")}
               </label>
               <div className="sm:col-span-4">
                 <TextAreaCom
                   register={register}
                   label="Description"
-                  name="contact_form_description"
+                  name="contact_page_form_description"
                   type="text"
                   placeholder={t("ContactFormDescription")}
                 />
-                <Error errorName={errors.contact_form_description} />
+                <Error errorName={errors.contact_page_form_description} />
               </div>
             </div>
           </div>

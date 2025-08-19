@@ -1428,53 +1428,53 @@ const useStoreHomeSubmit = () => {
 
             email_box_title: handleRemoveEmptyKey({
               ...resData?.contact_us?.email_box_title,
-              [language]: data.email_box_title || "",
+              [language]: data.contact_page_email_box_title || "",
             }),
             email_box_email: handleRemoveEmptyKey({
               ...resData?.contact_us?.email_box_email,
-              [language]: data.email_box_email || "",
+              [language]: data.contact_page_email_box_email || "",
             }),
             email_box_text: handleRemoveEmptyKey({
               ...resData?.contact_us?.email_box_text,
-              [language]: data.email_box_text || "",
+              [language]: data.contact_page_email_box_text || "",
             }),
 
             call_box_title: handleRemoveEmptyKey({
               ...resData?.contact_us?.call_box_title,
-              [language]: data.callUs_box_title || "",
+              [language]: data.contact_page_callUs_box_title || "",
             }),
             call_box_phone: handleRemoveEmptyKey({
               ...resData?.contact_us?.call_box_phone,
-              [language]: data.callUs_box_phone || "",
+              [language]: data.contact_page_callUs_box_phone || "",
             }),
             call_box_text: handleRemoveEmptyKey({
               ...resData?.contact_us?.call_box_text,
-              [language]: data.callUs_box_text || "",
+              [language]: data.contact_page_callUs_box_text || "",
             }),
 
             address_box_title: handleRemoveEmptyKey({
               ...resData?.contact_us?.address_box_title,
-              [language]: data.address_box_title || "",
+              [language]: data.contact_page_address_box_title || "",
             }),
             address_box_address_one: handleRemoveEmptyKey({
               ...resData?.contact_us?.address_box_address_one,
-              [language]: data.address_box_address_one || "",
+              [language]: data.contact_page_address_box_address_one || "",
             }),
             address_box_address_two: handleRemoveEmptyKey({
               ...resData?.contact_us?.address_box_address_two,
-              [language]: data.address_box_address_two || "",
+              [language]: data.contact_page_address_box_address_two || "",
             }),
             address_box_address_three: handleRemoveEmptyKey({
               ...resData?.contact_us?.address_box_address_three,
-              [language]: data.address_box_address_three || "",
+              [language]: data.contact_page_address_box_address_three || "",
             }),
             form_title: handleRemoveEmptyKey({
               ...resData?.contact_us?.form_title,
-              [language]: data.contact_form_title || "",
+              [language]: data.contact_page_form_title || "",
             }),
             form_description: handleRemoveEmptyKey({
               ...resData?.contact_us?.form_description,
-              [language]: data.contact_form_description || "",
+              [language]: data.contact_page_form_description || "",
             }),
           },
           offers: {

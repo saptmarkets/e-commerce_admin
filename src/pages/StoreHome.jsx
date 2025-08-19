@@ -1894,6 +1894,12 @@ const StoreHome = () => {
             contactPageHeader={contactPageHeader}
             setContactHeaderBg={setContactHeaderBg}
             contactHeaderBg={contactHeaderBg}
+            setEmailUsBox={setEmailUsBox}
+            emailUsBox={emailUsBox}
+            setCallUsBox={setCallUsBox}
+            callUsBox={callUsBox}
+            setAddressBox={setAddressBox}
+            addressBox={addressBox}
             setContactFormStatus={setContactFormStatus}
             contactFormStatus={contactFormStatus}
             setContactMidLeftColStatus={setContactMidLeftColStatus}
