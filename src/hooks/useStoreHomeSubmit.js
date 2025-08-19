@@ -794,35 +794,8 @@ const useStoreHomeSubmit = () => {
               ar: data.about_page_founder_one_position_ar || "",
             }),
 
-            founder_two_name: handleRemoveEmptyKey({
-              ...resData?.about_us?.founder_two_name,
-              [language]: data.about_page_founder_two_name || "",
-            }),
-
-            founder_two_position: handleRemoveEmptyKey({
-              ...resData?.about_us?.founder_two_position,
-              [language]: data.about_page_founder_two_position || "",
-            }),
-
-            founder_three_name: handleRemoveEmptyKey({
-              ...resData?.about_us?.founder_three_name,
-              [language]: data.about_page_founder_three_name || "",
-            }),
-
-            founder_three_position: handleRemoveEmptyKey({
-              ...resData?.about_us?.founder_three_position,
-              [language]: data.about_page_founder_three_position || "",
-            }),
-
-            founder_four_name: handleRemoveEmptyKey({
-              ...resData?.about_us?.founder_four_name,
-              [language]: data.about_page_founder_four_name || "",
-            }),
-
-            founder_four_position: handleRemoveEmptyKey({
-              ...resData?.about_us?.founder_four_position,
-              [language]: data.about_page_founder_four_position || "",
-            }),
+            // Note: founder_two, founder_three, founder_four are already mapped above with bilingual support
+            // Removing duplicate mappings that were overwriting the bilingual data
 
             founder_five_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_five_name,
