@@ -239,7 +239,7 @@ const useStoreHomeSubmit = () => {
 
   const handleRemoveEmptyKey = (obj) => {
     for (const key in obj) {
-      if (obj[key].trim() === "") {
+      if (obj[key] && typeof obj[key] === 'string' && obj[key].trim() === "") {
         delete obj[key];
       }
     }
@@ -251,6 +251,30 @@ const useStoreHomeSubmit = () => {
     if (handleDisableForDemo()) {
       return; // Exit the function if the feature is disabled
     }
+    
+    console.log("🔍 Form data received:", {
+      founder_two_name_en: data.about_page_founder_two_name_en,
+      founder_two_name_ar: data.about_page_founder_two_name_ar,
+      founder_two_position_en: data.about_page_founder_two_position_en,
+      founder_two_position_ar: data.about_page_founder_two_position_ar,
+      founder_three_name_en: data.about_page_founder_three_name_en,
+      founder_three_name_ar: data.about_page_founder_three_name_ar,
+      founder_three_position_en: data.about_page_founder_three_position_en,
+      founder_three_position_ar: data.about_page_founder_three_position_ar,
+      founder_four_name_en: data.about_page_founder_four_name_en,
+      founder_four_name_ar: data.about_page_founder_four_name_ar,
+      founder_four_position_en: data.about_page_founder_four_position_en,
+      founder_four_position_ar: data.about_page_founder_four_position_ar,
+      founder_five_name_en: data.about_page_founder_five_name_en,
+      founder_five_name_ar: data.about_page_founder_five_name_ar,
+      founder_five_position_en: data.about_page_founder_five_position_en,
+      founder_five_position_ar: data.about_page_founder_five_position_ar,
+      founder_six_name_en: data.about_page_founder_six_name_en,
+      founder_six_name_ar: data.about_page_founder_six_name_ar,
+      founder_six_position_en: data.about_page_founder_six_position_en,
+      founder_six_position_ar: data.about_page_founder_six_position_ar,
+    });
+    
     try {
       setIsSubmitting(true);
 
@@ -797,22 +821,26 @@ const useStoreHomeSubmit = () => {
 
             founder_five_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_five_name,
-              [language]: data.about_page_founder_five_name || "",
+              en: data.about_page_founder_five_name_en || "",
+              ar: data.about_page_founder_five_name_ar || "",
             }),
 
             founder_five_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_five_position,
-              [language]: data.about_page_founder_five_position || "",
+              en: data.about_page_founder_five_position_en || "",
+              ar: data.about_page_founder_five_position_ar || "",
             }),
 
             founder_six_name: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_six_name,
-              [language]: data.about_page_founder_six_name || "",
+              en: data.about_page_founder_six_name_en || "",
+              ar: data.about_page_founder_six_name_ar || "",
             }),
 
             founder_six_position: handleRemoveEmptyKey({
               ...resData?.about_us?.founder_six_position,
-              [language]: data.about_page_founder_six_position || "",
+              en: data.about_page_founder_six_position_en || "",
+              ar: data.about_page_founder_six_position_ar || "",
             }),
 
             founder_seven_name: handleRemoveEmptyKey({
@@ -1954,6 +1982,18 @@ const useStoreHomeSubmit = () => {
       // return;
 
       console.log("🔍 Form submission - isSave value:", isSave);
+      console.log("🔍 Founder data being submitted:", {
+        founder_two_name: storeCustomizationSettingData.setting.about_us.founder_two_name,
+        founder_two_position: storeCustomizationSettingData.setting.about_us.founder_two_position,
+        founder_three_name: storeCustomizationSettingData.setting.about_us.founder_three_name,
+        founder_three_position: storeCustomizationSettingData.setting.about_us.founder_three_position,
+        founder_four_name: storeCustomizationSettingData.setting.about_us.founder_four_name,
+        founder_four_position: storeCustomizationSettingData.setting.about_us.founder_four_position,
+        founder_five_name: storeCustomizationSettingData.setting.about_us.founder_five_name,
+        founder_five_position: storeCustomizationSettingData.setting.about_us.founder_five_position,
+        founder_six_name: storeCustomizationSettingData.setting.about_us.founder_six_name,
+        founder_six_position: storeCustomizationSettingData.setting.about_us.founder_six_position,
+      });
       if (!isSave) {
         console.log("🔄 Calling updateStoreCustomizationSetting...");
         const res = await SettingServices.updateStoreCustomizationSetting(
