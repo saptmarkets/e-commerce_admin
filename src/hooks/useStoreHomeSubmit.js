@@ -3896,8 +3896,12 @@ const useStoreHomeSubmit = () => {
             res?.about_us?.values_title ? res?.about_us?.values_title[language || "en"] : ""
           );
           setValue(
-            "about_page_values_description",
-            res?.about_us?.values_description ? res?.about_us?.values_description[language || "en"] : ""
+            "about_page_values_description_en",
+            res?.about_us?.values_description ? res?.about_us?.values_description.en || "" : ""
+          );
+          setValue(
+            "about_page_values_description_ar",
+            res?.about_us?.values_description ? res?.about_us?.values_description.ar || "" : ""
           );
 
           // Heritage Section
@@ -4102,20 +4106,36 @@ const useStoreHomeSubmit = () => {
             res?.about_us?.branches_title ? res?.about_us?.branches_title[language || "en"] : ""
           );
           setValue(
-            "about_page_branches_description",
-            res?.about_us?.branches_description ? res?.about_us?.branches_description[language || "en"] : ""
+            "about_page_branches_description_en",
+            res?.about_us?.branches_description ? res?.about_us?.branches_description.en || "" : ""
           );
           setValue(
-            "about_page_branches_cta_title",
-            res?.about_us?.branches_cta_title ? res?.about_us?.branches_cta_title[language || "en"] : ""
+            "about_page_branches_description_ar",
+            res?.about_us?.branches_description ? res?.about_us?.branches_description.ar || "" : ""
           );
           setValue(
-            "about_page_branches_cta_description",
-            res?.about_us?.branches_cta_description ? res?.about_us?.branches_cta_description[language || "en"] : ""
+            "about_page_branches_cta_title_en",
+            res?.about_us?.branches_cta_title ? res?.about_us?.branches_cta_title.en || "" : ""
           );
           setValue(
-            "about_page_upcoming_branches_title",
-            res?.about_us?.upcoming_branches_title ? res?.about_us?.upcoming_branches_title[language || "en"] : ""
+            "about_page_branches_cta_title_ar",
+            res?.about_us?.branches_cta_title ? res?.about_us?.branches_cta_title.ar || "" : ""
+          );
+          setValue(
+            "about_page_branches_cta_description_en",
+            res?.about_us?.branches_cta_description ? res?.about_us?.branches_cta_description.en || "" : ""
+          );
+          setValue(
+            "about_page_branches_cta_description_ar",
+            res?.about_us?.branches_cta_description ? res?.about_us?.branches_cta_description.ar || "" : ""
+          );
+          setValue(
+            "about_page_upcoming_branches_title_en",
+            res?.about_us?.upcoming_branches_title ? res?.about_us?.upcoming_branches_title.en || "" : ""
+          );
+          setValue(
+            "about_page_upcoming_branches_title_ar",
+            res?.about_us?.upcoming_branches_title ? res?.about_us?.upcoming_branches_title.ar || "" : ""
           );
 
           // Branch Data
@@ -4161,49 +4181,90 @@ const useStoreHomeSubmit = () => {
             setAboutBranches(true);
           }
 
-          // Upcoming Branches (static two)
+          // Upcoming Branches (static two) - Bilingual
           setValue(
-            "about_page_upcoming_branch_one_name",
-            res?.about_us?.upcoming_branch_one_name ? res?.about_us?.upcoming_branch_one_name[language || "en"] : ""
+            "about_page_upcoming_branch_one_name_en",
+            res?.about_us?.upcoming_branch_one_name ? res?.about_us?.upcoming_branch_one_name.en || "" : ""
           );
           setValue(
-            "about_page_upcoming_branch_one_address",
-            res?.about_us?.upcoming_branch_one_address ? res?.about_us?.upcoming_branch_one_address[language || "en"] : ""
+            "about_page_upcoming_branch_one_name_ar",
+            res?.about_us?.upcoming_branch_one_name ? res?.about_us?.upcoming_branch_one_name.ar || "" : ""
           );
           setValue(
-            "about_page_upcoming_branch_two_name",
-            res?.about_us?.upcoming_branch_two_name ? res?.about_us?.upcoming_branch_two_name[language || "en"] : ""
+            "about_page_upcoming_branch_one_address_en",
+            res?.about_us?.upcoming_branch_one_address ? res?.about_us?.upcoming_branch_one_address.en || "" : ""
           );
           setValue(
-            "about_page_upcoming_branch_two_address",
-            res?.about_us?.upcoming_branch_two_address ? res?.about_us?.upcoming_branch_two_address[language || "en"] : ""
+            "about_page_upcoming_branch_one_address_ar",
+            res?.about_us?.upcoming_branch_one_address ? res?.about_us?.upcoming_branch_one_address.ar || "" : ""
+          );
+          setValue(
+            "about_page_upcoming_branch_two_name_en",
+            res?.about_us?.upcoming_branch_two_name ? res?.about_us?.upcoming_branch_two_name.en || "" : ""
+          );
+          setValue(
+            "about_page_upcoming_branch_two_name_ar",
+            res?.about_us?.upcoming_branch_two_name ? res?.about_us?.upcoming_branch_two_name.ar || "" : ""
+          );
+          setValue(
+            "about_page_upcoming_branch_two_address_en",
+            res?.about_us?.upcoming_branch_two_address ? res?.about_us?.upcoming_branch_two_address.en || "" : ""
+          );
+          setValue(
+            "about_page_upcoming_branch_two_address_ar",
+            res?.about_us?.upcoming_branch_two_address ? res?.about_us?.upcoming_branch_two_address.ar || "" : ""
           );
 
           setValue(
-            "about_page_upcoming_branch_one_quarter",
-            res?.about_us?.upcoming_branch_one_quarter ? res?.about_us?.upcoming_branch_one_quarter[language || "en"] : ""
+            "about_page_upcoming_branch_one_quarter_en",
+            res?.about_us?.upcoming_branch_one_quarter ? res?.about_us?.upcoming_branch_one_quarter.en || "" : ""
           );
           setValue(
-            "about_page_upcoming_branch_one_features",
-            res?.about_us?.upcoming_branch_one_features ? res?.about_us?.upcoming_branch_one_features[language || "en"] : ""
+            "about_page_upcoming_branch_one_quarter_ar",
+            res?.about_us?.upcoming_branch_one_quarter ? res?.about_us?.upcoming_branch_one_quarter.ar || "" : ""
           );
           setValue(
-            "about_page_upcoming_branch_one_emoji",
-            res?.about_us?.upcoming_branch_one_emoji ? res?.about_us?.upcoming_branch_one_emoji[language || "en"] : ""
+            "about_page_upcoming_branch_one_features_en",
+            res?.about_us?.upcoming_branch_one_features ? res?.about_us?.upcoming_branch_one_features.en || "" : ""
+          );
+          setValue(
+            "about_page_upcoming_branch_one_features_ar",
+            res?.about_us?.upcoming_branch_one_features ? res?.about_us?.upcoming_branch_one_features.ar || "" : ""
+          );
+          setValue(
+            "about_page_upcoming_branch_one_emoji_en",
+            res?.about_us?.upcoming_branch_one_emoji ? res?.about_us?.upcoming_branch_one_emoji.en || "" : ""
+          );
+          setValue(
+            "about_page_upcoming_branch_one_emoji_ar",
+            res?.about_us?.upcoming_branch_one_emoji ? res?.about_us?.upcoming_branch_one_emoji.ar || "" : ""
           );
 
           setValue(
-            "about_page_upcoming_branch_two_quarter",
-            res?.about_us?.upcoming_branch_two_quarter ? res?.about_us?.upcoming_branch_two_quarter[language || "en"] : ""
+            "about_page_upcoming_branch_two_quarter_en",
+            res?.about_us?.upcoming_branch_two_quarter ? res?.about_us?.upcoming_branch_two_quarter.en || "" : ""
           );
           setValue(
-            "about_page_upcoming_branch_two_features",
-            res?.about_us?.upcoming_branch_two_features ? res?.about_us?.upcoming_branch_two_features[language || "en"] : ""
+            "about_page_upcoming_branch_two_quarter_ar",
+            res?.about_us?.upcoming_branch_two_quarter ? res?.about_us?.upcoming_branch_two_quarter.ar || "" : ""
           );
           setValue(
-            "about_page_upcoming_branch_two_emoji",
-            res?.about_us?.upcoming_branch_two_emoji ? res?.about_us?.upcoming_branch_two_emoji[language || "en"] : ""
+            "about_page_upcoming_branch_two_features_en",
+            res?.about_us?.upcoming_branch_two_features ? res?.about_us?.upcoming_branch_two_features.en || "" : ""
           );
+          setValue(
+            "about_page_upcoming_branch_two_features_ar",
+            res?.about_us?.upcoming_branch_two_features ? res?.about_us?.upcoming_branch_two_features.ar || "" : ""
+          );
+          setValue(
+            "about_page_upcoming_branch_two_emoji_en",
+            res?.about_us?.upcoming_branch_two_emoji ? res?.about_us?.upcoming_branch_two_emoji.en || "" : ""
+          );
+          setValue(
+            "about_page_upcoming_branch_two_emoji_ar",
+            res?.about_us?.upcoming_branch_two_emoji ? res?.about_us?.upcoming_branch_two_emoji.ar || "" : ""
+          );
+
           setValue(
             "about_page_trusted_badge_one_pill",
             res?.about_us?.trusted_badge_one_pill ? res?.about_us?.trusted_badge_one_pill[language || "en"] : ""
