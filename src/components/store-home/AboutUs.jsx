@@ -98,7 +98,10 @@ const AboutUs = ({
               <Button
                 type="button"
                 className="h-10 px-6 "
-                onClick={handleSubmit(onSubmit)}
+                onClick={() => {
+                  console.log("🔘 Button clicked! Testing form submission...");
+                  handleSubmit(onSubmit)();
+                }}
               >
                 {isSave ? t("SaveBtn") : t("UpdateBtn")}
               </Button>
