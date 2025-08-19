@@ -248,11 +248,15 @@ const useStoreHomeSubmit = () => {
   };
 
   const onSubmit = async (data) => {
+    console.log("🚀 === ONSUBMIT FUNCTION CALLED ===");
+    console.log("🔍 Full form data:", data);
+    
     if (handleDisableForDemo()) {
+      console.log("❌ Demo mode disabled, exiting");
       return; // Exit the function if the feature is disabled
     }
     
-    console.log("🔍 Form data received:", {
+    console.log("🔍 Team members data received:", {
       founder_two_name_en: data.about_page_founder_two_name_en,
       founder_two_name_ar: data.about_page_founder_two_name_ar,
       founder_two_position_en: data.about_page_founder_two_position_en,
@@ -1994,6 +1998,8 @@ const useStoreHomeSubmit = () => {
         founder_six_name: storeCustomizationSettingData.setting.about_us.founder_six_name,
         founder_six_position: storeCustomizationSettingData.setting.about_us.founder_six_position,
       });
+      
+      console.log("🔍 Complete about_us data structure:", JSON.stringify(storeCustomizationSettingData.setting.about_us, null, 2));
       if (!isSave) {
         console.log("🔄 Calling updateStoreCustomizationSetting...");
         const res = await SettingServices.updateStoreCustomizationSetting(
