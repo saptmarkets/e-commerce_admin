@@ -1423,58 +1423,71 @@ const useStoreHomeSubmit = () => {
             left_col_img: contactMidLeftColImage,
             title: handleRemoveEmptyKey({
               ...resData?.contact_us?.title,
-              [language]: data.contact_page_title || "",
+              en: data.contact_page_title || "",
+              ar: data.contact_page_title_ar || "",
             }),
 
             email_box_title: handleRemoveEmptyKey({
               ...resData?.contact_us?.email_box_title,
-              [language]: data.contact_page_email_box_title || "",
+              en: data.contact_page_email_box_title || "",
+              ar: data.contact_page_email_box_title_ar || "",
             }),
             email_box_email: handleRemoveEmptyKey({
               ...resData?.contact_us?.email_box_email,
-              [language]: data.contact_page_email_box_email || "",
+              en: data.contact_page_email_box_email || "",
+              ar: data.contact_page_email_box_email_ar || "",
             }),
             email_box_text: handleRemoveEmptyKey({
               ...resData?.contact_us?.email_box_text,
-              [language]: data.contact_page_email_box_text || "",
+              en: data.contact_page_email_box_text || "",
+              ar: data.contact_page_email_box_text_ar || "",
             }),
 
             call_box_title: handleRemoveEmptyKey({
               ...resData?.contact_us?.call_box_title,
-              [language]: data.contact_page_callUs_box_title || "",
+              en: data.contact_page_callUs_box_title || "",
+              ar: data.contact_page_callUs_box_title_ar || "",
             }),
             call_box_phone: handleRemoveEmptyKey({
               ...resData?.contact_us?.call_box_phone,
-              [language]: data.contact_page_callUs_box_phone || "",
+              en: data.contact_page_callUs_box_phone || "",
+              ar: data.contact_page_callUs_box_phone_ar || "",
             }),
             call_box_text: handleRemoveEmptyKey({
               ...resData?.contact_us?.call_box_text,
-              [language]: data.contact_page_callUs_box_text || "",
+              en: data.contact_page_callUs_box_text || "",
+              ar: data.contact_page_callUs_box_text_ar || "",
             }),
 
             address_box_title: handleRemoveEmptyKey({
               ...resData?.contact_us?.address_box_title,
-              [language]: data.contact_page_address_box_title || "",
+              en: data.contact_page_address_box_title || "",
+              ar: data.contact_page_address_box_title_ar || "",
             }),
             address_box_address_one: handleRemoveEmptyKey({
               ...resData?.contact_us?.address_box_address_one,
-              [language]: data.contact_page_address_box_address_one || "",
+              en: data.contact_page_address_box_address_one || "",
+              ar: data.contact_page_address_box_address_one_ar || "",
             }),
             address_box_address_two: handleRemoveEmptyKey({
               ...resData?.contact_us?.address_box_address_two,
-              [language]: data.contact_page_address_box_address_two || "",
+              en: data.contact_page_address_box_address_two || "",
+              ar: data.contact_page_address_box_address_two_ar || "",
             }),
             address_box_address_three: handleRemoveEmptyKey({
               ...resData?.contact_us?.address_box_address_three,
-              [language]: data.contact_page_address_box_address_three || "",
+              en: data.contact_page_address_box_address_three || "",
+              ar: data.contact_page_address_box_address_three_ar || "",
             }),
             form_title: handleRemoveEmptyKey({
               ...resData?.contact_us?.form_title,
-              [language]: data.contact_page_form_title || "",
+              en: data.contact_page_form_title || "",
+              ar: data.contact_page_form_title_ar || "",
             }),
             form_description: handleRemoveEmptyKey({
               ...resData?.contact_us?.form_description,
-              [language]: data.contact_page_form_description || "",
+              en: data.contact_page_form_description || "",
+              ar: data.contact_page_form_description_ar || "",
             }),
           },
           offers: {
@@ -3595,52 +3608,106 @@ const useStoreHomeSubmit = () => {
             res?.contact_us?.title[language || "en"]
           );
           setValue(
-            "email_box_title",
+            "contact_page_email_box_title",
             res?.contact_us?.email_box_title[language || "en"]
           );
           setValue(
-            "email_box_email",
+            "contact_page_email_box_email",
             res?.contact_us?.email_box_email[language || "en"]
           );
           setValue(
-            "email_box_text",
+            "contact_page_email_box_text",
             res?.contact_us?.email_box_text[language || "en"]
           );
           setValue(
-            "callUs_box_title",
+            "contact_page_callUs_box_title",
             res?.contact_us?.call_box_title[language || "en"]
           );
           setValue(
-            "callUs_box_phone",
+            "contact_page_callUs_box_phone",
             res?.contact_us?.call_box_phone[language || "en"]
           );
           setValue(
-            "callUs_box_text",
+            "contact_page_callUs_box_text",
             res?.contact_us?.call_box_text[language || "en"]
           );
           setValue(
-            "address_box_title",
+            "contact_page_address_box_title",
             res?.contact_us?.address_box_title[language || "en"]
           );
           setValue(
-            "address_box_address_one",
+            "contact_page_address_box_address_one",
             res?.contact_us?.address_box_address_one[language || "en"]
           );
           setValue(
-            "address_box_address_two",
+            "contact_page_address_box_address_two",
             res?.contact_us?.address_box_address_two[language || "en"]
           );
           setValue(
-            "address_box_address_three",
+            "contact_page_address_box_address_three",
             res?.contact_us?.address_box_address_three[language || "en"]
           );
           setValue(
-            "contact_form_title",
+            "contact_page_form_title",
             res?.contact_us?.form_title[language || "en"]
           );
           setValue(
-            "contact_form_description",
+            "contact_page_form_description",
             res?.contact_us?.form_description[language || "en"]
+          );
+
+          // Set Arabic values for contact us fields
+          setValue(
+            "contact_page_title_ar",
+            res?.contact_us?.title?.ar || ""
+          );
+          setValue(
+            "contact_page_email_box_title_ar",
+            res?.contact_us?.email_box_title?.ar || ""
+          );
+          setValue(
+            "contact_page_email_box_email_ar",
+            res?.contact_us?.email_box_email?.ar || ""
+          );
+          setValue(
+            "contact_page_email_box_text_ar",
+            res?.contact_us?.email_box_text?.ar || ""
+          );
+          setValue(
+            "contact_page_callUs_box_title_ar",
+            res?.contact_us?.call_box_title?.ar || ""
+          );
+          setValue(
+            "contact_page_callUs_box_phone_ar",
+            res?.contact_us?.call_box_phone?.ar || ""
+          );
+          setValue(
+            "contact_page_callUs_box_text_ar",
+            res?.contact_us?.call_box_text?.ar || ""
+          );
+          setValue(
+            "contact_page_address_box_title_ar",
+            res?.contact_us?.address_box_title?.ar || ""
+          );
+          setValue(
+            "contact_page_address_box_address_one_ar",
+            res?.contact_us?.address_box_address_one?.ar || ""
+          );
+          setValue(
+            "contact_page_address_box_address_two_ar",
+            res?.contact_us?.address_box_address_two?.ar || ""
+          );
+          setValue(
+            "contact_page_address_box_address_three_ar",
+            res?.contact_us?.address_box_address_three?.ar || ""
+          );
+          setValue(
+            "contact_page_form_title_ar",
+            res?.contact_us?.form_title?.ar || ""
+          );
+          setValue(
+            "contact_page_form_description_ar",
+            res?.contact_us?.form_description?.ar || ""
           );
 
           //privacy policy

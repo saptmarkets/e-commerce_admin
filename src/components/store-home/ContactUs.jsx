@@ -111,7 +111,7 @@ const ContactUs = ({
 
             <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
               <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                {t("PageTitle")}
+                {t("PageTitle")} (English)
               </label>
               <div className="sm:col-span-4">
                 <InputAreaTwo
@@ -122,6 +122,22 @@ const ContactUs = ({
                   placeholder={t("PageTitle")}
                 />
                 <Error errorName={errors.contact_page_title} />
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+              <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                {t("PageTitle")} (Arabic)
+              </label>
+              <div className="sm:col-span-4">
+                <InputAreaTwo
+                  register={register}
+                  label="Page Title"
+                  name="contact_page_title_ar"
+                  type="text"
+                  placeholder={t("PageTitle")}
+                />
+                <Error errorName={errors.contact_page_title_ar} />
               </div>
             </div>
           </div>
@@ -155,7 +171,7 @@ const ContactUs = ({
           >
             <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
               <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                {t("EboxTitle")}
+                {t("EboxTitle")} (English)
               </label>
               <div className="sm:col-span-4">
                 <InputAreaTwo
@@ -171,7 +187,23 @@ const ContactUs = ({
 
             <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
               <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                {t("EboxEmail")}
+                {t("EboxTitle")} (Arabic)
+              </label>
+              <div className="sm:col-span-4">
+                <InputAreaTwo
+                  register={register}
+                  label="Title"
+                  name="contact_page_email_box_title_ar"
+                  type="text"
+                  placeholder={t("EboxTitle")}
+                />
+                <Error errorName={errors.contact_page_email_box_title_ar} />
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+              <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                {t("EboxEmail")} (English)
               </label>
               <div className="sm:col-span-4">
                 <InputAreaTwo
@@ -184,9 +216,26 @@ const ContactUs = ({
                 <Error errorName={errors.contact_page_email_box_email} />
               </div>
             </div>
+
             <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
               <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                {t("Eboxtext")}
+                {t("EboxEmail")} (Arabic)
+              </label>
+              <div className="sm:col-span-4">
+                <InputAreaTwo
+                  register={register}
+                  label="Title"
+                  name="contact_page_email_box_email_ar"
+                  type="text"
+                  placeholder={t("EboxEmail")}
+                />
+                <Error errorName={errors.contact_page_email_box_email_ar} />
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+              <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                {t("Eboxtext")} (English)
               </label>
               <div className="sm:col-span-4">
                 <InputAreaTwo
@@ -197,6 +246,22 @@ const ContactUs = ({
                   placeholder={t("Eboxtext")}
                 />
                 <Error errorName={errors.contact_page_email_box_text} />
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+              <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                {t("Eboxtext")} (Arabic)
+              </label>
+              <div className="sm:col-span-4">
+                <InputAreaTwo
+                  register={register}
+                  label="Title"
+                  name="contact_page_email_box_text_ar"
+                  type="text"
+                  placeholder={t("Eboxtext")}
+                />
+                <Error errorName={errors.contact_page_email_box_text_ar} />
               </div>
             </div>
           </div>
@@ -231,7 +296,7 @@ const ContactUs = ({
           >
             <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
               <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                {t("CallusboxTitle")}
+                {t("CallusboxTitle")} (English)
               </label>
               <div className="sm:col-span-4">
                 <InputAreaTwo
@@ -247,7 +312,23 @@ const ContactUs = ({
 
             <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
               <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                {t("CallUsboxPhone")}
+                {t("CallusboxTitle")} (Arabic)
+              </label>
+              <div className="sm:col-span-4">
+                <InputAreaTwo
+                  register={register}
+                  label="Title"
+                  name="contact_page_callUs_box_title_ar"
+                  type="text"
+                  placeholder={t("CallusboxTitle")}
+                />
+                <Error errorName={errors.contact_page_callUs_box_title_ar} />
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+              <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                {t("CallUsboxPhone")} (English)
               </label>
               <div className="sm:col-span-4">
                 <InputAreaTwo
@@ -260,9 +341,26 @@ const ContactUs = ({
                 <Error errorName={errors.contact_page_callUs_box_phone} />
               </div>
             </div>
+
             <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
               <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                {t("CallUsboxText")}
+                {t("CallUsboxPhone")} (Arabic)
+              </label>
+              <div className="sm:col-span-4">
+                <InputAreaTwo
+                  register={register}
+                  label="Phone"
+                  name="contact_page_callUs_box_phone_ar"
+                  type="text"
+                  placeholder={t("CallUsboxPhone")}
+                />
+                <Error errorName={errors.contact_page_callUs_box_phone_ar} />
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+              <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                {t("CallUsboxText")} (English)
               </label>
               <div className="sm:col-span-4">
                 <InputAreaTwo
@@ -272,7 +370,23 @@ const ContactUs = ({
                   type="text"
                   placeholder={t("CallUsboxText")}
                 />
-                <Error errorName={errors.contact_page_callUs_box_title} />
+                <Error errorName={errors.contact_page_callUs_box_text} />
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+              <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                {t("CallUsboxText")} (Arabic)
+              </label>
+              <div className="sm:col-span-4">
+                <InputAreaTwo
+                  register={register}
+                  label="Title"
+                  name="contact_page_callUs_box_text_ar"
+                  type="text"
+                  placeholder={t("CallUsboxText")}
+                />
+                <Error errorName={errors.contact_page_callUs_box_text_ar} />
               </div>
             </div>
           </div>
@@ -307,7 +421,7 @@ const ContactUs = ({
           >
             <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
               <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                {t("AddressboxTitle")}
+                {t("AddressboxTitle")} (English)
               </label>
               <div className="sm:col-span-4">
                 <InputAreaTwo
@@ -323,7 +437,23 @@ const ContactUs = ({
 
             <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
               <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                {t("AddressboxAddressOne")}
+                {t("AddressboxTitle")} (Arabic)
+              </label>
+              <div className="sm:col-span-4">
+                <InputAreaTwo
+                  register={register}
+                  label="Title"
+                  name="contact_page_address_box_title_ar"
+                  type="text"
+                  placeholder={t("AddressboxTitle")}
+                />
+                <Error errorName={errors.contact_page_address_box_title_ar} />
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+              <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                {t("AddressboxAddressOne")} (English)
               </label>
               <div className="sm:col-span-4">
                 <InputAreaTwo
@@ -339,7 +469,23 @@ const ContactUs = ({
 
             <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
               <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                {t("AddressboxAddressTwo")}
+                {t("AddressboxAddressOne")} (Arabic)
+              </label>
+              <div className="sm:col-span-4">
+                <InputAreaTwo
+                  register={register}
+                  label="Title"
+                  name="contact_page_address_box_address_one_ar"
+                  type="text"
+                  placeholder={t("AddressboxAddressOne")}
+                />
+                <Error errorName={errors.contact_page_address_box_address_one_ar} />
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+              <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                {t("AddressboxAddressTwo")} (English)
               </label>
               <div className="sm:col-span-4">
                 <InputAreaTwo
@@ -355,7 +501,23 @@ const ContactUs = ({
 
             <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
               <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                {t("AddressboxAddressThree")}
+                {t("AddressboxAddressTwo")} (Arabic)
+              </label>
+              <div className="sm:col-span-4">
+                <InputAreaTwo
+                  register={register}
+                  label="Title"
+                  name="contact_page_address_box_address_two_ar"
+                  type="text"
+                  placeholder={t("AddressboxAddressTwo")}
+                />
+                <Error errorName={errors.contact_page_address_box_address_two_ar} />
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+              <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                {t("AddressboxAddressThree")} (English)
               </label>
               <div className="sm:col-span-4">
                 <InputAreaTwo
@@ -366,6 +528,22 @@ const ContactUs = ({
                   placeholder={t("AddressboxAddressThree")}
                 />
                 <Error errorName={errors.contact_page_address_box_address_three} />
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+              <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                {t("AddressboxAddressThree")} (Arabic)
+              </label>
+              <div className="sm:col-span-4">
+                <InputAreaTwo
+                  register={register}
+                  label="Title"
+                  name="contact_page_address_box_address_three_ar"
+                  type="text"
+                  placeholder={t("AddressboxAddressThree")}
+                />
+                <Error errorName={errors.contact_page_address_box_address_three_ar} />
               </div>
             </div>
           </div>
@@ -443,7 +621,7 @@ const ContactUs = ({
           >
             <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
               <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                {t("ContactFormTitle")}
+                {t("ContactFormTitle")} (English)
               </label>
               <div className="sm:col-span-4">
                 <InputAreaTwo
@@ -458,8 +636,24 @@ const ContactUs = ({
             </div>
 
             <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-              <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-400 md:mb-1">
-                {t("ContactFormDescription")}
+              <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                {t("ContactFormTitle")} (Arabic)
+              </label>
+              <div className="sm:col-span-4">
+                <InputAreaTwo
+                  register={register}
+                  label="Title"
+                  name="contact_page_form_title_ar"
+                  type="text"
+                  placeholder={t("ContactFormTitle")}
+                />
+                <Error errorName={errors.contact_page_form_title_ar} />
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+              <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                {t("ContactFormDescription")} (English)
               </label>
               <div className="sm:col-span-4">
                 <TextAreaCom
@@ -470,6 +664,22 @@ const ContactUs = ({
                   placeholder={t("ContactFormDescription")}
                 />
                 <Error errorName={errors.contact_page_form_description} />
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+              <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                {t("ContactFormDescription")} (Arabic)
+              </label>
+              <div className="sm:col-span-4">
+                <TextAreaCom
+                  register={register}
+                  label="Description"
+                  name="contact_page_form_description_ar"
+                  type="text"
+                  placeholder={t("ContactFormDescription")}
+                />
+                <Error errorName={errors.contact_page_form_description_ar} />
               </div>
             </div>
           </div>
