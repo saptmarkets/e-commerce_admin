@@ -238,12 +238,13 @@ const useStoreHomeSubmit = () => {
   });
 
   const handleRemoveEmptyKey = (obj) => {
+    // For bilingual fields, we want to keep empty strings to maintain structure
+    // Only delete completely undefined or null values
     for (const key in obj) {
-      if (obj[key] && typeof obj[key] === 'string' && obj[key].trim() === "") {
+      if (obj[key] === undefined || obj[key] === null) {
         delete obj[key];
       }
     }
-    // console.log("obj", obj);
     return obj;
   };
 
