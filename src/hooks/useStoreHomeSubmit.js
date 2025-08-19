@@ -234,6 +234,165 @@ const useStoreHomeSubmit = () => {
       about_page_founder_twelve_name_ar: "",
       about_page_founder_twelve_position_en: "",
       about_page_founder_twelve_position_ar: "",
+      
+      // Branches Section - Bilingual
+      about_page_branches_title_en: "",
+      about_page_branches_title_ar: "",
+      about_page_branches_description_en: "",
+      about_page_branches_description_ar: "",
+      about_page_branches_cta_title_en: "",
+      about_page_branches_cta_title_ar: "",
+      about_page_branches_cta_description_en: "",
+      about_page_branches_cta_description_ar: "",
+      
+      // Upcoming Branches Section - Bilingual
+      about_page_upcoming_branches_title_en: "",
+      about_page_upcoming_branches_title_ar: "",
+      
+      // Upcoming Branch One - Bilingual
+      about_page_upcoming_branch_one_name_en: "",
+      about_page_upcoming_branch_one_name_ar: "",
+      about_page_upcoming_branch_one_address_en: "",
+      about_page_upcoming_branch_one_address_ar: "",
+      about_page_upcoming_branch_one_quarter_en: "",
+      about_page_upcoming_branch_one_quarter_ar: "",
+      about_page_upcoming_branch_one_features_en: "",
+      about_page_upcoming_branch_one_features_ar: "",
+      about_page_upcoming_branch_one_emoji_en: "",
+      about_page_upcoming_branch_one_emoji_ar: "",
+      
+      // Upcoming Branch Two - Bilingual
+      about_page_upcoming_branch_two_name_en: "",
+      about_page_upcoming_branch_two_name_ar: "",
+      about_page_upcoming_branch_two_address_en: "",
+      about_page_upcoming_branch_two_address_ar: "",
+      about_page_upcoming_branch_two_quarter_en: "",
+      about_page_upcoming_branch_two_quarter_ar: "",
+      about_page_upcoming_branch_two_features_en: "",
+      about_page_upcoming_branch_two_features_ar: "",
+      about_page_upcoming_branch_two_emoji_en: "",
+      about_page_upcoming_branch_two_emoji_ar: "",
+      
+      // Current Branches 1-8 - Bilingual
+      about_page_branch_one_name_en: "",
+      about_page_branch_one_name_ar: "",
+      about_page_branch_one_address_en: "",
+      about_page_branch_one_address_ar: "",
+      about_page_branch_one_phone_en: "",
+      about_page_branch_one_phone_ar: "",
+      about_page_branch_one_hours_en: "",
+      about_page_branch_one_hours_ar: "",
+      about_page_branch_one_subtitle_en: "",
+      about_page_branch_one_subtitle_ar: "",
+      about_page_branch_one_services_en: "",
+      about_page_branch_one_services_ar: "",
+      about_page_branch_one_directions_en: "",
+      about_page_branch_one_directions_ar: "",
+      
+      about_page_branch_two_name_en: "",
+      about_page_branch_two_name_ar: "",
+      about_page_branch_two_address_en: "",
+      about_page_branch_two_address_ar: "",
+      about_page_branch_two_phone_en: "",
+      about_page_branch_two_phone_ar: "",
+      about_page_branch_two_hours_en: "",
+      about_page_branch_two_hours_ar: "",
+      about_page_branch_two_subtitle_en: "",
+      about_page_branch_two_subtitle_ar: "",
+      about_page_branch_two_services_en: "",
+      about_page_branch_two_services_ar: "",
+      about_page_branch_two_directions_en: "",
+      about_page_branch_two_directions_ar: "",
+      
+      about_page_branch_three_name_en: "",
+      about_page_branch_three_name_ar: "",
+      about_page_branch_three_address_en: "",
+      about_page_branch_three_address_ar: "",
+      about_page_branch_three_phone_en: "",
+      about_page_branch_three_phone_ar: "",
+      about_page_branch_three_hours_en: "",
+      about_page_branch_three_hours_ar: "",
+      about_page_branch_three_subtitle_en: "",
+      about_page_branch_three_subtitle_ar: "",
+      about_page_branch_three_services_en: "",
+      about_page_branch_three_services_ar: "",
+      about_page_branch_three_directions_en: "",
+      about_page_branch_three_directions_ar: "",
+      
+      about_page_branch_four_name_en: "",
+      about_page_branch_four_name_ar: "",
+      about_page_branch_four_address_en: "",
+      about_page_branch_four_address_ar: "",
+      about_page_branch_four_phone_en: "",
+      about_page_branch_four_phone_ar: "",
+      about_page_branch_four_hours_en: "",
+      about_page_branch_four_hours_ar: "",
+      about_page_branch_four_subtitle_en: "",
+      about_page_branch_four_subtitle_ar: "",
+      about_page_branch_four_services_en: "",
+      about_page_branch_four_services_ar: "",
+      about_page_branch_four_directions_en: "",
+      about_page_branch_four_directions_ar: "",
+      
+      about_page_branch_five_name_en: "",
+      about_page_branch_five_name_ar: "",
+      about_page_branch_five_address_en: "",
+      about_page_branch_five_address_ar: "",
+      about_page_branch_five_phone_en: "",
+      about_page_branch_five_phone_ar: "",
+      about_page_branch_five_hours_en: "",
+      about_page_branch_five_hours_ar: "",
+      about_page_branch_five_subtitle_en: "",
+      about_page_branch_five_subtitle_ar: "",
+      about_page_branch_five_services_en: "",
+      about_page_branch_five_services_ar: "",
+      about_page_branch_five_directions_en: "",
+      about_page_branch_five_directions_ar: "",
+      
+      about_page_branch_six_name_en: "",
+      about_page_branch_six_name_ar: "",
+      about_page_branch_six_address_en: "",
+      about_page_branch_six_address_ar: "",
+      about_page_branch_six_phone_en: "",
+      about_page_branch_six_phone_ar: "",
+      about_page_branch_six_hours_en: "",
+      about_page_branch_six_hours_ar: "",
+      about_page_branch_six_subtitle_en: "",
+      about_page_branch_six_subtitle_ar: "",
+      about_page_branch_six_services_en: "",
+      about_page_branch_six_services_ar: "",
+      about_page_branch_six_directions_en: "",
+      about_page_branch_six_directions_ar: "",
+      
+      about_page_branch_seven_name_en: "",
+      about_page_branch_seven_name_ar: "",
+      about_page_branch_seven_address_en: "",
+      about_page_branch_seven_address_ar: "",
+      about_page_branch_seven_phone_en: "",
+      about_page_branch_seven_phone_ar: "",
+      about_page_branch_seven_hours_en: "",
+      about_page_branch_seven_hours_ar: "",
+      about_page_branch_seven_subtitle_en: "",
+      about_page_branch_seven_subtitle_ar: "",
+      about_page_branch_seven_services_en: "",
+      about_page_branch_seven_services_ar: "",
+      about_page_branch_seven_directions_en: "",
+      about_page_branch_seven_directions_ar: "",
+      
+      about_page_branch_eight_name_en: "",
+      about_page_branch_eight_name_ar: "",
+      about_page_branch_eight_address_en: "",
+      about_page_branch_eight_address_ar: "",
+      about_page_branch_eight_phone_en: "",
+      about_page_branch_eight_phone_ar: "",
+      about_page_branch_eight_hours_en: "",
+      about_page_branch_eight_hours_ar: "",
+      about_page_branch_eight_subtitle_en: "",
+      about_page_branch_eight_subtitle_ar: "",
+      about_page_branch_eight_services_en: "",
+      about_page_branch_eight_services_ar: "",
+      about_page_branch_eight_directions_en: "",
+      about_page_branch_eight_directions_ar: "",
     },
   });
 
@@ -887,305 +1046,377 @@ const useStoreHomeSubmit = () => {
               ar: data.about_page_founder_twelve_position_ar || "",
             }),
 
-            // Branches
+            // Branches - Bilingual
             branches_title: handleRemoveEmptyKey({
               ...resData?.about_us?.branches_title,
-              [language]: data.about_page_branches_title || "",
+              en: data.about_page_branches_title_en || "",
+              ar: data.about_page_branches_title_ar || "",
             }),
 
             branches_description: handleRemoveEmptyKey({
               ...resData?.about_us?.branches_description,
-              [language]: data.about_page_branches_description || "",
+              en: data.about_page_branches_description_en || "",
+              ar: data.about_page_branches_description_ar || "",
             }),
             branches_cta_title: handleRemoveEmptyKey({
               ...resData?.about_us?.branches_cta_title,
-              [language]: data.about_page_branches_cta_title || "",
+              en: data.about_page_branches_cta_title_en || "",
+              ar: data.about_page_branches_cta_title_ar || "",
             }),
             branches_cta_description: handleRemoveEmptyKey({
               ...resData?.about_us?.branches_cta_description,
-              [language]: data.about_page_branches_cta_description || "",
+              en: data.about_page_branches_cta_description_en || "",
+              ar: data.about_page_branches_cta_description_ar || "",
             }),
 
-            // Individual Branch Data
+            // Individual Branch Data - Bilingual
             branch_one_name: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_one_name,
-              [language]: data.about_page_branch_one_name || "",
+              en: data.about_page_branch_one_name_en || "",
+              ar: data.about_page_branch_one_name_ar || "",
             }),
             branch_one_address: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_one_address,
-              [language]: data.about_page_branch_one_address || "",
+              en: data.about_page_branch_one_address_en || "",
+              ar: data.about_page_branch_one_address_ar || "",
             }),
             branch_one_phone: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_one_phone,
-              [language]: data.about_page_branch_one_phone || "",
+              en: data.about_page_branch_one_phone_en || "",
+              ar: data.about_page_branch_one_phone_ar || "",
             }),
             branch_one_hours: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_one_hours,
-              [language]: data.about_page_branch_one_hours || "",
+              en: data.about_page_branch_one_hours_en || "",
+              ar: data.about_page_branch_one_hours_ar || "",
             }),
             branch_one_subtitle: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_one_subtitle,
-              [language]: data.about_page_branch_one_subtitle || "",
+              en: data.about_page_branch_one_subtitle_en || "",
+              ar: data.about_page_branch_one_subtitle_ar || "",
             }),
             branch_one_services: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_one_services,
-              [language]: data.about_page_branch_one_services || "",
+              en: data.about_page_branch_one_services_en || "",
+              ar: data.about_page_branch_one_services_ar || "",
             }),
             branch_one_directions: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_one_directions,
-              [language]: data.about_page_branch_one_directions || "",
+              en: data.about_page_branch_one_directions_en || "",
+              ar: data.about_page_branch_one_directions_ar || "",
             }),
 
             branch_two_name: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_two_name,
-              [language]: data.about_page_branch_two_name || "",
+              en: data.about_page_branch_two_name_en || "",
+              ar: data.about_page_branch_two_name_ar || "",
             }),
             branch_two_address: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_two_address,
-              [language]: data.about_page_branch_two_address || "",
+              en: data.about_page_branch_two_address_en || "",
+              ar: data.about_page_branch_two_address_ar || "",
             }),
             branch_two_phone: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_two_phone,
-              [language]: data.about_page_branch_two_phone || "",
+              en: data.about_page_branch_two_phone_en || "",
+              ar: data.about_page_branch_two_phone_ar || "",
             }),
             branch_two_hours: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_two_hours,
-              [language]: data.about_page_branch_two_hours || "",
+              en: data.about_page_branch_two_hours_en || "",
+              ar: data.about_page_branch_two_hours_ar || "",
             }),
             branch_two_subtitle: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_two_subtitle,
-              [language]: data.about_page_branch_two_subtitle || "",
+              en: data.about_page_branch_two_subtitle_en || "",
+              ar: data.about_page_branch_two_subtitle_ar || "",
             }),
             branch_two_services: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_two_services,
-              [language]: data.about_page_branch_two_services || "",
+              en: data.about_page_branch_two_services_en || "",
+              ar: data.about_page_branch_two_services_ar || "",
             }),
             branch_two_directions: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_two_directions,
-              [language]: data.about_page_branch_two_directions || "",
+              en: data.about_page_branch_two_directions_en || "",
+              ar: data.about_page_branch_two_directions_ar || "",
             }),
 
             branch_three_name: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_three_name,
-              [language]: data.about_page_branch_three_name || "",
+              en: data.about_page_branch_three_name_en || "",
+              ar: data.about_page_branch_three_name_ar || "",
             }),
             branch_three_address: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_three_address,
-              [language]: data.about_page_branch_three_address || "",
+              en: data.about_page_branch_three_address_en || "",
+              ar: data.about_page_branch_three_address_ar || "",
             }),
             branch_three_phone: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_three_phone,
-              [language]: data.about_page_branch_three_phone || "",
+              en: data.about_page_branch_three_phone_en || "",
+              ar: data.about_page_branch_three_phone_ar || "",
             }),
             branch_three_hours: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_three_hours,
-              [language]: data.about_page_branch_three_hours || "",
+              en: data.about_page_branch_three_hours_en || "",
+              ar: data.about_page_branch_three_hours_ar || "",
             }),
             branch_three_subtitle: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_three_subtitle,
-              [language]: data.about_page_branch_three_subtitle || "",
+              en: data.about_page_branch_three_subtitle_en || "",
+              ar: data.about_page_branch_three_subtitle_ar || "",
             }),
             branch_three_services: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_three_services,
-              [language]: data.about_page_branch_three_services || "",
+              en: data.about_page_branch_three_services_en || "",
+              ar: data.about_page_branch_three_services_ar || "",
             }),
             branch_three_directions: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_three_directions,
-              [language]: data.about_page_branch_three_directions || "",
+              en: data.about_page_branch_three_directions_en || "",
+              ar: data.about_page_branch_three_directions_ar || "",
             }),
 
             branch_four_name: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_four_name,
-              [language]: data.about_page_branch_four_name || "",
+              en: data.about_page_branch_four_name_en || "",
+              ar: data.about_page_branch_four_name_ar || "",
             }),
             branch_four_address: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_four_address,
-              [language]: data.about_page_branch_four_address || "",
+              en: data.about_page_branch_four_address_en || "",
+              ar: data.about_page_branch_four_address_ar || "",
             }),
             branch_four_phone: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_four_phone,
-              [language]: data.about_page_branch_four_phone || "",
+              en: data.about_page_branch_four_phone_en || "",
+              ar: data.about_page_branch_four_phone_ar || "",
             }),
             branch_four_hours: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_four_hours,
-              [language]: data.about_page_branch_four_hours || "",
+              en: data.about_page_branch_four_hours_en || "",
+              ar: data.about_page_branch_four_hours_ar || "",
             }),
             branch_four_subtitle: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_four_subtitle,
-              [language]: data.about_page_branch_four_subtitle || "",
+              en: data.about_page_branch_four_subtitle_en || "",
+              ar: data.about_page_branch_four_subtitle_ar || "",
             }),
             branch_four_services: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_four_services,
-              [language]: data.about_page_branch_four_services || "",
+              en: data.about_page_branch_four_services_en || "",
+              ar: data.about_page_branch_four_services_ar || "",
             }),
             branch_four_directions: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_four_directions,
-              [language]: data.about_page_branch_four_directions || "",
+              en: data.about_page_branch_four_directions_en || "",
+              ar: data.about_page_branch_four_directions_ar || "",
             }),
 
             branch_five_name: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_five_name,
-              [language]: data.about_page_branch_five_name || "",
+              en: data.about_page_branch_five_name_en || "",
+              ar: data.about_page_branch_five_name_ar || "",
             }),
             branch_five_address: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_five_address,
-              [language]: data.about_page_branch_five_address || "",
+              en: data.about_page_branch_five_address_en || "",
+              ar: data.about_page_branch_five_address_ar || "",
             }),
             branch_five_phone: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_five_phone,
-              [language]: data.about_page_branch_five_phone || "",
+              en: data.about_page_branch_five_phone_en || "",
+              ar: data.about_page_branch_five_phone_ar || "",
             }),
             branch_five_hours: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_five_hours,
-              [language]: data.about_page_branch_five_hours || "",
+              en: data.about_page_branch_five_hours_en || "",
+              ar: data.about_page_branch_five_hours_ar || "",
             }),
             branch_five_subtitle: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_five_subtitle,
-              [language]: data.about_page_branch_five_subtitle || "",
+              en: data.about_page_branch_five_subtitle_en || "",
+              ar: data.about_page_branch_five_subtitle_ar || "",
             }),
             branch_five_services: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_five_services,
-              [language]: data.about_page_branch_five_services || "",
+              en: data.about_page_branch_five_services_en || "",
+              ar: data.about_page_branch_five_services_ar || "",
             }),
             branch_five_directions: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_five_directions,
-              [language]: data.about_page_branch_five_directions || "",
+              en: data.about_page_branch_five_directions_en || "",
+              ar: data.about_page_branch_five_directions_ar || "",
             }),
 
             branch_six_name: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_six_name,
-              [language]: data.about_page_branch_six_name || "",
+              en: data.about_page_branch_six_name_en || "",
+              ar: data.about_page_branch_six_name_ar || "",
             }),
             branch_six_address: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_six_address,
-              [language]: data.about_page_branch_six_address || "",
+              en: data.about_page_branch_six_address_en || "",
+              ar: data.about_page_branch_six_address_ar || "",
             }),
             branch_six_phone: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_six_phone,
-              [language]: data.about_page_branch_six_phone || "",
+              en: data.about_page_branch_six_phone_en || "",
+              ar: data.about_page_branch_six_phone_ar || "",
             }),
             branch_six_hours: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_six_hours,
-              [language]: data.about_page_branch_six_hours || "",
+              en: data.about_page_branch_six_hours_en || "",
+              ar: data.about_page_branch_six_hours_ar || "",
             }),
             branch_six_subtitle: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_six_subtitle,
-              [language]: data.about_page_branch_six_subtitle || "",
+              en: data.about_page_branch_six_subtitle_en || "",
+              ar: data.about_page_branch_six_subtitle_ar || "",
             }),
             branch_six_services: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_six_services,
-              [language]: data.about_page_branch_six_services || "",
+              en: data.about_page_branch_six_services_en || "",
+              ar: data.about_page_branch_six_services_ar || "",
             }),
             branch_six_directions: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_six_directions,
-              [language]: data.about_page_branch_six_directions || "",
+              en: data.about_page_branch_six_directions_en || "",
+              ar: data.about_page_branch_six_directions_ar || "",
             }),
 
             branch_seven_name: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_seven_name,
-              [language]: data.about_page_branch_seven_name || "",
+              en: data.about_page_branch_seven_name_en || "",
+              ar: data.about_page_branch_seven_name_ar || "",
             }),
             branch_seven_address: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_seven_address,
-              [language]: data.about_page_branch_seven_address || "",
+              en: data.about_page_branch_seven_address_en || "",
+              ar: data.about_page_branch_seven_address_ar || "",
             }),
             branch_seven_phone: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_seven_phone,
-              [language]: data.about_page_branch_seven_phone || "",
+              en: data.about_page_branch_seven_phone_en || "",
+              ar: data.about_page_branch_seven_phone_ar || "",
             }),
             branch_seven_hours: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_seven_hours,
-              [language]: data.about_page_branch_seven_hours || "",
+              en: data.about_page_branch_seven_hours_en || "",
+              ar: data.about_page_branch_seven_hours_ar || "",
             }),
             branch_seven_subtitle: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_seven_subtitle,
-              [language]: data.about_page_branch_seven_subtitle || "",
+              en: data.about_page_branch_seven_subtitle_en || "",
+              ar: data.about_page_branch_seven_subtitle_ar || "",
             }),
             branch_seven_services: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_seven_services,
-              [language]: data.about_page_branch_seven_services || "",
+              en: data.about_page_branch_seven_services_en || "",
+              ar: data.about_page_branch_seven_services_ar || "",
             }),
             branch_seven_directions: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_seven_directions,
-              [language]: data.about_page_branch_seven_directions || "",
+              en: data.about_page_branch_seven_directions_en || "",
+              ar: data.about_page_branch_seven_directions_ar || "",
             }),
 
             branch_eight_name: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_eight_name,
-              [language]: data.about_page_branch_eight_name || "",
+              en: data.about_page_branch_eight_name_en || "",
+              ar: data.about_page_branch_eight_name_ar || "",
             }),
             branch_eight_address: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_eight_address,
-              [language]: data.about_page_branch_eight_address || "",
+              en: data.about_page_branch_eight_address_en || "",
+              ar: data.about_page_branch_eight_address_ar || "",
             }),
             branch_eight_phone: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_eight_phone,
-              [language]: data.about_page_branch_eight_phone || "",
+              en: data.about_page_branch_eight_phone_en || "",
+              ar: data.about_page_branch_eight_phone_ar || "",
             }),
             branch_eight_hours: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_eight_hours,
-              [language]: data.about_page_branch_eight_hours || "",
+              en: data.about_page_branch_eight_hours_en || "",
+              ar: data.about_page_branch_eight_hours_ar || "",
             }),
             branch_eight_subtitle: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_eight_subtitle,
-              [language]: data.about_page_branch_eight_subtitle || "",
+              en: data.about_page_branch_eight_subtitle_en || "",
+              ar: data.about_page_branch_eight_subtitle_ar || "",
             }),
             branch_eight_services: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_eight_services,
-              [language]: data.about_page_branch_eight_services || "",
+              en: data.about_page_branch_eight_services_en || "",
+              ar: data.about_page_branch_eight_services_ar || "",
             }),
             branch_eight_directions: handleRemoveEmptyKey({
               ...resData?.about_us?.branch_eight_directions,
-              [language]: data.about_page_branch_eight_directions || "",
+              en: data.about_page_branch_eight_directions_en || "",
+              ar: data.about_page_branch_eight_directions_ar || "",
             }),
 
+            // Upcoming Branches - Bilingual
             upcoming_branches_title: handleRemoveEmptyKey({
               ...resData?.about_us?.upcoming_branches_title,
-              [language]: data.about_page_upcoming_branches_title || "",
+              en: data.about_page_upcoming_branches_title_en || "",
+              ar: data.about_page_upcoming_branches_title_ar || "",
             }),
 
             upcoming_branch_one_name: handleRemoveEmptyKey({
               ...resData?.about_us?.upcoming_branch_one_name,
-              [language]: data.about_page_upcoming_branch_one_name || "",
+              en: data.about_page_upcoming_branch_one_name_en || "",
+              ar: data.about_page_upcoming_branch_one_name_ar || "",
             }),
             upcoming_branch_one_address: handleRemoveEmptyKey({
               ...resData?.about_us?.upcoming_branch_one_address,
-              [language]: data.about_page_upcoming_branch_one_address || "",
+              en: data.about_page_upcoming_branch_one_address_en || "",
+              ar: data.about_page_upcoming_branch_one_address_ar || "",
             }),
 
             upcoming_branch_two_name: handleRemoveEmptyKey({
               ...resData?.about_us?.upcoming_branch_two_name,
-              [language]: data.about_page_upcoming_branch_two_name || "",
+              en: data.about_page_upcoming_branch_two_name_en || "",
+              ar: data.about_page_upcoming_branch_two_name_ar || "",
             }),
             upcoming_branch_two_address: handleRemoveEmptyKey({
               ...resData?.about_us?.upcoming_branch_two_address,
-              [language]: data.about_page_upcoming_branch_two_address || "",
+              en: data.about_page_upcoming_branch_two_address_en || "",
+              ar: data.about_page_upcoming_branch_two_address_ar || "",
             }),
 
             upcoming_branch_one_quarter: handleRemoveEmptyKey({
               ...resData?.about_us?.upcoming_branch_one_quarter,
-              [language]: data.about_page_upcoming_branch_one_quarter || "",
+              en: data.about_page_upcoming_branch_one_quarter_en || "",
+              ar: data.about_page_upcoming_branch_one_quarter_ar || "",
             }),
             upcoming_branch_one_features: handleRemoveEmptyKey({
               ...resData?.about_us?.upcoming_branch_one_features,
-              [language]: data.about_page_upcoming_branch_one_features || "",
+              en: data.about_page_upcoming_branch_one_features_en || "",
+              ar: data.about_page_upcoming_branch_one_features_ar || "",
             }),
             upcoming_branch_one_emoji: handleRemoveEmptyKey({
               ...resData?.about_us?.upcoming_branch_one_emoji,
-              [language]: data.about_page_upcoming_branch_one_emoji || "",
+              en: data.about_page_upcoming_branch_one_emoji_en || "",
+              ar: data.about_page_upcoming_branch_one_emoji_ar || "",
             }),
 
             upcoming_branch_two_quarter: handleRemoveEmptyKey({
               ...resData?.about_us?.upcoming_branch_two_quarter,
-              [language]: data.about_page_upcoming_branch_two_quarter || "",
+              en: data.about_page_upcoming_branch_two_quarter_en || "",
+              ar: data.about_page_upcoming_branch_two_quarter_ar || "",
             }),
             upcoming_branch_two_features: handleRemoveEmptyKey({
               ...resData?.about_us?.upcoming_branch_two_features,
-              [language]: data.about_page_upcoming_branch_two_features || "",
+              en: data.about_page_upcoming_branch_two_features_en || "",
+              ar: data.about_page_upcoming_branch_two_features_ar || "",
             }),
             upcoming_branch_two_emoji: handleRemoveEmptyKey({
               ...resData?.about_us?.upcoming_branch_two_emoji,
-              [language]: data.about_page_upcoming_branch_two_emoji || "",
+              en: data.about_page_upcoming_branch_two_emoji_en || "",
+              ar: data.about_page_upcoming_branch_two_emoji_ar || "",
             }),
             trusted_badge_one_pill: handleRemoveEmptyKey({
               ...resData?.about_us?.trusted_badge_one_pill,
@@ -3070,29 +3301,312 @@ const useStoreHomeSubmit = () => {
             res?.about_us?.value_four_description?.ar || ""
           );
 
-          // Add branches section
+          // Add branches section - Bilingual
           setValue(
-            "about_page_branches_title",
-            res?.about_us?.branches_title[language || "en"]
+            "about_page_branches_title_en",
+            res?.about_us?.branches_title?.en || ""
           );
           setValue(
-            "about_page_branches_description",
-            res?.about_us?.branches_description[language || "en"]
+            "about_page_branches_title_ar",
+            res?.about_us?.branches_title?.ar || ""
           );
           setValue(
-            "about_page_branches_cta_title",
-            res?.about_us?.branches_cta_title[language || "en"]
+            "about_page_branches_description_en",
+            res?.about_us?.branches_description?.en || ""
           );
           setValue(
-            "about_page_branches_cta_description",
-            res?.about_us?.branches_cta_description[language || "en"]
+            "about_page_branches_description_ar",
+            res?.about_us?.branches_description?.ar || ""
+          );
+          setValue(
+            "about_page_branches_cta_title_en",
+            res?.about_us?.branches_cta_title?.en || ""
+          );
+          setValue(
+            "about_page_branches_cta_title_ar",
+            res?.about_us?.branches_cta_title?.ar || ""
+          );
+          setValue(
+            "about_page_branches_cta_description_en",
+            res?.about_us?.branches_cta_description?.en || ""
+          );
+          setValue(
+            "about_page_branches_cta_description_ar",
+            res?.about_us?.branches_cta_description?.ar || ""
           );
 
-          // Add upcoming branches
+          // Add upcoming branches - Bilingual
           setValue(
-            "about_page_upcoming_branches_title",
-            res?.about_us?.upcoming_branches_title[language || "en"]
+            "about_page_upcoming_branches_title_en",
+            res?.about_us?.upcoming_branches_title?.en || ""
           );
+          setValue(
+            "about_page_upcoming_branches_title_ar",
+            res?.about_us?.upcoming_branches_title?.ar || ""
+          );
+          
+          // Upcoming Branch One - Bilingual
+          setValue(
+            "about_page_upcoming_branch_one_name_en",
+            res?.about_us?.upcoming_branch_one_name?.en || ""
+          );
+          setValue(
+            "about_page_upcoming_branch_one_name_ar",
+            res?.about_us?.upcoming_branch_one_name?.ar || ""
+          );
+          setValue(
+            "about_page_upcoming_branch_one_address_en",
+            res?.about_us?.upcoming_branch_one_address?.en || ""
+          );
+          setValue(
+            "about_page_upcoming_branch_one_address_ar",
+            res?.about_us?.upcoming_branch_one_address?.ar || ""
+          );
+          setValue(
+            "about_page_upcoming_branch_one_quarter_en",
+            res?.about_us?.upcoming_branch_one_quarter?.en || ""
+          );
+          setValue(
+            "about_page_upcoming_branch_one_quarter_ar",
+            res?.about_us?.upcoming_branch_one_quarter?.ar || ""
+          );
+          setValue(
+            "about_page_upcoming_branch_one_features_en",
+            res?.about_us?.upcoming_branch_one_features?.en || ""
+          );
+          setValue(
+            "about_page_upcoming_branch_one_features_ar",
+            res?.about_us?.upcoming_branch_one_features?.ar || ""
+          );
+          setValue(
+            "about_page_upcoming_branch_one_emoji_en",
+            res?.about_us?.upcoming_branch_one_emoji?.en || ""
+          );
+          setValue(
+            "about_page_upcoming_branch_one_emoji_ar",
+            res?.about_us?.upcoming_branch_one_emoji?.ar || ""
+          );
+          
+          // Upcoming Branch Two - Bilingual
+          setValue(
+            "about_page_upcoming_branch_two_name_en",
+            res?.about_us?.upcoming_branch_two_name?.en || ""
+          );
+          setValue(
+            "about_page_upcoming_branch_two_name_ar",
+            res?.about_us?.upcoming_branch_two_name?.ar || ""
+          );
+          setValue(
+            "about_page_upcoming_branch_two_address_en",
+            res?.about_us?.upcoming_branch_two_address?.en || ""
+          );
+          setValue(
+            "about_page_upcoming_branch_two_address_ar",
+            res?.about_us?.upcoming_branch_two_address?.ar || ""
+          );
+          setValue(
+            "about_page_upcoming_branch_two_quarter_en",
+            res?.about_us?.upcoming_branch_two_quarter?.en || ""
+          );
+          setValue(
+            "about_page_upcoming_branch_two_quarter_ar",
+            res?.about_us?.upcoming_branch_two_quarter?.ar || ""
+          );
+          setValue(
+            "about_page_upcoming_branch_two_features_en",
+            res?.about_us?.upcoming_branch_two_features?.en || ""
+          );
+          setValue(
+            "about_page_upcoming_branch_two_features_ar",
+            res?.about_us?.upcoming_branch_two_features?.ar || ""
+          );
+          setValue(
+            "about_page_upcoming_branch_two_emoji_en",
+            res?.about_us?.upcoming_branch_two_emoji?.en || ""
+          );
+          setValue(
+            "about_page_upcoming_branch_two_emoji_ar",
+            res?.about_us?.upcoming_branch_two_emoji?.ar || ""
+          );
+          
+          // Current Branches 1-8 - Bilingual
+          // Branch One
+          setValue(
+            "about_page_branch_one_name_en",
+            res?.about_us?.branch_one_name?.en || ""
+          );
+          setValue(
+            "about_page_branch_one_name_ar",
+            res?.about_us?.branch_one_name?.ar || ""
+          );
+          setValue(
+            "about_page_branch_one_address_en",
+            res?.about_us?.branch_one_address?.en || ""
+          );
+          setValue(
+            "about_page_branch_one_address_ar",
+            res?.about_us?.branch_one_address?.ar || ""
+          );
+          setValue(
+            "about_page_branch_one_phone_en",
+            res?.about_us?.branch_one_phone?.en || ""
+          );
+          setValue(
+            "about_page_branch_one_phone_ar",
+            res?.about_us?.branch_one_phone?.ar || ""
+          );
+          setValue(
+            "about_page_branch_one_hours_en",
+            res?.about_us?.branch_one_hours?.en || ""
+          );
+          setValue(
+            "about_page_branch_one_hours_ar",
+            res?.about_us?.branch_one_hours?.ar || ""
+          );
+          setValue(
+            "about_page_branch_one_subtitle_en",
+            res?.about_us?.branch_one_subtitle?.en || ""
+          );
+          setValue(
+            "about_page_branch_one_subtitle_ar",
+            res?.about_us?.branch_one_subtitle?.ar || ""
+          );
+          setValue(
+            "about_page_branch_one_services_en",
+            res?.about_us?.branch_one_services?.en || ""
+          );
+          setValue(
+            "about_page_branch_one_services_ar",
+            res?.about_us?.branch_one_services?.ar || ""
+          );
+          setValue(
+            "about_page_branch_one_directions_en",
+            res?.about_us?.branch_one_directions?.en || ""
+          );
+          setValue(
+            "about_page_branch_one_directions_ar",
+            res?.about_us?.branch_one_directions?.ar || ""
+          );
+          
+          // Branch Two
+          setValue(
+            "about_page_branch_two_name_en",
+            res?.about_us?.branch_two_name?.en || ""
+          );
+          setValue(
+            "about_page_branch_two_name_ar",
+            res?.about_us?.branch_two_name?.ar || ""
+          );
+          setValue(
+            "about_page_branch_two_address_en",
+            res?.about_us?.branch_two_address?.en || ""
+          );
+          setValue(
+            "about_page_branch_two_address_ar",
+            res?.about_us?.branch_two_address?.ar || ""
+          );
+          setValue(
+            "about_page_branch_two_phone_en",
+            res?.about_us?.branch_two_phone?.en || ""
+          );
+          setValue(
+            "about_page_branch_two_phone_ar",
+            res?.about_us?.branch_two_phone?.ar || ""
+          );
+          setValue(
+            "about_page_branch_two_hours_en",
+            res?.about_us?.branch_two_hours?.en || ""
+          );
+          setValue(
+            "about_page_branch_two_hours_ar",
+            res?.about_us?.branch_two_hours?.ar || ""
+          );
+          setValue(
+            "about_page_branch_two_subtitle_en",
+            res?.about_us?.branch_two_subtitle?.en || ""
+          );
+          setValue(
+            "about_page_branch_two_subtitle_ar",
+            res?.about_us?.branch_two_subtitle?.ar || ""
+          );
+          setValue(
+            "about_page_branch_two_services_en",
+            res?.about_us?.branch_two_services?.en || ""
+          );
+          setValue(
+            "about_page_branch_two_services_ar",
+            res?.about_us?.branch_two_services?.ar || ""
+          );
+          setValue(
+            "about_page_branch_two_directions_en",
+            res?.about_us?.branch_two_directions?.en || ""
+          );
+          setValue(
+            "about_page_branch_two_directions_ar",
+            res?.about_us?.branch_two_directions?.ar || ""
+          );
+          
+          // Branches Three through Eight - Bilingual
+          const remainingBranchWords = ['three', 'four', 'five', 'six', 'seven', 'eight'];
+          remainingBranchWords.forEach(branchWord => {
+            const branchNum = remainingBranchWords.indexOf(branchWord) + 3;
+            setValue(
+              `about_page_branch_${branchWord}_name_en`,
+              res?.about_us?.[`branch_${branchWord}_name`]?.en || ""
+            );
+            setValue(
+              `about_page_branch_${branchWord}_name_ar`,
+              res?.about_us?.[`branch_${branchWord}_name`]?.ar || ""
+            );
+            setValue(
+              `about_page_branch_${branchWord}_address_en`,
+              res?.about_us?.[`branch_${branchWord}_address`]?.en || ""
+            );
+            setValue(
+              `about_page_branch_${branchWord}_address_ar`,
+              res?.about_us?.[`branch_${branchWord}_address`]?.ar || ""
+            );
+            setValue(
+              `about_page_branch_${branchWord}_phone_en`,
+              res?.about_us?.[`branch_${branchWord}_phone`]?.en || ""
+            );
+            setValue(
+              `about_page_branch_${branchWord}_phone_ar`,
+              res?.about_us?.[`branch_${branchWord}_phone`]?.ar || ""
+            );
+            setValue(
+              `about_page_branch_${branchWord}_hours_en`,
+              res?.about_us?.[`branch_${branchWord}_hours`]?.en || ""
+            );
+            setValue(
+              `about_page_branch_${branchWord}_hours_ar`,
+              res?.about_us?.[`branch_${branchWord}_hours`]?.ar || ""
+            );
+            setValue(
+              `about_page_branch_${branchWord}_subtitle_en`,
+              res?.about_us?.[`branch_${branchWord}_subtitle`]?.en || ""
+            );
+            setValue(
+              `about_page_branch_${branchWord}_subtitle_ar`,
+              res?.about_us?.[`branch_${branchWord}_subtitle`]?.ar || ""
+            );
+            setValue(
+              `about_page_branch_${branchWord}_services_en`,
+              res?.about_us?.[`branch_${branchWord}_services`]?.en || ""
+            );
+            setValue(
+              `about_page_branch_${branchWord}_services_ar`,
+              res?.about_us?.[`branch_${branchWord}_services`]?.ar || ""
+            );
+            setValue(
+              `about_page_branch_${branchWord}_directions_en`,
+              res?.about_us?.[`branch_${branchWord}_directions`]?.en || ""
+            );
+            setValue(
+              `about_page_branch_${branchWord}_directions_ar`,
+              res?.about_us?.[`branch_${branchWord}_directions`]?.ar || ""
+            );
+          });
 
           //contact us
           setContactPageHeader(res?.contact_us?.header_status);

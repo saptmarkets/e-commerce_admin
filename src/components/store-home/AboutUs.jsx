@@ -1944,81 +1944,134 @@ const AboutUs = ({
                 opacity: !aboutBranches ? "0" : "1",
               }}
             >
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-            <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+              {/* Branches Title - Bilingual */}
+          <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
+            <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                   Branches Title
-                  </label>
-            <div className="sm:col-span-4">
-                  <InputAreaTwo
-                    register={register}
-                    label="Branches Title"
-                    name="about_page_branches_title"
-                    type="text"
-                    placeholder="Our Locations"
-                  />
-                  <Error errorName={errors.about_page_branches_title} />
-                </div>
-          </div>
-
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-            <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                  Branches Description
-                  </label>
-            <div className="sm:col-span-4">
-              <TextAreaCom
-                    register={register}
-                    label="Branches Description"
-                    name="about_page_branches_description"
-                    placeholder="Visit any of our convenient locations throughout Buraidah..."
-                  />
-                  <Error errorName={errors.about_page_branches_description} />
+            </label>
+            <div className="md:col-span-4">
+              <InputAreaTwo
+                register={register}
+                label="Branches Title (English)"
+                name="about_page_branches_title_en"
+                type="text"
+                placeholder="Our Locations"
+              />
+              <Error errorName={errors.about_page_branches_title_en} />
+            </div>
+            <div className="md:col-span-4">
+              <InputAreaTwo
+                register={register}
+                label="Branches Title (Arabic)"
+                name="about_page_branches_title_ar"
+                type="text"
+                placeholder="مواقعنا"
+              />
+              <Error errorName={errors.about_page_branches_title_ar} />
             </div>
           </div>
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-            <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                            {/* Branches Description - Bilingual */}
+              <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
+            <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                  Branches Description
+                  </label>
+            <div className="md:col-span-4">
+                  <TextAreaCom
+                    register={register}
+                    label="Branches Description (English)"
+                    name="about_page_branches_description_en"
+                    placeholder="Visit any of our convenient locations throughout Buraidah..."
+                  />
+                  <Error errorName={errors.about_page_branches_description_en} />
+            </div>
+            <div className="md:col-span-4">
+                  <TextAreaCom
+                    register={register}
+                    label="Branches Description (Arabic)"
+                    name="about_page_branches_description_ar"
+                    placeholder="زر أي من فروعنا الموزعة في أنحاء بريدة..."
+                  />
+                  <Error errorName={errors.about_page_branches_description_ar} />
+            </div>
+          </div>
+
+              {/* Branches CTA Title - Bilingual */}
+              <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
+            <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
               Branches CTA Title
             </label>
-            <div className="sm:col-span-4">
+            <div className="md:col-span-4">
               <InputAreaTwo
                 register={register}
-                label="Branches CTA Title"
-                name="about_page_branches_cta_title"
+                label="Branches CTA Title (English)"
+                name="about_page_branches_cta_title_en"
                 type="text"
                 placeholder="Can't Find Us?"
               />
-              <Error errorName={errors.about_page_branches_cta_title} />
+              <Error errorName={errors.about_page_branches_cta_title_en} />
+            </div>
+            <div className="md:col-span-4">
+              <InputAreaTwo
+                register={register}
+                label="Branches CTA Title (Arabic)"
+                name="about_page_branches_cta_title_ar"
+                type="text"
+                placeholder="لا تجدنا؟"
+              />
+              <Error errorName={errors.about_page_branches_cta_title_ar} />
             </div>
           </div>
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-            <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+              {/* Branches CTA Description - Bilingual */}
+              <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
+            <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
               Branches CTA Description
             </label>
-            <div className="sm:col-span-4">
+            <div className="md:col-span-4">
               <TextAreaCom
                 register={register}
-                label="Branches CTA Description"
-                name="about_page_branches_cta_description"
+                label="Branches CTA Description (English)"
+                name="about_page_branches_cta_description_en"
                     placeholder="We're expanding! New locations opening soon."
               />
-              <Error errorName={errors.about_page_branches_cta_description} />
+              <Error errorName={errors.about_page_branches_cta_description_en} />
+            </div>
+            <div className="md:col-span-4">
+              <TextAreaCom
+                register={register}
+                label="Branches CTA Description (Arabic)"
+                name="about_page_branches_cta_description_ar"
+                    placeholder="نحن نتوسع! مواقع جديدة قريباً"
+              />
+              <Error errorName={errors.about_page_branches_cta_description_ar} />
             </div>
           </div>
 
-              <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
-            <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+              {/* Upcoming Branches Title - Bilingual */}
+              <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
+            <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                   Upcoming Branches Title
             </label>
-            <div className="sm:col-span-4">
+            <div className="md:col-span-4">
                   <InputAreaTwo
                 register={register}
-                    label="Upcoming Branches Title"
-                    name="about_page_upcoming_branches_title"
+                    label="Upcoming Branches Title (English)"
+                    name="about_page_upcoming_branches_title_en"
                     type="text"
                     placeholder="Coming Soon to New Areas"
                   />
-                  <Error errorName={errors.about_page_upcoming_branches_title} />
+                  <Error errorName={errors.about_page_upcoming_branches_title_en} />
+            </div>
+            <div className="md:col-span-4">
+                  <InputAreaTwo
+                register={register}
+                    label="Upcoming Branches Title (Arabic)"
+                    name="about_page_upcoming_branches_title_ar"
+                    type="text"
+                    placeholder="ريبًا في مواقع جديدة"
+                  />
+                  <Error errorName={errors.about_page_upcoming_branches_title_ar} />
             </div>
           </div>
 
@@ -2029,76 +2082,121 @@ const AboutUs = ({
 
               {[1, 2].map((num) => (
                 <div key={num} className="border p-4 rounded-lg mb-6">
-                  <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-3">
-            <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                  {/* Branch {num} Name - Bilingual */}
+                  <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-3">
+            <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                       Branch {num} Name
             </label>
-            <div className="sm:col-span-4">
+            <div className="md:col-span-4">
               <InputAreaTwo
                 register={register}
-                        label={`Upcoming Branch ${num} Name`}
-                        name={`about_page_upcoming_branch_${num === 1 ? 'one' : 'two'}_name`}
+                        label={`Upcoming Branch ${num} Name (English)`}
+                        name={`about_page_upcoming_branch_${num === 1 ? 'one' : 'two'}_name_en`}
                 type="text"
                         placeholder={`SAPT Upcoming Branch ${num}`}
               />
             </div>
-          </div>
-
-                  <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6">
-            <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                      Address / Details
-            </label>
-            <div className="sm:col-span-4">
-              <TextAreaCom
-                register={register}
-                        label={`Upcoming Branch ${num} Address`}
-                        name={`about_page_upcoming_branch_${num === 1 ? 'one' : 'two'}_address`}
-                        placeholder="District, City"
-                      />
-            </div>
-          </div>
-
-                  {/* Quarter */}
-                  <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mt-3">
-            <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                      Opening Quarter (e.g., Q2 2025)
-            </label>
-            <div className="sm:col-span-4">
+            <div className="md:col-span-4">
               <InputAreaTwo
                 register={register}
-                        label={`Upcoming Branch ${num} Quarter`}
-                        name={`about_page_upcoming_branch_${num === 1 ? 'one' : 'two'}_quarter`}
+                        label={`Upcoming Branch ${num} Name (Arabic)`}
+                        name={`about_page_upcoming_branch_${num === 1 ? 'one' : 'two'}_name_ar`}
                 type="text"
-                        placeholder="Q2 2025"
+                        placeholder={`فرع سبت القادم ${num}`}
               />
             </div>
           </div>
 
-                  {/* Planned Features */}
-                  <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mt-3">
-            <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                      Planned Features (comma-separated)
+                  {/* Branch {num} Address - Bilingual */}
+                  <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6">
+            <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                      Address / Details
             </label>
-            <div className="sm:col-span-4">
+            <div className="md:col-span-4">
               <TextAreaCom
                 register={register}
-                        label={`Upcoming Branch ${num} Features`}
-                        name={`about_page_upcoming_branch_${num === 1 ? 'one' : 'two'}_features`}
-                        placeholder="Largest Store, Food Court, Pharmacy"
+                        label={`Upcoming Branch ${num} Address (English)`}
+                        name={`about_page_upcoming_branch_${num === 1 ? 'one' : 'two'}_address_en`}
+                        placeholder="District, City"
+                      />
+            </div>
+            <div className="md:col-span-4">
+              <TextAreaCom
+                register={register}
+                        label={`Upcoming Branch ${num} Address (Arabic)`}
+                        name={`about_page_upcoming_branch_${num === 1 ? 'one' : 'two'}_address_ar`}
+                        placeholder="الحي، المدينة"
                       />
             </div>
           </div>
 
-                  {/* Emoji / Icon */}
-                  <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mt-3">
-            <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                  {/* Quarter - Bilingual */}
+                  <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mt-3">
+            <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                      Opening Quarter (e.g., Q2 2025)
+            </label>
+            <div className="md:col-span-4">
+              <InputAreaTwo
+                register={register}
+                        label={`Upcoming Branch ${num} Quarter (English)`}
+                        name={`about_page_upcoming_branch_${num === 1 ? 'one' : 'two'}_quarter_en`}
+                type="text"
+                        placeholder="Q2 2025"
+              />
+            </div>
+            <div className="md:col-span-4">
+              <InputAreaTwo
+                register={register}
+                        label={`Upcoming Branch ${num} Quarter (Arabic)`}
+                        name={`about_page_upcoming_branch_${num === 1 ? 'one' : 'two'}_quarter_ar`}
+                type="text"
+                        placeholder="الربع الثاني 2025"
+              />
+            </div>
+          </div>
+
+                  {/* Planned Features - Bilingual */}
+                  <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mt-3">
+            <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                      Planned Features (comma-separated)
+            </label>
+            <div className="md:col-span-4">
+              <TextAreaCom
+                register={register}
+                        label={`Upcoming Branch ${num} Features (English)`}
+                        name={`about_page_upcoming_branch_${num === 1 ? 'one' : 'two'}_features_en`}
+                        placeholder="Largest Store, Food Court, Pharmacy"
+                      />
+            </div>
+            <div className="md:col-span-4">
+              <TextAreaCom
+                register={register}
+                        label={`Upcoming Branch ${num} Features (Arabic)`}
+                        name={`about_page_upcoming_branch_${num === 1 ? 'one' : 'two'}_features_ar`}
+                        placeholder="أكبر متجر، مطعم، صيدلية"
+                      />
+            </div>
+          </div>
+
+                  {/* Emoji / Icon - Bilingual */}
+                  <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mt-3">
+            <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                       Emoji Icon (single emoji)
             </label>
-            <div className="sm:col-span-4">
+            <div className="md:col-span-4">
                       <InputAreaTwo
                 register={register}
-                        label={`Upcoming Branch ${num} Emoji`}
-                        name={`about_page_upcoming_branch_${num === 1 ? 'one' : 'two'}_emoji`}
+                        label={`Upcoming Branch ${num} Emoji (English)`}
+                        name={`about_page_upcoming_branch_${num === 1 ? 'one' : 'two'}_emoji_en`}
+                        type="text"
+                        placeholder="🏬"
+                      />
+            </div>
+            <div className="md:col-span-4">
+                      <InputAreaTwo
+                register={register}
+                        label={`Upcoming Branch ${num} Emoji (Arabic)`}
+                        name={`about_page_upcoming_branch_${num === 1 ? 'one' : 'two'}_emoji_ar`}
                         type="text"
                         placeholder="🏬"
                       />
@@ -2133,110 +2231,185 @@ const AboutUs = ({
                     
                     return (
                       <TabPanel key={branchNum} className="mt-10">
-          <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-            <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+          {/* Branch {branchNum} Name - Bilingual */}
+          <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+            <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                             Branch {branchNum} Name
             </label>
-            <div className="sm:col-span-4">
+            <div className="md:col-span-4">
               <InputAreaTwo
             register={register}
-            label={`Branch ${branchNum} Name`}
-                              name={`about_page_branch_${branchWord}_name`}
+            label={`Branch ${branchNum} Name (English)`}
+                              name={`about_page_branch_${branchWord}_name_en`}
                 type="text"
                               placeholder={`SAPT Branch ${branchNum}`}
               />
-                            <Error errorName={errors[`about_page_branch_${branchWord}_name`]} />
+                            <Error errorName={errors[`about_page_branch_${branchWord}_name_en`]} />
             </div>
-          </div>
-          <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-            <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                            Branch {branchNum} Address
-            </label>
-            <div className="sm:col-span-4">
-              <TextAreaCom
-            register={register}
-            label={`Branch ${branchNum} Address`}
-                              name={`about_page_branch_${branchWord}_address`}
-                              placeholder="Address, City, District"
-                            />
-                            <Error errorName={errors[`about_page_branch_${branchWord}_address`]} />
-            </div>
-          </div>
-          <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-            <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-                            Branch {branchNum} Phone
-            </label>
-            <div className="sm:col-span-4">
+            <div className="md:col-span-4">
               <InputAreaTwo
             register={register}
-            label={`Branch ${branchNum} Phone`}
-                              name={`about_page_branch_${branchWord}_phone`}
+            label={`Branch ${branchNum} Name (Arabic)`}
+                              name={`about_page_branch_${branchWord}_name_ar`}
+                type="text"
+                              placeholder={`فرع سبت ${branchNum}`}
+              />
+                            <Error errorName={errors[`about_page_branch_${branchWord}_name_ar`]} />
+            </div>
+          </div>
+          {/* Branch {branchNum} Address - Bilingual */}
+          <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+            <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                            Branch {branchNum} Address
+            </label>
+            <div className="md:col-span-4">
+              <TextAreaCom
+            register={register}
+            label={`Branch ${branchNum} Address (English)`}
+                              name={`about_page_branch_${branchWord}_address_en`}
+                              placeholder="Address, City, District"
+                            />
+                            <Error errorName={errors[`about_page_branch_${branchWord}_address_en`]} />
+            </div>
+            <div className="md:col-span-4">
+              <TextAreaCom
+            register={register}
+            label={`Branch ${branchNum} Address (Arabic)`}
+                              name={`about_page_branch_${branchWord}_address_ar`}
+                              placeholder="العنوان، المدينة، الحي"
+                            />
+                            <Error errorName={errors[`about_page_branch_${branchWord}_address_ar`]} />
+            </div>
+          </div>
+          {/* Branch {branchNum} Phone - Bilingual */}
+          <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+            <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+                            Branch {branchNum} Phone
+            </label>
+            <div className="md:col-span-4">
+              <InputAreaTwo
+            register={register}
+            label={`Branch ${branchNum} Phone (English)`}
+                              name={`about_page_branch_${branchWord}_phone_en`}
                 type="text"
                               placeholder="+966 16 123 4567"
           />
-                            <Error errorName={errors[`about_page_branch_${branchWord}_phone`]} />
+                            <Error errorName={errors[`about_page_branch_${branchWord}_phone_en`]} />
+            </div>
+            <div className="md:col-span-4">
+              <InputAreaTwo
+            register={register}
+            label={`Branch ${branchNum} Phone (Arabic)`}
+                              name={`about_page_branch_${branchWord}_phone_ar`}
+                type="text"
+                              placeholder="+966 16 123 4567"
+          />
+                            <Error errorName={errors[`about_page_branch_${branchWord}_phone_ar`]} />
             </div>
           </div>
-          <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-            <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+          {/* Branch {branchNum} Hours - Bilingual */}
+          <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+            <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                             Branch {branchNum} Hours (Optional)
             </label>
-            <div className="sm:col-span-4">
+            <div className="md:col-span-4">
               <InputAreaTwo
                 register={register}
-                              label={`Branch ${branchNum} Hours`}
-                              name={`about_page_branch_${branchWord}_hours`}
+                              label={`Branch ${branchNum} Hours (English)`}
+                              name={`about_page_branch_${branchWord}_hours_en`}
                 type="text"
                               placeholder="Daily: 7:00 AM - 11:00 PM"
               />
-                            <Error errorName={errors[`about_page_branch_${branchWord}_hours`]} />
+                            <Error errorName={errors[`about_page_branch_${branchWord}_hours_en`]} />
+            </div>
+            <div className="md:col-span-4">
+              <InputAreaTwo
+                register={register}
+                              label={`Branch ${branchNum} Hours (Arabic)`}
+                              name={`about_page_branch_${branchWord}_hours_ar`}
+                type="text"
+                              placeholder="يومياً: 7:00 ص - 11:00 م"
+              />
+                            <Error errorName={errors[`about_page_branch_${branchWord}_hours_ar`]} />
             </div>
           </div>
 
-          <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-            <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+          {/* Branch {branchNum} Subtitle - Bilingual */}
+          <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+            <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
               Branch {branchNum} Subtitle / Type
             </label>
-            <div className="sm:col-span-4">
+            <div className="md:col-span-4">
               <InputAreaTwo
                 register={register}
-                label={`Branch ${branchNum} Subtitle`}
-                name={`about_page_branch_${branchWord}_subtitle`}
+                label={`Branch ${branchNum} Subtitle (English)`}
+                name={`about_page_branch_${branchWord}_subtitle_en`}
                 type="text"
                 placeholder="Main Store, Express Store, Full Service..."
               />
-              <Error errorName={errors[`about_page_branch_${branchWord}_subtitle`]} />
+              <Error errorName={errors[`about_page_branch_${branchWord}_subtitle_en`]} />
             </div>
-          </div>
-
-          <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-            <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-              Branch {branchNum} Services (comma-separated)
-            </label>
-            <div className="sm:col-span-4">
-              <TextAreaCom
-                register={register}
-                label={`Branch ${branchNum} Services`}
-                name={`about_page_branch_${branchWord}_services`}
-                placeholder="Fresh Produce, Bakery, Pharmacy, Electronics"
-              />
-              <Error errorName={errors[`about_page_branch_${branchWord}_services`]} />
-            </div>
-          </div>
-
-          <div className="grid md:grid-cols-5 sm:grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
-            <label className="block md:text-sm md:col-span-1 sm:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
-              Directions Link (Google Maps)
-            </label>
-            <div className="sm:col-span-4">
+            <div className="md:col-span-4">
               <InputAreaTwo
                 register={register}
-                label={`Branch ${branchNum} Directions Link`}
-                name={`about_page_branch_${branchWord}_directions`}
+                label={`Branch ${branchNum} Subtitle (Arabic)`}
+                name={`about_page_branch_${branchWord}_subtitle_ar`}
+                type="text"
+                placeholder="متجر رئيسي، متجر سريع، خدمة كاملة..."
+              />
+              <Error errorName={errors[`about_page_branch_${branchWord}_subtitle_ar`]} />
+            </div>
+          </div>
+
+          {/* Branch {branchNum} Services - Bilingual */}
+          <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+            <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+              Branch {branchNum} Services (comma-separated)
+            </label>
+            <div className="md:col-span-4">
+              <TextAreaCom
+                register={register}
+                label={`Branch ${branchNum} Services (English)`}
+                name={`about_page_branch_${branchWord}_services_en`}
+                placeholder="Fresh Produce, Bakery, Pharmacy, Electronics"
+              />
+              <Error errorName={errors[`about_page_branch_${branchWord}_services_en`]} />
+            </div>
+            <div className="md:col-span-4">
+              <TextAreaCom
+                register={register}
+                label={`Branch {branchNum} Services (Arabic)`}
+                name={`about_page_branch_${branchWord}_services_ar`}
+                placeholder="خضار وفواكه طازجة، مخبز، صيدلية، إلكترونيات"
+              />
+              <Error errorName={errors[`about_page_branch_${branchWord}_services_ar`]} />
+            </div>
+          </div>
+
+          {/* Branch {branchNum} Directions - Bilingual */}
+          <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3">
+            <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
+              Directions Link (Google Maps)
+            </label>
+            <div className="md:col-span-4">
+              <InputAreaTwo
+                register={register}
+                label={`Branch ${branchNum} Directions Link (English)`}
+                name={`about_page_branch_${branchWord}_directions_en`}
                 type="text"
                 placeholder="https://maps.google.com..."
               />
-              <Error errorName={errors[`about_page_branch_${branchWord}_directions`]} />
+              <Error errorName={errors[`about_page_branch_${branchWord}_directions_en`]} />
+        </div>
+            <div className="md:col-span-4">
+              <InputAreaTwo
+                register={register}
+                label={`Branch ${branchNum} Directions Link (Arabic)`}
+                name={`about_page_branch_${branchWord}_directions_ar`}
+                type="text"
+                placeholder="https://maps.google.com..."
+              />
+              <Error errorName={errors[`about_page_branch_${branchWord}_directions_ar`]} />
         </div>
           </div>
                       </TabPanel>
