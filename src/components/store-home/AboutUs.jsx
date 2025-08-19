@@ -100,8 +100,17 @@ const AboutUs = ({
                 className="h-10 px-6 "
                 onClick={() => {
                   console.log("🔘 Button clicked! Testing form submission...");
-                  handleSubmit(onSubmit)();
+                  console.log("🔍 isSave value:", isSave);
+                  console.log("🔍 handleSubmit function:", typeof handleSubmit);
+                  console.log("🔍 onSubmit function:", typeof onSubmit);
+                  try {
+                    handleSubmit(onSubmit)();
+                  } catch (error) {
+                    console.error("❌ Error in handleSubmit:", error);
+                  }
                 }}
+                onMouseEnter={() => console.log("🖱️ Mouse entered button")}
+                onMouseDown={() => console.log("🖱️ Mouse down on button")}
               >
                 {isSave ? t("SaveBtn") : t("UpdateBtn")}
               </Button>
