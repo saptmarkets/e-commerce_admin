@@ -1512,11 +1512,11 @@ const useStoreHomeSubmit = () => {
 
             rights_title: handleRemoveEmptyKey({
               ...resData?.privacy_policy?.rights_title,
-              [language]: data.pp_rights_title || "",
+              [language]: data.rights_title || "",
             }),
             rights_desc: handleRemoveEmptyKey({
               ...resData?.privacy_policy?.rights_desc,
-              [language]: data.pp_rights_desc || "",
+              [language]: data.rights_desc || "",
             }),
 
             title: handleRemoveEmptyKey({
@@ -3795,11 +3795,11 @@ const useStoreHomeSubmit = () => {
           
           // Privacy Policy Rights Section Title and Description
           setValue(
-            "pp_rights_title",
+            "rights_title",
             res?.privacy_policy?.rights_title ? res?.privacy_policy?.rights_title[language || "en"] : ""
           );
           setValue(
-            "pp_rights_desc",
+            "rights_desc",
             res?.privacy_policy?.rights_desc ? res?.privacy_policy?.rights_desc[language || "en"] : ""
           );
           

@@ -226,20 +226,20 @@ const PrivacyPolicy = ({
               
               {/* Rights Section Title and Description */}
               <div className="grid md:grid-cols-2 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-4">
-                <InputAreaTwo
-                  register={register}
-                  label={t("RightsSectionTitle")}
-                  name="pp_rights_title"
-                  type="text"
-                  placeholder="Your Data Rights"
-                />
-                <InputAreaTwo
-                  register={register}
-                  label={t("RightsSectionDesc")}
-                  name="pp_rights_desc"
-                  type="text"
-                  placeholder="Under Saudi PDPL, you have comprehensive rights over your personal data"
-                />
+                              <InputAreaTwo
+                register={register}
+                label={t("RightsSectionTitle")}
+                name="rights_title"
+                type="text"
+                placeholder="Your Data Rights"
+              />
+              <InputAreaTwo
+                register={register}
+                label={t("RightsSectionDesc")}
+                name="rights_desc"
+                type="text"
+                placeholder="Under Saudi PDPL, you have comprehensive rights over your personal data"
+              />
               </div>
               
               {[...Array(6)].map((_, idx) => (
