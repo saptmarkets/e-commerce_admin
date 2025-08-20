@@ -643,5 +643,21 @@
   "InvoiceNumber": "Invoice Number",
   "ReferenceDocument": "Reference Document",
   "Date": "Date",
-  "Close": "Close"
+  "Close": "Close",
+  "DataRights": "Data Rights",
+  "RightsSectionTitle": "Rights Section Title",
+  "RightsSectionDesc": "Rights Section Description",
+  "RightName": "Right Name",
+  "RightDesc": "Right Description",
+  "RightEmoji": "Right Emoji",
+  "PolicySections": "Policy Sections",
+  "SectionTitle": "Section Title",
+  "SectionBody": "Section Body",
+  "CTA_Title": "CTA Title",
+  "CTA_Desc": "CTA Description",
+  "CTA_ButtonText": "CTA Button Text",
+  "CTA_ButtonLink": "CTA Button Link",
+  "EffectiveDate": "Effective Date",
+  "LastUpdated": "Last Updated",
+  "RibbonTagline": "Ribbon Tagline"
 }

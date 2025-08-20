@@ -223,6 +223,25 @@ const PrivacyPolicy = ({
             {/* Rights loop */}
             <div className="border-t border-gray-200 pt-4 mt-4">
               <p className="text-xs font-semibold text-gray-600 mb-2">{t("DataRights")}</p>
+              
+              {/* Rights Section Title and Description */}
+              <div className="grid md:grid-cols-2 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-4">
+                <InputAreaTwo
+                  register={register}
+                  label={t("RightsSectionTitle")}
+                  name="pp_rights_title"
+                  type="text"
+                  placeholder="Your Data Rights"
+                />
+                <InputAreaTwo
+                  register={register}
+                  label={t("RightsSectionDesc")}
+                  name="pp_rights_desc"
+                  type="text"
+                  placeholder="Under Saudi PDPL, you have comprehensive rights over your personal data"
+                />
+              </div>
+              
               {[...Array(6)].map((_, idx) => (
                 <div key={idx} className="grid md:grid-cols-3 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-3">
                   <InputAreaTwo

@@ -602,5 +602,21 @@
   "Sync Status": "حالة المزامنة",
   "Synced": "مزامن",
   "Pending Sync": "في انتظار المزامنة",
-  "This Week": "هذا الأسبوع"
+  "This Week": "هذا الأسبوع",
+  "DataRights": "حقوق البيانات",
+  "RightsSectionTitle": "عنوان قسم الحقوق",
+  "RightsSectionDesc": "وصف قسم الحقوق",
+  "RightName": "اسم الحق",
+  "RightDesc": "وصف الحق",
+  "RightEmoji": "رمز الحق",
+  "PolicySections": "أقسام السياسة",
+  "SectionTitle": "عنوان القسم",
+  "SectionBody": "محتوى القسم",
+  "CTA_Title": "عنوان دعوة العمل",
+  "CTA_Desc": "وصف دعوة العمل",
+  "CTA_ButtonText": "نص زر دعوة العمل",
+  "CTA_ButtonLink": "رابط زر دعوة العمل",
+  "EffectiveDate": "تاريخ السريان",
+  "LastUpdated": "آخر تحديث",
+  "RibbonTagline": "شعار الشريط"
 } 

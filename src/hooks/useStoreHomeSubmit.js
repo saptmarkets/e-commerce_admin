@@ -1510,6 +1510,15 @@ const useStoreHomeSubmit = () => {
               [language]: data.pp_tagline || "",
             }),
 
+            rights_title: handleRemoveEmptyKey({
+              ...resData?.privacy_policy?.rights_title,
+              [language]: data.pp_rights_title || "",
+            }),
+            rights_desc: handleRemoveEmptyKey({
+              ...resData?.privacy_policy?.rights_desc,
+              [language]: data.pp_rights_desc || "",
+            }),
+
             title: handleRemoveEmptyKey({
               ...resData?.privacy_policy?.title,
               [language]: data.privacy_page_title || "",
@@ -3783,6 +3792,17 @@ const useStoreHomeSubmit = () => {
                 : ""
             );
           });
+          
+          // Privacy Policy Rights Section Title and Description
+          setValue(
+            "pp_rights_title",
+            res?.privacy_policy?.rights_title ? res?.privacy_policy?.rights_title[language || "en"] : ""
+          );
+          setValue(
+            "pp_rights_desc",
+            res?.privacy_policy?.rights_desc ? res?.privacy_policy?.rights_desc[language || "en"] : ""
+          );
+          
           // Privacy Policy Rights Boxes (1-6)
           for (let i = 1; i <= 6; i++) {
             setValue(
