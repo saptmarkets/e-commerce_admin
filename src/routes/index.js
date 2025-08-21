@@ -34,14 +34,14 @@ const StoreHome = lazy(() => import("@/pages/StoreHome"));
 const StoreSetting = lazy(() => import("@/pages/StoreSetting"));
 const Notifications = lazy(() => import("@/pages/Notifications"));
 const Banners = lazy(() => import("@/pages/Banners"));
-// const OdooSync = lazy(() => import("@/pages/OdooSync"));
-// const OdooCatalog = lazy(() => import("@/pages/OdooCatalog"));
-// const OdooPromotions = lazy(() => import("@/pages/OdooPromotions"));
+const OdooSync = lazy(() => import("@/pages/OdooSync"));
+const OdooCatalog = lazy(() => import("@/pages/OdooCatalog"));
+const OdooPromotions = lazy(() => import("@/pages/OdooPromotions"));
 // BulkImageUploader replaced with ProductImageFinder
 
 // Delivery Management Pages
 const DeliveryDashboard = lazy(() => import("@/pages/DeliveryDashboard"));
-// const OrderAssignments = lazy(() => import("@/pages/OrderAssignments"));
+const OrderAssignments = lazy(() => import("@/pages/OrderAssignments"));
 const DeliveryDrivers = lazy(() => import("@/pages/DeliveryDrivers"));
 const DeliveryTracking = lazy(() => import("@/pages/DeliveryTracking"));
 const DeliverySettings = lazy(() => import("@/pages/DeliverySettings"));
@@ -89,14 +89,14 @@ const routes = [
     path: "/categories",
     component: Category,
   },
-  // {
-  //   path: "/languages",
-  //   component: Languages,
-  // },
-  // {
-  //   path: "/currencies",
-  //   component: Currencies,
-  // },
+  {
+    path: "/languages",
+    component: Languages,
+  },
+  {
+    path: "/currencies",
+    component: Currencies,
+  },
   // IMPORTANT: Specific routes must come before dynamic routes
   {
     path: '/categories/import-export',
@@ -147,10 +147,10 @@ const routes = [
     path: "/store/store-settings",
     component: StoreSetting,
   },
-  // {
-  //   path: "/404",
-  //   component: Page404,
-  // },
+  {
+    path: "/404",
+    component: Page404,
+  },
   {
     path: "/edit-profile",
     component: EditProfile,
@@ -179,32 +179,32 @@ const routes = [
     path: '/banners',
     component: Banners,
   },
-  // {
-  //   path: '/odoo-sync',
-  //   component: OdooSync,
-  // },
-  // {
-  //   path: '/odoo-catalog',
-  //   component: OdooCatalog,
-  // },
-  // {
-  //   path: '/odoo-promotions',
-  //   component: OdooPromotions,
-  // },
-  // {
-  //   path: '/bulk-image-uploader',
-  //   component: lazy(() => import('@/pages/ProductImageFinder')),
-  // },
+  {
+    path: '/odoo-sync',
+    component: OdooSync,
+  },
+  {
+    path: '/odoo-catalog',
+    component: OdooCatalog,
+  },
+  {
+    path: '/odoo-promotions',
+    component: OdooPromotions,
+  },
+  {
+    path: '/bulk-image-uploader',
+    component: lazy(() => import('@/pages/ProductImageFinder')),
+  },
   
   // Delivery Management Routes
   {
     path: '/delivery/dashboard',
     component: DeliveryDashboard,
   },
-  // {
-  //   path: '/delivery/assignments',
-  //   component: OrderAssignments,
-  // },
+  {
+    path: '/delivery/assignments',
+    component: OrderAssignments,
+  },
   {
     path: '/delivery/drivers',
     component: DeliveryDrivers,
@@ -273,7 +273,7 @@ const routeAccessList = [
   { label: "Banners", value: "banners" },
   { label: "Units", value: "units" },
   { label: "Delivery Dashboard", value: "delivery/dashboard" },
-  // { label: "Order Assignments", value: "delivery/assignments" },
+  { label: "Order Assignments", value: "delivery/assignments" },
   { label: "Delivery Drivers", value: "delivery/drivers" },
   { label: "Live Tracking", value: "delivery/tracking" },
   { label: "Delivery Settings", value: "delivery/settings" },
@@ -282,8 +282,8 @@ const routeAccessList = [
   { label: "Orders", value: "orders" },
   { label: "Staff", value: "our-staff" },
   { label: "Settings", value: "settings" },
-  // { label: "Languages", value: "languages" },
-  // { label: "Currencies", value: "currencies" },
+  { label: "Languages", value: "languages" },
+  { label: "Currencies", value: "currencies" },
   { label: "ViewStore", value: "store" },
   { label: "StoreCustomization", value: "customization" },
   { label: "StoreSettings", value: "store-settings" },
@@ -295,10 +295,10 @@ const routeAccessList = [
     value: "customer-order",
   },
   { label: "Notification", value: "notifications" },
-  // { label: "Odoo Sync", value: "odoo-sync" },
-  // { label: "Odoo Catalog", value: "odoo-catalog" },
-  // { label: "Odoo Promotions", value: "odoo-promotions" },
-  // { label: "Bulk Image Uploader", value: "bulk-image-uploader" },
+  { label: "Odoo Sync", value: "odoo-sync" },
+  { label: "Odoo Catalog", value: "odoo-catalog" },
+  { label: "Odoo Promotions", value: "odoo-promotions" },
+  { label: "Bulk Image Uploader", value: "bulk-image-uploader" },
   { label: "Sales Analytics", value: "reports/sales" },
   { label: "Inventory Reports", value: "reports/inventory" },
   { label: "Customer Insights", value: "reports/customers" },
