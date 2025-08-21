@@ -2818,32 +2818,32 @@ const useStoreHomeSubmit = () => {
           setOurFounderFourImage(res?.about_us?.founder_four_img);
           setOurFounderFiveImage(res?.about_us?.founder_five_img);
           setOurFounderSixImage(res?.about_us?.founder_six_img);
-                                  setValue("about_page_title_en", res?.about_us?.title?.en || "");
-                        setValue("about_page_title_ar", res?.about_us?.title?.ar || "");
-                                  setValue(
+          setValue("about_page_title_en", res?.about_us?.title?.en || "");
+          setValue("about_page_title_ar", res?.about_us?.title?.ar || "");
+          setValue(
                           "about_page_hero_description_en",
                           res?.about_us?.hero_description?.en || ""
-                        );
-                        setValue(
+          );
+          setValue(
                           "about_page_hero_description_ar",
                           res?.about_us?.hero_description?.ar || ""
-                        );
-                                  setValue(
+          );
+          setValue(
                           "about_page_top_section_title_en",
                           res?.about_us?.top_section_title?.en || ""
-                        );
-                        setValue(
+          );
+          setValue(
                           "about_page_top_section_title_ar",
                           res?.about_us?.top_section_title?.ar || ""
-                        );
-                                  setValue(
+          );
+          setValue(
                           "about_page_top_section_description_en",
                           res?.about_us?.top_section_description?.en || ""
-                        );
-                        setValue(
+          );
+          setValue(
                           "about_page_top_section_description_ar",
                           res?.about_us?.top_section_description?.ar || ""
-                        );
+          );
           // Card One - Bilingual
           setValue(
             "about_page_card_one_title_en",
@@ -3118,38 +3118,38 @@ const useStoreHomeSubmit = () => {
           );
 
           // Add other missing fields
-                                  setValue(
+          setValue(
                           "about_page_trusted_badge_one_pill_en",
                           res?.about_us?.trusted_badge_one_pill?.en || ""
-                        );
-                        setValue(
+          );
+          setValue(
                           "about_page_trusted_badge_one_pill_ar",
                           res?.about_us?.trusted_badge_one_pill?.ar || ""
-                        );
-                        setValue(
+          );
+          setValue(
                           "about_page_trusted_badge_one_text_en",
                           res?.about_us?.trusted_badge_one_text?.en || ""
-                        );
-                        setValue(
+          );
+          setValue(
                           "about_page_trusted_badge_one_text_ar",
                           res?.about_us?.trusted_badge_one_text?.ar || ""
-                        );
-                        setValue(
+          );
+          setValue(
                           "about_page_trusted_badge_two_pill_en",
                           res?.about_us?.trusted_badge_two_pill?.en || ""
-                        );
-                        setValue(
+          );
+          setValue(
                           "about_page_trusted_badge_two_pill_ar",
                           res?.about_us?.trusted_badge_two_pill?.ar || ""
-                        );
-                        setValue(
+          );
+          setValue(
                           "about_page_trusted_badge_two_text_en",
                           res?.about_us?.trusted_badge_two_text?.en || ""
-                        );
-                        setValue(
+          );
+          setValue(
                           "about_page_trusted_badge_two_text_ar",
                           res?.about_us?.trusted_badge_two_text?.ar || ""
-                        );
+          );
 
           // Add heritage section - Bilingual
           setValue(
@@ -4208,19 +4208,19 @@ const useStoreHomeSubmit = () => {
             "about_page_branches_cta_title_ar",
             res?.about_us?.branches_cta_title ? res?.about_us?.branches_cta_title.ar || "" : ""
           );
-          setValue(
+            setValue(
             "about_page_branches_cta_description_en",
             res?.about_us?.branches_cta_description ? res?.about_us?.branches_cta_description.en || "" : ""
-          );
-          setValue(
+            );
+            setValue(
             "about_page_branches_cta_description_ar",
             res?.about_us?.branches_cta_description ? res?.about_us?.branches_cta_description.ar || "" : ""
-          );
-          setValue(
+            );
+            setValue(
             "about_page_upcoming_branches_title_en",
             res?.about_us?.upcoming_branches_title ? res?.about_us?.upcoming_branches_title.en || "" : ""
-          );
-          setValue(
+            );
+            setValue(
             "about_page_upcoming_branches_title_ar",
             res?.about_us?.upcoming_branches_title ? res?.about_us?.upcoming_branches_title.ar || "" : ""
           );

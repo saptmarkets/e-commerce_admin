@@ -70,36 +70,36 @@ const sidebar = [
     ],
   },
 
-  {
-    icon: FiRefreshCw,
-    name: "Odoo Management",
-    routes: [
-      {
-        path: "/odoo-sync",
-        name: "Odoo Sync",
-      },
-      {
-        path: "/odoo-catalog",
-        name: "Product Catalog",
-      },
-      {
-        path: "/odoo-promotions",
-        name: "Promotions (Pricelist)",
-      },
-      {
-        path: "/bulk-image-uploader",
-        name: "Bulk Image Uploader",
-      },
-      {
-        path: "/stock-movements",
-        name: "Stock Movement History",
-      },
-      {
-        path: "/stock-push-sessions",
-        name: "Stock Push Sessions",
-      },
-    ],
-  },
+  // {
+  //   icon: FiRefreshCw,
+  //   name: "Odoo Management",
+  //   routes: [
+  //     {
+  //       path: "/odoo-sync",
+  //       name: "Odoo Sync",
+  //     },
+  //     {
+  //       path: "/odoo-catalog",
+  //       name: "Product Catalog",
+  //     },
+  //     {
+  //       path: "/odoo-promotions",
+  //       name: "Promotions (Pricelist)",
+  //     },
+  //     // {
+  //     //   path: "/bulk-image-uploader",
+  //     //   name: "Bulk Image Uploader",
+  //     // },
+  //     {
+  //       path: "/stock-movements",
+  //       name: "Stock Movement History",
+  //     },
+  //     {
+  //       path: "/stock-push-sessions",
+  //       name: "Stock Push Sessions",
+  //     },
+  //   ],
+  // },
 
   {
     path: "/customers",
@@ -159,10 +159,10 @@ const sidebar = [
         path: "/delivery/drivers",
         name: "Manage Drivers",
       },
-      {
-        path: "/delivery/assignments",
-        name: "Order Assignments",
-      },
+      // {
+      //   path: "/delivery/assignments",
+      //   name: "Order Assignments",
+      // },
       {
         path: "/delivery/tracking",
         name: "Live Tracking",
@@ -179,20 +179,20 @@ const sidebar = [
     icon: FiSettings,
     name: "Settings",
   },
-  {
-    icon: FiGlobe,
-    name: "International",
-    routes: [
-      {
-        path: "/languages",
-        name: "Languages",
-      },
-      {
-        path: "/currencies",
-        name: "Currencies",
-      },
-    ],
-  },
+  // {
+  //   icon: FiGlobe,
+  //   name: "International",
+  //   routes: [
+  //     {
+  //       path: "/languages",
+  //       name: "Languages",
+  //     },
+  //     // {
+  //     //   path: "/currencies",
+  //     //   name: "Currencies",
+  //     // },
+  //   ],
+  // },
   {
     icon: FiTarget,
     name: "OnlineStore",
@@ -214,22 +214,21 @@ const sidebar = [
     ],
   },
 
-  {
-    icon: FiSlack,
-    name: "Pages",
-    routes: [
-      // submenu
+  // {
+  //   icon: FiSlack,
+  //   name: "Pages",
+  //   routes: [
+  //     // submenu
 
-      {
-        path: "/404",
-        name: "404",
-      },
-      {
-        path: "/coming-soon",
-        name: "Coming Soon",
-      },
-    ],
-  },
+  //     {
+  //       path: "/404",
+  //       name: "404",
+  //     },
+  //       path: "/coming-soon",
+  //       name: "Coming Soon",
+  //     },
+  //   ],
+  // },
 ];
 
 export default sidebar; 

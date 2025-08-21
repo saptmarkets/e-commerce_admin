@@ -105,9 +105,9 @@ const AboutUs = ({
                   console.log("🔍 onSubmit function:", typeof onSubmit);
                   try {
                     handleSubmit(onSubmit)();
-                  } catch (error) {
+                    } catch (error) {
                     console.error("❌ Error in handleSubmit:", error);
-                  }
+                    }
                 }}
                 onMouseEnter={() => console.log("🖱️ Mouse entered button")}
                 onMouseDown={() => console.log("🖱️ Mouse down on button")}
@@ -174,7 +174,7 @@ const AboutUs = ({
                 </label>
                 <div className="md:col-span-4">
                   <InputAreaTwo
-                    register={register}
+                register={register}
                     label="Page Title (English)"
                     name="about_page_title_en"
                     type="text"
@@ -189,7 +189,7 @@ const AboutUs = ({
                     name="about_page_title_ar"
                     type="text"
                     placeholder="أدخل العنوان بالعربية"
-                  />
+              />
                   <Error errorName={errors.about_page_title_ar} />
                 </div>
               </div>
@@ -201,7 +201,7 @@ const AboutUs = ({
                 </label>
                 <div className="md:col-span-4">
                   <TextAreaCom
-                    register={register}
+                register={register}
                     label="Hero Description (English)"
                     name="about_page_hero_description_en"
                     placeholder="Learn more about SAPT Markets and our story..."
@@ -309,14 +309,14 @@ const AboutUs = ({
                     Trusted Badge 1 Pill
                   </label>
                   <div className="md:col-span-4">
-                    <InputAreaTwo
-                      register={register}
+                  <InputAreaTwo
+                    register={register}
                       label="Badge 1 Pill (English)"
                       name="about_page_trusted_badge_one_pill_en"
-                      type="text"
-                      placeholder="Since 1989"
-                    />
-                  </div>
+                    type="text"
+                    placeholder="Since 1989"
+                  />
+                </div>
                   <div className="md:col-span-4">
                     <InputAreaTwo
                       register={register}
@@ -333,13 +333,13 @@ const AboutUs = ({
                     Trusted Badge 1 Text
                   </label>
                   <div className="md:col-span-4">
-                    <InputAreaTwo
-                      register={register}
+                  <InputAreaTwo
+                    register={register}
                       label="Badge 1 Text (English)"
                       name="about_page_trusted_badge_one_text_en"
-                      type="text"
-                      placeholder="From Family Business"
-                    />
+                    type="text"
+                    placeholder="From Family Business"
+                  />
                   </div>
                   <div className="md:col-span-4">
                     <InputAreaTwo
@@ -358,14 +358,14 @@ const AboutUs = ({
                     Trusted Badge 2 Pill
                   </label>
                   <div className="md:col-span-4">
-                    <InputAreaTwo
-                      register={register}
+                  <InputAreaTwo
+                    register={register}
                       label="Badge 2 Pill (English)"
                       name="about_page_trusted_badge_two_pill_en"
-                      type="text"
-                      placeholder="35+ Years"
-                    />
-                  </div>
+                    type="text"
+                    placeholder="35+ Years"
+                  />
+                </div>
                   <div className="md:col-span-4">
                     <InputAreaTwo
                       register={register}
@@ -382,13 +382,13 @@ const AboutUs = ({
                     Trusted Badge 2 Text
                   </label>
                   <div className="md:col-span-4">
-                    <InputAreaTwo
-                      register={register}
+                  <InputAreaTwo
+                    register={register}
                       label="Badge 2 Text (English)"
                       name="about_page_trusted_badge_two_text_en"
-                      type="text"
-                      placeholder="Serving the Community"
-                    />
+                    type="text"
+                    placeholder="Serving the Community"
+                  />
                   </div>
                   <div className="md:col-span-4">
                     <InputAreaTwo
@@ -837,7 +837,7 @@ const AboutUs = ({
                     name="about_page_leadership_title_ar"
                     type="text"
                     placeholder="قيادة تلهم"
-                  />
+              />
                   <Error errorName={errors.about_page_leadership_title_ar} />
                       </div>
                     </div>
@@ -985,7 +985,7 @@ const AboutUs = ({
                           name="about_page_value_one_title_ar"
                           type="text"
                           placeholder="الجودة أولاً"
-                        />
+                     />
                         <Error errorName={errors.about_page_value_one_title_ar} />
                       </div>
                     </div>
@@ -1039,7 +1039,7 @@ const AboutUs = ({
                           name="about_page_value_two_title_ar"
                           type="text"
                           placeholder="رعاية العملاء"
-                        />
+                    />
                         <Error errorName={errors.about_page_value_two_title_ar} />
                       </div>
                     </div>
@@ -1093,7 +1093,7 @@ const AboutUs = ({
                           name="about_page_value_three_title_ar"
                           type="text"
                           placeholder="التركيز على المجتمع"
-                        />
+                     />
                         <Error errorName={errors.about_page_value_three_title_ar} />
                       </div>
                     </div>
@@ -1147,7 +1147,7 @@ const AboutUs = ({
                           name="about_page_value_four_title_ar"
                           type="text"
                           placeholder="الابتكار"
-                        />
+                     />
                         <Error errorName={errors.about_page_value_four_title_ar} />
                       </div>
                     </div>
@@ -1529,7 +1529,7 @@ const AboutUs = ({
                           placeholder="Team Member 5 Name"
           />
                         <Error errorName={errors.about_page_founder_five_name_en} />
-                </div>
+                    </div>
                 <div className="md:col-span-4">
                   <InputAreaTwo
             register={register}
@@ -1597,7 +1597,7 @@ const AboutUs = ({
                           placeholder="Team Member 6 Name"
             />
                         <Error errorName={errors.about_page_founder_six_name_en} />
-            </div>
+          </div>
             <div className="md:col-span-4">
               <InputAreaTwo
               register={register}
@@ -1948,15 +1948,15 @@ const AboutUs = ({
           <div className="grid md:grid-cols-10 gap-3 md:gap-5 xl:gap-6 lg:gap-6 md:mb-6 mb-3 relative">
             <label className="block md:text-sm md:col-span-2 text-xs font-semibold text-gray-600 dark:text-gray-400 md:mb-1">
                   Branches Title
-            </label>
+                  </label>
             <div className="md:col-span-4">
-              <InputAreaTwo
-                register={register}
+                  <InputAreaTwo
+                    register={register}
                 label="Branches Title (English)"
                 name="about_page_branches_title_en"
-                type="text"
-                placeholder="Our Locations"
-              />
+                    type="text"
+                    placeholder="Our Locations"
+                  />
               <Error errorName={errors.about_page_branches_title_en} />
             </div>
             <div className="md:col-span-4">
@@ -1968,7 +1968,7 @@ const AboutUs = ({
                 placeholder="مواقعنا"
               />
               <Error errorName={errors.about_page_branches_title_ar} />
-            </div>
+                </div>
           </div>
 
                             {/* Branches Description - Bilingual */}
@@ -1977,7 +1977,7 @@ const AboutUs = ({
                   Branches Description
                   </label>
             <div className="md:col-span-4">
-                  <TextAreaCom
+              <TextAreaCom
                     register={register}
                     label="Branches Description (English)"
                     name="about_page_branches_description_en"
