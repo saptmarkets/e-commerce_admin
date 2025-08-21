@@ -205,8 +205,8 @@ const responseBody = (response) => {
 };
 
 const requests = {
-  get: (url, body, headers) =>
-    instance.get(url, body, headers).then(responseBody),
+  get: (url, config) =>
+    instance.get(url, config).then(responseBody),
 
   post: (url, body) => instance.post(url, body).then(responseBody),
 

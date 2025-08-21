@@ -28,7 +28,7 @@ const AdminServices = {
     return requests.get("/admin/staff", body);
   },
   getStaffById: async (id, body) => {
-    return requests.post(`/admin/staff/${id}`, body);
+    return requests.get(`/admin/staff/${id}`, body);
   },
 
   updateStaff: async (id, body) => {
