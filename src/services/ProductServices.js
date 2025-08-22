@@ -41,7 +41,7 @@ const ProductServices = {
     }
     
     const query = new URLSearchParams(queryParams).toString();
-    console.log('getProductsForPromotions request URL:', `/products?${query}`);
+
     return requests.get(`/products?${query}`);
   },
 
@@ -58,12 +58,12 @@ const ProductServices = {
       
       for (const query of searchQueries) {
         try {
-          console.log(`Trying barcode search: /products?${query}&limit=10`);
+    
           const response = await requests.get(`/products?${query}&limit=10`);
           const products = response?.products || response?.data || response || [];
           
           if (products.length > 0) {
-            console.log(`Found ${products.length} products with query: ${query}`);
+    
             return { products };
           }
         } catch (queryError) {
@@ -71,7 +71,7 @@ const ProductServices = {
         }
       }
       
-      console.log('No products found with barcode searches');
+
       return { products: [] };
     } catch (error) {
       console.error('Error searching by barcode:', error);
@@ -275,15 +275,12 @@ const ProductServices = {
   // Get all units for a specific product
   getProductUnits: async (productId) => {
     try {
-      console.log(`Fetching product units for product ID: ${productId}`);
       const response = await requests.get(`/product-units/product/${productId}`);
-      console.log('Product units response:', response);
       return response;
     } catch (error) {
       console.error('Error in getProductUnits:', error);
       if (error.response?.status === 404) {
         // Return empty array if route not found - API might not be implemented yet
-        console.log('Product units endpoint not found, returning empty array');
         return { data: [], success: false, message: 'API endpoint not available' };
       }
       throw error;
@@ -293,9 +290,7 @@ const ProductServices = {
   // Create a new product unit
   createProductUnit: async (productId, unitData) => {
     try {
-      console.log(`Creating product unit for product ID: ${productId}`, unitData);
       const response = await requests.post(`/product-units/product/${productId}`, unitData);
-      console.log('Create product unit response:', response);
       return response;
     } catch (error) {
       console.error('Error in createProductUnit:', error);
@@ -306,9 +301,7 @@ const ProductServices = {
   // Update a specific product unit
   updateProductUnit: async (productId, unitId, unitData) => {
     try {
-      console.log(`Updating product unit: ${unitId} for product: ${productId}`, unitData);
       const response = await requests.put(`/product-units/product/${productId}/unit/${unitId}`, unitData);
-      console.log('Update product unit response:', response);
       return response;
     } catch (error) {
       console.error('Error in updateProductUnit:', error);
@@ -319,9 +312,7 @@ const ProductServices = {
   // Delete a specific product unit
   deleteProductUnit: async (productId, unitId) => {
     try {
-      console.log(`Deleting product unit: ${unitId} for product: ${productId}`);
       const response = await requests.delete(`/product-units/product/${productId}/unit/${unitId}`);
-      console.log('Delete product unit response:', response);
       return response;
     } catch (error) {
       console.error('Error in deleteProductUnit:', error);

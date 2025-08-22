@@ -105,7 +105,7 @@ const PromotionModal = ({ isOpen, onClose, promotionId = null }) => {
         productsList = response.data;
       }
       
-      console.log('Extracted products list:', productsList);
+
       
       if (productsList && productsList.length > 0) {
         setProducts(productsList);
@@ -126,7 +126,7 @@ const PromotionModal = ({ isOpen, onClose, promotionId = null }) => {
     try {
       // Use getAllCategories to get all categories including subcategories
       const response = await CategoryServices.getAllCategories();
-      console.log('Categories API response:', response);
+
       
       // Handle different response structures and flatten all categories including subcategories
       let categoriesList = [];
@@ -151,7 +151,7 @@ const PromotionModal = ({ isOpen, onClose, promotionId = null }) => {
       };
       
       const allCategories = flattenCategories(categoriesList);
-      console.log('Flattened categories:', allCategories);
+
       setCategories(allCategories);
     } catch (error) {
       console.error('Error loading categories:', error);
@@ -174,13 +174,11 @@ const PromotionModal = ({ isOpen, onClose, promotionId = null }) => {
   };
 
   const loadProductUnits = async (productsList, skipInitialSelection = false) => {
-    console.log('Loading units for products:', productsList.length, 'skipInitialSelection:', skipInitialSelection);
     const unitsData = {};
     
     const productUnitsPromises = productsList.map(async (product) => {
       try {
         const response = await ProductServices.getProductUnits(product._id);
-        console.log(`Units response for product ${product._id}:`, response);
         
         if (response?.data && Array.isArray(response.data)) {
           unitsData[product._id] = response.data;
@@ -188,7 +186,6 @@ const PromotionModal = ({ isOpen, onClose, promotionId = null }) => {
           unitsData[product._id] = response;
         } else {
           // Create default unit if no units found
-          console.log(`No units found for product ${product._id}, creating default`);
           unitsData[product._id] = [{
             _id: `default_${product._id}`,
             unit: { name: 'pcs', _id: 'default_pcs' },
@@ -211,7 +208,6 @@ const PromotionModal = ({ isOpen, onClose, promotionId = null }) => {
     });
 
     await Promise.all(productUnitsPromises);
-    console.log('All product units loaded:', unitsData);
     setProductUnits(unitsData);
 
     // Only initialize selected units with defaults if not skipping (i.e., for new selections)
@@ -224,16 +220,13 @@ const PromotionModal = ({ isOpen, onClose, promotionId = null }) => {
           initialSelectedUnits[product._id] = defaultUnit._id;
         }
       });
-      console.log('Initial selected units:', initialSelectedUnits);
       setSelectedProductUnits(initialSelectedUnits);
     }
   };
 
   const loadPromotion = async (id) => {
     try {
-      console.log('Loading promotion with ID:', id);
       const response = await PromotionServices.getPromotion(id);
-      console.log('Loaded promotion data:', response);
       
       if (response) {
         // Store the original promotion data for the information panel
@@ -279,7 +272,7 @@ const PromotionModal = ({ isOpen, onClose, promotionId = null }) => {
               [product._id]: productUnit._id
             });
             
-            console.log('Set selected product unit:', product._id, '->', productUnit._id);
+
           }
         } else if (response.type === 'assorted_items' && response.productUnits) {
           // Extract products from productUnits
@@ -298,7 +291,7 @@ const PromotionModal = ({ isOpen, onClose, promotionId = null }) => {
           });
           setSelectedProductUnits(unitMapping);
           
-          console.log('Set selected product units for assorted items:', unitMapping);
+
         } else if (response.type === 'bulk_purchase' && response.selectionMode === 'categories') {
           setSelectedCategories(response.categories || []);
         } else if (response.type === 'bulk_purchase' && response.selectionMode === 'all') {
@@ -438,9 +431,7 @@ const PromotionModal = ({ isOpen, onClose, promotionId = null }) => {
       const hasRequiredQty = formData.requiredQty && parseFloat(formData.requiredQty) > 0;
       const hasMinPurchaseAmount = formData.minPurchaseAmount && parseFloat(formData.minPurchaseAmount) > 0;
       
-      console.log('Bulk validation check:');
-      console.log('- requiredQty:', formData.requiredQty, '-> hasRequiredQty:', hasRequiredQty);
-      console.log('- minPurchaseAmount:', formData.minPurchaseAmount, '-> hasMinPurchaseAmount:', hasMinPurchaseAmount);
+
       
       if (!hasRequiredQty && !hasMinPurchaseAmount) {
         newErrors.requiredQty = 'Either required quantity OR minimum purchase amount must be provided';
@@ -471,15 +462,7 @@ const PromotionModal = ({ isOpen, onClose, promotionId = null }) => {
 
     setErrors(newErrors);
     
-    // Debug logging for bulk purchase validation
-    if (formData.type === 'bulk_purchase' && Object.keys(newErrors).length > 0) {
-      console.log('Bulk purchase validation errors:', newErrors);
-      console.log('Form data:', formData);
-      console.log('Selection mode:', selectionMode);
-      console.log('Selected products:', selectedProducts);
-      console.log('Selected categories:', selectedCategories);
-      console.log('Selected product units:', selectedProductUnits);
-    }
+
     
     return Object.keys(newErrors).length === 0;
   };
