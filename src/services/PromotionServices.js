@@ -17,18 +17,7 @@ const PromotionServices = {
       if (promotionList) queryParams.promotionList = promotionList;
       queryParams._t = Date.now(); // Cache busting
       
-      console.log(`🔍 PromotionServices.getAllPromotions called with params:`, params);
-      console.log(`📡 Built query params:`, queryParams);
-      console.log(`🌐 API endpoint: /promotions`);
-      
       const response = await requests.get('/promotions', queryParams);
-      
-      console.log(`📊 API response received:`, response);
-      console.log(`📊 Response type:`, typeof response);
-      console.log(`📊 Is array:`, Array.isArray(response));
-      console.log(`📊 Has promotions property:`, !!response?.promotions);
-      console.log(`📊 Total promotions:`, response?.totalPromotions);
-      console.log(`📊 Total pages:`, response?.totalPages);
       
       return response;
     } catch (error) {
