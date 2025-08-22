@@ -91,31 +91,31 @@ const OdooSyncServices = {
 
   /**
    * Sync products by category with progress
-   * POST /api/odoo/sync-category-products
+   * POST /api/odoo-sync/sync-category/:categoryId
    */
   syncCategoryProducts: (categoryId) => 
-    requests.post("/odoo/sync-category-products", { categoryId }),
+    requests.post(`/odoo-sync/sync-category/${categoryId}`),
 
   /**
    * Sync selected categories with updated prices (like fetch data but for specific categories)
-   * POST /api/odoo/sync-selected-categories
+   * POST /api/odoo-sync/sync-categories
    */
   syncSelectedCategories: (categoryIds) =>
-    requests.post("/odoo/sync-selected-categories", { categoryIds }),
+    requests.post("/odoo-sync/sync-categories", { categoryIds }),
 
   /**
    * Get products by category
-   * GET /api/odoo/products/category/:categoryId
+   * GET /api/odoo-sync/products/category/:categoryId
    */
   getProductsByCategory: (categoryId, params = {}) => 
-    requests.get(`/odoo/products/category/${categoryId}`, { params }),
+    requests.get(`/odoo-sync/products/category/${categoryId}`, { params }),
 
   /**
    * Get stock levels by category
-   * GET /api/odoo/stock/category/:categoryId
+   * GET /api/odoo-sync/stock/category/:categoryId
    */
   getStockByCategory: (categoryId, params = {}) => 
-    requests.get(`/odoo/stock/category/${categoryId}`, { params }),
+    requests.get(`/odoo-sync/stock/category/${categoryId}`, { params }),
 };
 
 export default OdooSyncServices; 
