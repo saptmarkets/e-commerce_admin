@@ -17,13 +17,22 @@ const PromotionServices = {
       if (promotionList) queryParams.promotionList = promotionList;
       queryParams._t = Date.now(); // Cache busting
       
-      console.log(`Fetching promotions with params:`, queryParams);
+      console.log(`🔍 PromotionServices.getAllPromotions called with params:`, params);
+      console.log(`📡 Built query params:`, queryParams);
+      console.log(`🌐 API endpoint: /promotions`);
+      
       const response = await requests.get('/promotions', queryParams);
-      console.log('Promotions API response received');
+      
+      console.log(`📊 API response received:`, response);
+      console.log(`📊 Response type:`, typeof response);
+      console.log(`📊 Is array:`, Array.isArray(response));
+      console.log(`📊 Has promotions property:`, !!response?.promotions);
+      console.log(`📊 Total promotions:`, response?.totalPromotions);
+      console.log(`📊 Total pages:`, response?.totalPages);
       
       return response;
     } catch (error) {
-      console.error('Error fetching promotions:', error);
+      console.error('❌ Error fetching promotions:', error);
       const errorMessage = error.response?.data?.message || error.message || 'Failed to fetch promotions';
       toast.error(errorMessage);
       throw new Error(errorMessage);

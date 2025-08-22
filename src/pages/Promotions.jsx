@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
-import { FiPlus, FiSearch, FiFilter, FiDownload, FiRefreshCw, FiEdit, FiTrash2, FiEye, FiGrid, FiList, FiChevronDown, FiChevronRight, FiSettings } from 'react-icons/fi';
+import { FiPlus, FiSearch, FiFilter, FiDownload, FiRefreshCw, FiEdit, FiTrash2, FiEye, FiGrid, FiList, FiChevronDown, FiChevronRight, FiSettings, FiCheck, FiX } from 'react-icons/fi';
 import { SidebarContext } from '@/context/SidebarContext';
 import { useHistory } from 'react-router-dom';
 import Main from '@/layout/Main';
@@ -150,11 +150,15 @@ const Promotions = () => {
     refetch,
   } = useQuery({
     queryKey: ['promotions', status, currentPage, customPageSize, showAllPages],
-    queryFn: () => PromotionServices.getAllPromotions({ 
-      page: showAllPages ? 1 : currentPage, 
-      limit: showAllPages ? 1000 : customPageSize, 
-      status 
-    }),
+    queryFn: () => {
+      const params = { 
+        page: showAllPages ? 1 : currentPage, 
+        limit: showAllPages ? 1000 : customPageSize, 
+        status 
+      };
+      console.log('🔍 React Query calling API with params:', params);
+      return PromotionServices.getAllPromotions(params);
+    },
     retry: 3,
     retryDelay: 1000,
     staleTime: 60000,
@@ -163,19 +167,29 @@ const Promotions = () => {
 
   // Update promotions state when React Query data changes
   useEffect(() => {
+    console.log('🔄 React Query data changed:', promotionsData);
+    console.log('📊 Data type:', typeof promotionsData);
+    console.log('📊 Is array:', Array.isArray(promotionsData));
+    console.log('📊 Has promotions property:', promotionsData?.promotions);
+    console.log('📊 Total promotions:', promotionsData?.totalPromotions);
+    console.log('📊 Total pages:', promotionsData?.totalPages);
+    
     if (promotionsData) {
       setFetchError(null);
       dataLoadedRef.current = true;
       
       if (promotionsData.promotions) {
+        console.log('✅ Setting promotions from promotionsData.promotions:', promotionsData.promotions.length);
         setPromotions(promotionsData.promotions);
         setTotalPages(promotionsData.totalPages || 1);
         setTotalPromotions(promotionsData.totalPromotions || 0);
       } else if (Array.isArray(promotionsData)) {
+        console.log('✅ Setting promotions from array:', promotionsData.length);
         setPromotions(promotionsData);
         setTotalPages(1);
         setTotalPromotions(promotionsData.length);
       } else {
+        console.log('❌ Unexpected data format, setting empty arrays');
         setPromotions([]);
         setTotalPages(1);
         setTotalPromotions(0);
@@ -380,51 +394,94 @@ const Promotions = () => {
             </button>
           </div>
 
-          {/* Stats Cards */}
+          {/* Summary Statistics */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+            <div className="bg-white p-4 rounded-lg shadow">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Total Promotions</p>
-                  <p className="text-2xl font-bold text-gray-900">{promotions.length}</p>
+                  <p className="text-sm text-gray-600">Total</p>
+                  <p className="text-2xl font-bold text-gray-900">{totalPromotions}</p>
                 </div>
-                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <FiEye className="w-5 h-5 text-blue-600" />
+                <div className="p-2 bg-blue-100 rounded-full">
+                  <FiEye className="w-6 h-6 text-blue-600" />
                 </div>
               </div>
             </div>
-            <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+            
+            <div className="bg-white p-4 rounded-lg shadow">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Promotion Lists</p>
-                  <p className="text-2xl font-bold text-gray-900">{promotionLists.length}</p>
+                  <p className="text-sm text-gray-600">Active</p>
+                  <p className="text-2xl font-bold text-green-600">{promotions.filter(p => p.isActive).length}</p>
                 </div>
-                <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                  <FiList className="w-5 h-5 text-green-600" />
+                <div className="p-2 bg-green-100 rounded-full">
+                  <FiCheck className="w-6 h-6 text-green-600" />
                 </div>
               </div>
             </div>
-            <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+            
+            <div className="bg-white p-4 rounded-lg shadow">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Active Promotions</p>
-                  <p className="text-2xl font-bold text-gray-900">{promotions.filter(p => p.isActive).length}</p>
+                  <p className="text-sm text-gray-600">Inactive</p>
+                  <p className="text-2xl font-bold text-red-600">{promotions.filter(p => !p.isActive).length}</p>
                 </div>
-                <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <FiEye className="w-5 h-5 text-purple-600" />
+                <div className="p-2 bg-red-100 rounded-full">
+                  <FiX className="w-6 h-6 text-red-600" />
                 </div>
               </div>
             </div>
-            <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+            
+            <div className="bg-white p-4 rounded-lg shadow">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Without Lists</p>
-                  <p className="text-2xl font-bold text-gray-900">{groupedPromotions.withoutList.length}</p>
+                  <p className="text-sm text-gray-600">Selected</p>
+                  <p className="text-2xl font-bold text-purple-600">{selectedPromotions.length}</p>
                 </div>
-                <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-                  <FiEye className="w-5 h-5 text-orange-600" />
+                <div className="p-2 bg-purple-100 rounded-full">
+                  <FiCheck className="w-6 h-6 text-purple-600" />
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Debug Info */}
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+            <h3 className="text-sm font-medium text-yellow-800 mb-2">Debug Information</h3>
+            <div className="text-xs text-yellow-700 space-y-1">
+              <p>Current Page: {currentPage}</p>
+              <p>Page Size: {customPageSize}</p>
+              <p>Show All Pages: {showAllPages ? 'Yes' : 'No'}</p>
+              <p>Total Promotions: {totalPromotions}</p>
+              <p>Total Pages: {totalPages}</p>
+              <p>Promotions Array Length: {promotions.length}</p>
+              <p>Status Filter: {status || 'None'}</p>
+            </div>
+            <div className="mt-3">
+              <button
+                onClick={() => {
+                  console.log('🔄 Manual refresh triggered');
+                  refetch();
+                }}
+                className="px-3 py-1 bg-yellow-600 text-white text-xs rounded hover:bg-yellow-700"
+              >
+                Manual Refresh
+              </button>
+              <button
+                onClick={() => {
+                  console.log('🔍 Current state:', {
+                    currentPage,
+                    customPageSize,
+                    showAllPages,
+                    totalPromotions,
+                    totalPages,
+                    promotionsLength: promotions.length
+                  });
+                }}
+                className="ml-2 px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700"
+              >
+                Log State
+              </button>
             </div>
           </div>
 
