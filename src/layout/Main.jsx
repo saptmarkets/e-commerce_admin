@@ -11,16 +11,7 @@ const Main = ({ children }) => {
   // Allow Super Admin full access regardless of decryption status
   const isSuperAdmin = role === "Super Admin" || adminInfo?.role === "Super Admin";
   
-  // Debug logging for troubleshooting
-  console.log("Main component access check:", {
-    path,
-    fullPath,
-    accessList,
-    role,
-    adminRole: adminInfo?.role,
-    isSuperAdmin,
-    hasAccess: accessList?.includes(path) || accessList?.includes(fullPath)
-  });
+
 
   // Grant access if:
   // 1. User is Super Admin (role-based bypass)
@@ -36,21 +27,7 @@ const Main = ({ children }) => {
   const isStockMovementsPage = path === "stock-movements" || fullPath === "stock-movements";
   const finalHasAccess = hasAccess || (isSuperAdmin && isStockMovementsPage);
 
-  // Detailed debug logging
-  console.log("Main component detailed access check:", {
-    path,
-    fullPath,
-    isSuperAdmin,
-    pathInAccessList,
-    fullPathInAccessList,
-    fallbackAccess,
-    hasAccess,
-    isStockMovementsPage,
-    finalHasAccess,
-    accessListLength: accessList?.length,
-    accessListIncludes: accessList?.includes ? 'yes' : 'no',
-    adminEmail: adminInfo?.email
-  });
+
 
   if (!finalHasAccess) {
     return <NotFoundPage />;
