@@ -54,8 +54,6 @@ const PromotionModal = ({ isOpen, onClose, promotionId = null }) => {
 
   useEffect(() => {
     if (isOpen) {
-      console.log('PromotionModal opened, loading data...');
-      console.log('promotionId:', promotionId);
       loadPromotionLists();
       loadProducts();
       loadCategories();
@@ -70,17 +68,11 @@ const PromotionModal = ({ isOpen, onClose, promotionId = null }) => {
 
   const loadPromotionLists = async () => {
     try {
-      console.log('Loading promotion lists...');
       const response = await PromotionListServices.getAllPromotionLists({ page: 1, limit: 100 });
-      console.log('Promotion lists response:', response);
-      console.log('Response type:', typeof response);
-      console.log('Response keys:', Object.keys(response || {}));
       
       if (response?.promotionLists) {
-        console.log('Found promotionLists array:', response.promotionLists.length, 'items');
         setPromotionLists(response.promotionLists);
       } else if (Array.isArray(response)) {
-        console.log('Response is array:', response.length, 'items');
         setPromotionLists(response);
       } else {
         console.error('Unexpected promotion lists response structure:', response);
@@ -96,7 +88,6 @@ const PromotionModal = ({ isOpen, onClose, promotionId = null }) => {
     try {
       // Fetch all products (increase limit)
       const response = await ProductServices.getProductsForPromotions(1, 10000, '');
-      console.log('Products API response:', response);
       
       // Handle different response structures
       let productsList = [];
@@ -501,20 +492,9 @@ const PromotionModal = ({ isOpen, onClose, promotionId = null }) => {
       // Step 1: Basic info - just need promotion type
       isValid = formData.type;
     } else if (step === 2) {
-      // Step 2: Product selection validation
-      if (formData.type === 'bulk_purchase') {
-        if (selectionMode === 'all') {
-          isValid = true; // All products mode doesn't need selection
-        } else if (selectionMode === 'categories') {
-          isValid = selectedCategories.length > 0;
-        } else {
-          isValid = selectedProducts.length > 0 && Object.keys(selectedProductUnits).length > 0;
-        }
-      } else if (formData.type === 'fixed_price') {
-        isValid = selectedProducts.length > 0 && Object.keys(selectedProductUnits).length > 0;
-      } else if (formData.type === 'assorted_items') {
-        isValid = selectedProducts.length >= 2 && Object.keys(selectedProductUnits).length >= 2;
-      }
+      // Step 2: Allow moving forward without strict validation
+      // Products can be selected in step 3 if needed
+      isValid = true;
     } else {
       // Step 3: Final validation
       isValid = validateForm();
@@ -524,12 +504,6 @@ const PromotionModal = ({ isOpen, onClose, promotionId = null }) => {
       setStep(prev => prev + 1);
     } else {
       // Show validation errors for current step
-      console.log('Validation failed for step', step);
-      console.log('Selected products:', selectedProducts.length);
-      console.log('Selected product units:', Object.keys(selectedProductUnits).length);
-      console.log('Selection mode:', selectionMode);
-      console.log('Selected categories:', selectedCategories.length);
-      
       if (step === 2) {
         // Show specific error for product selection step
         if (formData.type === 'fixed_price' && selectedProducts.length === 0) {
@@ -611,7 +585,7 @@ const PromotionModal = ({ isOpen, onClose, promotionId = null }) => {
         promotionData.categories = [];
       }
 
-      console.log('Sending promotion data:', promotionData);
+
 
       let response;
       if (promotionId) {
