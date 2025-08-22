@@ -62,22 +62,22 @@ const Promotions = () => {
   // Generate page numbers for pagination
   const generatePageNumbers = () => {
     const pages = [];
-    const totalPages = totalPages;
-    const currentPage = currentPage;
+    const totalPagesCount = totalPages;
+    const currentPageNum = currentPage;
     
-    if (totalPages <= 7) {
+    if (totalPagesCount <= 7) {
       // Show all pages if 7 or fewer
-      for (let i = 1; i <= totalPages; i++) {
+      for (let i = 1; i <= totalPagesCount; i++) {
         pages.push(i);
       }
     } else {
       // Smart pagination with ellipsis
-      if (currentPage <= 4) {
-        pages.push(1, 2, 3, 4, 5, '...', totalPages);
-      } else if (currentPage >= totalPages - 3) {
-        pages.push(1, '...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+      if (currentPageNum <= 4) {
+        pages.push(1, 2, 3, 4, 5, '...', totalPagesCount);
+      } else if (currentPageNum >= totalPagesCount - 3) {
+        pages.push(1, '...', totalPagesCount - 4, totalPagesCount - 3, totalPagesCount - 2, totalPagesCount - 1, totalPagesCount);
       } else {
-        pages.push(1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages);
+        pages.push(1, '...', currentPageNum - 1, currentPageNum, currentPageNum + 1, '...', totalPagesCount);
       }
     }
     
@@ -105,8 +105,13 @@ const Promotions = () => {
 
   const handlePageSizeChange = (selectedOption) => {
     setCustomPageSize(selectedOption.value);
-    // Refetch with new page size
-    refetch();
+    setCurrentPage(1); // Reset to first page when changing page size
+    // React Query will automatically refetch due to queryKey change
+  };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+    // React Query will automatically refetch due to queryKey change
   };
 
   const toggleShowAllPages = () => {
@@ -144,8 +149,12 @@ const Promotions = () => {
     error,
     refetch,
   } = useQuery({
-    queryKey: ['promotions', status, currentPage],
-    queryFn: () => PromotionServices.getAllPromotions({ page: currentPage, limit: 1000, status }),
+    queryKey: ['promotions', status, currentPage, customPageSize, showAllPages],
+    queryFn: () => PromotionServices.getAllPromotions({ 
+      page: showAllPages ? 1 : currentPage, 
+      limit: showAllPages ? 1000 : customPageSize, 
+      status 
+    }),
     retry: 3,
     retryDelay: 1000,
     staleTime: 60000,
@@ -916,6 +925,98 @@ const Promotions = () => {
                     )}
                   </div>
                 )}
+              </div>
+            )}
+            
+            {/* Pagination Controls */}
+            {totalPages > 1 && !showAllPages && (
+              <div className="mt-8 flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <span className="text-sm text-gray-700">
+                    Showing {((currentPage - 1) * customPageSize) + 1} to {Math.min(currentPage * customPageSize, totalPromotions)} of {totalPromotions} promotions
+                  </span>
+                  
+                  {/* Show All Toggle */}
+                  <button
+                    onClick={toggleShowAllPages}
+                    className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50"
+                  >
+                    Show All
+                  </button>
+                </div>
+                
+                <div className="flex items-center space-x-2">
+                  {/* Page Size Selector */}
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm text-gray-700">Show:</span>
+                    <select
+                      value={customPageSize}
+                      onChange={(e) => handlePageSizeChange({ value: parseInt(e.target.value) })}
+                      className="border border-gray-300 rounded px-2 py-1 text-sm"
+                    >
+                      {pageSizeOptions.map(option => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  
+                  {/* Pagination Navigation */}
+                  <nav className="flex items-center space-x-1">
+                    <button
+                      onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                      disabled={currentPage === 1}
+                      className="px-3 py-1 text-sm border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                    >
+                      Previous
+                    </button>
+                    
+                    {generatePageNumbers().map((page, index) => (
+                      <button
+                        key={index}
+                        onClick={() => typeof page === 'number' ? handlePageChange(page) : null}
+                        disabled={page === '...'}
+                        className={`px-3 py-1 text-sm border rounded ${
+                          page === currentPage
+                            ? 'bg-blue-600 text-white border-blue-600'
+                            : page === '...'
+                            ? 'border-gray-300 text-gray-500 cursor-default'
+                            : 'border-gray-300 hover:bg-gray-50'
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    ))}
+                    
+                    <button
+                      onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+                      disabled={currentPage === totalPages}
+                      className="px-3 py-1 text-sm border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                    >
+                      Next
+                    </button>
+                  </nav>
+                </div>
+              </div>
+            )}
+            
+            {/* Show All Mode Info */}
+            {showAllPages && (
+              <div className="mt-8 flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <span className="text-sm text-gray-700">
+                    Showing all {totalPromotions} promotions
+                  </span>
+                  
+                  {/* Back to Paginated Toggle */}
+                  <button
+                    onClick={toggleShowAllPages}
+                    className="px-3 py-1 text-sm border border-green-600 rounded bg-green-600 text-white hover:bg-green-700"
+                  >
+                    Show Paginated
+                  </button>
+                </div>
               </div>
             )}
             
