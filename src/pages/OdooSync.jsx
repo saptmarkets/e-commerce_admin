@@ -225,12 +225,17 @@ const OdooSync = () => {
       } else if (res.totalProductsSynced !== undefined) {
         syncedProducts = res.totalProductsSynced;
         console.log('✅ Found totalProductsSynced in res:', syncedProducts);
+      } else if (res.results && Array.isArray(res.results)) {
+        // Calculate from results array - each result has 'synced' field
+        syncedProducts = res.results.reduce((sum, result) => sum + (result.synced || 0), 0);
+        console.log('✅ Calculated totalProductsSynced from results array synced field:', syncedProducts);
+      } else if (res.data && res.data.synced !== undefined) {
+        // Single category sync returns data.synced
+        syncedProducts = res.data.synced;
+        console.log('✅ Found synced in res.data:', syncedProducts);
       } else {
-        // Fallback: calculate from results array
-        if (res.results && Array.isArray(res.results)) {
-          syncedProducts = res.results.reduce((sum, result) => sum + (result.syncedProducts || 0), 0);
-          console.log('✅ Calculated totalProductsSynced from results array:', syncedProducts);
-        }
+        console.log('⚠️ Could not find synced products count in response structure');
+        syncedProducts = 0;
       }
       
       if (res.success && res.errors?.length === 0) {
