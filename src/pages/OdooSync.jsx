@@ -154,7 +154,14 @@ const OdooSync = () => {
       setSyncLoading(true);
       const res = await OdooSyncServices.syncToStore({ fields: syncFields });
       const unitsUpdated = res.unitsUpdated || 0;
-      notifySuccess(`Sync completed. Updated ${res.updated || 0} products and ${unitsUpdated} units`);
+      const priceUnitsUpdated = res.priceUnitsUpdated || 0;
+      
+      let message = `Sync completed. Updated ${res.updated || 0} products and ${unitsUpdated} units`;
+      if (priceUnitsUpdated > 0) {
+        message += ` (${priceUnitsUpdated} price updates)`;
+      }
+      
+      notifySuccess(message);
     } catch(err) {
       console.error(err);
       notifyError(err.response?.data?.message || 'Sync failed');
