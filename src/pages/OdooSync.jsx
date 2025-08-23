@@ -422,7 +422,7 @@ const OdooSync = () => {
           <h2 className="text-lg font-semibold mb-2">Fetched Data Statistics</h2>
           <ul className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
             <li>Products: <span className="font-medium">{statistics.total_records?.products || 0}</span></li>
-            <li>Categories: <span className="font-medium">{statistics.total_records?.categories || 0}</span></li>
+                            <li>Main Categories: <span className="font-medium">{statistics.total_records?.categories || 0}</span></li>
             <li>Units of Measure: <span className="font-medium">{statistics.total_records?.uom || 0}</span></li>
             <li>Stock: <span className="font-medium">{statistics.total_records?.stock || 0}</span></li>
             <li>Barcode Units: <span className="font-medium">{statistics.total_records?.barcode_units || 0}</span></li>
@@ -436,7 +436,10 @@ const OdooSync = () => {
       {showCategoryModal && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-[600px] max-h-[80vh] overflow-y-auto">
-            <h2 className="text-lg font-semibold mb-4">Select Categories to Sync</h2>
+            <h2 className="text-lg font-semibold mb-4">Select Main Categories to Sync</h2>
+            <p className="text-sm text-gray-600 mb-4">
+              Choose main categories to sync from Odoo. Each main category includes all its subcategories and products.
+            </p>
             
             {/* Progress indicator */}
             {syncProgress && (
@@ -479,10 +482,15 @@ const OdooSync = () => {
                     className="rounded"
                   />
                   <div className="flex-1">
-                    <div className="font-medium">{category.complete_name}</div>
-                    <div className="text-sm text-gray-600">
-                      {category.product_count} products
+                    <div className="font-medium text-lg">{category.name}</div>
+                    <div className="text-sm text-gray-600 mb-1">
+                      {category.product_count} products across all subcategories
                     </div>
+                    {category.description && (
+                      <div className="text-xs text-gray-500 italic">
+                        {category.description}
+                      </div>
+                    )}
                   </div>
                 </label>
               ))}
@@ -507,7 +515,7 @@ const OdooSync = () => {
                     Syncing...
                   </>
                 ) : (
-                  `Sync ${selectedCategories.length} Categories`
+                  `Sync ${selectedCategories.length} Main Categories`
                 )}
               </button>
             </div>
