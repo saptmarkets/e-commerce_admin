@@ -202,13 +202,23 @@ const OdooSync = () => {
       // Use the new enhanced selective category sync
       const res = await OdooSyncServices.syncSelectedCategories(selectedCategories);
       
+      // Debug: Log the full response
+      console.log('🔍 Category sync response:', res);
+      console.log('🔍 Response data structure:', {
+        success: res.success,
+        data: res.data,
+        summary: res.data?.summary,
+        totalProductsSynced: res.data?.summary?.totalProductsSynced
+      });
+      
       if (res.success) {
+        const syncedProducts = res.data?.summary?.totalProductsSynced || 0;
         setSyncProgress({ 
           status: 'completed', 
-          message: `Successfully synced ${res.data?.updated || 0} products from ${selectedCategories.length} categories`,
+          message: `Successfully synced ${syncedProducts} products from ${selectedCategories.length} categories`,
           details: res.data
         });
-        notifySuccess(`Category sync completed! Updated ${res.data?.updated || 0} products`);
+        notifySuccess(`Category sync completed! Updated ${syncedProducts} products`);
         await loadStatistics(); // Refresh stats
       } else {
         throw new Error(res.message || 'Sync failed');
