@@ -153,7 +153,8 @@ const OdooSync = () => {
     try {
       setSyncLoading(true);
       const res = await OdooSyncServices.syncToStore({ fields: syncFields });
-      notifySuccess(`Sync completed. Updated ${res.updated || 0} products`);
+      const unitsUpdated = res.unitsUpdated || 0;
+      notifySuccess(`Sync completed. Updated ${res.updated || 0} products and ${unitsUpdated} units`);
     } catch(err) {
       console.error(err);
       notifyError(err.response?.data?.message || 'Sync failed');
