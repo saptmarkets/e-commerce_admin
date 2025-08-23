@@ -210,11 +210,12 @@ const OdooSync = () => {
         results: res.results,
         errors: res.errors,
         summary: res.summary,
-        totalProductsSynced: res.summary?.totalProductsSynced
+        data: res.data,
+        totalProductsSynced: res.data?.summary?.totalProductsSynced || res.summary?.totalProductsSynced || 0
       });
       
       if (res.success && res.errors?.length === 0) {
-        const syncedProducts = res.summary?.totalProductsSynced || 0;
+        const syncedProducts = res.data?.summary?.totalProductsSynced || res.summary?.totalProductsSynced || 0;
         setSyncProgress({ 
           status: 'completed', 
           message: `Successfully synced ${syncedProducts} products from ${selectedCategories.length} categories`,
