@@ -28,6 +28,7 @@ const OdooSync = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [syncProgress, setSyncProgress] = useState(null);
   const [categoryLoading, setCategoryLoading] = useState(false);
+  const [categorySearchTerm, setCategorySearchTerm] = useState('');
 
   // New batch fetch states
   const [showBatchModal, setShowBatchModal] = useState(false);
@@ -43,6 +44,12 @@ const OdooSync = () => {
   const [pushLoading, setPushLoading] = useState(false);
   const [pushReport, setPushReport] = useState(null);
   const [showReportModal, setShowReportModal] = useState(false);
+
+  // Filter categories based on search term
+  const filteredCategories = categories.filter(category =>
+    category.name.toLowerCase().includes(categorySearchTerm.toLowerCase()) ||
+    (category.description && category.description.toLowerCase().includes(categorySearchTerm.toLowerCase()))
+  );
 
   // Helper to update stats
   const loadStatistics = async () => {
@@ -475,6 +482,30 @@ const OdooSync = () => {
               </div>
             )}
 
+            {/* Search input */}
+            <div className="mb-4">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search categories by name or description..."
+                  value={categorySearchTerm}
+                  onChange={(e) => setCategorySearchTerm(e.target.value)}
+                  className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                />
+                {categorySearchTerm && (
+                  <button
+                    onClick={() => setCategorySearchTerm('')}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
+              <div className="text-sm text-gray-500 mt-1">
+                Showing {filteredCategories.length} of {categories.length} categories
+              </div>
+            </div>
+
             {/* Category selection controls */}
             <div className="flex gap-2 mb-4">
               <button
@@ -490,13 +521,13 @@ const OdooSync = () => {
                 Deselect All
               </button>
               <span className="text-sm text-gray-600 ml-auto">
-                {selectedCategories.length} of {categories.length} selected
+                {selectedCategories.length} of {filteredCategories.length} selected
               </span>
             </div>
 
             {/* Categories list */}
             <div className="space-y-2 max-h-96 overflow-y-auto">
-              {categories.map((category) => (
+              {filteredCategories.map((category) => (
                 <label key={category.id} className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded cursor-pointer">
                   <input
                     type="checkbox"
