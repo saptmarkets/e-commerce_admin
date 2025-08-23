@@ -206,20 +206,31 @@ const OdooSync = () => {
       console.log('🔍 Category sync response:', res);
       console.log('🔍 Response data structure:', {
         success: res.success,
-        data: res.data,
-        summary: res.data?.summary,
-        totalProductsSynced: res.data?.summary?.totalProductsSynced
+        message: res.message,
+        results: res.results,
+        errors: res.errors,
+        summary: res.summary,
+        totalProductsSynced: res.summary?.totalProductsSynced
       });
       
-      if (res.success) {
-        const syncedProducts = res.data?.summary?.totalProductsSynced || 0;
+      if (res.success && res.errors?.length === 0) {
+        const syncedProducts = res.summary?.totalProductsSynced || 0;
         setSyncProgress({ 
           status: 'completed', 
           message: `Successfully synced ${syncedProducts} products from ${selectedCategories.length} categories`,
-          details: res.data
+          details: res
         });
         notifySuccess(`Category sync completed! Updated ${syncedProducts} products`);
         await loadStatistics(); // Refresh stats
+      } else if (res.success && res.errors?.length > 0) {
+        // Sync partially succeeded but had errors
+        const errorDetails = res.errors.map(e => e.error || e.message).join(', ');
+        setSyncProgress({ 
+          status: 'error', 
+          message: `Category sync completed with errors: ${errorDetails}`,
+          details: res
+        });
+        notifyError(`Category sync completed with errors: ${errorDetails}`);
       } else {
         throw new Error(res.message || 'Sync failed');
       }
