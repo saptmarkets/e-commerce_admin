@@ -214,8 +214,26 @@ const OdooSync = () => {
         totalProductsSynced: res.data?.summary?.totalProductsSynced || res.summary?.totalProductsSynced || 0
       });
       
+      // Extract synced products count from various possible response structures
+      let syncedProducts = 0;
+      if (res.data?.summary?.totalProductsSynced !== undefined) {
+        syncedProducts = res.data.summary.totalProductsSynced;
+        console.log('✅ Found totalProductsSynced in res.data.summary:', syncedProducts);
+      } else if (res.summary?.totalProductsSynced !== undefined) {
+        syncedProducts = res.summary.totalProductsSynced;
+        console.log('✅ Found totalProductsSynced in res.summary:', syncedProducts);
+      } else if (res.totalProductsSynced !== undefined) {
+        syncedProducts = res.totalProductsSynced;
+        console.log('✅ Found totalProductsSynced in res:', syncedProducts);
+      } else {
+        // Fallback: calculate from results array
+        if (res.results && Array.isArray(res.results)) {
+          syncedProducts = res.results.reduce((sum, result) => sum + (result.syncedProducts || 0), 0);
+          console.log('✅ Calculated totalProductsSynced from results array:', syncedProducts);
+        }
+      }
+      
       if (res.success && res.errors?.length === 0) {
-        const syncedProducts = res.data?.summary?.totalProductsSynced || res.summary?.totalProductsSynced || 0;
         setSyncProgress({ 
           status: 'completed', 
           message: `Successfully synced ${syncedProducts} products from ${selectedCategories.length} categories`,
