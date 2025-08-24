@@ -204,119 +204,6 @@ const OdooCatalog = () => {
     }
   };
 
-  // NEW: Fetch import status for ALL products (not just paginated ones)
-  const fetchAllProductsImportStatus = async () => {
-    try {
-      console.log('🔄 Fetching import status for ALL products...');
-      
-      // Get total count from pagination
-      const totalProducts = pagination.total || 0;
-      
-      if (totalProducts === 0) {
-        console.log('⚠️ No total products count available');
-        return;
-      }
-      
-      // 🔧 MEMORY OPTIMIZATION: Use the new count endpoint instead of fetching all products
-      try {
-        const countRes = await requests.get("/products/import-status-counts");
-        if (countRes.success) {
-          console.log('📊 Product counts from efficient endpoint:', countRes.counts);
-          
-          // Set the total counts without processing all products
-          setImportStatusDetails({
-            totalProducts: countRes.counts.totalOdooProducts,
-            totalStoreProducts: countRes.counts.totalStoreProducts,
-            estimatedNotImported: countRes.counts.estimatedNotImported,
-            autoUpdatedCount: 0
-          });
-          
-          // Show estimated counts
-          notifySuccess(`📊 Found ${countRes.counts.totalOdooProducts} Odoo products, ${countRes.counts.totalStoreProducts} in store`);
-          return;
-        }
-      } catch (countError) {
-        console.warn('⚠️ Count endpoint failed, falling back to batch processing:', countError.message);
-      }
-      
-      // 🔧 FALLBACK: Use batch processing if count endpoint fails
-      const batchSize = 1000; // Match backend batch size
-      const totalBatches = Math.ceil(totalProducts / batchSize);
-      
-      console.log(`🔄 Processing ${totalProducts} products in ${totalBatches} batches of ${batchSize}`);
-      
-      let allImportedIds = [];
-      let allNeedsUpdateIds = [];
-      let allNotImportedIds = [];
-      let totalAutoUpdated = 0;
-      
-      // Process in batches to prevent memory issues
-      for (let batch = 1; batch <= totalBatches; batch++) {
-        try {
-          console.log(`🔄 Processing batch ${batch}/${totalBatches}...`);
-          
-          // Get product IDs for this batch (simulate batch data)
-          const startIndex = (batch - 1) * batchSize;
-          const endIndex = Math.min(startIndex + batchSize, totalProducts);
-          const batchProductIds = Array.from({ length: endIndex - startIndex }, (_, i) => startIndex + i + 1);
-          
-          // Check import status for this batch
-          const res = await requests.post("/products/check-imported", { 
-            odooProductIds: batchProductIds,
-            page: batch,
-            limit: batchSize
-          });
-          
-          if (res.success) {
-            // Accumulate results from all batches
-            allImportedIds = [...allImportedIds, ...(res.imported || [])];
-            allNeedsUpdateIds = [...allNeedsUpdateIds, ...(res.needsUpdate || [])];
-            allNotImportedIds = [...allNotImportedIds, ...(res.notImported || [])];
-            totalAutoUpdated += res.autoUpdatedCount || 0;
-            
-            console.log(`✅ Batch ${batch} completed: ${res.imported?.length || 0} imported, ${res.needsUpdate?.length || 0} need update, ${res.notImported?.length || 0} not imported`);
-          }
-          
-          // Small delay between batches to prevent overwhelming the server
-          await new Promise(resolve => setTimeout(resolve, 100));
-          
-        } catch (batchError) {
-          console.error(`❌ Batch ${batch} failed:`, batchError.message);
-          // Continue with next batch instead of failing completely
-        }
-      }
-      
-      // Update state with accumulated results
-      setImportedIds(allImportedIds);
-      setNeedsUpdateIds(allNeedsUpdateIds);
-      setNotImportedIds(allNotImportedIds);
-      setImportStatusDetails({
-        totalProducts,
-        totalImported: allImportedIds.length,
-        totalNeedsUpdate: allNeedsUpdateIds.length,
-        totalNotImported: allNotImportedIds.length,
-        autoUpdatedCount: totalAutoUpdated
-      });
-      
-      // Show auto-update notification if any products were updated
-      if (totalAutoUpdated > 0) {
-        notifySuccess(`🔄 Auto-updated ${totalAutoUpdated} products with latest prices/stock from Odoo!`);
-      }
-      
-      console.log('📊 ALL Products Import Status (Batch Processing):', {
-        total: totalProducts,
-        imported: allImportedIds.length,
-        needsUpdate: allNeedsUpdateIds.length,
-        notImported: allNotImportedIds.length,
-        autoUpdated: totalAutoUpdated
-      });
-      
-    } catch (err) {
-      console.error("Error fetching ALL products import status:", err);
-      notifyError('Failed to fetch complete import status');
-    }
-  };
-
   // Fetch products and then fetch import status
   const fetchProducts = async (page = 1, pageSize = null) => {
     try {
@@ -360,18 +247,6 @@ const OdooCatalog = () => {
   useEffect(() => {
     fetchProducts();
   }, [importStatusFilter, showAllPages, selectedCat]);
-
-  // NEW: Auto-fetch ALL products import status when page loads
-  useEffect(() => {
-    if (pagination.total > 0 && products.length > 0) {
-      // Wait a bit for products to load, then fetch ALL products status
-      const timer = setTimeout(() => {
-        fetchAllProductsImportStatus();
-      }, 1000);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [pagination.total, products.length]);
 
   useEffect(() => {
     (async () => {
@@ -594,37 +469,37 @@ const OdooCatalog = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center">
               <div className="text-2xl font-bold text-gray-600 dark:text-gray-400">
-                {importStatusDetails?.totalProducts || importStatusDetails?.totalOdooProducts || pagination.total || products.length}
+                {products.length}
               </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">Total Odoo Products</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">Total Products</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-green-600">
-                {importStatusDetails?.totalImported || importedIds.length}
+                {importedIds.length}
               </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">✅ In Store & Up-to-date</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">✅ Up-to-date</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-orange-600">
-                {importStatusDetails?.totalNeedsUpdate || needsUpdateIds.length}
+                {needsUpdateIds.length}
               </div>
               <div className="text-sm text-gray-500 dark:text-gray-400">🔄 Needs Update</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-red-600">
-                {importStatusDetails?.estimatedNotImported || importStatusDetails?.totalNotImported || notImportedIds.length}
+                {notImportedIds.length}
               </div>
               <div className="text-sm text-gray-500 dark:text-gray-400">❌ Not Imported</div>
             </div>
           </div>
           
-          {/* Additional Information */}
-          {importStatusDetails?.totalStoreProducts && (
+          {/* Location Information */}
+          {importStatusDetails.odooLocations && (
             <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
               <div className="flex items-center gap-2 text-blue-800 dark:text-blue-200">
-                <span className="text-lg">🏪</span>
+                <span className="text-lg">📍</span>
                 <span className="font-medium">
-                  Store has {importStatusDetails.totalStoreProducts} products with Odoo integration
+                  Tracking stock from {importStatusDetails.odooLocations} Odoo locations
                 </span>
               </div>
             </div>
@@ -642,26 +517,16 @@ const OdooCatalog = () => {
             </div>
           )}
           
-          {/* Manual refresh buttons */}
-          <div className="mt-3 flex justify-center gap-3">
+          {/* Manual refresh button */}
+          <div className="mt-3 flex justify-center">
             <button
               onClick={() => fetchImportStatus(products)}
               disabled={loading}
               className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 flex items-center gap-2 text-sm"
-              title="Refresh import status for current page products"
+              title="Refresh import status and auto-update products"
             >
               <FiRefreshCw className={loading ? 'animate-spin' : ''} />
-              {loading ? 'Refreshing...' : '🔄 Refresh Current Page Status'}
-            </button>
-            
-            <button
-              onClick={fetchAllProductsImportStatus}
-              disabled={loading}
-              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 flex items-center gap-2 text-sm"
-              title="Refresh import status for ALL products (not just current page)"
-            >
-              <FiRefreshCw className={loading ? 'animate-spin' : ''} />
-              {loading ? 'Refreshing...' : '🌐 Refresh ALL Products Status'}
+              {loading ? 'Refreshing...' : '🔄 Refresh Status & Auto-Update'}
             </button>
           </div>
         </div>

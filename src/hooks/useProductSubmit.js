@@ -115,6 +115,21 @@ const useProductSubmit = (id) => {
     setProductUnits(newUnits);
   };
 
+  // Add a function to refresh product units from the database
+  const refreshProductUnits = async (productId) => {
+    try {
+      console.log('🔄 Refreshing product units from database for product:', productId);
+      const unitsResult = await ProductUnitServices.getProductUnits(productId);
+      if (unitsResult && unitsResult.data) {
+        const fetchedUnits = Array.isArray(unitsResult.data) ? unitsResult.data : [];
+        setProductUnits(fetchedUnits);
+        console.log('✅ Product units refreshed:', fetchedUnits.length, 'units loaded');
+      }
+    } catch (error) {
+      console.error('❌ Error refreshing product units:', error);
+    }
+  };
+
   // === LOAD PRODUCT DATA ON EDIT ===
   useEffect(() => {
     if (id) {
@@ -350,6 +365,9 @@ const useProductSubmit = (id) => {
           } else {
             console.log('No product units to process');
           }
+          
+          // Refresh product units from database to show latest data including updated prices
+          await refreshProductUnits(updatedId);
         } catch (unitError) {
           console.error('Error processing units:', unitError);
           notifyError('Error saving product units: ' + unitError.message);
@@ -827,7 +845,8 @@ const useProductSubmit = (id) => {
     setProductUnits,
     handleAddUnit,
     handleEditUnit,
-    handleRemoveUnit
+    handleRemoveUnit,
+    refreshProductUnits
   };
 };
 
