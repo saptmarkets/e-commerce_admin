@@ -155,8 +155,9 @@ const OdooSync = () => {
       const res = await OdooSyncServices.syncToStore({ fields: syncFields });
       const unitsUpdated = res.unitsUpdated || 0;
       const priceUnitsUpdated = res.priceUnitsUpdated || 0;
+      const totalProcessed = res.totalProcessed || 0;
       
-      let message = `Sync completed. Updated ${res.updated || 0} products and ${unitsUpdated} units`;
+      let message = `Sync completed. Updated ${res.updated || 0}/${totalProcessed} products and ${unitsUpdated} units`;
       if (priceUnitsUpdated > 0) {
         message += ` (${priceUnitsUpdated} price updates)`;
       }
