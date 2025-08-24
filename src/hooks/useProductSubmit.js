@@ -75,6 +75,12 @@ const useProductSubmit = (id) => {
 
   // This state will hold the array of product units
   const [productUnits, setProductUnits] = useState([]);
+  
+  // === POLLING AND SYNC DETECTION STATES ===
+  const [lastProductUpdate, setLastProductUpdate] = useState(null);
+  const [lastUnitsUpdate, setLastUnitsUpdate] = useState(null);
+  const [isCheckingForUpdates, setIsCheckingForUpdates] = useState(false);
+  const [odooSyncDetected, setOdooSyncDetected] = useState(false);
 
   const { handlerTextTranslateHandler } = useTranslationValue();
   const { showingTranslateValue, getNumber, getNumberTwo } = useUtilsFunction();
@@ -143,6 +149,11 @@ const useProductSubmit = (id) => {
           // Set the product in state
           setResData(result);
           setUpdatedId(id);
+          
+          // Initialize lastProductUpdate for polling
+          const updateTime = result.write_date || result.updatedAt || new Date();
+          setLastProductUpdate(updateTime);
+          console.log('🕒 Initialized lastProductUpdate:', updateTime);
           
           // Parse and set product data
           const productData = {
@@ -236,6 +247,46 @@ const useProductSubmit = (id) => {
     }
   }, [id, setValue, lang]);
 
+  // === POLLING MECHANISM FOR ODOO SYNC UPDATES ===
+  useEffect(() => {
+    if (!id || !lastProductUpdate) return;
+
+    const checkForUpdates = async () => {
+      try {
+        setIsCheckingForUpdates(true);
+        
+        const productResult = await ProductServices.getProductById(id);
+        if (productResult) {
+          const product = productResult.product || productResult;
+          const currentUpdateTime = product.write_date || product.updatedAt || new Date();
+          
+          if (currentUpdateTime > lastProductUpdate) {
+            console.log('🔄 Product update detected (likely through Odoo sync), refreshing interface...');
+            
+            setOdooSyncDetected(true);
+            
+            // Refresh product units to get latest prices
+            await refreshProductUnits(id);
+            
+            setLastProductUpdate(currentUpdateTime);
+            
+            notifySuccess('Product data refreshed from recent updates');
+            
+            setTimeout(() => setOdooSyncDetected(false), 5000);
+          }
+        }
+      } catch (error) {
+        console.error('Error checking for updates:', error);
+      } finally {
+        setIsCheckingForUpdates(false);
+      }
+    };
+
+    const interval = setInterval(checkForUpdates, 30000); // Check every 30 seconds
+    
+    return () => clearInterval(interval);
+  }, [id, lastProductUpdate, refreshProductUnits]);
+
   const handleRemoveEmptyKey = (obj) => {
     Object.keys(obj).forEach(
       (k) => !obj[k] && obj[k] !== undefined && delete obj[k]
@@ -291,6 +342,11 @@ const useProductSubmit = (id) => {
           try {
             await ProductUnitServices.updateDefaultUnitPrice(updatedId, data.price, data.price);
             console.log('💰 Default unit price updated successfully to:', data.price);
+            
+            // Refresh product units to show updated price in admin interface
+            await refreshProductUnits(updatedId);
+            console.log('🔄 Product units refreshed after price update');
+            
           } catch (priceError) {
             console.error('Error updating default unit price:', priceError);
             notifyError('Product updated but unit price update failed');
@@ -298,6 +354,10 @@ const useProductSubmit = (id) => {
         }
         
         notifySuccess('Product updated successfully!');
+        
+        // Update lastProductUpdate for polling
+        setLastProductUpdate(new Date());
+        console.log('🕒 Updated lastProductUpdate after product update');
         
         // Process product units for existing product
         try {
@@ -399,6 +459,11 @@ const useProductSubmit = (id) => {
           try {
             await ProductUnitServices.updateDefaultUnitPrice(newProductId, data.price, data.price);
             console.log('💰 Default unit price set for new product to:', data.price);
+            
+            // Refresh product units to show updated price in admin interface
+            await refreshProductUnits(newProductId);
+            console.log('🔄 Product units refreshed after price setting for new product');
+            
           } catch (priceError) {
             console.error('Error setting default unit price for new product:', priceError);
             notifyError('Product created but unit price setting failed');
@@ -406,6 +471,10 @@ const useProductSubmit = (id) => {
         }
         
         notifySuccess("Product added successfully");
+        
+        // Update lastProductUpdate for polling
+        setLastProductUpdate(new Date());
+        console.log('🕒 Updated lastProductUpdate after product creation');
         
         if (productUnits.length > 0) {
           console.log('Setting hasMultiUnits to true for new product');
@@ -476,6 +545,11 @@ const useProductSubmit = (id) => {
             } else {
               console.log('No product units to create for new product');
             }
+            
+            // Final refresh of product units for new product to ensure all data is displayed
+            await refreshProductUnits(newProductId);
+            console.log('🔄 Final product units refresh for new product completed');
+            
           } catch (unitError) {
             console.error('Error processing units for new product:', unitError);
             notifyError('Error creating product units: ' + unitError.message);
