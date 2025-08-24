@@ -351,23 +351,9 @@ const ProductDrawer = ({ id }) => {
                Auto-sync
              </div>
              
-             {/* Language Selector */}
-             <Select
-               value={language}
-               onChange={(e) => setLanguage(e.target.value)}
-               className="w-20 h-8 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-             >
-               <option value="en">en</option>
-               <option value="ar">ar</option>
-             </Select>
+             {/* Language selector removed - not essential for core functionality */}
              
-             {/* Close Button */}
-             <button
-               onClick={closeDrawer}
-               className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
-             >
-               <FiX className="w-5 h-5" />
-             </button>
+             {/* Close button removed - drawer is controlled by MainDrawer */}
            </div>
          </div>
        </div>
