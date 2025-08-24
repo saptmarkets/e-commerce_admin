@@ -360,6 +360,20 @@ const useProductSubmit = (id) => {
             await refreshProductUnits(updatedId);
             console.log('✅ Product units refreshed after price update');
             
+            // 🚨 CRITICAL FIX: Update the form data price so unit processing uses NEW price
+            console.log('🔧 Step 4: Updating form data price from', data.price, 'to ensure unit processing uses correct price');
+            
+            // Update the productUnits state to use the new price for the default unit
+            setProductUnits(prevUnits => {
+              return prevUnits.map(unit => {
+                if (unit.isDefault) {
+                  console.log('🔧 Updating default unit price from', unit.price, 'to', data.price);
+                  return { ...unit, price: parseFloat(data.price) };
+                }
+                return unit;
+              });
+            });
+            
           } catch (priceError) {
             console.error('❌ Error updating price using import service method:', priceError);
             console.error('❌ Error details:', {
@@ -494,6 +508,17 @@ const useProductSubmit = (id) => {
             console.log('🔄 Step 3: Refreshing product units after price setting...');
             await refreshProductUnits(newProductId);
             console.log('✅ Product units refreshed after price setting for new product');
+            
+            // 🚨 CRITICAL FIX: Update the productUnits state to use the new price for the default unit
+            setProductUnits(prevUnits => {
+              return prevUnits.map(unit => {
+                if (unit.isDefault) {
+                  console.log('🔧 Updating default unit price from', unit.price, 'to', data.price, 'for new product');
+                  return { ...unit, price: parseFloat(data.price) };
+                }
+                return unit;
+              });
+            });
             
           } catch (priceError) {
             console.error('❌ Error setting price using import service method for new product:', priceError);
