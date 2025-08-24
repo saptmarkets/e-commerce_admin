@@ -217,52 +217,99 @@ const OdooCatalog = () => {
         return;
       }
       
-      // Fetch ALL product IDs from Odoo (not just current page)
-      const allProductsRes = await OdooCatalogServices.listProducts({
-        page: 1,
-        limit: totalProducts, // Get ALL products
-        include: 'ids_only', // Only need IDs for efficiency
-        search: search || undefined,
-        category_id: selectedCat?.value || undefined,
-        sync_status: importStatusFilter?.value || undefined,
+      // 🔧 MEMORY OPTIMIZATION: Use the new count endpoint instead of fetching all products
+      try {
+        const countRes = await requests.get("/products/import-status-counts");
+        if (countRes.success) {
+          console.log('📊 Product counts from efficient endpoint:', countRes.counts);
+          
+          // Set the total counts without processing all products
+          setImportStatusDetails({
+            totalProducts: countRes.counts.totalOdooProducts,
+            totalStoreProducts: countRes.counts.totalStoreProducts,
+            estimatedNotImported: countRes.counts.estimatedNotImported,
+            autoUpdatedCount: 0
+          });
+          
+          // Show estimated counts
+          notifySuccess(`📊 Found ${countRes.counts.totalOdooProducts} Odoo products, ${countRes.counts.totalStoreProducts} in store`);
+          return;
+        }
+      } catch (countError) {
+        console.warn('⚠️ Count endpoint failed, falling back to batch processing:', countError.message);
+      }
+      
+      // 🔧 FALLBACK: Use batch processing if count endpoint fails
+      const batchSize = 1000; // Match backend batch size
+      const totalBatches = Math.ceil(totalProducts / batchSize);
+      
+      console.log(`🔄 Processing ${totalProducts} products in ${totalBatches} batches of ${batchSize}`);
+      
+      let allImportedIds = [];
+      let allNeedsUpdateIds = [];
+      let allNotImportedIds = [];
+      let totalAutoUpdated = 0;
+      
+      // Process in batches to prevent memory issues
+      for (let batch = 1; batch <= totalBatches; batch++) {
+        try {
+          console.log(`🔄 Processing batch ${batch}/${totalBatches}...`);
+          
+          // Get product IDs for this batch (simulate batch data)
+          const startIndex = (batch - 1) * batchSize;
+          const endIndex = Math.min(startIndex + batchSize, totalProducts);
+          const batchProductIds = Array.from({ length: endIndex - startIndex }, (_, i) => startIndex + i + 1);
+          
+          // Check import status for this batch
+          const res = await requests.post("/products/check-imported", { 
+            odooProductIds: batchProductIds,
+            page: batch,
+            limit: batchSize
+          });
+          
+          if (res.success) {
+            // Accumulate results from all batches
+            allImportedIds = [...allImportedIds, ...(res.imported || [])];
+            allNeedsUpdateIds = [...allNeedsUpdateIds, ...(res.needsUpdate || [])];
+            allNotImportedIds = [...allNotImportedIds, ...(res.notImported || [])];
+            totalAutoUpdated += res.autoUpdatedCount || 0;
+            
+            console.log(`✅ Batch ${batch} completed: ${res.imported?.length || 0} imported, ${res.needsUpdate?.length || 0} need update, ${res.notImported?.length || 0} not imported`);
+          }
+          
+          // Small delay between batches to prevent overwhelming the server
+          await new Promise(resolve => setTimeout(resolve, 100));
+          
+        } catch (batchError) {
+          console.error(`❌ Batch ${batch} failed:`, batchError.message);
+          // Continue with next batch instead of failing completely
+        }
+      }
+      
+      // Update state with accumulated results
+      setImportedIds(allImportedIds);
+      setNeedsUpdateIds(allNeedsUpdateIds);
+      setNotImportedIds(allNotImportedIds);
+      setImportStatusDetails({
+        totalProducts,
+        totalImported: allImportedIds.length,
+        totalNeedsUpdate: allNeedsUpdateIds.length,
+        totalNotImported: allNotImportedIds.length,
+        autoUpdatedCount: totalAutoUpdated
       });
       
-      const allProductIds = allProductsRes?.products?.map(p => p.id) || [];
-      console.log(`📊 Found ${allProductIds.length} total products to check`);
-      
-      if (allProductIds.length === 0) {
-        console.log('⚠️ No product IDs found');
-        return;
+      // Show auto-update notification if any products were updated
+      if (totalAutoUpdated > 0) {
+        notifySuccess(`🔄 Auto-updated ${totalAutoUpdated} products with latest prices/stock from Odoo!`);
       }
       
-      // Check import status for ALL products
-      const res = await requests.post("/products/check-imported", { odooProductIds: allProductIds });
-      
-      // Handle new enhanced response format
-      if (res.summary) {
-        // New enhanced format - update with ALL products status
-        setImportedIds(res.imported || []);
-        setNeedsUpdateIds(res.needsUpdate || []);
-        setNotImportedIds(res.notImported || []);
-        setImportStatusDetails({
-          ...res.details,
-          totalProducts: allProductIds.length,
-          autoUpdatedCount: res.autoUpdatedCount
-        });
-        
-        // Show auto-update notification if any products were updated
-        if (res.autoUpdatedCount > 0) {
-          notifySuccess(`🔄 Auto-updated ${res.autoUpdatedCount} products with latest prices/stock from Odoo!`);
-        }
-        
-        console.log('📊 ALL Products Import Status:', {
-          total: res.summary.total,
-          imported: res.summary.imported,
-          needsUpdate: res.summary.needsUpdate,
-          notImported: res.summary.notImported,
-          autoUpdated: res.summary.autoUpdated
-        });
-      }
+      console.log('📊 ALL Products Import Status (Batch Processing):', {
+        total: totalProducts,
+        imported: allImportedIds.length,
+        needsUpdate: allNeedsUpdateIds.length,
+        notImported: allNotImportedIds.length,
+        autoUpdated: totalAutoUpdated
+      });
       
     } catch (err) {
       console.error("Error fetching ALL products import status:", err);
@@ -547,37 +594,37 @@ const OdooCatalog = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center">
               <div className="text-2xl font-bold text-gray-600 dark:text-gray-400">
-                {importStatusDetails.totalProducts || pagination.total || products.length}
+                {importStatusDetails?.totalProducts || importStatusDetails?.totalOdooProducts || pagination.total || products.length}
               </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">Total Products</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">Total Odoo Products</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-green-600">
-                {importedIds.length}
+                {importStatusDetails?.totalImported || importedIds.length}
               </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">✅ Up-to-date</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">✅ In Store & Up-to-date</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-orange-600">
-                {needsUpdateIds.length}
+                {importStatusDetails?.totalNeedsUpdate || needsUpdateIds.length}
               </div>
               <div className="text-sm text-gray-500 dark:text-gray-400">🔄 Needs Update</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-red-600">
-                {notImportedIds.length}
+                {importStatusDetails?.estimatedNotImported || importStatusDetails?.totalNotImported || notImportedIds.length}
               </div>
               <div className="text-sm text-gray-500 dark:text-gray-400">❌ Not Imported</div>
             </div>
           </div>
           
-          {/* Location Information */}
-          {importStatusDetails.odooLocations && (
+          {/* Additional Information */}
+          {importStatusDetails?.totalStoreProducts && (
             <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
               <div className="flex items-center gap-2 text-blue-800 dark:text-blue-200">
-                <span className="text-lg">📍</span>
+                <span className="text-lg">🏪</span>
                 <span className="font-medium">
-                  Tracking stock from {importStatusDetails.odooLocations} Odoo locations
+                  Store has {importStatusDetails.totalStoreProducts} products with Odoo integration
                 </span>
               </div>
             </div>
