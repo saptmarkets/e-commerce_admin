@@ -340,15 +340,23 @@ const useProductSubmit = (id) => {
         // Update default unit price if price field is present in form data
         if (data.price !== undefined && data.price !== null) {
           try {
-            await ProductUnitServices.updateDefaultUnitPrice(updatedId, data.price, data.price);
-            console.log('💰 Default unit price updated successfully to:', data.price);
+            console.log('🔄 Attempting to update default unit price for product:', updatedId, 'to:', data.price);
+            
+            const priceUpdateResult = await ProductUnitServices.updateDefaultUnitPrice(updatedId, data.price, data.price);
+            console.log('💰 Default unit price update result:', priceUpdateResult);
             
             // Refresh product units to show updated price in admin interface
+            console.log('🔄 Refreshing product units after price update...');
             await refreshProductUnits(updatedId);
-            console.log('🔄 Product units refreshed after price update');
+            console.log('✅ Product units refreshed after price update');
             
           } catch (priceError) {
-            console.error('Error updating default unit price:', priceError);
+            console.error('❌ Error updating default unit price:', priceError);
+            console.error('❌ Error details:', {
+              message: priceError.message,
+              response: priceError.response?.data,
+              status: priceError.response?.status
+            });
             notifyError('Product updated but unit price update failed');
           }
         }
