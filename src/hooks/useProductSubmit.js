@@ -285,6 +285,18 @@ const useProductSubmit = (id) => {
         console.log('Product update result:', JSON.stringify(result, null, 2));
         
         updatedId = resData._id;
+        
+        // Update default unit price if price field is present in form data
+        if (data.price !== undefined && data.price !== null) {
+          try {
+            await ProductUnitServices.updateDefaultUnitPrice(updatedId, data.price, data.price);
+            console.log('💰 Default unit price updated successfully to:', data.price);
+          } catch (priceError) {
+            console.error('Error updating default unit price:', priceError);
+            notifyError('Product updated but unit price update failed');
+          }
+        }
+        
         notifySuccess('Product updated successfully!');
         
         // Process product units for existing product
@@ -381,6 +393,17 @@ const useProductSubmit = (id) => {
         
         const newProductId = result._id;
         updatedId = newProductId;
+        
+        // Set default unit price if price field is present in form data
+        if (data.price !== undefined && data.price !== null) {
+          try {
+            await ProductUnitServices.updateDefaultUnitPrice(newProductId, data.price, data.price);
+            console.log('💰 Default unit price set for new product to:', data.price);
+          } catch (priceError) {
+            console.error('Error setting default unit price for new product:', priceError);
+            notifyError('Product created but unit price setting failed');
+          }
+        }
         
         notifySuccess("Product added successfully");
         

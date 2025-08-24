@@ -94,6 +94,23 @@ const ProductUnitServices = {
     }
   },
 
+  // Update default unit price for a product
+  updateDefaultUnitPrice: async (productId, price, originalPrice) => {
+    try {
+      console.log('Updating default unit price for product:', productId, 'to:', price);
+      
+      const response = await requests.put(`product-units/product/${productId}/default-price`, {
+        price,
+        originalPrice: originalPrice || price
+      });
+      console.log('Updated default unit price:', response);
+      return response;
+    } catch (error) {
+      console.error('Error updating default unit price:', error);
+      throw error;
+    }
+  },
+
   // Delete a product unit
   deleteProductUnit: async (productId, unitId) => {
     try {
