@@ -108,13 +108,26 @@ const OdooCatalog = () => {
               </div>
             )}
             {details.differences.stock && (
-              <div className="flex items-center gap-1">
-                <span className="font-medium">Stock:</span>
-                <span className="line-through">{details.storeStock}</span>
-                <span>→</span>
-                <span className="font-bold text-blue-600">{details.odooStock}</span>
+              <div className="space-y-1">
+                <div className="flex items-center gap-1">
+                  <span className="font-medium">Stock:</span>
+                  <span className="line-through">{details.storeStock}</span>
+                  <span>→</span>
+                  <span className="font-bold text-blue-600">{details.odooStock}</span>
+                </div>
+                {details.odooLocations && (
+                  <div className="text-xs text-gray-500 ml-2">
+                    📍 {details.odooLocations} Odoo locations
+                  </div>
+                )}
               </div>
             )}
+          </div>
+        )}
+        
+        {details && details.status === 'imported' && details.odooLocations && (
+          <div className="text-xs text-gray-500">
+            📍 {details.odooLocations} Odoo locations
           </div>
         )}
       </div>
@@ -479,6 +492,18 @@ const OdooCatalog = () => {
               <div className="text-sm text-gray-500 dark:text-gray-400">❌ Not Imported</div>
             </div>
           </div>
+          
+          {/* Location Information */}
+          {importStatusDetails.odooLocations && (
+            <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+              <div className="flex items-center gap-2 text-blue-800 dark:text-blue-200">
+                <span className="text-lg">📍</span>
+                <span className="font-medium">
+                  Tracking stock from {importStatusDetails.odooLocations} Odoo locations
+                </span>
+              </div>
+            </div>
+          )}
           
           {/* Auto-update info */}
           {importStatusDetails.autoUpdatedCount > 0 && (
