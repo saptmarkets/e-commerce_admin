@@ -312,8 +312,8 @@ const useProductSubmit = (id) => {
         en: data.description || '',
         ar: data.descriptionAr || '',
       };
-      // Remove the flat fields and price so they don't overwrite the object
-      const { title, titleAr, description, descriptionAr, price, ...restData } = data;
+      // Remove the flat fields but KEEP the price field for processing
+      const { title, titleAr, description, descriptionAr, ...restData } = data;
       
       const productData = {
         ...restData,
@@ -324,6 +324,9 @@ const useProductSubmit = (id) => {
       };
       
       console.log('Prepared product data:', JSON.stringify(productData, null, 2));
+      console.log('🔍 DEBUG: Form data price field:', data.price);
+      console.log('🔍 DEBUG: Price field type:', typeof data.price);
+      console.log('🔍 DEBUG: Price field value:', data.price);
       
       let result;
       let updatedId;
@@ -338,7 +341,7 @@ const useProductSubmit = (id) => {
         updatedId = resData._id;
         
         // Update default unit price using SAME METHOD as import service
-        if (data.price !== undefined && data.price !== null) {
+        if (data.price !== undefined && data.price !== null && data.price !== '') {
           try {
             console.log('🔄 Attempting to update price using SAME METHOD as import service for product:', updatedId, 'to:', data.price);
             
@@ -487,7 +490,7 @@ const useProductSubmit = (id) => {
         updatedId = newProductId;
         
         // Set default unit price using SAME METHOD as import service
-        if (data.price !== undefined && data.price !== null) {
+        if (data.price !== undefined && data.price !== null && data.price !== '') {
           try {
             console.log('🔄 Setting price using SAME METHOD as import service for new product:', newProductId, 'to:', data.price);
             
