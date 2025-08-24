@@ -337,27 +337,37 @@ const useProductSubmit = (id) => {
         
         updatedId = resData._id;
         
-        // Update default unit price if price field is present in form data
+        // Update default unit price using SAME METHOD as import service
         if (data.price !== undefined && data.price !== null) {
           try {
-            console.log('🔄 Attempting to update default unit price for product:', updatedId, 'to:', data.price);
+            console.log('🔄 Attempting to update price using SAME METHOD as import service for product:', updatedId, 'to:', data.price);
             
+            // STEP 1: Update Product.price (like import service does)
+            console.log('💰 Step 1: Updating Product.price...');
+            const productUpdateResult = await ProductServices.updateProduct(updatedId, {
+              price: data.price,
+              originalPrice: data.price
+            });
+            console.log('✅ Product.price updated:', productUpdateResult);
+            
+            // STEP 2: Update default ProductUnit.price (like import service does)
+            console.log('💰 Step 2: Updating default ProductUnit.price...');
             const priceUpdateResult = await ProductUnitServices.updateDefaultUnitPrice(updatedId, data.price, data.price);
-            console.log('💰 Default unit price update result:', priceUpdateResult);
+            console.log('✅ Default ProductUnit.price updated:', priceUpdateResult);
             
-            // Refresh product units to show updated price in admin interface
-            console.log('🔄 Refreshing product units after price update...');
+            // STEP 3: Refresh product units to show updated price in admin interface
+            console.log('🔄 Step 3: Refreshing product units after price update...');
             await refreshProductUnits(updatedId);
             console.log('✅ Product units refreshed after price update');
             
           } catch (priceError) {
-            console.error('❌ Error updating default unit price:', priceError);
+            console.error('❌ Error updating price using import service method:', priceError);
             console.error('❌ Error details:', {
               message: priceError.message,
               response: priceError.response?.data,
               status: priceError.response?.status
             });
-            notifyError('Product updated but unit price update failed');
+            notifyError('Product updated but price update failed');
           }
         }
         
@@ -462,19 +472,37 @@ const useProductSubmit = (id) => {
         const newProductId = result._id;
         updatedId = newProductId;
         
-        // Set default unit price if price field is present in form data
+        // Set default unit price using SAME METHOD as import service
         if (data.price !== undefined && data.price !== null) {
           try {
-            await ProductUnitServices.updateDefaultUnitPrice(newProductId, data.price, data.price);
-            console.log('💰 Default unit price set for new product to:', data.price);
+            console.log('🔄 Setting price using SAME METHOD as import service for new product:', newProductId, 'to:', data.price);
             
-            // Refresh product units to show updated price in admin interface
+            // STEP 1: Update Product.price (like import service does)
+            console.log('💰 Step 1: Updating Product.price for new product...');
+            const productUpdateResult = await ProductServices.updateProduct(newProductId, {
+              price: data.price,
+              originalPrice: data.price
+            });
+            console.log('✅ Product.price updated for new product:', productUpdateResult);
+            
+            // STEP 2: Update default ProductUnit.price (like import service does)
+            console.log('💰 Step 2: Setting default ProductUnit.price for new product...');
+            const priceUpdateResult = await ProductUnitServices.updateDefaultUnitPrice(newProductId, data.price, data.price);
+            console.log('✅ Default ProductUnit.price set for new product:', priceUpdateResult);
+            
+            // STEP 3: Refresh product units to show updated price in admin interface
+            console.log('🔄 Step 3: Refreshing product units after price setting...');
             await refreshProductUnits(newProductId);
-            console.log('🔄 Product units refreshed after price setting for new product');
+            console.log('✅ Product units refreshed after price setting for new product');
             
           } catch (priceError) {
-            console.error('Error setting default unit price for new product:', priceError);
-            notifyError('Product created but unit price setting failed');
+            console.error('❌ Error setting price using import service method for new product:', priceError);
+            console.error('❌ Error details:', {
+              message: priceError.message,
+              response: priceError.response?.data,
+              status: priceError.response?.status
+            });
+            notifyError('Product created but price setting failed');
           }
         }
         
