@@ -69,7 +69,12 @@ const OdooSyncServices = {
    * Sync store with selected fields
    * @param {Object} payload
    */
-  syncToStore: (payload) => requests.post("/odoo-sync/sync", payload),
+  syncToStore: (payload) => {
+    console.log('🚨🚨🚨 OdooSyncServices.syncToStore called! 🚨🚨🚨');
+    console.log('🔍 Payload:', payload);
+    console.log('🔍 Calling requests.post("/odoo-sync/sync", payload)');
+    return requests.post("/odoo-sync/sync", payload);
+  },
 
   /**
    * Get internal locations (branches) list

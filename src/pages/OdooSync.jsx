@@ -151,8 +151,15 @@ const OdooSync = () => {
 
   const handleRunSync = async () => {
     try {
+      console.log('🚨🚨🚨 FRONTEND: handleRunSync called! 🚨🚨🚨');
+      console.log('🔍 syncFields:', syncFields);
+      console.log('🔍 About to call OdooSyncServices.syncToStore...');
+      
       setSyncLoading(true);
       const res = await OdooSyncServices.syncToStore({ fields: syncFields });
+      
+      console.log('🔍 Response received:', res);
+      
       const unitsUpdated = res.unitsUpdated || 0;
       const priceUnitsUpdated = res.priceUnitsUpdated || 0;
       const totalProcessed = res.totalProcessed || 0;
@@ -162,9 +169,16 @@ const OdooSync = () => {
         message += ` (${priceUnitsUpdated} price updates)`;
       }
       
+      console.log('🔍 Success message:', message);
       notifySuccess(message);
     } catch(err) {
-      console.error(err);
+      console.error('🚨🚨🚨 FRONTEND: Error in handleRunSync:', err);
+      console.error('🚨🚨🚨 Error details:', {
+        message: err.message,
+        response: err.response?.data,
+        status: err.response?.status,
+        url: err.config?.url
+      });
       notifyError(err.response?.data?.message || 'Sync failed');
     } finally {
       setSyncLoading(false);

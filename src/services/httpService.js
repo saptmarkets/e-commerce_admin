@@ -22,6 +22,10 @@ const instance = axios.create({
 
 // Add a request interceptor
 instance.interceptors.request.use(function (config) {
+  console.log('🚨🚨🚨 AXIOS INTERCEPTOR: Request being sent! 🚨🚨🚨');
+  console.log('🔍 Original config.url:', config.url);
+  console.log('🔍 config.baseURL:', config.baseURL);
+  
   // Do something before request is sent
   let adminInfo;
   if (Cookies.get("adminInfo")) {
@@ -51,6 +55,11 @@ instance.interceptors.request.use(function (config) {
       const cleanUrl = config.url.replace(/^\/+/, ''); // Remove leading slashes
       config.url = `/api/${cleanUrl}`;
     }
+    
+    console.log('🔍 After URL manipulation:');
+    console.log('  - Original URL:', originalUrl);
+    console.log('  - Final config.url:', config.url);
+    console.log('  - Final full URL will be:', config.baseURL + config.url);
   }
   
   // Add headers
@@ -114,7 +123,13 @@ const requests = {
   get: (url, config) =>
     instance.get(url, config).then(responseBody),
 
-  post: (url, body) => instance.post(url, body).then(responseBody),
+  post: (url, body) => {
+    console.log('🚨🚨🚨 httpService.post called! 🚨🚨🚨');
+    console.log('🔍 URL:', url);
+    console.log('🔍 Body:', body);
+    console.log('🔍 BASE_URL:', BASE_URL);
+    return instance.post(url, body).then(responseBody);
+  },
 
   put: (url, body, headers) =>
     instance.put(url, body, headers).then(responseBody),
