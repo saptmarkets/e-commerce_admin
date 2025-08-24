@@ -261,8 +261,8 @@ const useProductSubmit = (id) => {
         en: data.description || '',
         ar: data.descriptionAr || '',
       };
-      // Remove the flat fields so they don't overwrite the object
-      const { title, titleAr, description, descriptionAr, ...restData } = data;
+      // Remove the flat fields and price so they don't overwrite the object
+      const { title, titleAr, description, descriptionAr, price, ...restData } = data;
       
       const productData = {
         ...restData,
