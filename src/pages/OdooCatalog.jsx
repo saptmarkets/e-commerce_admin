@@ -45,11 +45,88 @@ const OdooCatalog = () => {
   const [showAllPages, setShowAllPages] = useState(false); // New state for "show all" mode
   const [customPageSize, setCustomPageSize] = useState(20); // New state for custom page size
   const [importedIds, setImportedIds] = useState([]);
+  const [needsUpdateIds, setNeedsUpdateIds] = useState([]);
+  const [notImportedIds, setNotImportedIds] = useState([]);
+  const [importStatusDetails, setImportStatusDetails] = useState({});
   const { currency, getNumberTwo } = useUtilsFunction();
+
+  // Helper function to get import status for a product
+  const getProductImportStatus = (odooId) => {
+    if (importedIds.includes(odooId)) {
+      return { status: 'imported', label: 'Imported', color: 'green' };
+    } else if (needsUpdateIds.includes(odooId)) {
+      return { status: 'needs_update', label: 'Needs Update', color: 'orange' };
+    } else if (notImportedIds.includes(odooId)) {
+      return { status: 'not_imported', label: 'Not Imported', color: 'red' };
+    } else {
+      return { status: 'unknown', label: 'Unknown', color: 'gray' };
+    }
+  };
+
+  // Helper function to get import status details for a product
+  const getProductImportDetails = (odooId) => {
+    return importStatusDetails[odooId] || null;
+  };
+
+  // Status badge component
+  const ImportStatusBadge = ({ odooId }) => {
+    const status = getProductImportStatus(odooId);
+    const details = getProductImportDetails(odooId);
+    
+    const getBadgeColor = (status) => {
+      switch (status) {
+        case 'imported': return 'bg-green-100 text-green-800 border-green-200';
+        case 'needs_update': return 'bg-orange-100 text-orange-800 border-orange-200';
+        case 'not_imported': return 'bg-red-100 text-red-800 border-red-200';
+        default: return 'bg-gray-100 text-gray-800 border-gray-200';
+      }
+    };
+    
+    const getIcon = (status) => {
+      switch (status) {
+        case 'imported': return '✅';
+        case 'needs_update': return '🔄';
+        case 'not_imported': return '❌';
+        default: return '❓';
+      }
+    };
+    
+    return (
+      <div className="flex flex-col gap-1">
+        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getBadgeColor(status.status)}`}>
+          {getIcon(status.status)} {status.label}
+        </span>
+        
+        {details && details.status === 'needs_update' && details.differences && (
+          <div className="text-xs text-gray-600 space-y-1">
+            {details.differences.price && (
+              <div className="flex items-center gap-1">
+                <span className="font-medium">Price:</span>
+                <span className="line-through">{details.storePrice}</span>
+                <span>→</span>
+                <span className="font-bold text-green-600">{details.odooPrice}</span>
+              </div>
+            )}
+            {details.differences.stock && (
+              <div className="flex items-center gap-1">
+                <span className="font-medium">Stock:</span>
+                <span className="line-through">{details.storeStock}</span>
+                <span>→</span>
+                <span className="font-bold text-blue-600">{details.odooStock}</span>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  };
 
   // Import status filter options
   const importStatusOptions = [
     { value: null, label: "All Products" },
+    { value: "imported", label: "Imported & Up-to-date" },
+    { value: "needs_update", label: "Imported but Needs Update" },
+    { value: "not_imported", label: "Not Imported" },
     { value: "imported", label: "Imported Products" },
     { value: "pending", label: "Not Imported" },
     { value: "failed", label: "Import Failed" },
@@ -70,12 +147,46 @@ const OdooCatalog = () => {
       const odooProductIds = productList.map((p) => p.id);
       if (odooProductIds.length === 0) {
         setImportedIds([]);
+        setNeedsUpdateIds([]);
+        setNotImportedIds([]);
+        setImportStatusDetails({});
         return;
       }
+      
       const res = await requests.post("/products/check-imported", { odooProductIds });
-      setImportedIds(res.imported || []);
+      
+      // Handle new enhanced response format
+      if (res.summary) {
+        // New enhanced format
+        setImportedIds(res.imported || []);
+        setNeedsUpdateIds(res.needsUpdate || []);
+        setNotImportedIds(res.notImported || []);
+        setImportStatusDetails(res.details || {});
+        
+        // Show auto-update notification if any products were updated
+        if (res.autoUpdatedCount > 0) {
+          notifySuccess(`🔄 Auto-updated ${res.autoUpdatedCount} products with latest prices/stock from Odoo!`);
+        }
+        
+        console.log('📊 Enhanced import status:', {
+          total: res.summary.total,
+          imported: res.summary.imported,
+          needsUpdate: res.summary.needsUpdate,
+          notImported: res.summary.notImported,
+          autoUpdated: res.summary.autoUpdated
+        });
+      } else {
+        // Fallback to old format for backward compatibility
+        setImportedIds(res.imported || []);
+        setNeedsUpdateIds([]);
+        setNotImportedIds([]);
+        setImportStatusDetails({});
+      }
     } catch (err) {
       setImportedIds([]);
+      setNeedsUpdateIds([]);
+      setNotImportedIds([]);
+      setImportStatusDetails({});
       console.error("Error fetching import status:", err);
     }
   };
@@ -301,20 +412,8 @@ const OdooCatalog = () => {
 
   // Updated import status display logic
   const getImportStatusDisplay = (product) => {
-    if (importedIds.includes(product.id)) {
-      return (
-        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-          <FiCheck className="w-3 h-3 mr-1" />
-          Imported
-        </span>
-      );
-    }
-    return (
-      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-        <FiRefreshCw className="w-3 h-3 mr-1" />
-        Not Imported
-      </span>
-    );
+    // Use the new enhanced ImportStatusBadge component
+    return <ImportStatusBadge odooId={product.id} />;
   };
 
   // Generate page numbers for pagination
@@ -346,7 +445,67 @@ const OdooCatalog = () => {
 
   return (
     <>
-      <PageTitle>Odoo Catalog</PageTitle>
+      <PageTitle>{t("Odoo Catalog")}</PageTitle>
+
+      {/* Import Status Summary */}
+      {importStatusDetails && Object.keys(importStatusDetails).length > 0 && (
+        <div className="mb-6 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border">
+          <h3 className="text-lg font-semibold mb-3 text-gray-800 dark:text-gray-200">
+            📊 Import Status Summary
+          </h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-gray-600 dark:text-gray-400">
+                {products.length}
+              </div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">Total Products</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-green-600">
+                {importedIds.length}
+              </div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">✅ Up-to-date</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-orange-600">
+                {needsUpdateIds.length}
+              </div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">🔄 Needs Update</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-red-600">
+                {notImportedIds.length}
+              </div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">❌ Not Imported</div>
+            </div>
+          </div>
+          
+          {/* Auto-update info */}
+          {importStatusDetails.autoUpdatedCount > 0 && (
+            <div className="mt-3 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+              <div className="flex items-center gap-2 text-green-800 dark:text-green-200">
+                <span className="text-lg">🔄</span>
+                <span className="font-medium">
+                  {importStatusDetails.autoUpdatedCount} products automatically updated with latest prices/stock from Odoo!
+                </span>
+              </div>
+            </div>
+          )}
+          
+          {/* Manual refresh button */}
+          <div className="mt-3 flex justify-center">
+            <button
+              onClick={() => fetchImportStatus(products)}
+              disabled={loading}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 flex items-center gap-2 text-sm"
+              title="Refresh import status and auto-update products"
+            >
+              <FiRefreshCw className={loading ? 'animate-spin' : ''} />
+              {loading ? 'Refreshing...' : '🔄 Refresh Status & Auto-Update'}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Search and Filter Section */}
       <div className="mb-6 bg-white shadow rounded-lg p-4">
@@ -405,6 +564,19 @@ const OdooCatalog = () => {
             >
               <FiRefreshCw className={loading ? 'animate-spin' : ''} />
               {loading ? 'Searching...' : 'Search'}
+            </button>
+          </div>
+          
+          {/* Refresh Import Status Button */}
+          <div className="flex items-end">
+            <button
+              onClick={() => fetchImportStatus(products)}
+              disabled={loading}
+              className="w-full px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 flex items-center justify-center gap-2"
+              title="Refresh import status and auto-update products"
+            >
+              <FiRefreshCw className={loading ? 'animate-spin' : ''} />
+              {loading ? 'Refreshing...' : 'Refresh Status'}
             </button>
           </div>
         </div>

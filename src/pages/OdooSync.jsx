@@ -171,6 +171,19 @@ const OdooSync = () => {
       
       console.log('🔍 Success message:', message);
       notifySuccess(message);
+      
+      // 🔄 NEW: Dispatch custom event to notify other pages that sync completed
+      if (res.updated > 0) {
+        console.log('🔄 Dispatching sync-completed event to refresh other pages');
+        window.dispatchEvent(new CustomEvent('odoo-sync-completed', {
+          detail: {
+            updatedProducts: res.updated,
+            totalProcessed: totalProcessed,
+            syncFields: syncFields
+          }
+        }));
+      }
+      
     } catch(err) {
       console.error('🚨🚨🚨 FRONTEND: Error in handleRunSync:', err);
       console.error('🚨🚨🚨 Error details:', {
