@@ -204,6 +204,72 @@ const OdooCatalog = () => {
     }
   };
 
+  // NEW: Fetch import status for ALL products (not just paginated ones)
+  const fetchAllProductsImportStatus = async () => {
+    try {
+      console.log('🔄 Fetching import status for ALL products...');
+      
+      // Get total count from pagination
+      const totalProducts = pagination.total || 0;
+      
+      if (totalProducts === 0) {
+        console.log('⚠️ No total products count available');
+        return;
+      }
+      
+      // Fetch ALL product IDs from Odoo (not just current page)
+      const allProductsRes = await OdooCatalogServices.listProducts({
+        page: 1,
+        limit: totalProducts, // Get ALL products
+        include: 'ids_only', // Only need IDs for efficiency
+        search: search || undefined,
+        category_id: selectedCat?.value || undefined,
+        sync_status: importStatusFilter?.value || undefined,
+      });
+      
+      const allProductIds = allProductsRes?.products?.map(p => p.id) || [];
+      console.log(`📊 Found ${allProductIds.length} total products to check`);
+      
+      if (allProductIds.length === 0) {
+        console.log('⚠️ No product IDs found');
+        return;
+      }
+      
+      // Check import status for ALL products
+      const res = await requests.post("/products/check-imported", { odooProductIds: allProductIds });
+      
+      // Handle new enhanced response format
+      if (res.summary) {
+        // New enhanced format - update with ALL products status
+        setImportedIds(res.imported || []);
+        setNeedsUpdateIds(res.needsUpdate || []);
+        setNotImportedIds(res.notImported || []);
+        setImportStatusDetails({
+          ...res.details,
+          totalProducts: allProductIds.length,
+          autoUpdatedCount: res.autoUpdatedCount
+        });
+        
+        // Show auto-update notification if any products were updated
+        if (res.autoUpdatedCount > 0) {
+          notifySuccess(`🔄 Auto-updated ${res.autoUpdatedCount} products with latest prices/stock from Odoo!`);
+        }
+        
+        console.log('📊 ALL Products Import Status:', {
+          total: res.summary.total,
+          imported: res.summary.imported,
+          needsUpdate: res.summary.needsUpdate,
+          notImported: res.summary.notImported,
+          autoUpdated: res.summary.autoUpdated
+        });
+      }
+      
+    } catch (err) {
+      console.error("Error fetching ALL products import status:", err);
+      notifyError('Failed to fetch complete import status');
+    }
+  };
+
   // Fetch products and then fetch import status
   const fetchProducts = async (page = 1, pageSize = null) => {
     try {
@@ -247,6 +313,18 @@ const OdooCatalog = () => {
   useEffect(() => {
     fetchProducts();
   }, [importStatusFilter, showAllPages, selectedCat]);
+
+  // NEW: Auto-fetch ALL products import status when page loads
+  useEffect(() => {
+    if (pagination.total > 0 && products.length > 0) {
+      // Wait a bit for products to load, then fetch ALL products status
+      const timer = setTimeout(() => {
+        fetchAllProductsImportStatus();
+      }, 1000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [pagination.total, products.length]);
 
   useEffect(() => {
     (async () => {
@@ -469,7 +547,7 @@ const OdooCatalog = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center">
               <div className="text-2xl font-bold text-gray-600 dark:text-gray-400">
-                {products.length}
+                {importStatusDetails.totalProducts || pagination.total || products.length}
               </div>
               <div className="text-sm text-gray-500 dark:text-gray-400">Total Products</div>
             </div>
@@ -517,16 +595,26 @@ const OdooCatalog = () => {
             </div>
           )}
           
-          {/* Manual refresh button */}
-          <div className="mt-3 flex justify-center">
+          {/* Manual refresh buttons */}
+          <div className="mt-3 flex justify-center gap-3">
             <button
               onClick={() => fetchImportStatus(products)}
               disabled={loading}
               className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 flex items-center gap-2 text-sm"
-              title="Refresh import status and auto-update products"
+              title="Refresh import status for current page products"
             >
               <FiRefreshCw className={loading ? 'animate-spin' : ''} />
-              {loading ? 'Refreshing...' : '🔄 Refresh Status & Auto-Update'}
+              {loading ? 'Refreshing...' : '🔄 Refresh Current Page Status'}
+            </button>
+            
+            <button
+              onClick={fetchAllProductsImportStatus}
+              disabled={loading}
+              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 flex items-center gap-2 text-sm"
+              title="Refresh import status for ALL products (not just current page)"
+            >
+              <FiRefreshCw className={loading ? 'animate-spin' : ''} />
+              {loading ? 'Refreshing...' : '🌐 Refresh ALL Products Status'}
             </button>
           </div>
         </div>
