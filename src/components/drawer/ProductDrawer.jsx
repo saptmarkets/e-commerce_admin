@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Scrollbars } from "react-custom-scrollbars-2";
 import { Input, Button, Textarea, Select, Tab, Badge } from "@windmill/react-ui";
-import { FiPlus, FiTrash2, FiPackage, FiRefreshCw, FiX } from "react-icons/fi";
+import { FiPlus, FiTrash2, FiPackage } from "react-icons/fi";
 import Title from "@/components/form/others/Title";
 import LabelArea from "@/components/form/selectOption/LabelArea";
 import Error from "@/components/form/others/Error";
@@ -22,19 +22,17 @@ const ProductDrawer = ({ id }) => {
     handleSubmit,
     onSubmit,
     errors,
-    setValue,
-    clearErrors,
-    watch,
-    control,
-    reset,
     imageUrl,
     setImageUrl,
+    watch,
+    setValue,
+    control,
+    reset,
     productUnits,
     setProductUnits,
     handleAddUnit: hookHandleAddUnit,
     handleEditUnit,
-    handleRemoveUnit: hookHandleRemoveUnit,
-    refreshProductUnits
+    handleRemoveUnit: hookHandleRemoveUnit
   } = useProductSubmit(id);
 
   const [activeTab, setActiveTab] = useState("basic");
@@ -54,12 +52,6 @@ const ProductDrawer = ({ id }) => {
     barcode: "",
     isDefault: false,
   });
-
-  // State for tracking last update time to detect Odoo sync changes
-  const [lastProductUpdate, setLastProductUpdate] = useState(null);
-  const [lastUnitsUpdate, setLastUnitsUpdate] = useState(null);
-  const [isCheckingForUpdates, setIsCheckingForUpdates] = useState(false);
-  const [odooSyncDetected, setOdooSyncDetected] = useState(false);
 
   // Watch for the basicUnit and price values
   const basicUnit = watch("basicUnit");
@@ -154,10 +146,6 @@ const ProductDrawer = ({ id }) => {
               const fetchedUnits = Array.isArray(unitsResult.data) ? unitsResult.data : [];
               setProductUnits(fetchedUnits);
             }
-            
-            // Store last update times for change detection
-            setLastProductUpdate(product.write_date || product.updatedAt || new Date());
-            setLastUnitsUpdate(new Date()); // Current time when units were fetched
           }
         } catch (error) {
           console.error("Error fetching product details:", error);
@@ -169,57 +157,6 @@ const ProductDrawer = ({ id }) => {
       fetchProduct();
     }
   }, [id, setValue, setImageUrl, setProductUnits]);
-
-  // Polling effect to detect Odoo sync changes
-  useEffect(() => {
-    if (!id || !lastProductUpdate) return;
-
-    const checkForUpdates = async () => {
-      try {
-        setIsCheckingForUpdates(true);
-        
-        // Check if product has been updated
-        const productResult = await ProductServices.getProductById(id);
-        if (productResult) {
-          const product = productResult.product || productResult;
-          const currentUpdateTime = product.write_date || product.updatedAt || new Date();
-          
-          // If product was updated (likely through Odoo sync), refresh the interface
-          if (currentUpdateTime > lastProductUpdate) {
-            console.log('🔄 Product updated detected (likely through Odoo sync), refreshing interface...');
-            
-            // Set flag to show Odoo sync notification
-            setOdooSyncDetected(true);
-            
-            // Update form values with new data
-            setValue("price", product.price || 0);
-            setValue("stock", product.stock || 0);
-            
-            // Refresh units to get latest prices
-            await refreshProductUnits(id);
-            
-            // Update last update time
-            setLastProductUpdate(currentUpdateTime);
-            
-            // Show notification
-            notifySuccess('Product data refreshed from recent updates');
-            
-            // Clear the flag after 5 seconds
-            setTimeout(() => setOdooSyncDetected(false), 5000);
-          }
-        }
-      } catch (error) {
-        console.error('Error checking for updates:', error);
-      } finally {
-        setIsCheckingForUpdates(false);
-      }
-    };
-
-    // Check for updates every 30 seconds
-    const interval = setInterval(checkForUpdates, 30000);
-    
-    return () => clearInterval(interval);
-  }, [id, lastProductUpdate, setValue, refreshProductUnits]);
 
   // Handle adding a new unit
   const handleAddUnit = (data) => {
@@ -316,47 +253,21 @@ const ProductDrawer = ({ id }) => {
     return unit ? unit.name : 'Unknown Unit';
   };
 
-  // Handle tab change
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-    
-    // Refresh product units when switching to Multi Units tab to show latest data
-    if (tab === "units" && id) {
-      refreshProductUnits(id);
-    }
-  };
-
   return (
     <>
              {/* Header Section */}
        <div className="w-full relative p-3 border-b border-gray-100 bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
-         <div className="flex items-center justify-between">
-           <div>
-             <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Update Product</h2>
-             <p className="text-sm text-gray-600 dark:text-gray-400">Update your product and necessary information from here.</p>
-           </div>
-           
-           <div className="flex items-center space-x-3">
-             {/* Odoo Sync Status Indicator */}
-             {isCheckingForUpdates && (
-               <div className="flex items-center px-2 py-1 text-xs text-blue-600 bg-blue-50 rounded border border-blue-200">
-                 <FiRefreshCw className="w-3 h-3 mr-1 animate-spin" />
-                 Checking for updates...
-               </div>
-             )}
-             
-             {/* Polling Info */}
-             <div className="flex items-center px-2 py-1 text-xs text-gray-500 bg-gray-50 rounded border border-gray-200" title="Checks for Odoo sync updates every 30 seconds">
-               <FiRefreshCw className="w-3 h-3 mr-1" />
-               Auto-sync
-             </div>
-             
-             {/* Language selector removed - not essential for core functionality */}
-             
-             {/* Close button removed - drawer is controlled by MainDrawer */}
-           </div>
-         </div>
-       </div>
+         <div className="flex md:flex-row flex-col justify-between mr-2 ml-2">
+          <div>
+            <Title
+              register={register}
+              handleSelectLanguage={() => {}}
+              title={id ? "Update Product" : "Add Product"}
+              description={id ? "Update your product and necessary information from here" : "Add your product and necessary information from here"}
+            />
+          </div>
+        </div>
+      </div>
 
              {/* Tabs */}
        <div className="flex border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
@@ -366,7 +277,7 @@ const ProductDrawer = ({ id }) => {
                ? "border-emerald-500 text-emerald-600 dark:text-emerald-400"
                : "border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
            }`}
-           onClick={() => handleTabChange("basic")}
+           onClick={() => setActiveTab("basic")}
          >
            Basic Info
          </button>
@@ -376,34 +287,11 @@ const ProductDrawer = ({ id }) => {
                ? "border-emerald-500 text-emerald-600 dark:text-emerald-400"
                : "border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
            }`}
-           onClick={() => handleTabChange("units")}
+           onClick={() => setActiveTab("units")}
          >
            Multi Units
          </button>
        </div>
-
-      {/* Odoo Sync Update Notification */}
-      {odooSyncDetected && (
-        <div className="w-full p-3 bg-green-50 border-b border-green-200 dark:bg-green-900/20 dark:border-green-800">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <FiRefreshCw className="w-4 h-4 text-green-600 mr-2" />
-              <span className="text-sm font-medium text-green-800 dark:text-green-200">
-                🎉 Product data has been updated through Odoo sync!
-              </span>
-            </div>
-            <button
-              onClick={() => setOdooSyncDetected(false)}
-              className="text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-300"
-            >
-              <FiX className="w-4 h-4" />
-            </button>
-          </div>
-          <p className="text-xs text-green-700 dark:text-green-300 mt-1 ml-6">
-            Prices, stock, and unit information have been automatically refreshed from the latest Odoo data.
-          </p>
-        </div>
-      )}
 
       {/* Body Section */}
       <div className="flex-grow bg-white dark:bg-gray-700 dark:text-gray-200 overflow-hidden">
@@ -655,20 +543,10 @@ const ProductDrawer = ({ id }) => {
 
                 {/* Current Units List */}
                 <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center">
-                      <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
-                      Current Units ({productUnits.length})
-                    </h4>
-                    <button
-                      onClick={() => refreshProductUnits(id)}
-                      className="flex items-center px-2 py-1 text-xs text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 rounded border border-blue-200 transition-colors"
-                      title="Refresh units to see latest data"
-                    >
-                      <FiRefreshCw className="w-3 h-3 mr-1" />
-                      Refresh
-                    </button>
-                  </div>
+                  <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center">
+                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                    Current Units ({productUnits.length})
+                  </h4>
                   
                   {productUnits.length > 0 ? (
                     <div className="bg-white dark:bg-gray-800 rounded-lg border overflow-hidden">

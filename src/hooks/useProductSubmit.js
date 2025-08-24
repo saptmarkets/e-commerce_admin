@@ -75,12 +75,6 @@ const useProductSubmit = (id) => {
 
   // This state will hold the array of product units
   const [productUnits, setProductUnits] = useState([]);
-  
-  // === POLLING AND SYNC DETECTION STATES ===
-  const [lastProductUpdate, setLastProductUpdate] = useState(null);
-  const [lastUnitsUpdate, setLastUnitsUpdate] = useState(null);
-  const [isCheckingForUpdates, setIsCheckingForUpdates] = useState(false);
-  const [odooSyncDetected, setOdooSyncDetected] = useState(false);
 
   const { handlerTextTranslateHandler } = useTranslationValue();
   const { showingTranslateValue, getNumber, getNumberTwo } = useUtilsFunction();
@@ -121,21 +115,6 @@ const useProductSubmit = (id) => {
     setProductUnits(newUnits);
   };
 
-  // Add a function to refresh product units from the database
-  const refreshProductUnits = async (productId) => {
-    try {
-      console.log('🔄 Refreshing product units from database for product:', productId);
-      const unitsResult = await ProductUnitServices.getProductUnits(productId);
-      if (unitsResult && unitsResult.data) {
-        const fetchedUnits = Array.isArray(unitsResult.data) ? unitsResult.data : [];
-        setProductUnits(fetchedUnits);
-        console.log('✅ Product units refreshed:', fetchedUnits.length, 'units loaded');
-      }
-    } catch (error) {
-      console.error('❌ Error refreshing product units:', error);
-    }
-  };
-
   // === LOAD PRODUCT DATA ON EDIT ===
   useEffect(() => {
     if (id) {
@@ -149,11 +128,6 @@ const useProductSubmit = (id) => {
           // Set the product in state
           setResData(result);
           setUpdatedId(id);
-          
-          // Initialize lastProductUpdate for polling
-          const updateTime = result.write_date || result.updatedAt || new Date();
-          setLastProductUpdate(updateTime);
-          console.log('🕒 Initialized lastProductUpdate:', updateTime);
           
           // Parse and set product data
           const productData = {
@@ -247,46 +221,6 @@ const useProductSubmit = (id) => {
     }
   }, [id, setValue, lang]);
 
-  // === POLLING MECHANISM FOR ODOO SYNC UPDATES ===
-  useEffect(() => {
-    if (!id || !lastProductUpdate) return;
-
-    const checkForUpdates = async () => {
-      try {
-        setIsCheckingForUpdates(true);
-        
-        const productResult = await ProductServices.getProductById(id);
-        if (productResult) {
-          const product = productResult.product || productResult;
-          const currentUpdateTime = product.write_date || product.updatedAt || new Date();
-          
-          if (currentUpdateTime > lastProductUpdate) {
-            console.log('🔄 Product update detected (likely through Odoo sync), refreshing interface...');
-            
-            setOdooSyncDetected(true);
-            
-            // Refresh product units to get latest prices
-            await refreshProductUnits(id);
-            
-            setLastProductUpdate(currentUpdateTime);
-            
-            notifySuccess('Product data refreshed from recent updates');
-            
-            setTimeout(() => setOdooSyncDetected(false), 5000);
-          }
-        }
-      } catch (error) {
-        console.error('Error checking for updates:', error);
-      } finally {
-        setIsCheckingForUpdates(false);
-      }
-    };
-
-    const interval = setInterval(checkForUpdates, 30000); // Check every 30 seconds
-    
-    return () => clearInterval(interval);
-  }, [id, lastProductUpdate, refreshProductUnits]);
-
   const handleRemoveEmptyKey = (obj) => {
     Object.keys(obj).forEach(
       (k) => !obj[k] && obj[k] !== undefined && delete obj[k]
@@ -312,7 +246,7 @@ const useProductSubmit = (id) => {
         en: data.description || '',
         ar: data.descriptionAr || '',
       };
-      // Remove the flat fields but KEEP the price field for processing
+      // Remove the flat fields so they don't overwrite the object
       const { title, titleAr, description, descriptionAr, ...restData } = data;
       
       const productData = {
@@ -324,9 +258,6 @@ const useProductSubmit = (id) => {
       };
       
       console.log('Prepared product data:', JSON.stringify(productData, null, 2));
-      console.log('🔍 DEBUG: Form data price field:', data.price);
-      console.log('🔍 DEBUG: Price field type:', typeof data.price);
-      console.log('🔍 DEBUG: Price field value:', data.price);
       
       let result;
       let updatedId;
@@ -339,60 +270,7 @@ const useProductSubmit = (id) => {
         console.log('Product update result:', JSON.stringify(result, null, 2));
         
         updatedId = resData._id;
-        
-        // Update default unit price using SAME METHOD as import service
-        if (data.price !== undefined && data.price !== null && data.price !== '') {
-          try {
-            console.log('🔄 Attempting to update price using SAME METHOD as import service for product:', updatedId, 'to:', data.price);
-            
-            // STEP 1: Update Product.price (like import service does)
-            console.log('💰 Step 1: Updating Product.price...');
-            const productUpdateResult = await ProductServices.updateProduct(updatedId, {
-              price: data.price,
-              originalPrice: data.price
-            });
-            console.log('✅ Product.price updated:', productUpdateResult);
-            
-            // STEP 2: Update default ProductUnit.price (like import service does)
-            console.log('💰 Step 2: Updating default ProductUnit.price...');
-            const priceUpdateResult = await ProductUnitServices.updateDefaultUnitPrice(updatedId, data.price, data.price);
-            console.log('✅ Default ProductUnit.price updated:', priceUpdateResult);
-            
-            // STEP 3: Refresh product units to show updated price in admin interface
-            console.log('🔄 Step 3: Refreshing product units after price update...');
-            await refreshProductUnits(updatedId);
-            console.log('✅ Product units refreshed after price update');
-            
-            // 🚨 CRITICAL FIX: Update the form data price so unit processing uses NEW price
-            console.log('🔧 Step 4: Updating form data price from', data.price, 'to ensure unit processing uses correct price');
-            
-            // Update the productUnits state to use the new price for the default unit
-            setProductUnits(prevUnits => {
-              return prevUnits.map(unit => {
-                if (unit.isDefault) {
-                  console.log('🔧 Updating default unit price from', unit.price, 'to', data.price);
-                  return { ...unit, price: parseFloat(data.price) };
-                }
-                return unit;
-              });
-            });
-            
-          } catch (priceError) {
-            console.error('❌ Error updating price using import service method:', priceError);
-            console.error('❌ Error details:', {
-              message: priceError.message,
-              response: priceError.response?.data,
-              status: priceError.response?.status
-            });
-            notifyError('Product updated but price update failed');
-          }
-        }
-        
         notifySuccess('Product updated successfully!');
-        
-        // Update lastProductUpdate for polling
-        setLastProductUpdate(new Date());
-        console.log('🕒 Updated lastProductUpdate after product update');
         
         // Process product units for existing product
         try {
@@ -472,9 +350,6 @@ const useProductSubmit = (id) => {
           } else {
             console.log('No product units to process');
           }
-          
-          // Refresh product units from database to show latest data including updated prices
-          await refreshProductUnits(updatedId);
         } catch (unitError) {
           console.error('Error processing units:', unitError);
           notifyError('Error saving product units: ' + unitError.message);
@@ -489,56 +364,7 @@ const useProductSubmit = (id) => {
         const newProductId = result._id;
         updatedId = newProductId;
         
-        // Set default unit price using SAME METHOD as import service
-        if (data.price !== undefined && data.price !== null && data.price !== '') {
-          try {
-            console.log('🔄 Setting price using SAME METHOD as import service for new product:', newProductId, 'to:', data.price);
-            
-            // STEP 1: Update Product.price (like import service does)
-            console.log('💰 Step 1: Updating Product.price for new product...');
-            const productUpdateResult = await ProductServices.updateProduct(newProductId, {
-              price: data.price,
-              originalPrice: data.price
-            });
-            console.log('✅ Product.price updated for new product:', productUpdateResult);
-            
-            // STEP 2: Update default ProductUnit.price (like import service does)
-            console.log('💰 Step 2: Setting default ProductUnit.price for new product...');
-            const priceUpdateResult = await ProductUnitServices.updateDefaultUnitPrice(newProductId, data.price, data.price);
-            console.log('✅ Default ProductUnit.price set for new product:', priceUpdateResult);
-            
-            // STEP 3: Refresh product units to show updated price in admin interface
-            console.log('🔄 Step 3: Refreshing product units after price setting...');
-            await refreshProductUnits(newProductId);
-            console.log('✅ Product units refreshed after price setting for new product');
-            
-            // 🚨 CRITICAL FIX: Update the productUnits state to use the new price for the default unit
-            setProductUnits(prevUnits => {
-              return prevUnits.map(unit => {
-                if (unit.isDefault) {
-                  console.log('🔧 Updating default unit price from', unit.price, 'to', data.price, 'for new product');
-                  return { ...unit, price: parseFloat(data.price) };
-                }
-                return unit;
-              });
-            });
-            
-          } catch (priceError) {
-            console.error('❌ Error setting price using import service method for new product:', priceError);
-            console.error('❌ Error details:', {
-              message: priceError.message,
-              response: priceError.response?.data,
-              status: priceError.response?.status
-            });
-            notifyError('Product created but price setting failed');
-          }
-        }
-        
         notifySuccess("Product added successfully");
-        
-        // Update lastProductUpdate for polling
-        setLastProductUpdate(new Date());
-        console.log('🕒 Updated lastProductUpdate after product creation');
         
         if (productUnits.length > 0) {
           console.log('Setting hasMultiUnits to true for new product');
@@ -609,11 +435,6 @@ const useProductSubmit = (id) => {
             } else {
               console.log('No product units to create for new product');
             }
-            
-            // Final refresh of product units for new product to ensure all data is displayed
-            await refreshProductUnits(newProductId);
-            console.log('🔄 Final product units refresh for new product completed');
-            
           } catch (unitError) {
             console.error('Error processing units for new product:', unitError);
             notifyError('Error creating product units: ' + unitError.message);
@@ -1006,8 +827,7 @@ const useProductSubmit = (id) => {
     setProductUnits,
     handleAddUnit,
     handleEditUnit,
-    handleRemoveUnit,
-    refreshProductUnits
+    handleRemoveUnit
   };
 };
 
