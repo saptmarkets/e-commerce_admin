@@ -104,9 +104,29 @@ const OdooSyncServices = {
   /**
    * Sync selected categories with updated prices (like fetch data but for specific categories)
    * POST /api/odoo/sync-categories
+   * @param {Array<number>} categoryIds - Array of category IDs to sync
+   * @param {Function} progressCallback - Optional callback for progress updates
    */
-  syncSelectedCategories: (categoryIds) =>
-    requests.post("/odoo/sync-categories", { categoryIds }),
+  syncSelectedCategories: (categoryIds, progressCallback = null) => {
+    if (progressCallback) {
+      // If progress callback is provided, use polling approach
+      return new Promise((resolve, reject) => {
+        const syncRequest = requests.post("/odoo/sync-categories", { categoryIds });
+        
+        syncRequest.then(response => {
+          // Start polling for progress if sync is in progress
+          if (response.data?.status === 'syncing' || response.data?.status === 'syncing_barcode_units') {
+            pollSyncProgress(categoryIds, progressCallback, resolve, reject);
+          } else {
+            resolve(response);
+          }
+        }).catch(reject);
+      });
+    }
+    
+    // No progress callback, return direct response
+    return requests.post("/odoo/sync-categories", { categoryIds });
+  },
 
   /**
    * Get products by category
@@ -121,6 +141,55 @@ const OdooSyncServices = {
    */
   getStockByCategory: (categoryId, params = {}) => 
     requests.get(`/odoo/stock/category/${categoryId}`, { params }),
+
+  /**
+   * Poll sync progress for category sync operations
+   * @private
+   */
+  pollSyncProgress: (categoryIds, progressCallback, resolve, reject) => {
+    const pollInterval = setInterval(async () => {
+      try {
+        // Check progress for each category
+        const progressPromises = categoryIds.map(categoryId => 
+          requests.get(`/odoo/sync-category/${categoryId}/progress`)
+        );
+        
+        const progressResponses = await Promise.all(progressPromises);
+        const overallProgress = {
+          status: 'syncing',
+          totalCategories: categoryIds.length,
+          completedCategories: 0,
+          currentCategory: null,
+          barcodeUnitsProgress: null
+        };
+        
+        // Aggregate progress from all categories
+        progressResponses.forEach((response, index) => {
+          const categoryProgress = response.data;
+          if (categoryProgress?.status === 'completed') {
+            overallProgress.completedCategories++;
+          } else if (categoryProgress?.status === 'syncing' || categoryProgress?.status === 'syncing_barcode_units') {
+            overallProgress.currentCategory = categoryProgress.category;
+            overallProgress.barcodeUnitsProgress = categoryProgress.barcodeUnitsProgress;
+          }
+        });
+        
+        // Call progress callback
+        progressCallback(overallProgress);
+        
+        // Check if all categories are completed
+        if (overallProgress.completedCategories === categoryIds.length) {
+          clearInterval(pollInterval);
+          // Get final result
+          const finalResult = await requests.post("/odoo/sync-categories", { categoryIds });
+          resolve(finalResult);
+        }
+      } catch (error) {
+        clearInterval(pollInterval);
+        reject(error);
+      }
+    }, 2000); // Poll every 2 seconds
+  },
 };
 
 export default OdooSyncServices; 

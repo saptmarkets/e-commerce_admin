@@ -242,8 +242,20 @@ const OdooSync = () => {
       setCategoryLoading(true);
       setSyncProgress({ status: 'syncing', message: `Syncing ${selectedCategories.length} categories...` });
       
-      // Use the new enhanced selective category sync
-      const res = await OdooSyncServices.syncSelectedCategories(selectedCategories);
+      // Use the new enhanced selective category sync with progress callback
+      const res = await OdooSyncServices.syncSelectedCategories(
+        selectedCategories, 
+        (progress) => {
+          console.log('🔄 Progress update:', progress);
+          setSyncProgress({
+            status: progress.status,
+            message: progress.currentCategory 
+              ? `Syncing category: ${progress.currentCategory.name}` 
+              : `Syncing ${progress.totalCategories} categories...`,
+            details: progress
+          });
+        }
+      );
       
       // Debug: Log the full response
       console.log('🔍 Category sync response:', res);
