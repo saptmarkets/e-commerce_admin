@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FiPlus, FiEdit, FiTrash2, FiImage } from "react-icons/fi";
 import BannerDrawer from "../components/drawer/BannerDrawer";
-import axios from "axios";
+import BannerServices from "@/services/BannerServices";
 
 const Banners = () => {
   const [banners, setBanners] = useState([]);
@@ -18,14 +18,14 @@ const Banners = () => {
     try {
       console.log('🔄 Starting fetchBanners...');
       setLoading(true);
-      const response = await axios.get('/api/admin/banners');
-      console.log('✅ Banners API response received:', response.data);
-      
-      if (response.data && response.data.banners) {
-        console.log('📊 Raw banners data:', response.data.banners);
+      const response = await BannerServices.getAllBanners({ page: 1, limit: 50, title: '', sort: '' });
+      console.log('✅ Banners API response received:', response);
+      const data = response?.banners || response?.data?.banners || response?.data || [];
+      if (Array.isArray(data)) {
+        console.log('📊 Raw banners data:', data);
         // Ensure all banner objects have safe text fields
-        const safeBanners = response.data.banners.map((banner, index) => {
-          console.log(`🔍 Processing banner ${index + 1}/${response.data.banners.length}:`, banner);
+        const safeBanners = data.map((banner, index) => {
+          console.log(`🔍 Processing banner ${index + 1}/${data.length}:`, banner);
           
           const safeTitle = getLocalizedText(banner.title, 'Untitled');
           const safeDescription = getLocalizedText(banner.description, '');
