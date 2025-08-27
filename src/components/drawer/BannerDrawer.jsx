@@ -177,6 +177,7 @@ const BannerDrawer = ({ id }) => {
             setValue('startDate', banner.startDate ? banner.startDate.split('T')[0] : '');
             setValue('endDate', banner.endDate ? banner.endDate.split('T')[0] : '');
             setValue('openInNewTab', banner.openInNewTab || false);
+            setValue('showTitle', banner.showTitle !== undefined ? banner.showTitle : true);
             setValue('layoutType', banner.layoutType || 'single');
             setValue('leftImageAnimation', banner.leftImageAnimation || 'slideUp');
             setValue('rightImageAnimation', banner.rightImageAnimation || 'slideUp');
@@ -241,6 +242,7 @@ const BannerDrawer = ({ id }) => {
       setRightImageUrl2('');
       setSelectedLocation('home-hero');
       setLayoutType('single');
+      setValue('showTitle', true);
       clearErrors();
     }
   }, [isDrawerOpen, reset, clearErrors]);
@@ -609,6 +611,22 @@ const BannerDrawer = ({ id }) => {
                     placeholder="أدخل عنوان البانر"
                     error={errors.titleAr}
                   />
+                </div>
+
+                {/* Show Title on Customer App Toggle */}
+                <div className="flex items-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <input
+                    type="checkbox"
+                    {...register("showTitle")}
+                    defaultChecked={true}
+                    className="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                  />
+                  <label className="ml-3 text-sm font-medium text-blue-700 dark:text-blue-300">
+                    Show Title on Customer App
+                  </label>
+                  <p className="ml-3 text-xs text-blue-600 dark:text-blue-400">
+                    Uncheck this if you want image-only banners without text overlay
+                  </p>
                 </div>
 
                 {/* Description */}
