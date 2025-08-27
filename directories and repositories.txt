@@ -1,0 +1,8 @@
+local
+C:\Users\Asad\Desktop\projects\e commerce\e-commerce_backend-main
+C:\Users\Asad\Desktop\projects\e commerce\e-commerce_customer-main
+C:\Users\Asad\Desktop\projects\e commerce\e-commerce_admin-main
+github
+@https://github.com/saptmarkets/e-commerce_backend 
+@https://github.com/saptmarkets/e-commerce_customer 
+https://github.com/saptmarkets/e-commerce_admin
