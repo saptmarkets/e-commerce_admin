@@ -895,25 +895,47 @@ const Dashboard = () => {
               lowStockProducts.map((unit) => (
                 <div key={unit._id} className="flex items-center space-x-4 p-4 bg-gradient-to-r from-red-50 to-orange-50 rounded-2xl border border-red-200">
                   <div className="w-20 h-20 bg-gray-200 rounded-xl overflow-hidden flex-shrink-0">
-                    {unit.images && unit.images[0] ? (
-                      <img src={unit.images[0]} alt={unit.title || "Product"} className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-400">
-                        <FiPackage className="w-8 h-8" />
-                      </div>
-                    )}
+                    {unit.images && unit.images.length > 0 && unit.images[0] ? (
+                      <img 
+                        src={unit.images[0]} 
+                        alt={unit.title || "Product"} 
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          e.target.nextSibling.style.display = 'flex';
+                        }}
+                      />
+                    ) : null}
+                    <div className={`w-full h-full flex items-center justify-center text-gray-400 ${unit.images && unit.images.length > 0 && unit.images[0] ? 'hidden' : 'flex'}`}>
+                      <FiPackage className="w-8 h-8" />
+                    </div>
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900">{unit.title || unit.sku || t("UnknownProduct")}</h4>
-                    <p className="text-sm text-gray-600">{t("SKU")}: {unit.sku || t("NA")} | {t("Barcode")}: {unit.barcode || t("NA")}</p>
+                    <h4 className="font-semibold text-gray-900 text-lg mb-1">
+                      {unit.title || unit.sku || t("UnknownProduct")}
+                    </h4>
+                    <p className="text-sm text-gray-600 mb-2">
+                      <span className="font-medium">{t("SKU")}:</span> {unit.sku || t("NA")} | 
+                      <span className="font-medium ml-2">{t("Barcode")}:</span> {unit.barcode || t("NA")}
+                    </p>
                     <div className="flex items-center space-x-4 mt-2">
-                      <span className="text-sm font-semibold text-red-600">{t("StockTbl")}: {unit.stock}</span>
-                      <span className="text-sm text-gray-500">{t("PackQty")}: {unit.packQty}</span>
-                      <span className="text-sm text-gray-500">{t("Price")}: {currency}{unit.price}</span>
+                      <span className="text-sm font-semibold text-red-600">
+                        {t("StockTbl")}: {unit.stock}
+                      </span>
+                      <span className="text-sm text-gray-500">
+                        {t("PackQty")}: {unit.packQty} {unit.unitShortCode || 'pcs'}
+                      </span>
+                      <span className="text-sm text-gray-500">
+                        {t("Price")}: {currency}{unit.price}
+                      </span>
                     </div>
                   </div>
                   <div className="text-right">
-                    <span className="inline-block px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-bold">
+                    <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold ${
+                      unit.stock === 0 
+                        ? 'bg-red-100 text-red-700' 
+                        : 'bg-orange-100 text-orange-700'
+                    }`}>
                       {unit.stock === 0 ? t("OutOfStock") : t("LowStock")}
                     </span>
                   </div>
