@@ -1,0 +1,215 @@
+import React, { useContext, useEffect, useState } from "react";
+import { Scrollbars } from "react-custom-scrollbars-2";
+import { Input, Button, Textarea, Select } from "@windmill/react-ui";
+import { useForm } from 'react-hook-form';
+import { FiUploadCloud, FiX, FiCalendar, FiLink, FiImage } from "react-icons/fi";
+import { useQueryClient } from "@tanstack/react-query";
+
+// Internal imports
+import Title from "@/components/form/others/Title";
+import LabelArea from "@/components/form/selectOption/LabelArea";
+import Error from "@/components/form/others/Error";
+import InputArea from "@/components/form/input/InputArea";
+import DrawerButton from "@/components/form/button/DrawerButton";
+import UploaderWithCropper from "@/components/image-uploader/UploaderWithCropper";
+import { SidebarContext } from "@/context/SidebarContext";
+import BannerServices from "@/services/BannerServices";
+import { notifyError, notifySuccess } from "@/utils/toast";
+
+// Helper function to extract multilingual content safely
+const extractMultilingualContent = (field, defaultValue = '') => {
+  if (!field) return { en: defaultValue, ar: defaultValue };
+  
+  // If it's already an object with en/ar keys
+  if (typeof field === 'object' && field !== null) {
+    return {
+      en: field.en || defaultValue,
+      ar: field.ar || defaultValue
+    };
+  }
+  
+  // If it's a string, treat as English content
+  if (typeof field === 'string') {
+    return { en: field, ar: defaultValue };
+  }
+  
+  // Fallback
+  return { en: defaultValue, ar: defaultValue };
+};
+
+// Banner location configurations with dimensions
+const BANNER_LOCATIONS = {
+  'home-hero': {
+    name: 'Home Page Hero Carousel',
+    maxBanners: 10,
+    dimensions: { width: 1920, height: 400 },
+    description: 'Main carousel banners on homepage - supports both single and triple image layouts'
+  },
+  'home-middle': {
+    name: 'Home Page Middle Banner',
+    maxBanners: 1,
+    dimensions: { width: 1200, height: 300 },
+    description: 'Promotional banner in middle of homepage'
+  },
+  'products-hero': {
+    name: 'Products Page Hero',
+    maxBanners: 3,
+    dimensions: { width: 1920, height: 300 },
+    description: 'Hero banner carousel for products page'
+  },
+  'category-top': {
+    name: 'Category Section Top',
+    maxBanners: 1,
+    dimensions: { width: 1200, height: 200 },
+    description: 'Banner above category section'
+  },
+  'promotions-hero': {
+    name: 'Promotions Page Hero',
+    maxBanners: 2,
+    dimensions: { width: 1920, height: 350 },
+    description: 'Hero banners for promotions page'
+  },
+  'page-header': {
+    name: 'Page Headers',
+    maxBanners: 10,
+    dimensions: { width: 1920, height: 250 },
+    description: 'Background banners for page headers'
+  },
+  'sidebar-ads': {
+    name: 'Sidebar Advertisements',
+    maxBanners: 5,
+    dimensions: { width: 300, height: 400 },
+    description: 'Sidebar advertisement banners'
+  },
+  'footer-banner': {
+    name: 'Footer Banner',
+    maxBanners: 1,
+    dimensions: { width: 1200, height: 150 },
+    description: 'Banner above footer section'
+  }
+};
+
+const BannerDrawer = ({ id }) => {
+  const { isDrawerOpen, closeDrawer } = useContext(SidebarContext);
+  const queryClient = useQueryClient();
+  const [imageUrl, setImageUrl] = useState("");
+  const [leftImageUrl, setLeftImageUrl] = useState("");
+  const [rightImageUrl, setRightImageUrl] = useState("");
+  const [leftImageUrl1, setLeftImageUrl1] = useState("");
+  const [leftImageUrl2, setLeftImageUrl2] = useState("");
+  const [rightImageUrl1, setRightImageUrl1] = useState("");
+  const [rightImageUrl2, setRightImageUrl2] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState('home-hero');
+  const [layoutType, setLayoutType] = useState('single');
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    clearErrors,
+    formState: { errors },
+    reset,
+    watch
+  } = useForm();
+
+  const watchedLocation = watch('location');
+  const watchedLayoutType = watch('layoutType');
+
+  // Update selected location when form value changes
+  useEffect(() => {
+    if (watchedLocation) {
+      setSelectedLocation(watchedLocation);
+    }
+  }, [watchedLocation]);
+
+  // Update layout type when form value changes
+  useEffect(() => {
+    if (watchedLayoutType) {
+      setLayoutType(watchedLayoutType);
+    }
+  }, [watchedLayoutType]);
+
+  // Fetch banner data when editing
+  useEffect(() => {
+    if (id) {
+      console.log('Loading banner with ID:', id);
+      setLoading(true);
+      BannerServices.getBannerById(id)
+        .then((response) => {
+          console.log('Raw banner response:', response);
+          
+          // Handle different possible response structures
+          let banner = null;
+          
+          // Direct banner object
+          if (response && response.title) {
+            banner = response;
+            console.log('Using direct banner object');
+          }
+          // Wrapped in data property
+          else if (response && response.data && response.data.title) {
+            banner = response.data;
+            console.log('Using response.data');
+          }
+          // Axios response structure
+          else if (response && response.data && response.data.data && response.data.data.title) {
+            banner = response.data.data;
+            console.log('Using response.data.data');
+          }
+          
+          if (banner && banner.title) {
+            // Handle multilingual content using the helper function
+            const titleObj = extractMultilingualContent(banner.title);
+            const descriptionObj = extractMultilingualContent(banner.description);
+            const linkTextObj = extractMultilingualContent(banner.linkText);
+            
+            setValue('title', titleObj.en);
+            setValue('titleAr', titleObj.ar);
+            setValue('description', descriptionObj.en);
+            setValue('descriptionAr', descriptionObj.ar);
+            setValue('location', banner.location || 'home-hero');
+            setValue('linkUrl', banner.linkUrl || '');
+            setValue('linkText', linkTextObj.en);
+            setValue('linkTextAr', linkTextObj.ar);
+            setValue('status', banner.status || 'active');
+            setValue('sortOrder', banner.sortOrder || 0);
+            setValue('startDate', banner.startDate ? banner.startDate.split('T')[0] : '');
+            setValue('endDate', banner.endDate ? banner.endDate.split('T')[0] : '');
+            setValue('openInNewTab', banner.openInNewTab || false);
+            setValue('layoutType', banner.layoutType || 'single');
+            setValue('leftImageAnimation', banner.leftImageAnimation || 'slideUp');
+            setValue('rightImageAnimation', banner.rightImageAnimation || 'slideUp');
+            setValue('centerImageAnimation', banner.centerImageAnimation || 'slideRight');
+            
+            setImageUrl(banner.imageUrl || '');
+            setLeftImageUrl(banner.leftImageUrl || '');
+            setRightImageUrl(banner.rightImageUrl || '');
+            setLeftImageUrl1(banner.leftImageUrl1 || '');
+            setLeftImageUrl2(banner.leftImageUrl2 || '');
+            setRightImageUrl1(banner.rightImageUrl1 || '');
+            setRightImageUrl2(banner.rightImageUrl2 || '');
+            setSelectedLocation(banner.location || 'home-hero');
+            setLayoutType(banner.layoutType || 'single');
+            
+            console.log('Banner data loaded successfully:', {
+              title: titleObj,
+              description: descriptionObj,
+              linkText: linkTextObj,
+              location: banner.location,
+              layoutType: banner.layoutType,
+              imageUrl: banner.imageUrl
+            });
+            
+            // Force form re-render to ensure values are displayed
+            setTimeout(() => {
+              console.log('Form values after setValue:', {
+                title: titleObj.en,
+                titleAr: titleObj.ar,
+                description: descriptionObj.en,
+                descriptionAr: descriptionObj.ar,
+                linkText: linkTextObj.en,
+                linkTextAr: linkTextObj.ar
+              });
+            }, 100);
+         
