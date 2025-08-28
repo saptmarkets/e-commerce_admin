@@ -26,6 +26,8 @@ import useUtilsFunction from "@/hooks/useUtilsFunction";
 import requests from "@/services/httpService";
 
 const OdooCatalog = () => {
+  // Manual-only Odoo Catalog - no automatic sync on page load
+  // Users must click buttons to refresh status and sync data
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
@@ -310,8 +312,7 @@ const OdooCatalog = () => {
         per_page: actualPageSize,
         current_page: showAllPages ? 1 : (data?.pagination?.current_page || page)
       });
-      // Fetch live import status after products are loaded
-      await fetchImportStatus(productsData);
+      // Manual-only: do not auto-refresh status; use the Refresh Status button
     } catch (err) {
       console.error('Error fetching products:', err);
       notifyError(err?.response?.data?.message || err.message || 'Failed to fetch products');
@@ -320,10 +321,8 @@ const OdooCatalog = () => {
     }
   };
 
-  // Fetch overall import status on component mount
-  useEffect(() => {
-    fetchOverallImportStatus();
-  }, []); // Only run once on mount
+  // Manual-only: do not auto-fetch overall import status on mount
+  // Users can click the "Refresh Overall Status" button when needed
 
   useEffect(() => {
     fetchProducts();
@@ -539,24 +538,25 @@ const OdooCatalog = () => {
 
   return (
     <>
-      <PageTitle>{t("Odoo Catalog")}</PageTitle>
+      <PageTitle>{t("Odoo Catalog")} - Manual Mode</PageTitle>
 
       {/* Import Status Summary */}
-      {importStatusDetails && Object.keys(importStatusDetails).length > 0 && (
-        <div className="mb-6 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border">
-          <h3 className="text-lg font-semibold mb-3 text-gray-800 dark:text-gray-200">
-            📊 Import Status Summary
-            {importStatusDetails.isEstimated && (
-              <span className="ml-2 text-sm font-normal text-blue-600 bg-blue-100 px-2 py-1 rounded">
-                📊 Estimated from {importStatusDetails.sampleSize} sample products
-              </span>
-            )}
-            {!importStatusDetails.isEstimated && importStatusDetails.total > 0 && (
-              <span className="ml-2 text-sm font-normal text-green-600 bg-green-100 px-2 py-1 rounded">
-                📊 Real-time data from backend
-              </span>
-            )}
-          </h3>
+      <div className="mb-6 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border">
+        <h3 className="text-lg font-semibold mb-3 text-gray-800 dark:text-gray-200">
+          📊 Import Status Summary
+          {importStatusDetails.isEstimated && (
+            <span className="ml-2 text-sm font-normal text-blue-600 bg-blue-100 px-2 py-1 rounded">
+              📊 Estimated from {importStatusDetails.sampleSize} sample products
+            </span>
+          )}
+          {!importStatusDetails.isEstimated && importStatusDetails.total > 0 && (
+            <span className="ml-2 text-sm font-normal text-green-600 bg-blue-100 px-2 py-1 rounded">
+              📊 Real-time data from backend
+            </span>
+          )}
+        </h3>
+        
+        {importStatusDetails.total > 0 ? (
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             <div className="text-center">
               <div className="text-2xl font-bold text-gray-600 dark:text-gray-400">
@@ -589,6 +589,16 @@ const OdooCatalog = () => {
               <div className="text-sm text-gray-500 dark:text-gray-400">⏭️ Skipped</div>
             </div>
           </div>
+        ) : (
+          <div className="text-center py-4">
+            <div className="text-gray-500 dark:text-gray-400 mb-2">
+              📊 Status not loaded yet
+            </div>
+            <div className="text-sm text-gray-400 dark:text-gray-500">
+              Click "Refresh Overall Status" below to load import statistics
+            </div>
+          </div>
+        )}
           
           {/* Location Information */}
           {importStatusDetails.odooLocations && (
@@ -627,7 +637,6 @@ const OdooCatalog = () => {
             </button>
           </div>
         </div>
-      )}
 
       {/* Search and Filter Section */}
       <div className="mb-6 bg-white shadow rounded-lg p-4">
