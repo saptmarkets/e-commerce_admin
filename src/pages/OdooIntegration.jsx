@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { 
-  FiRefreshCw, 
-  FiCloud, 
-  FiDownload, 
-  FiUpload, 
-  FiArrowUpCircle, 
-  FiList, 
-  FiCheckSquare, 
+import {
+  FiRefreshCw,
+  FiCloud,
+  FiDownload,
+  FiUpload,
+  FiArrowUpCircle,
+  FiList,
+  FiCheckSquare,
   FiX,
   FiCalendar,
   FiClock,
@@ -29,6 +29,8 @@ import Cookies from "js-cookie";
 import PageTitle from "@/components/Typography/PageTitle";
 import Loading from "@/components/preloader/Loading";
 import { notifySuccess, notifyError } from "@/utils/toast";
+import OdooSyncServices from "@/services/OdooSyncServices";
+import OdooIntegrationServices from "@/services/OdooIntegrationServices";
 
 const OdooIntegration = () => {
   // UI states
@@ -62,34 +64,7 @@ const OdooIntegration = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [pageSize] = useState(10);
 
-  // API Base URL
-  const API_BASE = process.env.REACT_APP_API_URL || 'https://your-cloud-server.com/api';
-  const token = Cookies.get('token');
 
-  // Helper function to make API calls
-  const apiCall = async (endpoint, options = {}) => {
-    try {
-      const response = await fetch(`${API_BASE}${endpoint}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-          ...options.headers
-        },
-        ...options
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || `HTTP ${response.status}`);
-      }
-      
-      return data;
-    } catch (error) {
-      console.error(`API Error (${endpoint}):`, error);
-      throw error;
-    }
-  };
 
   // Load initial data
   useEffect(() => {
@@ -98,7 +73,7 @@ const OdooIntegration = () => {
 
   const loadInitialData = async () => {
     await Promise.all([
-      handleConnectionTest(),
+      handleConnectionStatus(), // Use same method as Odoo Sync page
       loadStatistics(),
       loadSessions(),
       loadPendingOrders(),
@@ -106,20 +81,34 @@ const OdooIntegration = () => {
     ]);
   };
 
-  // Connection Test
+  // Connection Status - Use same service as Odoo Sync page
+  const handleConnectionStatus = async () => {
+    try {
+      setConnectionLoading(true);
+      const res = await OdooSyncServices.getConnectionStatus();
+      setConnectionStatus(res.data || res);
+    } catch (err) {
+      console.error(err);
+      setConnectionStatus({ success: false, error: err.message });
+    } finally {
+      setConnectionLoading(false);
+    }
+  };
+
+  // Connection Test - Use same service as Odoo Sync page
   const handleConnectionTest = async () => {
     try {
       setConnectionLoading(true);
-      const res = await apiCall('/odoo-integration/test-connection');
-      setConnectionStatus(res);
-      if (res.success) {
+      const res = await OdooSyncServices.testConnection();
+      setConnectionStatus(res.data || res);
+      if (res.success || res.data?.success) {
         notifySuccess("Odoo connection successful");
       } else {
         notifyError("Odoo connection failed");
       }
     } catch (err) {
       console.error(err);
-      notifyError(err.message || "Odoo connection failed");
+      notifyError(err.response?.data?.message || "Odoo connection failed");
       setConnectionStatus({ success: false, error: err.message });
     } finally {
       setConnectionLoading(false);
@@ -130,8 +119,8 @@ const OdooIntegration = () => {
   const loadStatistics = async () => {
     try {
       setStatsLoading(true);
-      const res = await apiCall('/odoo-integration/statistics');
-      setStatistics(res.statistics);
+      const res = await OdooIntegrationServices.getStatistics();
+      setStatistics(res.data?.statistics || res.statistics);
     } catch (err) {
       console.error("Failed to load statistics", err);
       notifyError("Failed to load statistics");
@@ -144,9 +133,9 @@ const OdooIntegration = () => {
   const loadSessions = async () => {
     try {
       setSessionsLoading(true);
-      const res = await apiCall(`/odoo-integration/sessions?page=${currentPage}&limit=${pageSize}`);
-      setSessions(res.sessions || []);
-      setTotalPages(res.pagination?.pages || 1);
+      const res = await OdooIntegrationServices.getSessions({ page: currentPage, limit: pageSize });
+      setSessions(res.data?.sessions || res.sessions || []);
+      setTotalPages(res.data?.pagination?.pages || res.pagination?.pages || 1);
     } catch (err) {
       console.error("Failed to load sessions", err);
       notifyError("Failed to load sessions");
@@ -159,8 +148,8 @@ const OdooIntegration = () => {
   const loadPendingOrders = async () => {
     try {
       setOrdersLoading(true);
-      const res = await apiCall('/odoo-integration/pending-orders?limit=5');
-      setPendingOrders(res.orders || []);
+      const res = await OdooIntegrationServices.getPendingOrders({ limit: 5 });
+      setPendingOrders(res.data?.orders || res.orders || []);
     } catch (err) {
       console.error("Failed to load pending orders", err);
       notifyError("Failed to load pending orders");
@@ -173,8 +162,8 @@ const OdooIntegration = () => {
   const loadFailedOrders = async () => {
     try {
       setOrdersLoading(true);
-      const res = await apiCall('/odoo-integration/failed-orders?limit=5');
-      setFailedOrders(res.orders || []);
+      const res = await OdooIntegrationServices.getFailedOrders({ limit: 5 });
+      setFailedOrders(res.data?.orders || res.orders || []);
     } catch (err) {
       console.error("Failed to load failed orders", err);
       notifyError("Failed to load failed orders");
@@ -194,12 +183,9 @@ const OdooIntegration = () => {
       setProcessLoading(true);
       setProcessProgress({ status: 'starting', message: 'Initializing batch processing...' });
       
-      const res = await apiCall('/odoo-integration/process-orders', {
-        method: 'POST',
-        body: JSON.stringify({
-          targetDate: targetDate,
-          adminId: adminId
-        })
+      const res = await OdooIntegrationServices.processOrders({
+        targetDate: targetDate,
+        adminId: adminId
       });
 
       if (res.success) {
@@ -232,12 +218,9 @@ const OdooIntegration = () => {
   const handleRetryFailedOrders = async (sessionId) => {
     try {
       setRetryLoading(true);
-      const res = await apiCall('/odoo-integration/retry-failed-orders', {
-        method: 'POST',
-        body: JSON.stringify({
-          sessionId: sessionId,
-          maxRetries: 3
-        })
+      const res = await OdooIntegrationServices.retryFailedOrders({
+        sessionId: sessionId,
+        maxRetries: 3
       });
 
       if (res.success) {
@@ -259,8 +242,8 @@ const OdooIntegration = () => {
   // View Session Details
   const handleViewSession = async (sessionId) => {
     try {
-      const res = await apiCall(`/odoo-integration/session/${sessionId}`);
-      setSelectedSession(res.session);
+      const res = await OdooIntegrationServices.getSessionDetails(sessionId);
+      setSelectedSession(res.data?.session || res.session);
       setShowSessionModal(true);
     } catch (err) {
       console.error(err);
@@ -271,16 +254,14 @@ const OdooIntegration = () => {
   // Reset Order Sync Status
   const handleResetOrder = async (orderId) => {
     try {
-      const res = await apiCall(`/odoo-integration/reset-order/${orderId}`, {
-        method: 'PUT'
-      });
+      const res = await OdooIntegrationServices.resetOrderSyncStatus(orderId);
 
-      if (res.success) {
+      if (res.success || res.data?.success) {
         notifySuccess("Order sync status reset successfully");
         loadPendingOrders();
         loadFailedOrders();
       } else {
-        notifyError(res.error || "Failed to reset order");
+        notifyError(res.error || res.data?.error || "Failed to reset order");
       }
     } catch (err) {
       console.error(err);
