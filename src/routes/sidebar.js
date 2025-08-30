@@ -79,6 +79,10 @@ const sidebar = [
         name: "Odoo Sync",
       },
       {
+        path: "/odoo-integration",
+        name: "Order Integration",
+      },
+      {
         path: "/odoo-catalog",
         name: "Product Catalog",
       },

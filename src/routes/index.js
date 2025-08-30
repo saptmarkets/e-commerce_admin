@@ -37,6 +37,7 @@ const Banners = lazy(() => import("@/pages/Banners"));
 const OdooSync = lazy(() => import("@/pages/OdooSync"));
 const OdooCatalog = lazy(() => import("@/pages/OdooCatalog"));
 const OdooPromotions = lazy(() => import("@/pages/OdooPromotions"));
+const OdooIntegration = lazy(() => import("@/pages/OdooIntegration"));
 // BulkImageUploader replaced with ProductImageFinder
 
 // Delivery Management Pages
@@ -182,6 +183,10 @@ const routes = [
   {
     path: '/odoo-sync',
     component: OdooSync,
+  },
+  {
+    path: '/odoo-integration',
+    component: OdooIntegration,
   },
   {
     path: '/odoo-catalog',
