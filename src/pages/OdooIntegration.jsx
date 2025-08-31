@@ -64,6 +64,11 @@ const OdooIntegration = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [pageSize] = useState(10);
 
+  // Sync Order states
+  const [syncOrderId, setSyncOrderId] = useState(null);
+  const [syncAdminEmail, setSyncAdminEmail] = useState('');
+  const [showSyncModal, setShowSyncModal] = useState(false);
+  const [syncLoading, setSyncLoading] = useState(false);
 
 
   // Load initial data
@@ -271,11 +276,28 @@ const OdooIntegration = () => {
 
   // Sync Individual Order to Odoo
   const handleSyncOrder = async (orderId) => {
+    // Show modal for admin email input
+    setSyncOrderId(orderId);
+    setSyncAdminEmail('');
+    setShowSyncModal(true);
+  };
+
+  // Confirm sync order with admin email
+  const handleConfirmSyncOrder = async () => {
+    if (!syncAdminEmail) {
+      notifyError("Please enter admin email");
+      return;
+    }
+
     try {
-      const res = await OdooIntegrationServices.manualSyncOrder(orderId);
+      setSyncLoading(true);
+      const res = await OdooIntegrationServices.manualSyncOrder(syncOrderId, syncAdminEmail);
 
       if (res.success || res.data?.success) {
         notifySuccess("Order synced to Odoo successfully");
+        setShowSyncModal(false);
+        setSyncOrderId(null);
+        setSyncAdminEmail('');
         loadPendingOrders();
         loadFailedOrders();
         loadStatistics();
@@ -285,6 +307,8 @@ const OdooIntegration = () => {
     } catch (err) {
       console.error(err);
       notifyError(err.message || "Failed to sync order");
+    } finally {
+      setSyncLoading(false);
     }
   };
 
@@ -676,6 +700,46 @@ const OdooIntegration = () => {
                   </div>
                 </div>
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Sync Order Modal */}
+      {showSyncModal && syncOrderId && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div className="mt-3">
+              <h3 className="text-lg font-medium text-gray-900 mb-4">Confirm Sync Order</h3>
+              <p className="text-sm text-gray-700 mb-4">
+                Are you sure you want to sync order #{syncOrderId} to Odoo?
+                Please enter the admin email address to confirm.
+              </p>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Admin Email</label>
+                <input
+                  type="email"
+                  value={syncAdminEmail}
+                  onChange={(e) => setSyncAdminEmail(e.target.value)}
+                  placeholder="Enter admin email address"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div className="flex justify-end space-x-3">
+                <button
+                  onClick={() => setShowSyncModal(false)}
+                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleConfirmSyncOrder}
+                  disabled={syncLoading}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+                >
+                  {syncLoading ? <Loading /> : 'Confirm Sync'}
+                </button>
+              </div>
             </div>
           </div>
         </div>

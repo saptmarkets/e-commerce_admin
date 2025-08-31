@@ -60,7 +60,7 @@ const OdooIntegrationServices = {
    * Manual sync order
    * POST /api/odoo-integration/order/:orderId/sync
    */
-  manualSyncOrder: (orderId) => requests.post(`/odoo-integration/order/${orderId}/sync`),
+  manualSyncOrder: (orderId, adminEmail) => requests.post(`/odoo-integration/order/${orderId}/sync`, { adminEmail }),
 
   /**
    * Get Odoo configuration
