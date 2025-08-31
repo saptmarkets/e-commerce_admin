@@ -88,7 +88,13 @@ const sidebar = [
       },
       {
         path: "/odoo-promotions",
-        name: "Promotions (Pricelist)",
+        name: "Odoo Promotions",
+        icon: "FiGift",
+      },
+      {
+        path: "/odoo-coupons",
+        name: "Odoo Coupons",
+        icon: "FiCreditCard",
       },
       {
         path: "/bulk-image-uploader",

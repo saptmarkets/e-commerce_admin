@@ -73,6 +73,40 @@ const OdooIntegrationServices = {
    * PUT /api/odoo-integration/config
    */
   updateConfig: (configData) => requests.put("/odoo-integration/config", configData),
+
+  // ========================================
+  // COUPON/GIFT CARD MANAGEMENT
+  // ========================================
+
+  /**
+   * Get all coupons/gift cards from Odoo
+   * GET /api/odoo-integration/coupons
+   */
+  getAllCoupons: () => requests.get("/odoo-integration/coupons"),
+
+  /**
+   * Create a new gift card in Odoo
+   * POST /api/odoo-integration/create-gift-card
+   */
+  createGiftCard: (data) => requests.post("/odoo-integration/create-gift-card", data),
+
+  /**
+   * Check gift card balance
+   * GET /api/odoo-integration/gift-card-balance/:code
+   */
+  checkGiftCardBalance: (code) => requests.get(`/odoo-integration/gift-card-balance/${code}`),
+
+  /**
+   * Validate a coupon code
+   * POST /api/odoo-integration/validate-coupon
+   */
+  validateCoupon: (data) => requests.post("/odoo-integration/validate-coupon", data),
+
+  /**
+   * Apply a coupon to an order
+   * POST /api/odoo-integration/apply-coupon
+   */
+  applyCoupon: (data) => requests.post("/odoo-integration/apply-coupon", data)
 };
 
 export default OdooIntegrationServices;

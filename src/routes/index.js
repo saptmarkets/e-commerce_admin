@@ -37,6 +37,7 @@ const Banners = lazy(() => import("@/pages/Banners"));
 const OdooSync = lazy(() => import("@/pages/OdooSync"));
 const OdooCatalog = lazy(() => import("@/pages/OdooCatalog"));
 const OdooPromotions = lazy(() => import("@/pages/OdooPromotions"));
+const OdooCoupons = lazy(() => import("@/pages/OdooCoupons"));
 const OdooIntegration = lazy(() => import("@/pages/OdooIntegration"));
 // BulkImageUploader replaced with ProductImageFinder
 
@@ -197,6 +198,10 @@ const routes = [
     component: OdooPromotions,
   },
   {
+    path: '/odoo-coupons',
+    component: OdooCoupons,
+  },
+  {
     path: '/bulk-image-uploader',
     component: lazy(() => import('@/pages/ProductImageFinder')),
   },
@@ -303,6 +308,7 @@ const routeAccessList = [
   { label: "Odoo Sync", value: "odoo-sync" },
   { label: "Odoo Catalog", value: "odoo-catalog" },
   { label: "Odoo Promotions", value: "odoo-promotions" },
+  { label: "Odoo Coupons", value: "odoo-coupons" },
   { label: "Bulk Image Uploader", value: "bulk-image-uploader" },
   { label: "Sales Analytics", value: "reports/sales" },
   { label: "Inventory Reports", value: "reports/inventory" },
