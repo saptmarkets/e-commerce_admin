@@ -30,23 +30,23 @@ const ProgressBar = ({ progress, currentStep, totalSteps, message, status = 'pro
   const getStepLabel = (step) => {
     switch (step) {
       case 'creating_order':
-        return 'Creating Order';
+        return 'Creating Order (0-25%)';
       case 'order_created':
-        return 'Order Created';
+        return '✅ Order Created (25%)';
       case 'confirming_order':
-        return 'Confirming Order';
+        return 'Confirming Order (25-50%)';
       case 'order_confirmed':
-        return 'Order Confirmed';
+        return '✅ Order Confirmed (50%)';
       case 'waiting_delivery':
-        return 'Waiting for Delivery';
+        return 'Waiting for Delivery (50-75%)';
       case 'validating_delivery':
-        return 'Validating Delivery';
+        return 'Validating Delivery (75-100%)';
       case 'delivery_validated':
-        return 'Delivery Validated';
+        return '✅ Delivery Validated (100%)';
       case 'creating_invoice':
-        return 'Creating Invoice';
+        return 'Creating Invoice (Bonus)';
       case 'invoice_created':
-        return 'Invoice Created';
+        return '✅ Invoice Created (Complete)';
       default:
         return 'Processing';
     }
