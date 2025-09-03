@@ -47,11 +47,22 @@ const OdooIntegrationServices = {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       
-      // Get auth token from cookies or localStorage
-      const token = localStorage.getItem('token') || Cookies.get('token');
+      // Get auth token from adminInfo cookie (same as httpService)
+      let adminInfo;
+      let token = null;
+      if (Cookies.get("adminInfo")) {
+        try {
+          adminInfo = JSON.parse(Cookies.get("adminInfo"));
+          token = adminInfo.token;
+        } catch (error) {
+          console.error('Error parsing adminInfo cookie:', error);
+        }
+      }
       console.log('🔑 Auth token found:', token ? 'Yes' : 'No');
       
-      const apiUrl = `${process.env.REACT_APP_API_URL || ''}/api/odoo-integration/process-orders`;
+      // Use the same base URL as the regular requests
+      const baseURL = process.env.REACT_APP_API_URL || 'https://e-commerce-backend-l0s0.onrender.com/api';
+      const apiUrl = `${baseURL}/odoo-integration/process-orders`;
       console.log('🌐 Making SSE request to:', apiUrl);
       
       xhr.open('POST', apiUrl, true);
@@ -129,7 +140,8 @@ const OdooIntegrationServices = {
       // First try SSE
       console.log('🔄 Attempting SSE connection...');
       console.log('📋 Request data:', data);
-      console.log('📋 API URL:', `${process.env.REACT_APP_API_URL || ''}/api/odoo-integration/process-orders`);
+      const baseURL = process.env.REACT_APP_API_URL || 'https://e-commerce-backend-l0s0.onrender.com/api';
+      console.log('📋 API URL:', `${baseURL}/odoo-integration/process-orders`);
       
       return await OdooIntegrationServices.processOrdersWithProgress(data, onProgress);
     } catch (error) {
