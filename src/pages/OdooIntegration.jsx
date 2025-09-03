@@ -31,6 +31,7 @@ import Loading from "@/components/preloader/Loading";
 import { notifySuccess, notifyError } from "@/utils/toast";
 import OdooSyncServices from "@/services/OdooSyncServices";
 import OdooIntegrationServices from "@/services/OdooIntegrationServices";
+import { BatchProgressModal } from "@/components/ProgressBar";
 
 const OdooIntegration = () => {
   // UI states
@@ -50,6 +51,12 @@ const OdooIntegration = () => {
   const [adminId, setAdminId] = useState('');
   const [processingSession, setProcessingSession] = useState(null);
   const [processProgress, setProcessProgress] = useState(null);
+  
+  // Progress tracking states
+  const [showProgressModal, setShowProgressModal] = useState(false);
+  const [progressData, setProgressData] = useState(null);
+  const [processingOrders, setProcessingOrders] = useState([]);
+  const [currentProcessingOrder, setCurrentProcessingOrder] = useState(null);
   
   // Loading states
   const [statsLoading, setStatsLoading] = useState(false);
@@ -177,7 +184,7 @@ const OdooIntegration = () => {
     }
   };
 
-  // Process Orders for Date
+  // Process Orders for Date with Real-time Progress Tracking
   const handleProcessOrders = async () => {
     if (!targetDate || !adminId) {
       notifyError("Please select a date and enter admin email");
@@ -186,21 +193,102 @@ const OdooIntegration = () => {
 
     try {
       setProcessLoading(true);
-      setProcessProgress({ status: 'starting', message: 'Initializing batch processing...' });
+      setShowProgressModal(true);
+      setProgressData({ type: 'initializing', message: 'Initializing batch processing...' });
+      setProcessingOrders([]);
+      setCurrentProcessingOrder(null);
       
-      const res = await OdooIntegrationServices.processOrders({
-        targetDate: targetDate,
-        adminId: adminId
+      // First, get the orders that will be processed
+      const ordersRes = await OdooIntegrationServices.getPendingOrders({ 
+        limit: 100,
+        targetDate: targetDate 
       });
+      
+      const ordersToProcess = ordersRes.data?.orders || ordersRes.orders || [];
+      setProcessingOrders(ordersToProcess.map(order => ({
+        _id: order._id,
+        invoiceNumber: order.invoice,
+        customerName: order.user_info?.name,
+        orderTotal: formatCurrency(order.total),
+        itemCount: order.cart?.length || 0,
+        status: 'pending',
+        odooOrderId: null,
+        deliveryValidated: false,
+        invoiceCreated: false,
+        error: null
+      })));
+      
+      // Process orders with real-time progress tracking
+      const res = await OdooIntegrationServices.processOrdersWithProgress(
+        {
+          targetDate: targetDate,
+          adminId: adminId
+        },
+        (progressUpdate) => {
+          console.log('Progress Update:', progressUpdate);
+          setProgressData(progressUpdate);
+          
+          // Update order status based on progress type
+          switch (progressUpdate.type) {
+            case 'order_started':
+              setCurrentProcessingOrder(progressUpdate.orderId);
+              setProcessingOrders(prev => prev.map(order => 
+                order._id === progressUpdate.orderId 
+                  ? { ...order, status: 'processing' }
+                  : order
+              ));
+              break;
+              
+            case 'order_step':
+              setCurrentProcessingOrder(progressUpdate.orderId);
+              setProcessingOrders(prev => prev.map(order => 
+                order._id === progressUpdate.orderId 
+                  ? { 
+                      ...order, 
+                      status: 'processing',
+                      currentStep: progressUpdate.step,
+                      stepProgress: progressUpdate.stepProgress
+                    }
+                  : order
+              ));
+              break;
+              
+            case 'order_completed':
+              setCurrentProcessingOrder(null);
+              setProcessingOrders(prev => prev.map(order => 
+                order._id === progressUpdate.orderId 
+                  ? { 
+                      ...order, 
+                      status: progressUpdate.success ? 'completed' : 'failed',
+                      odooOrderId: progressUpdate.odooOrderId,
+                      deliveryValidated: progressUpdate.deliveryValidated,
+                      invoiceCreated: progressUpdate.invoiceCreated,
+                      error: progressUpdate.error
+                    }
+                  : order
+              ));
+              break;
+              
+            case 'session_completed':
+              setCurrentProcessingOrder(null);
+              notifySuccess(`Batch processing completed: ${progressUpdate.results?.successful}/${progressUpdate.results?.processed} orders synced`);
+              break;
+              
+            case 'session_error':
+              setCurrentProcessingOrder(null);
+              notifyError(`Batch processing failed: ${progressUpdate.error}`);
+              break;
+          }
+        }
+      );
 
       if (res.success) {
         setProcessingSession(res.sessionId);
-        notifySuccess(`Batch processing started: ${res.results.successful}/${res.results.processed} orders synced`);
         setShowProcessModal(false);
         setTargetDate('');
         setAdminId('');
         
-        // Reload data
+        // Reload data after a delay
         setTimeout(() => {
           loadSessions();
           loadStatistics();
@@ -215,7 +303,6 @@ const OdooIntegration = () => {
       notifyError(err.message || "Failed to process orders");
     } finally {
       setProcessLoading(false);
-      setProcessProgress(null);
     }
   };
 
@@ -744,6 +831,14 @@ const OdooIntegration = () => {
           </div>
         </div>
       )}
+
+      {/* Batch Progress Modal */}
+      <BatchProgressModal
+        isOpen={showProgressModal}
+        onClose={() => setShowProgressModal(false)}
+        progressData={progressData}
+        orders={processingOrders}
+      />
     </>
   );
 };

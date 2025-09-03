@@ -33,10 +33,68 @@ const OdooIntegrationServices = {
   getFailedOrders: (params = {}) => requests.get("/odoo-integration/failed-orders", { params }),
 
   /**
-   * Process orders for a specific date
+   * Process orders for a specific date with real-time progress tracking
    * POST /api/odoo-integration/process-orders
    */
   processOrders: (data) => requests.post("/odoo-integration/process-orders", data),
+
+  /**
+   * Process orders with real-time progress tracking using Server-Sent Events
+   * POST /api/odoo-integration/process-orders (with SSE support)
+   */
+  processOrdersWithProgress: (data, onProgress) => {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      
+      xhr.open('POST', `${process.env.REACT_APP_API_URL || ''}/api/odoo-integration/process-orders`, true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.setRequestHeader('Accept', 'text/event-stream');
+      xhr.setRequestHeader('Cache-Control', 'no-cache');
+      
+      let buffer = '';
+      
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 3) { // Loading
+          const newData = xhr.responseText.substring(buffer.length);
+          buffer = xhr.responseText;
+          
+          const lines = newData.split('\n');
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              try {
+                const data = JSON.parse(line.substring(6));
+                if (onProgress) {
+                  onProgress(data);
+                }
+                
+                // Check for completion or error
+                if (data.type === 'processing_completed') {
+                  resolve(data);
+                } else if (data.type === 'processing_error') {
+                  reject(new Error(data.error));
+                }
+              } catch (error) {
+                console.error('Error parsing SSE data:', error);
+              }
+            }
+          }
+        } else if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            // SSE connection completed successfully
+            resolve({ success: true });
+          } else {
+            reject(new Error(`HTTP ${xhr.status}: ${xhr.statusText}`));
+          }
+        }
+      };
+      
+      xhr.onerror = function() {
+        reject(new Error('Network error'));
+      };
+      
+      xhr.send(JSON.stringify(data));
+    });
+  },
 
   /**
    * Retry failed orders
