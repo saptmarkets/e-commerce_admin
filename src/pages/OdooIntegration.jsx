@@ -69,7 +69,7 @@ const OdooIntegration = () => {
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [pageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(10);
 
   // Sync Order states
   const [syncOrderId, setSyncOrderId] = useState(null);
@@ -82,6 +82,16 @@ const OdooIntegration = () => {
   useEffect(() => {
     loadInitialData();
   }, []);
+
+  // Reload sessions when page changes
+  useEffect(() => {
+    loadSessions();
+  }, [currentPage]);
+
+  // Reload sessions when page size changes
+  useEffect(() => {
+    loadSessions();
+  }, [pageSize]);
 
   const loadInitialData = async () => {
     await Promise.all([
@@ -155,6 +165,18 @@ const OdooIntegration = () => {
       setSessionsLoading(false);
     }
   };
+
+  // Handle page change
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  // Sort sessions - completed sessions at bottom
+  const sortedSessions = sessions.sort((a, b) => {
+    if (a.status === 'completed' && b.status !== 'completed') return 1;
+    if (a.status !== 'completed' && b.status === 'completed') return -1;
+    return new Date(b.sessionDate) - new Date(a.sessionDate);
+  });
 
   // Load Pending Orders
   const loadPendingOrders = async () => {
@@ -521,65 +543,132 @@ const OdooIntegration = () => {
 
       {/* Recent Sessions */}
       <div className="bg-white rounded-lg shadow p-6 mb-6">
-        <h3 className="text-lg font-semibold mb-4">Recent Sessions</h3>
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-lg font-semibold">Recent Sessions</h3>
+          <div className="flex items-center space-x-2">
+            <select
+              value={pageSize}
+              onChange={(e) => {
+                setPageSize(Number(e.target.value));
+                setCurrentPage(1); // Reset to first page when changing page size
+              }}
+              className="px-3 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value={5}>5 per page</option>
+              <option value={10}>10 per page</option>
+              <option value={20}>20 per page</option>
+              <option value={50}>50 per page</option>
+            </select>
+            <button
+              onClick={() => loadSessions()}
+              disabled={sessionsLoading}
+              className="p-2 text-gray-600 hover:text-gray-900 disabled:opacity-50"
+            >
+              <FiRefreshCw className={`w-4 h-4 ${sessionsLoading ? 'animate-spin' : ''}`} />
+            </button>
+          </div>
+        </div>
+        
         {sessionsLoading ? (
           <Loading />
-        ) : sessions.length > 0 ? (
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Session ID</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Success Rate</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {sessions.map((session) => (
-                  <tr key={session.sessionId}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {session.sessionId}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {formatDate(session.sessionDate)}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                        session.status === 'completed' ? 'bg-green-100 text-green-800' :
-                        session.status === 'processing' ? 'bg-yellow-100 text-yellow-800' :
-                        session.status === 'failed' ? 'bg-red-100 text-red-800' :
-                        'bg-gray-100 text-gray-800'
-                      }`}>
-                        {session.status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {session.summary?.successRate?.toFixed(1)}%
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <button
-                        onClick={() => handleViewSession(session.sessionId)}
-                        className="text-blue-600 hover:text-blue-900 mr-3"
-                      >
-                        <FiEye className="w-4 h-4" />
-                      </button>
-                      {session.summary?.totalOrdersFailed > 0 && (
-                        <button
-                          onClick={() => handleRetryFailedOrders(session.sessionId)}
-                          disabled={retryLoading}
-                          className="text-green-600 hover:text-green-900"
-                        >
-                          <FiRotateCcw className="w-4 h-4" />
-                        </button>
-                      )}
-                    </td>
+        ) : sortedSessions.length > 0 ? (
+          <>
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Session ID</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Success Rate</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {sortedSessions.map((session) => (
+                    <tr key={session.sessionId} className={session.status === 'completed' ? 'bg-gray-50' : ''}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {session.sessionId}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {formatDate(session.sessionDate)}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                          session.status === 'completed' ? 'bg-green-100 text-green-800' :
+                          session.status === 'processing' ? 'bg-yellow-100 text-yellow-800' :
+                          session.status === 'failed' ? 'bg-red-100 text-red-800' :
+                          'bg-gray-100 text-gray-800'
+                        }`}>
+                          {session.status}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {session.summary?.successRate?.toFixed(1)}%
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <button
+                          onClick={() => handleViewSession(session.sessionId)}
+                          className="text-blue-600 hover:text-blue-900 mr-3"
+                        >
+                          <FiEye className="w-4 h-4" />
+                        </button>
+                        {session.summary?.totalOrdersFailed > 0 && (
+                          <button
+                            onClick={() => handleRetryFailedOrders(session.sessionId)}
+                            disabled={retryLoading}
+                            className="text-green-600 hover:text-green-900"
+                          >
+                            <FiRotateCcw className="w-4 h-4" />
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="mt-4 flex justify-center">
+                <nav className="flex items-center space-x-2">
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Previous
+                  </button>
+                  
+                  {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                    const page = Math.max(1, Math.min(totalPages - 4, currentPage - 2)) + i;
+                    return (
+                      <button
+                        key={page}
+                        onClick={() => handlePageChange(page)}
+                        className={`px-3 py-2 text-sm font-medium rounded-md ${
+                          currentPage === page
+                            ? 'bg-blue-600 text-white'
+                            : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-50'
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    );
+                  })}
+                  
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Next
+                  </button>
+                </nav>
+              </div>
+            )}
+          </>
         ) : (
           <p className="text-gray-500 text-center py-4">No sessions found</p>
         )}
@@ -763,8 +852,10 @@ const OdooIntegration = () => {
                         <tr>
                           <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Invoice</th>
                           <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
+                          <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
                           <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                           <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Odoo ID</th>
+                          <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
@@ -772,6 +863,9 @@ const OdooIntegration = () => {
                           <tr key={index}>
                             <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-900">#{result.invoiceNumber}</td>
                             <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500">{result.customerInfo?.name}</td>
+                            <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-900 font-medium">
+                              {formatCurrency(result.orderTotal || 0)}
+                            </td>
                             <td className="px-3 py-2 whitespace-nowrap">
                               <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
                                 result.syncStatus === 'synced' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
@@ -780,6 +874,19 @@ const OdooIntegration = () => {
                               </span>
                             </td>
                             <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500">{result.odooOrderId || 'N/A'}</td>
+                            <td className="px-3 py-2 whitespace-nowrap text-sm font-medium">
+                              <button
+                                onClick={() => {
+                                  setShowSessionModal(false);
+                                  // Navigate to order details page
+                                  window.open(`/order/${result.invoiceNumber}`, '_blank');
+                                }}
+                                className="text-blue-600 hover:text-blue-900"
+                                title="View Order Details"
+                              >
+                                <FiEye className="w-4 h-4" />
+                              </button>
+                            </td>
                           </tr>
                         ))}
                       </tbody>
