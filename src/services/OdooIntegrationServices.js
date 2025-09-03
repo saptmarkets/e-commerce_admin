@@ -1,4 +1,5 @@
 import requests from "./httpService";
+import Cookies from "js-cookie";
 
 /**
  * OdooIntegrationServices
@@ -46,14 +47,31 @@ const OdooIntegrationServices = {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       
-      xhr.open('POST', `${process.env.REACT_APP_API_URL || ''}/api/odoo-integration/process-orders`, true);
+      // Get auth token from cookies or localStorage
+      const token = localStorage.getItem('token') || Cookies.get('token');
+      console.log('🔑 Auth token found:', token ? 'Yes' : 'No');
+      
+      const apiUrl = `${process.env.REACT_APP_API_URL || ''}/api/odoo-integration/process-orders`;
+      console.log('🌐 Making SSE request to:', apiUrl);
+      
+      xhr.open('POST', apiUrl, true);
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.setRequestHeader('Accept', 'text/event-stream');
       xhr.setRequestHeader('Cache-Control', 'no-cache');
       
+      // Add authorization header if token exists
+      if (token) {
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+        console.log('🔐 Authorization header added');
+      } else {
+        console.log('⚠️ No auth token found');
+      }
+      
       let buffer = '';
       
       xhr.onreadystatechange = function() {
+        console.log('📡 XHR State:', xhr.readyState, 'Status:', xhr.status);
+        
         if (xhr.readyState === 3) { // Loading
           const newData = xhr.responseText.substring(buffer.length);
           buffer = xhr.responseText;
@@ -63,6 +81,7 @@ const OdooIntegrationServices = {
             if (line.startsWith('data: ')) {
               try {
                 const data = JSON.parse(line.substring(6));
+                console.log('📊 SSE Data received:', data);
                 if (onProgress) {
                   onProgress(data);
                 }
@@ -81,19 +100,73 @@ const OdooIntegrationServices = {
         } else if (xhr.readyState === 4) {
           if (xhr.status === 200) {
             // SSE connection completed successfully
+            console.log('✅ SSE connection completed successfully');
             resolve({ success: true });
           } else {
+            console.error('SSE request failed:', xhr.status, xhr.statusText);
+            console.error('Response text:', xhr.responseText);
             reject(new Error(`HTTP ${xhr.status}: ${xhr.statusText}`));
           }
         }
       };
       
       xhr.onerror = function() {
+        console.error('SSE network error');
         reject(new Error('Network error'));
       };
       
+      console.log('📤 Sending request with data:', JSON.stringify(data));
       xhr.send(JSON.stringify(data));
     });
+  },
+
+  /**
+   * Process orders with fallback to regular HTTP request (for compatibility)
+   * POST /api/odoo-integration/process-orders (fallback version)
+   */
+  processOrdersWithFallback: async (data, onProgress) => {
+    try {
+      // First try SSE
+      console.log('🔄 Attempting SSE connection...');
+      console.log('📋 Request data:', data);
+      console.log('📋 API URL:', `${process.env.REACT_APP_API_URL || ''}/api/odoo-integration/process-orders`);
+      
+      return await OdooIntegrationServices.processOrdersWithProgress(data, onProgress);
+    } catch (error) {
+      console.log('⚠️ SSE failed, falling back to regular HTTP request:', error.message);
+      
+      // Fallback to regular HTTP request
+      console.log('🔄 Using fallback HTTP request...');
+      const res = await requests.post("/odoo-integration/process-orders", data);
+      
+      if (res.success) {
+        // Simulate progress updates for the fallback
+        if (onProgress) {
+          onProgress({
+            type: 'session_started',
+            message: 'Processing started (fallback mode)...',
+            progress: 10
+          });
+          
+          onProgress({
+            type: 'orders_found',
+            message: 'Orders found, processing...',
+            progress: 30
+          });
+          
+          onProgress({
+            type: 'session_completed',
+            message: `Processing completed: ${res.results?.successful || 0}/${res.results?.processed || 0} orders synced`,
+            progress: 100,
+            results: res.results
+          });
+        }
+        
+        return res;
+      } else {
+        throw new Error(res.error || 'Processing failed');
+      }
+    }
   },
 
   /**

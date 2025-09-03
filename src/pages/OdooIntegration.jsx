@@ -219,7 +219,7 @@ const OdooIntegration = () => {
       })));
       
       // Process orders with real-time progress tracking
-      const res = await OdooIntegrationServices.processOrdersWithProgress(
+      const res = await OdooIntegrationServices.processOrdersWithFallback(
         {
           targetDate: targetDate,
           adminId: adminId
