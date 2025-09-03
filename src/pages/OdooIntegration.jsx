@@ -878,8 +878,8 @@ const OdooIntegration = () => {
                               <button
                                 onClick={() => {
                                   setShowSessionModal(false);
-                                  // Navigate to order details page
-                                  window.open(`/order/${result.invoiceNumber}`, '_blank');
+                                  // Navigate to order details page using order ID
+                                  window.open(`/order/${result.orderId || result._id}`, '_blank');
                                 }}
                                 className="text-blue-600 hover:text-blue-900"
                                 title="View Order Details"
